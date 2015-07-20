@@ -37,7 +37,7 @@ namespace PortCMIS.Binding.Browser.Json
     /// <summary>
     /// JSON stream interface.
     /// </summary>
-    public interface IJsonStreamAware
+    internal interface IJsonStreamAware
     {
         void WriteJsonString(TextWriter writer);
     }
@@ -45,7 +45,7 @@ namespace PortCMIS.Binding.Browser.Json
     /// <summary>
     /// JSON Value helpers.
     /// </summary>
-    public class JsonValue
+    internal class JsonValue
     {
         public static void WriteJsonString(object value, TextWriter writer)
         {
@@ -186,7 +186,7 @@ namespace PortCMIS.Binding.Browser.Json
     /// <summary>
     /// JSON object.
     /// </summary>
-    public class JsonObject : IJsonStreamAware, IEnumerable<KeyValuePair<string, object>>
+    internal class JsonObject : IJsonStreamAware, IEnumerable<KeyValuePair<string, object>>
     {
         private Dictionary<string, KeyValuePair<string, object>> dict = new Dictionary<string, KeyValuePair<string, object>>();
         private List<KeyValuePair<string, object>> list = new List<KeyValuePair<string, object>>();
@@ -373,7 +373,7 @@ namespace PortCMIS.Binding.Browser.Json
     /// <summary>
     /// JSON array.
     /// </summary>
-    public class JsonArray : List<object>, IJsonStreamAware
+    internal class JsonArray : List<object>, IJsonStreamAware
     {
         public JsonArray()
         {
@@ -413,7 +413,7 @@ namespace PortCMIS.Binding.Browser.Json
     /// <summary>
     /// JSON parser.
     /// </summary>
-    public class JsonParser
+    internal class JsonParser
     {
         public const int StatusInit = 0;
         public const int StatusInFinishedValue = 1; // string, number, boolean, null, object, array
@@ -645,7 +645,7 @@ namespace PortCMIS.Binding.Browser.Json
     /// <summary>
     /// JSON parser exception.
     /// </summary>
-    public class JsonParseException : Exception
+    internal class JsonParseException : Exception
     {
         public const int ErrorUnexpectedChar = 0;
         public const int ErrorUnexpectedToken = 1;
