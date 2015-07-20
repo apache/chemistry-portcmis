@@ -1,0 +1,29 @@
+Apache Chemistry PortCMIS 0.1
+=============================
+
+Apache Chemistry PortCMIS is a Content Management Interoperability Services (CMIS)
+client library for the .NET framework 4.5 or higher.
+
+See http://chemistry.apache.org/dotnet/portcmis.html for more information.
+
+This release is a bug fix release.
+If you find a problem, please let us know: https://issues.apache.org/jira/browse/CMIS
+
+
+Change log 
+----------
+
+PortCMIS 0.1:
+
+Initial relase
+
+  
+Strong-Name signing
+-------------------
+
+The DLL included in this release is signed with a public/private key pair that is also 
+included in this package. This allows you to deploy it to the global assembly cache (GAC) 
+and to make changes to the PortCMIS source code without recompiling your application.
+However, since the private key is publicly available, this strong name cannot be trusted.
+If a trust relationship between your application and the PortCMIS DLL is important to you, 
+you have to rebuild the DLL from the source code and sign it yourself.
