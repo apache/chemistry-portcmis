@@ -60,6 +60,14 @@ namespace PortCMIS.Client
         public const string CacheTTLPathToId = "org.apache.chemistry.portcmis.cache.pathtoid.ttl";
         public const string CachePathOmit = "org.apache.chemistry.portcmis.cache.path.omit";
 
+        // OAuth 2
+        public const string OAuthBearerToken = "org.apache.chemistry.portcmis.binding.auth.http.oauth.bearer";
+        // proxy
+        public const string ProxyUser = "org.apache.chemistry.portcmis.binding.proxyuser";
+        public const string ProxyPassword = "org.apache.chemistry.portcmis.binding.proxypassword";
+        // CSRF 
+        public const string CsrfHeader = "org.apache.chemistry.portcmis.binding.csrfheader";
+
         //  workarounds 
         public const string IncludeObjectIdUrlParamOnCheckout = "org.apache.chemistry.portcmis.workaround.includeObjectIdOnCheckout";
         public const string IncludeObjectIdUrlParamOnMove = "org.apache.chemistry.portcmis.workaround.includeObjectIdOnMove";
