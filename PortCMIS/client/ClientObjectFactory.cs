@@ -31,13 +31,13 @@ namespace PortCMIS.Client.Impl
     {
         private ISession session;
 
-        public void Initialize(ISession session, IDictionary<string, string> parameters)
+        public virtual void Initialize(ISession session, IDictionary<string, string> parameters)
         {
             this.session = session;
         }
 
         // Acl and ACE
-        public IAcl ConvertAces(IList<IAce> aces)
+        public virtual IAcl ConvertAces(IList<IAce> aces)
         {
             if (aces == null) { return null; }
 
@@ -52,7 +52,7 @@ namespace PortCMIS.Client.Impl
             return result;
         }
 
-        public IAcl CreateAcl(IList<IAce> aces)
+        public virtual IAcl CreateAcl(IList<IAce> aces)
         {
             Acl acl = new Acl();
             acl.Aces = aces;
@@ -60,7 +60,7 @@ namespace PortCMIS.Client.Impl
             return acl;
         }
 
-        public IAce CreateAce(string principal, IList<string> permissions)
+        public virtual IAce CreateAce(string principal, IList<string> permissions)
         {
             Ace ace = new Ace();
             ace.IsDirect = true;
@@ -73,7 +73,7 @@ namespace PortCMIS.Client.Impl
         }
 
         // policies
-        public IList<string> ConvertPolicies(IList<IPolicy> policies)
+        public virtual IList<string> ConvertPolicies(IList<IPolicy> policies)
         {
             if (policies == null) { return null; }
 
@@ -90,7 +90,7 @@ namespace PortCMIS.Client.Impl
         }
 
         // renditions
-        public IRendition ConvertRendition(string objectId, IRenditionData rendition)
+        public virtual IRendition ConvertRendition(string objectId, IRenditionData rendition)
         {
             if (rendition == null)
             {
@@ -102,7 +102,7 @@ namespace PortCMIS.Client.Impl
         }
 
         // content stream
-        public IContentStream CreateContentStream(string filename, long length, string mimetype, Stream stream)
+        public virtual IContentStream CreateContentStream(string filename, long length, string mimetype, Stream stream)
         {
             ContentStream result = new ContentStream();
             result.FileName = filename;
@@ -114,7 +114,7 @@ namespace PortCMIS.Client.Impl
         }
 
         // types
-        public IObjectType ConvertTypeDefinition(ITypeDefinition typeDefinition)
+        public virtual IObjectType ConvertTypeDefinition(ITypeDefinition typeDefinition)
         {
             switch (typeDefinition.BaseTypeId)
             {
@@ -135,7 +135,7 @@ namespace PortCMIS.Client.Impl
             }
         }
 
-        public IObjectType GetTypeFromObjectData(IObjectData objectData)
+        public virtual IObjectType GetTypeFromObjectData(IObjectData objectData)
         {
             if (objectData == null || objectData.Properties == null)
             {
@@ -158,12 +158,12 @@ namespace PortCMIS.Client.Impl
         }
 
         // properties
-        public IProperty CreateProperty<T>(IPropertyDefinition type, IList<T> values)
+        public virtual IProperty CreateProperty<T>(IPropertyDefinition type, IList<T> values)
         {
             return new Property(type, (IList<object>)values);
         }
 
-        protected IProperty ConvertProperty(IObjectType objectType, IList<ISecondaryType> secondaryTypes, IPropertyData pd)
+        protected virtual IProperty ConvertProperty(IObjectType objectType, IList<ISecondaryType> secondaryTypes, IPropertyData pd)
         {
             IPropertyDefinition definition = objectType[pd.Id];
             if (definition == null)
@@ -194,7 +194,7 @@ namespace PortCMIS.Client.Impl
             return CreateProperty(definition, pd.Values);
         }
 
-        public IDictionary<string, IProperty> ConvertProperties(IObjectType objectType, IList<ISecondaryType> secondaryTypes, IProperties properties)
+        public virtual IDictionary<string, IProperty> ConvertProperties(IObjectType objectType, IList<ISecondaryType> secondaryTypes, IProperties properties)
         {
             if (objectType == null)
             {
@@ -223,7 +223,7 @@ namespace PortCMIS.Client.Impl
             return result;
         }
 
-        public IProperties ConvertProperties(IDictionary<string, object> properties, IObjectType type, IList<ISecondaryType> secondaryTypes, HashSet<Updatability> updatabilityFilter)
+        public virtual IProperties ConvertProperties(IDictionary<string, object> properties, IObjectType type, IList<ISecondaryType> secondaryTypes, HashSet<Updatability> updatabilityFilter)
         {
             // check input
             if (properties == null)
@@ -378,7 +378,7 @@ namespace PortCMIS.Client.Impl
             return result;
         }
 
-        public IList<IPropertyData> ConvertQueryProperties(IProperties properties)
+        public virtual IList<IPropertyData> ConvertQueryProperties(IProperties properties)
         {
             if ((properties == null) || (properties.PropertyList == null))
             {
@@ -389,7 +389,7 @@ namespace PortCMIS.Client.Impl
         }
 
         // objects
-        public ICmisObject ConvertObject(IObjectData objectData, IOperationContext context)
+        public virtual ICmisObject ConvertObject(IObjectData objectData, IOperationContext context)
         {
             if (objectData == null)
             {
@@ -415,7 +415,7 @@ namespace PortCMIS.Client.Impl
             }
         }
 
-        public IQueryResult ConvertQueryResult(IObjectData objectData)
+        public virtual IQueryResult ConvertQueryResult(IObjectData objectData)
         {
             if (objectData == null)
             {
@@ -425,7 +425,7 @@ namespace PortCMIS.Client.Impl
             return new QueryResult(session, objectData);
         }
 
-        public IChangeEvent ConvertChangeEvent(IObjectData objectData)
+        public virtual IChangeEvent ConvertChangeEvent(IObjectData objectData)
         {
             ChangeEvent result = new ChangeEvent();
 
@@ -470,7 +470,7 @@ namespace PortCMIS.Client.Impl
             return result;
         }
 
-        public IChangeEvents ConvertChangeEvents(string changeLogToken, IObjectList objectList)
+        public virtual IChangeEvents ConvertChangeEvents(string changeLogToken, IObjectList objectList)
         {
             if (objectList == null)
             {

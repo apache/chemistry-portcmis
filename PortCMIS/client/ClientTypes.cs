@@ -90,15 +90,15 @@ namespace PortCMIS.Client.Impl
             helper = new ObjectTypeHelper(session, this);
         }
 
-        public IObjectType GetBaseType() { return helper.GetBaseType(); }
+        public virtual IObjectType GetBaseType() { return helper.GetBaseType(); }
 
-        public IItemEnumerable<IObjectType> GetChildren() { return helper.GetChildren(); }
+        public virtual IItemEnumerable<IObjectType> GetChildren() { return helper.GetChildren(); }
 
-        public IList<ITree<IObjectType>> GetDescendants(int depth) { return helper.GetDescendants(depth); }
+        public virtual IList<ITree<IObjectType>> GetDescendants(int depth) { return helper.GetDescendants(depth); }
 
-        public IObjectType GetParentType() { return helper.GetParentType(); }
+        public virtual IObjectType GetParentType() { return helper.GetParentType(); }
 
-        public bool IsBaseType { get { return helper.IsBaseType; } }
+        public virtual bool IsBaseType { get { return helper.IsBaseType; } }
     }
 
     /// <summary>
@@ -114,15 +114,15 @@ namespace PortCMIS.Client.Impl
             helper = new ObjectTypeHelper(session, this);
         }
 
-        public IObjectType GetBaseType() { return helper.GetBaseType(); }
+        public virtual IObjectType GetBaseType() { return helper.GetBaseType(); }
 
-        public IItemEnumerable<IObjectType> GetChildren() { return helper.GetChildren(); }
+        public virtual IItemEnumerable<IObjectType> GetChildren() { return helper.GetChildren(); }
 
-        public IList<ITree<IObjectType>> GetDescendants(int depth) { return helper.GetDescendants(depth); }
+        public virtual IList<ITree<IObjectType>> GetDescendants(int depth) { return helper.GetDescendants(depth); }
 
-        public IObjectType GetParentType() { return helper.GetParentType(); }
+        public virtual IObjectType GetParentType() { return helper.GetParentType(); }
 
-        public bool IsBaseType { get { return helper.IsBaseType; } }
+        public virtual bool IsBaseType { get { return helper.IsBaseType; } }
     }
 
     /// <summary>
@@ -140,17 +140,17 @@ namespace PortCMIS.Client.Impl
             helper = new ObjectTypeHelper(session, this);
         }
 
-        public IObjectType GetBaseType() { return helper.GetBaseType(); }
+        public virtual IObjectType GetBaseType() { return helper.GetBaseType(); }
 
-        public IItemEnumerable<IObjectType> GetChildren() { return helper.GetChildren(); }
+        public virtual IItemEnumerable<IObjectType> GetChildren() { return helper.GetChildren(); }
 
-        public IList<ITree<IObjectType>> GetDescendants(int depth) { return helper.GetDescendants(depth); }
+        public virtual IList<ITree<IObjectType>> GetDescendants(int depth) { return helper.GetDescendants(depth); }
 
-        public IObjectType GetParentType() { return helper.GetParentType(); }
+        public virtual IObjectType GetParentType() { return helper.GetParentType(); }
 
-        public bool IsBaseType { get { return helper.IsBaseType; } }
+        public virtual bool IsBaseType { get { return helper.IsBaseType; } }
 
-        public IList<IObjectType> GetAllowedSourceTypes
+        public virtual IList<IObjectType> GetAllowedSourceTypes
         {
             get
             {
@@ -171,7 +171,7 @@ namespace PortCMIS.Client.Impl
             }
         }
 
-        public IList<IObjectType> GetAllowedTargetTypes
+        public virtual IList<IObjectType> GetAllowedTargetTypes
         {
             get
             {
@@ -206,15 +206,15 @@ namespace PortCMIS.Client.Impl
             helper = new ObjectTypeHelper(session, this);
         }
 
-        public IObjectType GetBaseType() { return helper.GetBaseType(); }
+        public virtual IObjectType GetBaseType() { return helper.GetBaseType(); }
 
-        public IItemEnumerable<IObjectType> GetChildren() { return helper.GetChildren(); }
+        public virtual IItemEnumerable<IObjectType> GetChildren() { return helper.GetChildren(); }
 
-        public IList<ITree<IObjectType>> GetDescendants(int depth) { return helper.GetDescendants(depth); }
+        public virtual IList<ITree<IObjectType>> GetDescendants(int depth) { return helper.GetDescendants(depth); }
 
-        public IObjectType GetParentType() { return helper.GetParentType(); }
+        public virtual IObjectType GetParentType() { return helper.GetParentType(); }
 
-        public bool IsBaseType { get { return helper.IsBaseType; } }
+        public virtual bool IsBaseType { get { return helper.IsBaseType; } }
     }
 
     /// <summary>
@@ -230,15 +230,15 @@ namespace PortCMIS.Client.Impl
             helper = new ObjectTypeHelper(session, this);
         }
 
-        public IObjectType GetBaseType() { return helper.GetBaseType(); }
+        public virtual IObjectType GetBaseType() { return helper.GetBaseType(); }
 
-        public IItemEnumerable<IObjectType> GetChildren() { return helper.GetChildren(); }
+        public virtual IItemEnumerable<IObjectType> GetChildren() { return helper.GetChildren(); }
 
-        public IList<ITree<IObjectType>> GetDescendants(int depth) { return helper.GetDescendants(depth); }
+        public virtual IList<ITree<IObjectType>> GetDescendants(int depth) { return helper.GetDescendants(depth); }
 
-        public IObjectType GetParentType() { return helper.GetParentType(); }
+        public virtual IObjectType GetParentType() { return helper.GetParentType(); }
 
-        public bool IsBaseType { get { return helper.IsBaseType; } }
+        public virtual bool IsBaseType { get { return helper.IsBaseType; } }
     }
 
     /// <summary>
@@ -254,14 +254,14 @@ namespace PortCMIS.Client.Impl
             helper = new ObjectTypeHelper(session, this);
         }
 
-        public IObjectType GetBaseType() { return helper.GetBaseType(); }
+        public virtual IObjectType GetBaseType() { return helper.GetBaseType(); }
 
-        public IItemEnumerable<IObjectType> GetChildren() { return helper.GetChildren(); }
+        public virtual IItemEnumerable<IObjectType> GetChildren() { return helper.GetChildren(); }
 
-        public IList<ITree<IObjectType>> GetDescendants(int depth) { return helper.GetDescendants(depth); }
+        public virtual IList<ITree<IObjectType>> GetDescendants(int depth) { return helper.GetDescendants(depth); }
 
-        public IObjectType GetParentType() { return helper.GetParentType(); }
+        public virtual IObjectType GetParentType() { return helper.GetParentType(); }
 
-        public bool IsBaseType { get { return helper.IsBaseType; } }
+        public virtual bool IsBaseType { get { return helper.IsBaseType; } }
     }
 }

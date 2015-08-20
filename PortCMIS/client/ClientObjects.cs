@@ -40,7 +40,7 @@ namespace PortCMIS.Client.Impl
         protected ICmisBinding Binding { get { return Session.Binding; } }
 
         private IObjectType objectType;
-        public IObjectType ObjectType
+        public virtual IObjectType ObjectType
         {
             get
             {
@@ -51,7 +51,7 @@ namespace PortCMIS.Client.Impl
             }
         }
 
-        public IList<ISecondaryType> SecondaryTypes
+        public virtual IList<ISecondaryType> SecondaryTypes
         {
             get
             {
@@ -62,7 +62,7 @@ namespace PortCMIS.Client.Impl
             }
         }
 
-        protected string ObjectId
+        protected virtual string ObjectId
         {
             get
             {
@@ -76,7 +76,7 @@ namespace PortCMIS.Client.Impl
             }
         }
 
-        protected IOperationContext CreationContext { get; private set; }
+        protected virtual IOperationContext CreationContext { get; private set; }
 
         private IDictionary<string, IProperty> properties;
         private IAllowableActions allowableActions;
@@ -106,6 +106,21 @@ namespace PortCMIS.Client.Impl
                 throw new ArgumentException("Object type must have property definitions!");
             }
 
+            if (objectData == null)
+            {
+                throw new ArgumentNullException("objectData");
+            }
+
+            if (objectData.Properties == null)
+            {
+                throw new ArgumentException("Object Data properties must be set!");
+            }
+
+            if (objectData.Id == null)
+            {
+                throw new ArgumentException("Object ID must be set!");
+            }
+
             this.Session = session;
             this.objectType = objectType;
             this.extensions = new Dictionary<ExtensionLevel, IList<ICmisExtensionElement>>();
@@ -132,8 +147,14 @@ namespace PortCMIS.Client.Impl
                                 {
                                     IObjectType type = Session.GetTypeDefinition(stid.ToString());
                                     if (type is ISecondaryType)
+                                    {
                                         secondaryTypes.Add(type as ISecondaryType);
+                                    }
                                 }
+                            }
+                            else
+                            {
+                                secondaryTypes = null;
                             }
                             break;
                         }
@@ -149,6 +170,10 @@ namespace PortCMIS.Client.Impl
                     allowableActions = objectData.AllowableActions;
                     extensions[ExtensionLevel.AllowableActions] = objectData.AllowableActions.Extensions;
                 }
+                else
+                {
+                    allowableActions = null;
+                }
 
                 // handle renditions
                 if (objectData.Renditions != null)
@@ -159,12 +184,20 @@ namespace PortCMIS.Client.Impl
                         renditions.Add(of.ConvertRendition(Id, rd));
                     }
                 }
+                else
+                {
+                    renditions = null;
+                }
 
                 // handle Acl
                 if (objectData.Acl != null)
                 {
                     acl = objectData.Acl;
                     extensions[ExtensionLevel.Acl] = objectData.Acl.Extensions;
+                }
+                else
+                {
+                    acl = null;
                 }
 
                 // handle policies
@@ -181,6 +214,10 @@ namespace PortCMIS.Client.Impl
                     }
                     extensions[ExtensionLevel.Policies] = objectData.PolicyIds.Extensions;
                 }
+                else
+                {
+                    policies = null;
+                }
 
                 // handle relationships
                 if (objectData.Relationships != null)
@@ -195,12 +232,16 @@ namespace PortCMIS.Client.Impl
                         }
                     }
                 }
+                else
+                {
+                    relationships = null;
+                }
 
                 extensions[ExtensionLevel.Object] = objectData.Extensions;
             }
         }
 
-        protected string GetPropertyQueryName(string propertyId)
+        protected virtual string GetPropertyQueryName(string propertyId)
         {
             lock (objectLock)
             {
@@ -216,7 +257,7 @@ namespace PortCMIS.Client.Impl
 
         // --- object ---
 
-        public void Delete(bool allVersions)
+        public virtual void Delete(bool allVersions)
         {
             lock (objectLock)
             {
@@ -224,7 +265,7 @@ namespace PortCMIS.Client.Impl
             }
         }
 
-        public ICmisObject UpdateProperties(IDictionary<string, object> properties)
+        public virtual ICmisObject UpdateProperties(IDictionary<string, object> properties)
         {
             IObjectId objectId = UpdateProperties(properties, true);
             if (objectId == null)
@@ -240,7 +281,7 @@ namespace PortCMIS.Client.Impl
             return this;
         }
 
-        public IObjectId UpdateProperties(IDictionary<String, object> properties, bool refresh)
+        public virtual IObjectId UpdateProperties(IDictionary<String, object> properties, bool refresh)
         {
             if (properties == null || properties.Count == 0)
             {
@@ -284,7 +325,7 @@ namespace PortCMIS.Client.Impl
             return Session.CreateObjectId(newObjectId);
         }
 
-        public ICmisObject Rename(string newName)
+        public virtual ICmisObject Rename(string newName)
         {
             if (newName == null || newName.Length == 0)
             {
@@ -297,7 +338,7 @@ namespace PortCMIS.Client.Impl
             return UpdateProperties(prop);
         }
 
-        public IObjectId Rename(string newName, bool refresh)
+        public virtual IObjectId Rename(string newName, bool refresh)
         {
             IDictionary<string, object> prop = new Dictionary<string, object>();
             prop[PropertyIds.Name] = newName;
@@ -307,9 +348,9 @@ namespace PortCMIS.Client.Impl
 
         // --- properties ---
 
-        public IObjectType BaseType { get { return Session.GetTypeDefinition(GetPropertyAsStringValue(PropertyIds.BaseTypeId)); } }
+        public virtual IObjectType BaseType { get { return Session.GetTypeDefinition(GetPropertyAsStringValue(PropertyIds.BaseTypeId)); } }
 
-        public BaseTypeId BaseTypeId
+        public virtual BaseTypeId BaseTypeId
         {
             get
             {
@@ -320,21 +361,21 @@ namespace PortCMIS.Client.Impl
             }
         }
 
-        public string Id { get { return GetPropertyAsStringValue(PropertyIds.ObjectId); } }
+        public virtual string Id { get { return GetPropertyAsStringValue(PropertyIds.ObjectId); } }
 
-        public string Name { get { return GetPropertyAsStringValue(PropertyIds.Name); } }
+        public virtual string Name { get { return GetPropertyAsStringValue(PropertyIds.Name); } }
 
-        public string CreatedBy { get { return GetPropertyAsStringValue(PropertyIds.CreatedBy); } }
+        public virtual string CreatedBy { get { return GetPropertyAsStringValue(PropertyIds.CreatedBy); } }
 
-        public DateTime? CreationDate { get { return GetPropertyAsDateTimeValue(PropertyIds.CreationDate); } }
+        public virtual DateTime? CreationDate { get { return GetPropertyAsDateTimeValue(PropertyIds.CreationDate); } }
 
-        public string LastModifiedBy { get { return GetPropertyAsStringValue(PropertyIds.LastModifiedBy); } }
+        public virtual string LastModifiedBy { get { return GetPropertyAsStringValue(PropertyIds.LastModifiedBy); } }
 
-        public DateTime? LastModificationDate { get { return GetPropertyAsDateTimeValue(PropertyIds.LastModificationDate); } }
+        public virtual DateTime? LastModificationDate { get { return GetPropertyAsDateTimeValue(PropertyIds.LastModificationDate); } }
 
-        public string ChangeToken { get { return GetPropertyAsStringValue(PropertyIds.ChangeToken); } }
+        public virtual string ChangeToken { get { return GetPropertyAsStringValue(PropertyIds.ChangeToken); } }
 
-        public IList<IProperty> Properties
+        public virtual IList<IProperty> Properties
         {
             get
             {
@@ -345,7 +386,7 @@ namespace PortCMIS.Client.Impl
             }
         }
 
-        public IProperty this[string propertyId]
+        public virtual IProperty this[string propertyId]
         {
             get
             {
@@ -366,7 +407,7 @@ namespace PortCMIS.Client.Impl
             }
         }
 
-        public object GetPropertyValue(string propertyId)
+        public virtual object GetPropertyValue(string propertyId)
         {
             IProperty property = this[propertyId];
             if (property == null) { return null; }
@@ -374,7 +415,7 @@ namespace PortCMIS.Client.Impl
             return property.Value;
         }
 
-        public string GetPropertyAsStringValue(string propertyId)
+        public virtual string GetPropertyAsStringValue(string propertyId)
         {
             object value = GetPropertyValue(propertyId);
             if (value == null)
@@ -385,7 +426,7 @@ namespace PortCMIS.Client.Impl
             return Convert.ToString(value);
         }
 
-        public long? GetPropertyAsLongValue(string propertyId)
+        public virtual long? GetPropertyAsLongValue(string propertyId)
         {
             object value = GetPropertyValue(propertyId);
             if (value == null)
@@ -401,7 +442,7 @@ namespace PortCMIS.Client.Impl
             return Convert.ToInt64(value);
         }
 
-        public bool? GetPropertyAsBoolValue(string propertyId)
+        public virtual bool? GetPropertyAsBoolValue(string propertyId)
         {
             object value = GetPropertyValue(propertyId);
             if (value == null)
@@ -417,7 +458,7 @@ namespace PortCMIS.Client.Impl
             return Convert.ToBoolean(value);
         }
 
-        public DateTime? GetPropertyAsDateTimeValue(string propertyId)
+        public virtual DateTime? GetPropertyAsDateTimeValue(string propertyId)
         {
             object value = GetPropertyValue(propertyId);
             if (value == null)
@@ -430,7 +471,7 @@ namespace PortCMIS.Client.Impl
 
         // --- allowable actions ---
 
-        public IAllowableActions AllowableActions
+        public virtual IAllowableActions AllowableActions
         {
             get
             {
@@ -443,7 +484,7 @@ namespace PortCMIS.Client.Impl
 
         // --- renditions ---
 
-        public IList<IRendition> Renditions
+        public virtual IList<IRendition> Renditions
         {
             get
             {
@@ -456,12 +497,12 @@ namespace PortCMIS.Client.Impl
 
         // --- Acl ---
 
-        public IAcl getAcl(bool onlyBasicPermissions)
+        public virtual IAcl GetAcl(bool onlyBasicPermissions)
         {
             return Binding.GetAclService().GetAcl(RepositoryId, ObjectId, onlyBasicPermissions, null);
         }
 
-        public IAcl ApplyAcl(IList<IAce> addAces, IList<IAce> removeAces, AclPropagation? aclPropagation)
+        public virtual IAcl ApplyAcl(IList<IAce> addAces, IList<IAce> removeAces, AclPropagation? aclPropagation)
         {
             IAcl result = Session.ApplyAcl(this, addAces, removeAces, aclPropagation);
 
@@ -470,17 +511,17 @@ namespace PortCMIS.Client.Impl
             return result;
         }
 
-        public IAcl AddAcl(IList<IAce> addAces, AclPropagation? aclPropagation)
+        public virtual IAcl AddAcl(IList<IAce> addAces, AclPropagation? aclPropagation)
         {
             return ApplyAcl(addAces, null, aclPropagation);
         }
 
-        public IAcl RemoveAcl(IList<IAce> removeAces, AclPropagation? aclPropagation)
+        public virtual IAcl RemoveAcl(IList<IAce> removeAces, AclPropagation? aclPropagation)
         {
             return ApplyAcl(null, removeAces, aclPropagation);
         }
 
-        public IAcl Acl
+        public virtual IAcl Acl
         {
             get
             {
@@ -493,7 +534,7 @@ namespace PortCMIS.Client.Impl
 
         // --- policies ---
 
-        public void ApplyPolicy(params IObjectId[] policyId)
+        public virtual void ApplyPolicy(params IObjectId[] policyId)
         {
             lock (objectLock)
             {
@@ -503,7 +544,7 @@ namespace PortCMIS.Client.Impl
             Refresh();
         }
 
-        public void RemovePolicy(params IObjectId[] policyId)
+        public virtual void RemovePolicy(params IObjectId[] policyId)
         {
             lock (objectLock)
             {
@@ -513,7 +554,7 @@ namespace PortCMIS.Client.Impl
             Refresh();
         }
 
-        public IList<IPolicy> Policies
+        public virtual IList<IPolicy> Policies
         {
             get
             {
@@ -526,7 +567,7 @@ namespace PortCMIS.Client.Impl
 
         // --- relationships ---
 
-        public IList<IRelationship> Relationships
+        public virtual IList<IRelationship> Relationships
         {
             get
             {
@@ -539,7 +580,7 @@ namespace PortCMIS.Client.Impl
 
         // --- extensions ---
 
-        public IList<ICmisExtensionElement> GetExtensions(ExtensionLevel level)
+        public virtual IList<ICmisExtensionElement> GetExtensions(ExtensionLevel level)
         {
             IList<ICmisExtensionElement> ext;
             if (extensions.TryGetValue(level, out ext))
@@ -552,9 +593,9 @@ namespace PortCMIS.Client.Impl
 
         // --- other ---
 
-        public DateTime RefreshTimestamp { get; private set; }
+        public virtual DateTime RefreshTimestamp { get; private set; }
 
-        public void Refresh()
+        public virtual void Refresh()
         {
             lock (objectLock)
             {
@@ -569,7 +610,7 @@ namespace PortCMIS.Client.Impl
             }
         }
 
-        public void RefreshIfOld(long durationInMillis)
+        public virtual void RefreshIfOld(long durationInMillis)
         {
             lock (objectLock)
             {
@@ -586,7 +627,7 @@ namespace PortCMIS.Client.Impl
     /// </summary>
     public abstract class AbstractFileableCmisObject : AbstractCmisObject, IFileableCmisObject
     {
-        public IFileableCmisObject Move(IObjectId sourceFolderId, IObjectId targetFolderId)
+        public virtual IFileableCmisObject Move(IObjectId sourceFolderId, IObjectId targetFolderId)
         {
             string objectId = ObjectId;
 
@@ -704,7 +745,7 @@ namespace PortCMIS.Client.Impl
             }
         }
 
-        public void AddToFolder(IObjectId folderId, bool allVersions)
+        public virtual void AddToFolder(IObjectId folderId, bool allVersions)
         {
             if (folderId == null || folderId.Id == null)
             {
@@ -714,7 +755,7 @@ namespace PortCMIS.Client.Impl
             Binding.GetMultiFilingService().AddObjectToFolder(RepositoryId, ObjectId, folderId.Id, allVersions, null);
         }
 
-        public void RemoveFromFolder(IObjectId folderId)
+        public virtual void RemoveFromFolder(IObjectId folderId)
         {
             Binding.GetMultiFilingService().RemoveObjectFromFolder(RepositoryId, ObjectId, folderId == null ? null : folderId.Id, null);
         }
@@ -732,35 +773,35 @@ namespace PortCMIS.Client.Impl
 
         // properties
 
-        public bool? IsImmutable { get { return GetPropertyAsBoolValue(PropertyIds.IsImmutable); } }
+        public virtual bool? IsImmutable { get { return GetPropertyAsBoolValue(PropertyIds.IsImmutable); } }
 
-        public bool? IsLatestVersion { get { return GetPropertyAsBoolValue(PropertyIds.IsLatestVersion); } }
+        public virtual bool? IsLatestVersion { get { return GetPropertyAsBoolValue(PropertyIds.IsLatestVersion); } }
 
-        public bool? IsMajorVersion { get { return GetPropertyAsBoolValue(PropertyIds.IsMajorVersion); } }
+        public virtual bool? IsMajorVersion { get { return GetPropertyAsBoolValue(PropertyIds.IsMajorVersion); } }
 
-        public bool? IsLatestMajorVersion { get { return GetPropertyAsBoolValue(PropertyIds.IsLatestMajorVersion); } }
+        public virtual bool? IsLatestMajorVersion { get { return GetPropertyAsBoolValue(PropertyIds.IsLatestMajorVersion); } }
 
-        public string VersionLabel { get { return GetPropertyAsStringValue(PropertyIds.VersionLabel); } }
+        public virtual string VersionLabel { get { return GetPropertyAsStringValue(PropertyIds.VersionLabel); } }
 
-        public string VersionSeriesId { get { return GetPropertyAsStringValue(PropertyIds.VersionSeriesId); } }
+        public virtual string VersionSeriesId { get { return GetPropertyAsStringValue(PropertyIds.VersionSeriesId); } }
 
-        public bool? IsVersionSeriesCheckedOut { get { return GetPropertyAsBoolValue(PropertyIds.IsVersionSeriesCheckedOut); } }
+        public virtual bool? IsVersionSeriesCheckedOut { get { return GetPropertyAsBoolValue(PropertyIds.IsVersionSeriesCheckedOut); } }
 
-        public string VersionSeriesCheckedOutBy { get { return GetPropertyAsStringValue(PropertyIds.VersionSeriesCheckedOutBy); } }
+        public virtual string VersionSeriesCheckedOutBy { get { return GetPropertyAsStringValue(PropertyIds.VersionSeriesCheckedOutBy); } }
 
-        public string VersionSeriesCheckedOutId { get { return GetPropertyAsStringValue(PropertyIds.VersionSeriesCheckedOutId); } }
+        public virtual string VersionSeriesCheckedOutId { get { return GetPropertyAsStringValue(PropertyIds.VersionSeriesCheckedOutId); } }
 
-        public string CheckinComment { get { return GetPropertyAsStringValue(PropertyIds.CheckinComment); } }
+        public virtual string CheckinComment { get { return GetPropertyAsStringValue(PropertyIds.CheckinComment); } }
 
-        public long? ContentStreamLength { get { return GetPropertyAsLongValue(PropertyIds.ContentStreamLength); } }
+        public virtual long? ContentStreamLength { get { return GetPropertyAsLongValue(PropertyIds.ContentStreamLength); } }
 
-        public string ContentStreamMimeType { get { return GetPropertyAsStringValue(PropertyIds.ContentStreamMimeType); } }
+        public virtual string ContentStreamMimeType { get { return GetPropertyAsStringValue(PropertyIds.ContentStreamMimeType); } }
 
-        public string ContentStreamFileName { get { return GetPropertyAsStringValue(PropertyIds.ContentStreamFileName); } }
+        public virtual string ContentStreamFileName { get { return GetPropertyAsStringValue(PropertyIds.ContentStreamFileName); } }
 
-        public string ContentStreamId { get { return GetPropertyAsStringValue(PropertyIds.ContentStreamId); } }
+        public virtual string ContentStreamId { get { return GetPropertyAsStringValue(PropertyIds.ContentStreamId); } }
 
-        public IList<IContentStreamHash> ContentStreamHashes
+        public virtual IList<IContentStreamHash> ContentStreamHashes
         {
             get
             {
@@ -782,7 +823,7 @@ namespace PortCMIS.Client.Impl
 
         // operations
 
-        public IDocument Copy(IObjectId targetFolderId, IDictionary<string, object> properties, VersioningState? versioningState,
+        public virtual IDocument Copy(IObjectId targetFolderId, IDictionary<string, object> properties, VersioningState? versioningState,
             IList<IPolicy> policies, IList<IAce> addAces, IList<IAce> removeAces, IOperationContext context)
         {
 
@@ -803,19 +844,19 @@ namespace PortCMIS.Client.Impl
             return newDoc;
         }
 
-        public IDocument Copy(IObjectId targetFolderId)
+        public virtual IDocument Copy(IObjectId targetFolderId)
         {
             return Copy(targetFolderId, null, null, null, null, null, Session.DefaultContext);
         }
 
-        public void DeleteAllVersions()
+        public virtual void DeleteAllVersions()
         {
             Delete(true);
         }
 
         // versioning
 
-        public IObjectId CheckOut()
+        public virtual IObjectId CheckOut()
         {
             string newObjectId = null;
 
@@ -836,12 +877,12 @@ namespace PortCMIS.Client.Impl
             return Session.CreateObjectId(newObjectId);
         }
 
-        public void CancelCheckOut()
+        public virtual void CancelCheckOut()
         {
             Binding.GetVersioningService().CancelCheckOut(RepositoryId, ObjectId, null);
         }
 
-        public IObjectId CheckIn(bool major, IDictionary<string, object> properties, IContentStream contentStream,
+        public virtual IObjectId CheckIn(bool major, IDictionary<string, object> properties, IContentStream contentStream,
             string checkinComment, IList<IPolicy> policies, IList<IAce> addAces, IList<IAce> removeAces)
         {
             String newObjectId = null;
@@ -870,12 +911,12 @@ namespace PortCMIS.Client.Impl
             return Session.CreateObjectId(newObjectId);
         }
 
-        public IList<IDocument> GetAllVersions()
+        public virtual IList<IDocument> GetAllVersions()
         {
             return GetAllVersions(Session.DefaultContext);
         }
 
-        public IList<IDocument> GetAllVersions(IOperationContext context)
+        public virtual IList<IDocument> GetAllVersions(IOperationContext context)
         {
             string objectId;
             string versionSeriesId;
@@ -910,29 +951,29 @@ namespace PortCMIS.Client.Impl
             return result;
         }
 
-        public IDocument GetObjectOfLatestVersion(bool major)
+        public virtual IDocument GetObjectOfLatestVersion(bool major)
         {
             return GetObjectOfLatestVersion(major, Session.DefaultContext);
         }
 
-        public IDocument GetObjectOfLatestVersion(bool major, IOperationContext context)
+        public virtual IDocument GetObjectOfLatestVersion(bool major, IOperationContext context)
         {
             return Session.GetLatestDocumentVersion(this, major, context);
         }
 
         // content operations
 
-        public IContentStream GetContentStream()
+        public virtual IContentStream GetContentStream()
         {
             return GetContentStream(null);
         }
 
-        public IContentStream GetContentStream(string streamId)
+        public virtual IContentStream GetContentStream(string streamId)
         {
             return GetContentStream(streamId, null, null);
         }
 
-        public IContentStream GetContentStream(string streamId, long? offset, long? length)
+        public virtual IContentStream GetContentStream(string streamId, long? offset, long? length)
         {
             IContentStream contentStream = Session.GetContentStream(this, streamId, offset, length);
             if (contentStream == null)
@@ -958,7 +999,7 @@ namespace PortCMIS.Client.Impl
             return contentStream;
         }
 
-        public IDocument SetContentStream(IContentStream contentStream, bool overwrite)
+        public virtual IDocument SetContentStream(IContentStream contentStream, bool overwrite)
         {
             IObjectId objectId = SetContentStream(contentStream, overwrite, true);
             if (objectId == null)
@@ -974,7 +1015,7 @@ namespace PortCMIS.Client.Impl
             return this;
         }
 
-        public IObjectId SetContentStream(IContentStream contentStream, bool overwrite, bool refresh)
+        public virtual IObjectId SetContentStream(IContentStream contentStream, bool overwrite, bool refresh)
         {
             string newObjectId = null;
 
@@ -1001,7 +1042,7 @@ namespace PortCMIS.Client.Impl
             return Session.CreateObjectId(newObjectId);
         }
 
-        public IDocument AppendContentStream(IContentStream contentStream, bool isLastChunk)
+        public virtual IDocument AppendContentStream(IContentStream contentStream, bool isLastChunk)
         {
             IObjectId objectId = AppendContentStream(contentStream, isLastChunk, true);
             if (objectId == null)
@@ -1017,7 +1058,7 @@ namespace PortCMIS.Client.Impl
             return this;
         }
 
-        public IObjectId AppendContentStream(IContentStream contentStream, bool isLastChunk, bool refresh)
+        public virtual IObjectId AppendContentStream(IContentStream contentStream, bool isLastChunk, bool refresh)
         {
             string newObjectId = null;
 
@@ -1044,7 +1085,7 @@ namespace PortCMIS.Client.Impl
             return Session.CreateObjectId(newObjectId);
         }
 
-        public IDocument DeleteContentStream()
+        public virtual IDocument DeleteContentStream()
         {
             IObjectId objectId = DeleteContentStream(true);
             if (objectId == null)
@@ -1060,7 +1101,7 @@ namespace PortCMIS.Client.Impl
             return this;
         }
 
-        public IObjectId DeleteContentStream(bool refresh)
+        public virtual IObjectId DeleteContentStream(bool refresh)
         {
             string newObjectId = null;
 
@@ -1087,7 +1128,7 @@ namespace PortCMIS.Client.Impl
             return Session.CreateObjectId(newObjectId);
         }
 
-        public IObjectId CheckIn(bool major, IDictionary<String, object> properties, IContentStream contentStream, string checkinComment)
+        public virtual IObjectId CheckIn(bool major, IDictionary<String, object> properties, IContentStream contentStream, string checkinComment)
         {
             return this.CheckIn(major, properties, contentStream, checkinComment, null, null, null);
         }
@@ -1103,7 +1144,7 @@ namespace PortCMIS.Client.Impl
             Initialize(session, objectType, objectData, context);
         }
 
-        public IDocument CreateDocument(IDictionary<string, object> properties, IContentStream contentStream, VersioningState? versioningState,
+        public virtual IDocument CreateDocument(IDictionary<string, object> properties, IContentStream contentStream, VersioningState? versioningState,
             IList<IPolicy> policies, IList<IAce> addAces, IList<IAce> removeAces, IOperationContext context)
         {
             IObjectId newId = Session.CreateDocument(properties, this, contentStream, versioningState, policies, addAces, removeAces);
@@ -1124,7 +1165,7 @@ namespace PortCMIS.Client.Impl
             return newDoc;
         }
 
-        public IDocument CreateDocumentFromSource(IObjectId source, IDictionary<string, object> properties, VersioningState? versioningState,
+        public virtual IDocument CreateDocumentFromSource(IObjectId source, IDictionary<string, object> properties, VersioningState? versioningState,
             IList<IPolicy> policies, IList<IAce> addAces, IList<IAce> removeAces, IOperationContext context)
         {
             IObjectId newId = Session.CreateDocumentFromSource(source, properties, this, versioningState, policies, addAces, removeAces);
@@ -1145,7 +1186,7 @@ namespace PortCMIS.Client.Impl
             return newDoc;
         }
 
-        public IFolder CreateFolder(IDictionary<string, object> properties, IList<IPolicy> policies, IList<IAce> addAces, IList<IAce> removeAces, IOperationContext context)
+        public virtual IFolder CreateFolder(IDictionary<string, object> properties, IList<IPolicy> policies, IList<IAce> addAces, IList<IAce> removeAces, IOperationContext context)
         {
             IObjectId newId = Session.CreateFolder(properties, this, policies, addAces, removeAces);
 
@@ -1165,7 +1206,7 @@ namespace PortCMIS.Client.Impl
             return newFolder;
         }
 
-        public IPolicy CreatePolicy(IDictionary<string, object> properties, IList<IPolicy> policies, IList<IAce> addAces, IList<IAce> removeAces, IOperationContext context)
+        public virtual IPolicy CreatePolicy(IDictionary<string, object> properties, IList<IPolicy> policies, IList<IAce> addAces, IList<IAce> removeAces, IOperationContext context)
         {
             IObjectId newId = Session.CreatePolicy(properties, this, policies, addAces, removeAces);
 
@@ -1185,7 +1226,7 @@ namespace PortCMIS.Client.Impl
             return newPolicy;
         }
 
-        public IItem CreateItem(IDictionary<string, object> properties, IList<IPolicy> policies, IList<IAce> addAces, IList<IAce> removeAces, IOperationContext context)
+        public virtual IItem CreateItem(IDictionary<string, object> properties, IList<IPolicy> policies, IList<IAce> addAces, IList<IAce> removeAces, IOperationContext context)
         {
             IObjectId newId = Session.CreateItem(properties, this, policies, addAces, removeAces);
 
@@ -1205,15 +1246,15 @@ namespace PortCMIS.Client.Impl
             return newItem;
         }
 
-        public IList<string> DeleteTree(bool allVersions, UnfileObject? unfile, bool continueOnFailure)
+        public virtual IList<string> DeleteTree(bool allVersions, UnfileObject? unfile, bool continueOnFailure)
         {
             IFailedToDeleteData failed = Binding.GetObjectService().DeleteTree(RepositoryId, ObjectId, allVersions, unfile, continueOnFailure, null);
             return failed.Ids;
         }
 
-        public string ParentId { get { return GetPropertyAsStringValue(PropertyIds.ParentId); } }
+        public virtual string ParentId { get { return GetPropertyAsStringValue(PropertyIds.ParentId); } }
 
-        public IList<IObjectType> AllowedChildObjectTypes
+        public virtual IList<IObjectType> AllowedChildObjectTypes
         {
             get
             {
@@ -1237,12 +1278,12 @@ namespace PortCMIS.Client.Impl
             }
         }
 
-        public IItemEnumerable<IDocument> GetCheckedOutDocs()
+        public virtual IItemEnumerable<IDocument> GetCheckedOutDocs()
         {
             return GetCheckedOutDocs(Session.DefaultContext);
         }
 
-        public IItemEnumerable<IDocument> GetCheckedOutDocs(IOperationContext context)
+        public virtual IItemEnumerable<IDocument> GetCheckedOutDocs(IOperationContext context)
         {
             string objectId = ObjectId;
             INavigationService service = Binding.GetNavigationService();
@@ -1278,12 +1319,12 @@ namespace PortCMIS.Client.Impl
             return new CollectionEnumerable<IDocument>(new PageFetcher<IDocument>(ctxt.MaxItemsPerPage, fetchPageDelegate));
         }
 
-        public IItemEnumerable<ICmisObject> GetChildren()
+        public virtual IItemEnumerable<ICmisObject> GetChildren()
         {
             return GetChildren(Session.DefaultContext);
         }
 
-        public IItemEnumerable<ICmisObject> GetChildren(IOperationContext context)
+        public virtual IItemEnumerable<ICmisObject> GetChildren(IOperationContext context)
         {
             string objectId = ObjectId;
             INavigationService service = Binding.GetNavigationService();
@@ -1315,12 +1356,12 @@ namespace PortCMIS.Client.Impl
             return new CollectionEnumerable<ICmisObject>(new PageFetcher<ICmisObject>(ctxt.MaxItemsPerPage, fetchPageDelegate));
         }
 
-        public IList<ITree<IFileableCmisObject>> GetDescendants(int depth)
+        public virtual IList<ITree<IFileableCmisObject>> GetDescendants(int depth)
         {
             return GetDescendants(depth, Session.DefaultContext);
         }
 
-        public IList<ITree<IFileableCmisObject>> GetDescendants(int depth, IOperationContext context)
+        public virtual IList<ITree<IFileableCmisObject>> GetDescendants(int depth, IOperationContext context)
         {
             IList<IObjectInFolderContainer> bindingContainerList = Binding.GetNavigationService().GetDescendants(RepositoryId, ObjectId, depth,
                 context.FilterString, context.IncludeAllowableActions, context.IncludeRelationships, context.RenditionFilterString,
@@ -1329,12 +1370,12 @@ namespace PortCMIS.Client.Impl
             return ConvertProviderContainer(bindingContainerList, context);
         }
 
-        public IList<ITree<IFileableCmisObject>> GetFolderTree(int depth)
+        public virtual IList<ITree<IFileableCmisObject>> GetFolderTree(int depth)
         {
             return GetFolderTree(depth, Session.DefaultContext);
         }
 
-        public IList<ITree<IFileableCmisObject>> GetFolderTree(int depth, IOperationContext context)
+        public virtual IList<ITree<IFileableCmisObject>> GetFolderTree(int depth, IOperationContext context)
         {
             IList<IObjectInFolderContainer> bindingContainerList = Binding.GetNavigationService().GetFolderTree(RepositoryId, ObjectId, depth,
                 context.FilterString, context.IncludeAllowableActions, context.IncludeRelationships, context.RenditionFilterString,
@@ -1381,9 +1422,9 @@ namespace PortCMIS.Client.Impl
             return result;
         }
 
-        public bool IsRootFolder { get { return ObjectId == Session.RepositoryInfo.RootFolderId; } }
+        public virtual bool IsRootFolder { get { return ObjectId == Session.RepositoryInfo.RootFolderId; } }
 
-        public IFolder FolderParent
+        public virtual IFolder FolderParent
         {
             get
             {
@@ -1402,7 +1443,7 @@ namespace PortCMIS.Client.Impl
             }
         }
 
-        public string Path
+        public virtual string Path
         {
             get
             {
@@ -1452,27 +1493,27 @@ namespace PortCMIS.Client.Impl
             }
         }
 
-        public IDocument CreateDocument(IDictionary<string, object> properties, IContentStream contentStream, VersioningState? versioningState)
+        public virtual IDocument CreateDocument(IDictionary<string, object> properties, IContentStream contentStream, VersioningState? versioningState)
         {
             return CreateDocument(properties, contentStream, versioningState, null, null, null, Session.DefaultContext);
         }
 
-        public IDocument CreateDocumentFromSource(IObjectId source, IDictionary<string, object> properties, VersioningState? versioningState)
+        public virtual IDocument CreateDocumentFromSource(IObjectId source, IDictionary<string, object> properties, VersioningState? versioningState)
         {
             return CreateDocumentFromSource(source, properties, versioningState, null, null, null, Session.DefaultContext);
         }
 
-        public IFolder CreateFolder(IDictionary<string, object> properties)
+        public virtual IFolder CreateFolder(IDictionary<string, object> properties)
         {
             return CreateFolder(properties, null, null, null, Session.DefaultContext);
         }
 
-        public IPolicy CreatePolicy(IDictionary<string, object> properties)
+        public virtual IPolicy CreatePolicy(IDictionary<string, object> properties)
         {
             return CreatePolicy(properties, null, null, null, Session.DefaultContext);
         }
 
-        public IItem CreateItem(IDictionary<string, object> properties)
+        public virtual IItem CreateItem(IDictionary<string, object> properties)
         {
             return CreateItem(properties, null, null, null, Session.DefaultContext);
         }
@@ -1488,7 +1529,7 @@ namespace PortCMIS.Client.Impl
             Initialize(session, objectType, objectData, context);
         }
 
-        public string PolicyText { get { return GetPropertyAsStringValue(PropertyIds.PolicyText); } }
+        public virtual string PolicyText { get { return GetPropertyAsStringValue(PropertyIds.PolicyText); } }
     }
 
     /// <summary>
@@ -1502,12 +1543,12 @@ namespace PortCMIS.Client.Impl
             Initialize(session, objectType, objectData, context);
         }
 
-        public ICmisObject GetSource()
+        public virtual ICmisObject GetSource()
         {
             return GetSource(Session.DefaultContext);
         }
 
-        public ICmisObject GetSource(IOperationContext context)
+        public virtual ICmisObject GetSource(IOperationContext context)
         {
             lock (objectLock)
             {
@@ -1521,7 +1562,7 @@ namespace PortCMIS.Client.Impl
             }
         }
 
-        public IObjectId SourceId
+        public virtual IObjectId SourceId
         {
             get
             {
@@ -1535,12 +1576,12 @@ namespace PortCMIS.Client.Impl
             }
         }
 
-        public ICmisObject GetTarget()
+        public virtual ICmisObject GetTarget()
         {
             return GetTarget(Session.DefaultContext);
         }
 
-        public ICmisObject GetTarget(IOperationContext context)
+        public virtual ICmisObject GetTarget(IOperationContext context)
         {
             lock (objectLock)
             {
@@ -1554,7 +1595,7 @@ namespace PortCMIS.Client.Impl
             }
         }
 
-        public IObjectId TargetId
+        public virtual IObjectId TargetId
         {
             get
             {
@@ -1683,12 +1724,12 @@ namespace PortCMIS.Client.Impl
             RenditionDocumentId = renditionDocumentId;
         }
 
-        public IDocument GetRenditionDocument()
+        public virtual IDocument GetRenditionDocument()
         {
             return GetRenditionDocument(session.DefaultContext);
         }
 
-        public IDocument GetRenditionDocument(IOperationContext context)
+        public virtual IDocument GetRenditionDocument(IOperationContext context)
         {
             if (RenditionDocumentId == null)
             {
@@ -1698,7 +1739,7 @@ namespace PortCMIS.Client.Impl
             return session.GetObject(session.CreateObjectId(RenditionDocumentId), context) as IDocument;
         }
 
-        public IContentStream GetContentStream()
+        public virtual IContentStream GetContentStream()
         {
             if (objectId == null || StreamId == null)
             {
@@ -1761,6 +1802,11 @@ namespace PortCMIS.Client.Impl
         private IDictionary<string, IPropertyData> propertiesByQueryName;
 
         public QueryResult(ISession session, IObjectData objectData)
+        {
+            Initialize(session, objectData);
+        }
+
+        protected void Initialize(ISession session, IObjectData objectData)
         {
             if (objectData != null)
             {
@@ -1908,23 +1954,23 @@ namespace PortCMIS.Client.Impl
 
     public class ChangeEvent : ChangeEventInfo, IChangeEvent
     {
-        public string ObjectId { get; set; }
+        public virtual string ObjectId { get; set; }
 
-        public IDictionary<string, IList<object>> Properties { get; set; }
+        public virtual IDictionary<string, IList<object>> Properties { get; set; }
 
-        public IList<string> PolicyIds { get; set; }
+        public virtual IList<string> PolicyIds { get; set; }
 
-        public IAcl Acl { get; set; }
+        public virtual IAcl Acl { get; set; }
     }
 
     public class ChangeEvents : IChangeEvents
     {
-        public string LatestChangeLogToken { get; set; }
+        public virtual string LatestChangeLogToken { get; set; }
 
-        public IList<IChangeEvent> ChangeEventList { get; set; }
+        public virtual IList<IChangeEvent> ChangeEventList { get; set; }
 
-        public bool? HasMoreItems { get; set; }
+        public virtual bool? HasMoreItems { get; set; }
 
-        public BigInteger? TotalNumItems { get; set; }
+        public virtual BigInteger? TotalNumItems { get; set; }
     }
 }
