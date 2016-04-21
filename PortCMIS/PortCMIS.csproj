@@ -43,6 +43,8 @@
     <AssemblyOriginatorKeyFile>portcmis.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="binding\atompub\AtomPubBinding.cs" />
+    <Compile Include="binding\atompub\AtomPubUtils.cs" />
     <Compile Include="binding\atompub\XmlConstants.cs" />
     <Compile Include="binding\atompub\XmlConverter.cs" />
     <Compile Include="binding\atompub\XmlUtils.cs" />

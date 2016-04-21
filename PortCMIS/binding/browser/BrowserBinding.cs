@@ -41,6 +41,9 @@ using System.Threading.Tasks;
 
 namespace PortCMIS.Binding.Browser
 {
+    /// <summary>
+    /// Extended Repository Info for the Browser Binding.
+    /// </summary>
     public class RepositoryInfoBrowserBinding : RepositoryInfo
     {
         public string RepositoryUrl { get; set; }
@@ -70,7 +73,7 @@ namespace PortCMIS.Binding.Browser
             this.session = session as BindingSession;
             if (this.session == null)
             {
-                throw new ArgumentException("Inavlid binding session!");
+                throw new ArgumentException("Invalid binding session!");
             }
 
             repositoryService = new RepositoryService(this.session);
@@ -272,7 +275,7 @@ namespace PortCMIS.Binding.Browser
             if (Stream.Stream != null)
             {
                 StreamContent streamContent = new StreamContent(Stream.Stream);
-                streamContent.Headers.ContentType = new MediaTypeHeaderValue(Stream.MimeType ?? "applictaion/octet-stream");
+                streamContent.Headers.ContentType = new MediaTypeHeaderValue(Stream.MimeType ?? "application/octet-stream");
 
                 content.Add(streamContent, "content", Stream.FileName ?? "content");
             }
@@ -975,9 +978,9 @@ namespace PortCMIS.Binding.Browser
             return repInfos;
         }
 
-        /**
-        * Retrieves a type definition.
-         */
+        /// <summary>
+        /// Retrieves a type definition.
+        /// </summary>
         public ITypeDefinition GetTypeDefinitionInternal(string repositoryId, string typeId)
         {
             // build URL
@@ -1149,7 +1152,7 @@ namespace PortCMIS.Binding.Browser
         {
             // build URL
             UrlBuilder url = GetObjectUrl(repositoryId, folderId, BindingConstants.SelectorChildren);
-            url.AddParameter(BindingConstants.Paramfilter, filter);
+            url.AddParameter(BindingConstants.ParamFilter, filter);
             url.AddParameter(BindingConstants.ParamOrderBy, orderBy);
             url.AddParameter(BindingConstants.ParamAllowableActions, includeAllowableActions);
             url.AddParameter(BindingConstants.ParamRelationships, includeRelationships);
@@ -1176,7 +1179,7 @@ namespace PortCMIS.Binding.Browser
             // build URL
             UrlBuilder url = GetObjectUrl(repositoryId, folderId, BindingConstants.SelectorDecendants);
             url.AddParameter(BindingConstants.ParamDepth, depth);
-            url.AddParameter(BindingConstants.Paramfilter, filter);
+            url.AddParameter(BindingConstants.ParamFilter, filter);
             url.AddParameter(BindingConstants.ParamAllowableActions, includeAllowableActions);
             url.AddParameter(BindingConstants.ParamRelationships, includeRelationships);
             url.AddParameter(BindingConstants.ParamRenditionfilter, renditionFilter);
@@ -1200,7 +1203,7 @@ namespace PortCMIS.Binding.Browser
             // build URL
             UrlBuilder url = GetObjectUrl(repositoryId, folderId, BindingConstants.SelectorFolderTree);
             url.AddParameter(BindingConstants.ParamDepth, depth);
-            url.AddParameter(BindingConstants.Paramfilter, filter);
+            url.AddParameter(BindingConstants.ParamFilter, filter);
             url.AddParameter(BindingConstants.ParamAllowableActions, includeAllowableActions);
             url.AddParameter(BindingConstants.ParamRelationships, includeRelationships);
             url.AddParameter(BindingConstants.ParamRenditionfilter, renditionFilter);
@@ -1223,7 +1226,7 @@ namespace PortCMIS.Binding.Browser
         {
             // build URL
             UrlBuilder url = GetObjectUrl(repositoryId, objectId, BindingConstants.SelectorParents);
-            url.AddParameter(BindingConstants.Paramfilter, filter);
+            url.AddParameter(BindingConstants.ParamFilter, filter);
             url.AddParameter(BindingConstants.ParamAllowableActions, includeAllowableActions);
             url.AddParameter(BindingConstants.ParamRelationships, includeRelationships);
             url.AddParameter(BindingConstants.ParamRenditionfilter, renditionFilter);
@@ -1244,7 +1247,7 @@ namespace PortCMIS.Binding.Browser
         {
             // build URL
             UrlBuilder url = GetObjectUrl(repositoryId, folderId, BindingConstants.SelectorParent);
-            url.AddParameter(BindingConstants.Paramfilter, filter);
+            url.AddParameter(BindingConstants.ParamFilter, filter);
             url.AddParameter(BindingConstants.ParamSuccinct, SuccinctParameter);
             url.AddParameter(BindingConstants.ParamDateTimeFormat, DateTimeFormatParameter);
 
@@ -1264,7 +1267,7 @@ namespace PortCMIS.Binding.Browser
             // build URL
             UrlBuilder url = (folderId != null ? GetObjectUrl(repositoryId, folderId, BindingConstants.SelectorCheckedout)
                     : GetRepositoryUrl(repositoryId, BindingConstants.SelectorCheckedout));
-            url.AddParameter(BindingConstants.Paramfilter, filter);
+            url.AddParameter(BindingConstants.ParamFilter, filter);
             url.AddParameter(BindingConstants.ParamOrderBy, orderBy);
             url.AddParameter(BindingConstants.ParamAllowableActions, includeAllowableActions);
             url.AddParameter(BindingConstants.ParamRelationships, includeRelationships);
@@ -1472,7 +1475,7 @@ namespace PortCMIS.Binding.Browser
         {
             // build URL
             UrlBuilder url = GetObjectUrl(repositoryId, objectId, BindingConstants.SelectorProperties);
-            url.AddParameter(BindingConstants.Paramfilter, filter);
+            url.AddParameter(BindingConstants.ParamFilter, filter);
             url.AddParameter(BindingConstants.ParamSuccinct, SuccinctParameter);
             url.AddParameter(BindingConstants.ParamDateTimeFormat, DateTimeFormatParameter);
 
@@ -1513,7 +1516,7 @@ namespace PortCMIS.Binding.Browser
         {
             // build URL
             UrlBuilder url = GetObjectUrl(repositoryId, objectId, BindingConstants.SelectorObject);
-            url.AddParameter(BindingConstants.Paramfilter, filter);
+            url.AddParameter(BindingConstants.ParamFilter, filter);
             url.AddParameter(BindingConstants.ParamAllowableActions, includeAllowableActions);
             url.AddParameter(BindingConstants.ParamRelationships, includeRelationships);
             url.AddParameter(BindingConstants.ParamRenditionfilter, renditionFilter);
@@ -1537,7 +1540,7 @@ namespace PortCMIS.Binding.Browser
         {
             // build URL
             UrlBuilder url = GetPathUrl(repositoryId, path, BindingConstants.SelectorObject);
-            url.AddParameter(BindingConstants.Paramfilter, filter);
+            url.AddParameter(BindingConstants.ParamFilter, filter);
             url.AddParameter(BindingConstants.ParamAllowableActions, includeAllowableActions);
             url.AddParameter(BindingConstants.ParamRelationships, includeRelationships);
             url.AddParameter(BindingConstants.ParamRenditionfilter, renditionFilter);
@@ -1921,7 +1924,7 @@ namespace PortCMIS.Binding.Browser
         {
             // build URL
             UrlBuilder url = GetObjectUrl(repositoryId, objectId, BindingConstants.SelectorObject);
-            url.AddParameter(BindingConstants.Paramfilter, filter);
+            url.AddParameter(BindingConstants.ParamFilter, filter);
             url.AddParameter(BindingConstants.ParamAllowableActions, includeAllowableActions);
             url.AddParameter(BindingConstants.ParamRelationships, includeRelationships);
             url.AddParameter(BindingConstants.ParamRenditionfilter, renditionFilter);
@@ -1946,7 +1949,7 @@ namespace PortCMIS.Binding.Browser
         {
             // build URL
             UrlBuilder url = GetObjectUrl(repositoryId, objectId, BindingConstants.SelectorProperties);
-            url.AddParameter(BindingConstants.Paramfilter, filter);
+            url.AddParameter(BindingConstants.ParamFilter, filter);
             url.AddParameter(BindingConstants.ParamReturnVersion, (!major ? ReturnVersion.Latest : ReturnVersion.LatestMajor));
             url.AddParameter(BindingConstants.ParamSuccinct, SuccinctParameter);
             url.AddParameter(BindingConstants.ParamDateTimeFormat, DateTimeFormatParameter);
@@ -1971,7 +1974,7 @@ namespace PortCMIS.Binding.Browser
         {
             // build URL
             UrlBuilder url = GetObjectUrl(repositoryId, objectId, BindingConstants.SelectorVersions);
-            url.AddParameter(BindingConstants.Paramfilter, filter);
+            url.AddParameter(BindingConstants.ParamFilter, filter);
             url.AddParameter(BindingConstants.ParamAllowableActions, includeAllowableActions);
             url.AddParameter(BindingConstants.ParamSuccinct, SuccinctParameter);
             url.AddParameter(BindingConstants.ParamDateTimeFormat, DateTimeFormatParameter);
@@ -2029,7 +2032,7 @@ namespace PortCMIS.Binding.Browser
             UrlBuilder url = GetRepositoryUrl(repositoryId, BindingConstants.SelectorContentChanges);
             url.AddParameter(BindingConstants.ParamChangeLogToken, changeLogToken);
             url.AddParameter(BindingConstants.ParamProperties, includeProperties);
-            url.AddParameter(BindingConstants.Paramfilter, filter);
+            url.AddParameter(BindingConstants.ParamFilter, filter);
             url.AddParameter(BindingConstants.ParamPolicyIds, includePolicyIds);
             url.AddParameter(BindingConstants.ParamAcl, includeAcl);
             url.AddParameter(BindingConstants.ParamMaxItems, maxItems);
@@ -2071,7 +2074,7 @@ namespace PortCMIS.Binding.Browser
             url.AddParameter(BindingConstants.ParamSubRelationshipTypes, includeSubRelationshipTypes);
             url.AddParameter(BindingConstants.ParamRelationshipDirection, relationshipDirection);
             url.AddParameter(BindingConstants.ParamTypeId, typeId);
-            url.AddParameter(BindingConstants.Paramfilter, filter);
+            url.AddParameter(BindingConstants.ParamFilter, filter);
             url.AddParameter(BindingConstants.ParamAllowableActions, includeAllowableActions);
             url.AddParameter(BindingConstants.ParamMaxItems, maxItems);
             url.AddParameter(BindingConstants.ParamSkipCount, skipCount);
@@ -2160,7 +2163,7 @@ namespace PortCMIS.Binding.Browser
         {
             // build URL
             UrlBuilder url = GetObjectUrl(repositoryId, objectId, BindingConstants.SelectorPolicies);
-            url.AddParameter(BindingConstants.Paramfilter, filter);
+            url.AddParameter(BindingConstants.ParamFilter, filter);
             url.AddParameter(BindingConstants.ParamSuccinct, SuccinctParameter);
             url.AddParameter(BindingConstants.ParamDateTimeFormat, DateTimeFormatParameter);
 

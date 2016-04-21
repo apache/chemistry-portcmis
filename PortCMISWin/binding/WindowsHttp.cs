@@ -61,7 +61,7 @@ namespace PortCMIS.Binding.Http
             return Invoke(url, HttpMethod.Put, content, session, null, null, headers);
         }
 
-        public IResponse InvokeDelete(UrlBuilder url, IBindingSession session)
+        public IResponse InvokeDELETE(UrlBuilder url, IBindingSession session)
         {
             return Invoke(url, HttpMethod.Delete, null, session, null, null, null);
         }
@@ -97,7 +97,7 @@ namespace PortCMIS.Binding.Http
                             httpClientFilter.AutomaticDecompression = true;
                         }
 
-                        // authentictaion
+                        // authentication
                         httpClientFilter.AllowUI = false;
 
                         // authentication provider

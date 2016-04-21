@@ -37,6 +37,7 @@ namespace PortCMISTests.Framework
         {
             {SessionParameter.BindingType , BindingType.Browser},
             {SessionParameter.BrowserUrl , "http://localhost:8080/inmemory/browser"},
+            {SessionParameter.AtomPubUrl , "http://localhost:8080/inmemory/atom11"},
             {SessionParameter.RepositoryId , "A1"},
             {SessionParameter.User , "user"},
             {SessionParameter.Password , "password"}

@@ -24,8 +24,13 @@ namespace PortCMIS
     /// </summary>
     public static class BasicPermissions
     {
+        /// <summary>CMIS read permission</summary>
         public const string Read = "cmis:read";
+
+        /// <summary>CMIS write permission</summary>
         public const string Write = "cmis:write";
+
+        /// <summary>CMIS all permission</summary>
         public const string All = "cmis:all";
     }
 }

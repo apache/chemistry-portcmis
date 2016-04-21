@@ -203,7 +203,7 @@ namespace PortCMIS.Client.Impl
 
             if (objectType.PropertyDefinitions == null)
             {
-                throw new ArgumentException("Object type has no property defintions!");
+                throw new ArgumentException("Object type has no property definitions!");
             }
 
             if (properties == null || properties.PropertyList == null)
@@ -394,6 +394,16 @@ namespace PortCMIS.Client.Impl
             if (objectData == null)
             {
                 throw new ArgumentNullException("objectData");
+            }
+
+            if (objectData.Id == null)
+            {
+                throw new ArgumentException("Object ID property not set!");
+            }
+
+            if (objectData.BaseTypeId == null)
+            {
+                throw new ArgumentException("Base type ID property not set!");
             }
 
             IObjectType type = GetTypeFromObjectData(objectData);

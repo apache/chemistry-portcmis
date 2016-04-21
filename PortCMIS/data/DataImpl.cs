@@ -54,22 +54,79 @@ namespace PortCMIS.Data
             Extensions = source.Extensions;
         }
 
+        /// <inheritdoc/>
         public string Id { get; set; }
+
+        /// <inheritdoc/>
         public string Name { get; set; }
+
+        /// <inheritdoc/>
         public string Description { get; set; }
+
+        /// <inheritdoc/>
         public string VendorName { get; set; }
+
+        /// <inheritdoc/>
         public string ProductName { get; set; }
+
+        /// <inheritdoc/>
         public string ProductVersion { get; set; }
+
+        /// <inheritdoc/>
         public string RootFolderId { get; set; }
+
+        /// <inheritdoc/>
         public IRepositoryCapabilities Capabilities { get; set; }
+
+        /// <inheritdoc/>
         public IAclCapabilities AclCapabilities { get; set; }
+
+        /// <inheritdoc/>
         public string LatestChangeLogToken { get; set; }
+
+        /// <inheritdoc/>
         public string CmisVersionSupported { get; set; }
+
+        /// <inheritdoc/>
+        public CmisVersion CmisVersion
+        {
+            get
+            {
+                if (CmisVersionSupported == null)
+                {
+                    return CmisVersion.Cmis_1_0;
+                }
+                else
+                {
+                    CmisVersion? cmisVersion = CmisVersionSupported.GetCmisEnum<CmisVersion?>();
+                    if (cmisVersion == null)
+                    {
+                        return CmisVersion.Cmis_1_0;
+                    }
+                    else
+                    {
+                        return (CmisVersion)cmisVersion;
+                    }
+                }
+            }
+        }
+
+        /// <inheritdoc/>
         public string ThinClientUri { get; set; }
+
+        /// <inheritdoc/>
         public bool? ChangesIncomplete { get; set; }
+
+        /// <inheritdoc/>
         public IList<BaseTypeId?> ChangesOnType { get; set; }
+
+        /// <inheritdoc/>
         public string PrincipalIdAnonymous { get; set; }
+
+        /// <inheritdoc/>
         public string PrincipalIdAnyone { get; set; }
+
+        /// <inheritdoc/>
         public IList<IExtensionFeature> ExtensionFeatures { get; set; }
 
         public override string ToString()
@@ -78,76 +135,159 @@ namespace PortCMIS.Data
         }
     }
 
-    public class RepositoryCapabilities : ExtensionsData, IRepositoryCapabilities
+    internal class RepositoryCapabilities : ExtensionsData, IRepositoryCapabilities
     {
+        /// <inheritdoc/>
         public CapabilityContentStreamUpdates? ContentStreamUpdatesCapability { get; set; }
+
+        /// <inheritdoc/>
         public CapabilityChanges? ChangesCapability { get; set; }
+
+        /// <inheritdoc/>
         public CapabilityRenditions? RenditionsCapability { get; set; }
+
+        /// <inheritdoc/>
         public bool? IsGetDescendantsSupported { get; set; }
+
+        /// <inheritdoc/>
         public bool? IsGetFolderTreeSupported { get; set; }
+
+        /// <inheritdoc/>
         public CapabilityOrderBy? OrderByCapability { get; set; }
+
+        /// <inheritdoc/>
         public bool? IsMultifilingSupported { get; set; }
+
+        /// <inheritdoc/>
         public bool? IsUnfilingSupported { get; set; }
+
+        /// <inheritdoc/>
         public bool? IsVersionSpecificFilingSupported { get; set; }
+
+        /// <inheritdoc/>
         public bool? IsPwcSearchableSupported { get; set; }
+
+        /// <inheritdoc/>
         public bool? IsPwcUpdatableSupported { get; set; }
+
+        /// <inheritdoc/>
         public bool? IsAllVersionsSearchableSupported { get; set; }
+
+        /// <inheritdoc/>
         public CapabilityQuery? QueryCapability { get; set; }
+
+        /// <inheritdoc/>
         public CapabilityJoin? JoinCapability { get; set; }
+
+        /// <inheritdoc/>
         public CapabilityAcl? AclCapability { get; set; }
+
+        /// <inheritdoc/>
         public ICreatablePropertyTypes CreatablePropertyTypes { get; set; }
+
+        /// <inheritdoc/>
         public INewTypeSettableAttributes NewTypeSettableAttributes { get; set; }
     }
 
-    public class CreatablePropertyTypes : ExtensionsData, ICreatablePropertyTypes
+    internal class CreatablePropertyTypes : ExtensionsData, ICreatablePropertyTypes
     {
+        /// <inheritdoc/>
         public ISet<PropertyType> CanCreate { get; set; }
     }
 
-    public class NewTypeSettableAttributes : ExtensionsData, INewTypeSettableAttributes
+    internal class NewTypeSettableAttributes : ExtensionsData, INewTypeSettableAttributes
     {
+        /// <inheritdoc/>
         public bool? CanSetId { get; set; }
+
+        /// <inheritdoc/>
         public bool? CanSetLocalName { get; set; }
+
+        /// <inheritdoc/>
         public bool? CanSetLocalNamespace { get; set; }
+
+        /// <inheritdoc/>
         public bool? CanSetDisplayName { get; set; }
+
+        /// <inheritdoc/>
         public bool? CanSetQueryName { get; set; }
+
+        /// <inheritdoc/>
         public bool? CanSetDescription { get; set; }
+
+        /// <inheritdoc/>
         public bool? CanSetCreatable { get; set; }
+
+        /// <inheritdoc/>
         public bool? CanSetFileable { get; set; }
+
+        /// <inheritdoc/>
         public bool? CanSetQueryable { get; set; }
+
+        /// <inheritdoc/>
         public bool? CanSetFulltextIndexed { get; set; }
+
+        /// <inheritdoc/>
         public bool? CanSetIncludedInSupertypeQuery { get; set; }
+
+        /// <inheritdoc/>
         public bool? CanSetControllablePolicy { get; set; }
+
+        /// <inheritdoc/>
         public bool? CanSetControllableAcl { get; set; }
     }
 
-    public class AclCapabilities : ExtensionsData, IAclCapabilities
+    internal class AclCapabilities : ExtensionsData, IAclCapabilities
     {
+        /// <inheritdoc/>
         public SupportedPermissions? SupportedPermissions { get; set; }
+
+        /// <inheritdoc/>
         public AclPropagation? AclPropagation { get; set; }
+
+        /// <inheritdoc/>
         public IList<IPermissionDefinition> Permissions { get; set; }
+
+        /// <inheritdoc/>
         public IDictionary<string, IPermissionMapping> PermissionMapping { get; set; }
     }
 
-    public class PermissionDefinition : ExtensionsData, IPermissionDefinition
+    internal class PermissionDefinition : ExtensionsData, IPermissionDefinition
     {
+        /// <inheritdoc/>
         public string Id { get; set; }
+
+        /// <inheritdoc/>
         public string Description { get; set; }
     }
 
-    public class PermissionMapping : ExtensionsData, IPermissionMapping
+    internal class PermissionMapping : ExtensionsData, IPermissionMapping
     {
+        /// <inheritdoc/>
         public string Key { get; set; }
+
+        /// <inheritdoc/>
         public IList<string> Permissions { get; set; }
     }
 
     public class ExtensionFeature : ExtensionsData, IExtensionFeature
     {
+        /// <inheritdoc/>
         public string Id { get; set; }
+
+        /// <inheritdoc/>
         public string Url { get; set; }
+
+        /// <inheritdoc/>
         public string CommonName { get; set; }
+
+        /// <inheritdoc/>
         public string VersionLabel { get; set; }
+
+        /// <inheritdoc/>
         public string Description { get; set; }
+
+        /// <inheritdoc/>
         public IDictionary<string, string> FeatureData { get; set; }
     }
 
@@ -284,86 +424,157 @@ namespace PortCMIS.Data
 
     public abstract class PropertyDefinition : ExtensionsData, IPropertyDefinition
     {
+        /// <inheritdoc/>
         public string Id { get; set; }
+
+        /// <inheritdoc/>
         public string LocalName { get; set; }
+
+        /// <inheritdoc/>
         public string LocalNamespace { get; set; }
+
+        /// <inheritdoc/>
         public string DisplayName { get; set; }
+
+        /// <inheritdoc/>
         public string QueryName { get; set; }
+
+        /// <inheritdoc/>
         public string Description { get; set; }
+
+        /// <inheritdoc/>
         public PropertyType PropertyType { get; set; }
+
+        /// <inheritdoc/>
         public Cardinality? Cardinality { get; set; }
+
+        /// <inheritdoc/>
         public Updatability? Updatability { get; set; }
+
+        /// <inheritdoc/>
         public bool? IsInherited { get; set; }
+
+        /// <inheritdoc/>
         public bool? IsRequired { get; set; }
+
+        /// <inheritdoc/>
         public bool? IsQueryable { get; set; }
+
+        /// <inheritdoc/>
         public bool? IsOrderable { get; set; }
+
+        /// <inheritdoc/>
         public bool? IsOpenChoice { get; set; }
     }
 
     public class Choice<T> : IChoice<T>
     {
+        /// <inheritdoc/>
         public string DisplayName { get; set; }
+
+        /// <inheritdoc/>
         public IList<T> Value { get; set; }
+
+        /// <inheritdoc/>
         public IList<IChoice<T>> Choices { get; set; }
     }
 
     public class PropertyBooleanDefinition : PropertyDefinition, IPropertyBooleanDefinition
     {
+        /// <inheritdoc/>
         public IList<bool?> DefaultValue { get; set; }
+
+        /// <inheritdoc/>
         public IList<IChoice<bool?>> Choices { get; set; }
     }
 
     public class PropertyDateTimeDefinition : PropertyDefinition, IPropertyDateTimeDefinition
     {
+        /// <inheritdoc/>
         public IList<DateTime?> DefaultValue { get; set; }
+
+        /// <inheritdoc/>
         public IList<IChoice<DateTime?>> Choices { get; set; }
+
+        /// <inheritdoc/>
         public DateTimeResolution? DateTimeResolution { get; set; }
     }
 
     public class PropertyDecimalDefinition : PropertyDefinition, IPropertyDecimalDefinition
     {
+        /// <inheritdoc/>
         public IList<decimal?> DefaultValue { get; set; }
+
+        /// <inheritdoc/>
         public IList<IChoice<decimal?>> Choices { get; set; }
+
+        /// <inheritdoc/>
         public decimal? MinValue { get; set; }
+
+        /// <inheritdoc/>
         public decimal? MaxValue { get; set; }
+
+        /// <inheritdoc/>
         public DecimalPrecision? Precision { get; set; }
     }
 
     public class PropertyHtmlDefinition : PropertyDefinition, IPropertyHtmlDefinition
     {
+        /// <inheritdoc/>
         public IList<string> DefaultValue { get; set; }
+
+        /// <inheritdoc/>
         public IList<IChoice<string>> Choices { get; set; }
     }
 
     public class PropertyIdDefinition : PropertyDefinition, IPropertyIdDefinition
     {
+        /// <inheritdoc/>
         public IList<string> DefaultValue { get; set; }
+
+        /// <inheritdoc/>
         public IList<IChoice<string>> Choices { get; set; }
     }
 
     public class PropertyIntegerDefinition : PropertyDefinition, IPropertyIntegerDefinition
     {
+        /// <inheritdoc/>
         public IList<BigInteger?> DefaultValue { get; set; }
+
+        /// <inheritdoc/>
         public IList<IChoice<BigInteger?>> Choices { get; set; }
+
+        /// <inheritdoc/>
         public BigInteger? MinValue { get; set; }
+
+        /// <inheritdoc/>
         public BigInteger? MaxValue { get; set; }
     }
 
     public class PropertyStringDefinition : PropertyDefinition, IPropertyStringDefinition
     {
+        /// <inheritdoc/>
         public IList<string> DefaultValue { get; set; }
+
+        /// <inheritdoc/>
         public IList<IChoice<string>> Choices { get; set; }
+
+        /// <inheritdoc/>
         public BigInteger? MaxLength { get; set; }
     }
 
     public class PropertyUriDefinition : PropertyDefinition, IPropertyUriDefinition
     {
+        /// <inheritdoc/>
         public IList<string> DefaultValue { get; set; }
+
+        /// <inheritdoc/>
         public IList<IChoice<string>> Choices { get; set; }
     }
 
     public class ObjectData : ExtensionsData, IObjectData
     {
+        /// <inheritdoc/>
         public string Id
         {
             get
@@ -371,6 +582,8 @@ namespace PortCMIS.Data
                 return GetFirstValue(PropertyIds.ObjectId) as string;
             }
         }
+
+        /// <inheritdoc/>
         public BaseTypeId? BaseTypeId
         {
             get
@@ -383,14 +596,32 @@ namespace PortCMIS.Data
                 return baseTypeId.GetCmisEnum<BaseTypeId>();
             }
         }
+
+        /// <inheritdoc/>
         public IProperties Properties { get; set; }
+
+        /// <inheritdoc/>
         public IAllowableActions AllowableActions { get; set; }
+
+        /// <inheritdoc/>
         public IList<IObjectData> Relationships { get; set; }
+
+        /// <inheritdoc/>
         public IChangeEventInfo ChangeEventInfo { get; set; }
+
+        /// <inheritdoc/>
         public IAcl Acl { get; set; }
+
+        /// <inheritdoc/>
         public bool? IsExactAcl { get; set; }
+
+        /// <inheritdoc/>
         public IPolicyIdList PolicyIds { get; set; }
+
+        /// <inheritdoc/>
         public IList<IRenditionData> Renditions { get; set; }
+
+        /// <inheritdoc/>
         private object GetFirstValue(string id)
         {
             if (Properties == null) { return null; }
@@ -405,33 +636,52 @@ namespace PortCMIS.Data
 
     public class ObjectList : ExtensionsData, IObjectList
     {
+        /// <inheritdoc/>
         public IList<IObjectData> Objects { get; set; }
+
+        /// <inheritdoc/>
         public bool? HasMoreItems { get; set; }
+
+        /// <inheritdoc/>
         public BigInteger? NumItems { get; set; }
     }
 
     public class ObjectInFolderData : ExtensionsData, IObjectInFolderData
     {
+        /// <inheritdoc/>
         public IObjectData Object { get; set; }
+
+        /// <inheritdoc/>
         public string PathSegment { get; set; }
     }
 
     public class ObjectInFolderList : ExtensionsData, IObjectInFolderList
     {
+        /// <inheritdoc/>
         public IList<IObjectInFolderData> Objects { get; set; }
+
+        /// <inheritdoc/>
         public bool? HasMoreItems { get; set; }
+
+        /// <inheritdoc/>
         public BigInteger? NumItems { get; set; }
     }
 
     public class ObjectInFolderContainer : ExtensionsData, IObjectInFolderContainer
     {
+        /// <inheritdoc/>
         public IObjectInFolderData Object { get; set; }
+
+        /// <inheritdoc/>
         public IList<IObjectInFolderContainer> Children { get; set; }
     }
 
     public class ObjectParentData : ExtensionsData, IObjectParentData
     {
+        /// <inheritdoc/>
         public IObjectData Object { get; set; }
+
+        /// <inheritdoc/>
         public string RelativePathSegment { get; set; }
     }
 
@@ -439,6 +689,8 @@ namespace PortCMIS.Data
     {
         private List<IPropertyData> propertyList = new List<IPropertyData>();
         private Dictionary<string, IPropertyData> propertyDict = new Dictionary<string, IPropertyData>();
+
+        /// <inheritdoc/>
         public IPropertyData this[string propertyId]
         {
             get
@@ -448,6 +700,21 @@ namespace PortCMIS.Data
                 return property;
             }
         }
+
+        public Properties() { }
+
+        public Properties(IProperties properties)
+        {
+            if (properties == null)
+            {
+                throw new ArgumentNullException("properties");
+            }
+
+            AddProperties(properties.PropertyList);
+            Extensions = properties.Extensions;
+        }
+
+        /// <inheritdoc/>
         public IList<IPropertyData> PropertyList
         {
             get
@@ -455,6 +722,18 @@ namespace PortCMIS.Data
                 return propertyList;
             }
         }
+
+        protected void AddProperties(ICollection<IPropertyData> properties)
+        {
+            if (properties != null)
+            {
+                foreach (IPropertyData property in properties)
+                {
+                    AddProperty(property);
+                }
+            }
+        }
+
         public void AddProperty(IPropertyData property)
         {
             if (property == null)
@@ -467,6 +746,36 @@ namespace PortCMIS.Data
                 propertyDict[property.Id] = property;
             }
         }
+
+        public void ReplaceProperty(IPropertyData property)
+        {
+            if (property == null || property.Id == null)
+            {
+                return;
+            }
+
+            RemoveProperty(property.Id);
+
+            propertyList.Add(property);
+            propertyDict[property.Id] = property;
+        }
+
+        public void RemoveProperty(string id)
+        {
+            if (id == null)
+            {
+                return;
+            }
+
+            int idx = propertyList.FindIndex(pd => pd.Id == id);
+            if (idx > -1)
+            {
+                propertyList.RemoveAt(idx);
+            }
+
+            propertyDict.Remove(id);
+        }
+
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
@@ -488,11 +797,22 @@ namespace PortCMIS.Data
         {
             PropertyType = propertyType;
         }
+        /// <inheritdoc/>
         public string Id { get; set; }
+
+        /// <inheritdoc/>
         public string LocalName { get; set; }
+
+        /// <inheritdoc/>
         public string DisplayName { get; set; }
+
+        /// <inheritdoc/>
         public string QueryName { get; set; }
+
+        /// <inheritdoc/>
         public PropertyType PropertyType { get; protected set; }
+
+        /// <inheritdoc/>
         public IList<object> Values
         {
             get { return values; }
@@ -512,6 +832,7 @@ namespace PortCMIS.Data
                 }
             }
         }
+        /// <inheritdoc/>
         public object FirstValue { get { return values == null || Values.Count < 1 ? null : values[0]; } }
 
         public void AddValue(object value)
@@ -596,28 +917,46 @@ namespace PortCMIS.Data
 
     public class Principal : ExtensionsData, IPrincipal
     {
+        /// <inheritdoc/>
         public string Id { get; set; }
     }
 
     public class Ace : ExtensionsData, IAce
     {
+        /// <inheritdoc/>
         public IPrincipal Principal { get; set; }
+
+        /// <inheritdoc/>
         public string PrincipalId { get { return Principal == null ? null : Principal.Id; } }
+
+        /// <inheritdoc/>
         public IList<string> Permissions { get; set; }
-        public bool? IsDirect { get; set; }
+
+        /// <inheritdoc/>
+        public bool IsDirect { get; set; }
     }
 
     public class Acl : ExtensionsData, IAcl
     {
+        /// <inheritdoc/>
         public IList<IAce> Aces { get; set; }
+
+        /// <inheritdoc/>
         public bool? IsExact { get; set; }
     }
 
     public class ContentStream : ExtensionsData, IContentStream
     {
+        /// <inheritdoc/>
         public BigInteger? Length { get; set; }
+
+        /// <inheritdoc/>
         public string MimeType { get; set; }
+
+        /// <inheritdoc/>
         public string FileName { get; set; }
+
+        /// <inheritdoc/>
         public Stream Stream { get; set; }
     }
 
@@ -627,34 +966,55 @@ namespace PortCMIS.Data
 
     public class AllowableActions : ExtensionsData, IAllowableActions
     {
+        /// <inheritdoc/>
         public ISet<PortCMIS.Enums.Action> Actions { get; set; }
     }
 
     public class RenditionData : ExtensionsData, IRenditionData
     {
+        /// <inheritdoc/>
         public string StreamId { get; set; }
+
+        /// <inheritdoc/>
         public string MimeType { get; set; }
+
+        /// <inheritdoc/>
         public BigInteger? Length { get; set; }
+
+        /// <inheritdoc/>
         public string Kind { get; set; }
+
+        /// <inheritdoc/>
         public string Title { get; set; }
+
+        /// <inheritdoc/>
         public BigInteger? Height { get; set; }
+
+        /// <inheritdoc/>
         public BigInteger? Width { get; set; }
+
+        /// <inheritdoc/>
         public string RenditionDocumentId { get; set; }
     }
 
     public class ChangeEventInfo : ExtensionsData, IChangeEventInfo
     {
+        /// <inheritdoc/>
         public ChangeType? ChangeType { get; set; }
+
+        /// <inheritdoc/>
         public DateTime? ChangeTime { get; set; }
     }
 
     public class PolicyIdList : ExtensionsData, IPolicyIdList
     {
+        /// <inheritdoc/>
         public IList<string> PolicyIds { get; set; }
     }
 
-    public class FailedToDeleteData : ExtensionsData, IFailedToDeleteData
+    internal class FailedToDeleteData : ExtensionsData, IFailedToDeleteData
     {
+        /// <inheritdoc/>
         public IList<string> Ids { get; set; }
     }
 
@@ -671,12 +1031,17 @@ namespace PortCMIS.Data
 
     public class BulkUpdateObjectIdAndChangeToken : ExtensionsData, IBulkUpdateObjectIdAndChangeToken
     {
+        /// <inheritdoc/>
         public string Id { get; set; }
+
+        /// <inheritdoc/>
         public string NewId { get; set; }
+
+        /// <inheritdoc/>
         public string ChangeToken { get; set; }
     }
 
-    public class BulkUpdate : ExtensionsData
+    internal class BulkUpdate : ExtensionsData
     {
         public IList<IBulkUpdateObjectIdAndChangeToken> ObjectIdAndChangeToken { get; set; }
         public Properties Properties { get; set; }

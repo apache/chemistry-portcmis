@@ -27,12 +27,25 @@ namespace PortCMIS.Client
 {
     public static class SessionParameterDefaults
     {
+        /// <summary>Default repository cache size</summary>
         public const int CacheSizeRepositories = 10;
+
+        /// <summary>Default type cache size</summary>
         public const int CacheSizeTypes = 100;
+
+        /// <summary>Default link cache size</summary>
         public const int CacheSizeLinks = 400;
+
+        /// <summary>Default object cache size</summary>
         public const int CacheSizeObjects = 100;
+
+        /// <summary>Default time-to-live for objects in the object cache</summary>
         public const int CacheTTLObjects = 2 * 60 * 60 * 1000;
+
+        /// <summary>Default path cache size</summary>
         public const int CacheSizePathToId = 100;
+
+        /// <summary>Default time-to-live for paths in the object cache</summary>
         public const int CacheTTLPathToId = 30 * 60 * 1000;
     }
 }

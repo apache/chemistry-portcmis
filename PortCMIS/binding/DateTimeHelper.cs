@@ -27,7 +27,7 @@ using System.Threading.Tasks;
 
 namespace PortCMIS.Binding
 {
-    public class DateTimeHelper
+    internal class DateTimeHelper
     {
         private static readonly DateTime Jan1st1970 = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 

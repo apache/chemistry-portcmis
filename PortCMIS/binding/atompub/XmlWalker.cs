@@ -32,67 +32,69 @@ using System.Globalization;
 
 namespace PortCMIS.Binding.AtomPub
 {
-    internal abstract class XMLWalker<T>
+    internal abstract class XmlWalker<T>
     {
-
-        public T walk(XmlReader parser)
+        public T Walk(XmlReader parser)
         {
-            T result = prepareTarget(parser, parser.LocalName, parser.NamespaceURI);
+            T result = PrepareTarget(parser, parser.LocalName, parser.NamespaceURI);
 
-            XmlUtils.next(parser);
-
-            // walk through all tags
-            while (true)
+            if (!parser.IsEmptyElement)
             {
-                XmlNodeType nodeType = parser.NodeType;
-                if (nodeType == XmlNodeType.Element)
+                XmlUtils.Next(parser);
+
+                // walk through all tags
+                while (true)
                 {
-                    if (!read(parser, parser.LocalName, parser.NamespaceURI, result))
+                    XmlNodeType nodeType = parser.NodeType;
+                    if (nodeType == XmlNodeType.Element)
                     {
-                        if (result is IExtensionsData)
+                        if (!Read(parser, parser.LocalName, parser.NamespaceURI, result))
                         {
-                            handleExtension(parser, (IExtensionsData)result);
-                        }
-                        else
-                        {
-                            XmlUtils.skip(parser);
+                            if (result is IExtensionsData)
+                            {
+                                HandleExtension(parser, (IExtensionsData)result);
+                            }
+                            else
+                            {
+                                XmlUtils.Skip(parser);
+                            }
                         }
                     }
-                }
-                else if (nodeType == XmlNodeType.EndElement)
-                {
-                    break;
-                }
-                else
-                {
-                    if (!XmlUtils.next(parser))
+                    else if (nodeType == XmlNodeType.EndElement)
                     {
                         break;
+                    }
+                    else
+                    {
+                        if (!XmlUtils.Next(parser))
+                        {
+                            break;
+                        }
                     }
                 }
             }
 
-            XmlUtils.next(parser);
+            XmlUtils.Next(parser);
 
             return result;
         }
 
-        protected bool isCmisNamespace(string ns)
+        protected bool IsCmisNamespace(string ns)
         {
             return XmlConstants.NAMESPACE_CMIS == ns;
         }
 
-        protected bool isAtomNamespace(string ns)
+        protected bool IsAtomNamespace(string ns)
         {
             return XmlConstants.NAMESPACE_ATOM == ns;
         }
 
-        protected bool isTag(string name, string tag)
+        protected bool IsTag(string name, string tag)
         {
             return name == tag;
         }
 
-        protected void handleExtension(XmlReader parser, IExtensionsData extData)
+        protected void HandleExtension(XmlReader parser, IExtensionsData extData)
         {
             IList<ICmisExtensionElement> extensions = extData.Extensions;
             if (extensions == null)
@@ -101,15 +103,15 @@ namespace PortCMIS.Binding.AtomPub
                 extData.Extensions = extensions;
             }
 
-            if (extensions.Count + 1 > XMLConstraints.MAX_EXTENSIONS_WIDTH)
+            if (extensions.Count + 1 > XmlConstraints.MaxExtensionsWidth)
             {
                 throw new CmisInvalidArgumentException("Too many extensions!");
             }
 
-            extensions.Add(handleExtensionLevel(parser, 0));
+            extensions.Add(HandleExtensionLevel(parser, 0));
         }
 
-        private ICmisExtensionElement handleExtensionLevel(XmlReader parser, int level)
+        private ICmisExtensionElement HandleExtensionLevel(XmlReader parser, int level)
         {
             string localname = parser.Name;
             string ns = parser.NamespaceURI;
@@ -127,7 +129,7 @@ namespace PortCMIS.Binding.AtomPub
                 }
             }
 
-            XmlUtils.next(parser);
+            XmlUtils.Next(parser);
 
             while (true)
             {
@@ -141,7 +143,7 @@ namespace PortCMIS.Binding.AtomPub
                     string s = parser.Value;
                     if (s != null)
                     {
-                        if (sb.Length + s.Length > XMLConstraints.MAX_STRING_LENGTH)
+                        if (sb.Length + s.Length > XmlConstraints.MaxStringLength)
                         {
                             throw new CmisInvalidArgumentException("String limit exceeded!");
                         }
@@ -150,7 +152,7 @@ namespace PortCMIS.Binding.AtomPub
                 }
                 else if (nodeType == XmlNodeType.Element)
                 {
-                    if (level + 1 > XMLConstraints.MAX_EXTENSIONS_DEPTH)
+                    if (level + 1 > XmlConstraints.MaxExtensionsDepth)
                     {
                         throw new CmisInvalidArgumentException("Extensions tree too deep!");
                     }
@@ -160,23 +162,23 @@ namespace PortCMIS.Binding.AtomPub
                         children = new List<ICmisExtensionElement>();
                     }
 
-                    if (children.Count + 1 > XMLConstraints.MAX_EXTENSIONS_WIDTH)
+                    if (children.Count + 1 > XmlConstraints.MaxExtensionsWidth)
                     {
                         throw new CmisInvalidArgumentException("Extensions tree too wide!");
                     }
 
-                    children.Add(handleExtensionLevel(parser, level + 1));
+                    children.Add(HandleExtensionLevel(parser, level + 1));
 
                     continue;
                 }
 
-                if (!XmlUtils.next(parser))
+                if (!XmlUtils.Next(parser))
                 {
                     break;
                 }
             }
 
-            XmlUtils.next(parser);
+            XmlUtils.Next(parser);
 
             CmisExtensionElement element = new CmisExtensionElement()
             {
@@ -197,7 +199,7 @@ namespace PortCMIS.Binding.AtomPub
             return element;
         }
 
-        protected IList<S> addToList<S>(IList<S> list, S value)
+        protected IList<S> AddToList<S>(IList<S> list, S value)
         {
             if (list == null)
             {
@@ -208,28 +210,31 @@ namespace PortCMIS.Binding.AtomPub
             return list;
         }
 
-        protected string readText(XmlReader parser)
+        protected string ReadText(XmlReader parser)
         {
-            return XmlUtils.readText(parser, XMLConstraints.MAX_STRING_LENGTH);
+            return XmlUtils.ReadText(parser, XmlConstraints.MaxStringLength);
         }
 
-        protected bool? readBoolean(XmlReader parser)
+        protected bool? ReadBoolean(XmlReader parser)
         {
-            parser.MoveToContent();
+            string value = ReadText(parser);
 
-            try
+            if (value == "true" || value == "1")
             {
-                return parser.ReadContentAsBoolean();
+                return true;
             }
-            catch (Exception e)
+
+            if (value == "false" || value == "0")
             {
-                throw new CmisInvalidArgumentException("Invalid boolean value!", e);
+                return false;
             }
+
+            throw new CmisInvalidArgumentException("Invalid boolean value!");
         }
 
-        protected BigInteger readInteger(XmlReader parser)
+        protected BigInteger ReadInteger(XmlReader parser)
         {
-            string value = readText(parser);
+            string value = ReadText(parser);
 
             try
             {
@@ -241,13 +246,13 @@ namespace PortCMIS.Binding.AtomPub
             }
         }
 
-        protected decimal readDecimal(XmlReader parser)
+        protected decimal ReadDecimal(XmlReader parser)
         {
-            parser.MoveToContent();
+            string value = ReadText(parser);
 
             try
             {
-                return parser.ReadContentAsDecimal();
+                return Decimal.Parse(value);
             }
             catch (Exception e)
             {
@@ -255,9 +260,9 @@ namespace PortCMIS.Binding.AtomPub
             }
         }
 
-        protected DateTime readDateTime(XmlReader parser)
+        protected DateTime ReadDateTime(XmlReader parser)
         {
-            string value = readText(parser);
+            string value = ReadText(parser);
 
             DateTime result = DateTimeHelper.ParseISO8601(value);
             if (result == null)
@@ -268,22 +273,22 @@ namespace PortCMIS.Binding.AtomPub
             return result;
         }
 
-        protected E readEnum<E>(XmlReader parser)
+        protected E ReadEnum<E>(XmlReader parser)
         {
-            return readText(parser).GetCmisEnum<E>();
+            return ReadText(parser).GetCmisEnum<E>();
         }
 
-        protected abstract T prepareTarget(XmlReader parser, string localname, string ns);
+        protected abstract T PrepareTarget(XmlReader parser, string localname, string ns);
 
-        protected abstract bool read(XmlReader parser, string localname, string ns, T target);
+        protected abstract bool Read(XmlReader parser, string localname, string ns, T target);
 
     }
 
-    internal class XMLConstraints
+    internal class XmlConstraints
     {
-        public const int MAX_STRING_LENGTH = 100 * 1024;
+        public const int MaxStringLength = 100 * 1024;
 
-        public const int MAX_EXTENSIONS_WIDTH = 500;
-        public const int MAX_EXTENSIONS_DEPTH = 20;
+        public const int MaxExtensionsWidth = 500;
+        public const int MaxExtensionsDepth = 20;
     }
 }

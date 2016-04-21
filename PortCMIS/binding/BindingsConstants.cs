@@ -172,7 +172,7 @@ namespace PortCMIS.Binding
         public const string ParamContinueOnFailure = "continueOnFailure";
         public const string ParamDepth = "depth";
         public const string Paramdownload = "download";
-        public const string Paramfilter = "filter";
+        public const string ParamFilter = "filter";
         public const string ParamSuccinct = "succinct";
         public const string ParamDateTimeFormat = "dateTimeFormat";
         public const string ParamFolderId = "folderId";

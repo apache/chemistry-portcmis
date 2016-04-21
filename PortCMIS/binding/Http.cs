@@ -37,7 +37,7 @@ namespace PortCMIS.Binding.Http
         IResponse InvokeGET(UrlBuilder url, IBindingSession session, long? offset, long? length);
         IResponse InvokePOST(UrlBuilder url, HttpContent content, IBindingSession session);
         IResponse InvokePUT(UrlBuilder url, IDictionary<string, string> headers, HttpContent content, IBindingSession session);
-        IResponse InvokeDelete(UrlBuilder url, IBindingSession session);
+        IResponse InvokeDELETE(UrlBuilder url, IBindingSession session);
     }
 
     public interface IResponse

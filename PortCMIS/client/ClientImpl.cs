@@ -35,10 +35,17 @@ namespace PortCMIS.Client.Impl
     /// </summary>
     public class SessionFactory : ISessionFactory
     {
+        /// <summary>
+        /// This is a factory.
+        /// </summary>
         private SessionFactory()
         {
         }
 
+        /// <summary>
+        /// Creates a new factory object.
+        /// </summary>
+        /// <returns>a factory object</returns>
         public static SessionFactory NewInstance()
         {
             return new SessionFactory();
@@ -172,6 +179,7 @@ namespace PortCMIS.Client.Impl
             this.cache = cache;
         }
 
+        /// <inheritdoc/>
         public ISession CreateSession()
         {
             return sessionFactory.CreateSession(parameters, objectFactory, authenticationProvider, cache);
@@ -362,12 +370,14 @@ namespace PortCMIS.Client.Impl
 
         // types
 
+        /// <inheritdoc/>
         public IObjectType GetTypeDefinition(string typeId)
         {
             ITypeDefinition typeDefinition = Binding.GetRepositoryService().GetTypeDefinition(RepositoryId, typeId, null);
             return ObjectFactory.ConvertTypeDefinition(typeDefinition);
         }
 
+        /// <inheritdoc/>
         public IItemEnumerable<IObjectType> GetTypeChildren(string typeId, bool includePropertyDefinitions)
         {
             IRepositoryService service = Binding.GetRepositoryService();
@@ -394,6 +404,7 @@ namespace PortCMIS.Client.Impl
             return new CollectionEnumerable<IObjectType>(new PageFetcher<IObjectType>(DefaultContext.MaxItemsPerPage, fetchPageDelegate));
         }
 
+        /// <inheritdoc/>
         public IList<ITree<IObjectType>> GetTypeDescendants(string typeId, int depth, bool includePropertyDefinitions)
         {
             IList<ITypeDefinitionContainer> descendants = Binding.GetRepositoryService().GetTypeDescendants(
@@ -425,11 +436,13 @@ namespace PortCMIS.Client.Impl
 
         // navigation
 
+        /// <inheritdoc/>
         public IFolder GetRootFolder()
         {
             return GetRootFolder(DefaultContext);
         }
 
+        /// <inheritdoc/>
         public IFolder GetRootFolder(IOperationContext context)
         {
             IFolder rootFolder = GetObject(RepositoryInfo.RootFolderId, context) as IFolder;
@@ -441,11 +454,13 @@ namespace PortCMIS.Client.Impl
             return rootFolder;
         }
 
+        /// <inheritdoc/>
         public IItemEnumerable<IDocument> GetCheckedOutDocs()
         {
             return GetCheckedOutDocs(DefaultContext);
         }
 
+        /// <inheritdoc/>
         public IItemEnumerable<IDocument> GetCheckedOutDocs(IOperationContext context)
         {
             INavigationService service = Binding.GetNavigationService();
@@ -480,11 +495,13 @@ namespace PortCMIS.Client.Impl
             return new CollectionEnumerable<IDocument>(new PageFetcher<IDocument>(DefaultContext.MaxItemsPerPage, fetchPageDelegate));
         }
 
+        /// <inheritdoc/>
         public ICmisObject GetObject(IObjectId objectId)
         {
             return GetObject(objectId, DefaultContext);
         }
 
+        /// <inheritdoc/>
         public ICmisObject GetObject(IObjectId objectId, IOperationContext context)
         {
             if (objectId == null || objectId.Id == null)
@@ -495,11 +512,13 @@ namespace PortCMIS.Client.Impl
             return GetObject(objectId.Id, context);
         }
 
+        /// <inheritdoc/>
         public ICmisObject GetObject(string objectId)
         {
             return GetObject(objectId, DefaultContext);
         }
 
+        /// <inheritdoc/>
         public ICmisObject GetObject(string objectId, IOperationContext context)
         {
             if (objectId == null)
@@ -539,11 +558,13 @@ namespace PortCMIS.Client.Impl
             return result;
         }
 
+        /// <inheritdoc/>
         public ICmisObject GetObjectByPath(string path)
         {
             return GetObjectByPath(path, DefaultContext);
         }
 
+        /// <inheritdoc/>
         public ICmisObject GetObjectByPath(string path, IOperationContext context)
         {
             if (path == null)
@@ -583,11 +604,13 @@ namespace PortCMIS.Client.Impl
             return result;
         }
 
+        /// <inheritdoc/>
         public ICmisObject GetObjectByPath(string parentPath, string name)
         {
             return GetObjectByPath(parentPath, name, DefaultContext);
         }
 
+        /// <inheritdoc/>
         public ICmisObject GetObjectByPath(string parentPath, string name, IOperationContext context)
         {
             if (parentPath == null || parentPath.Length < 1)
@@ -614,11 +637,13 @@ namespace PortCMIS.Client.Impl
             return GetObjectByPath(path.ToString(), context);
         }
 
+        /// <inheritdoc/>
         public IDocument GetLatestDocumentVersion(string objectId)
         {
             return GetLatestDocumentVersion(objectId, DefaultContext);
         }
 
+        /// <inheritdoc/>
         public IDocument GetLatestDocumentVersion(string objectId, IOperationContext context)
         {
             if (objectId == null)
@@ -629,16 +654,19 @@ namespace PortCMIS.Client.Impl
             return GetLatestDocumentVersion(CreateObjectId(objectId), false, context);
         }
 
+        /// <inheritdoc/>
         public IDocument GetLatestDocumentVersion(IObjectId objectId)
         {
             return GetLatestDocumentVersion(objectId, false, DefaultContext);
         }
 
+        /// <inheritdoc/>
         public IDocument GetLatestDocumentVersion(IObjectId objectId, IOperationContext context)
         {
             return GetLatestDocumentVersion(objectId, false, context);
         }
 
+        /// <inheritdoc/>
         public IDocument GetLatestDocumentVersion(IObjectId objectId, bool major, IOperationContext context)
         {
             if (objectId == null || objectId.Id == null)
@@ -748,11 +776,13 @@ namespace PortCMIS.Client.Impl
 
         // discovery
 
+        /// <inheritdoc/>
         public IItemEnumerable<IQueryResult> Query(string statement, bool searchAllVersions)
         {
             return Query(statement, searchAllVersions, DefaultContext);
         }
 
+        /// <inheritdoc/>
         public IItemEnumerable<IQueryResult> Query(string statement, bool searchAllVersions, IOperationContext context)
         {
             IDiscoveryService service = Binding.GetDiscoveryService();
@@ -785,6 +815,7 @@ namespace PortCMIS.Client.Impl
             return new CollectionEnumerable<IQueryResult>(new PageFetcher<IQueryResult>(DefaultContext.MaxItemsPerPage, fetchPageDelegate));
         }
 
+        /// <inheritdoc/>
         public IItemEnumerable<ICmisObject> QueryObjects(string typeId, string where, bool searchAllVersions, IOperationContext context)
         {
             if (typeId == null || typeId.Trim().Length == 0)
@@ -1077,11 +1108,14 @@ namespace PortCMIS.Client.Impl
         }
 
         // delete
+
+        /// <inheritdoc/>
         public void Delete(IObjectId objectId)
         {
             Delete(objectId, true);
         }
 
+        /// <inheritdoc/>
         public void Delete(IObjectId objectId, bool allVersions)
         {
             if (objectId == null || objectId.Id == null)
@@ -1093,12 +1127,33 @@ namespace PortCMIS.Client.Impl
             RemoveObjectFromCache(objectId);
         }
 
+        /// <inheritdoc/>
+        public IList<string> DeleteTree(IObjectId folderId, bool allVersions, UnfileObject? unfile, bool continueOnFailure)
+        {
+            if (folderId == null || folderId.Id == null)
+            {
+                throw new ArgumentException("Invalid object ID!", "folderId");
+            }
+
+            IFailedToDeleteData failed = Binding.GetObjectService().DeleteTree(RepositoryId, folderId.Id, allVersions, unfile, continueOnFailure, null);
+
+            if (failed == null || failed.Ids == null || failed.Ids.Count == 0)
+            {
+                RemoveObjectFromCache(folderId);
+            }
+
+            return failed != null ? failed.Ids : null;
+        }
+
         // content stream
+
+        /// <inheritdoc/>
         public IContentStream GetContentStream(IObjectId docId)
         {
             return GetContentStream(docId, null, null, null);
         }
 
+        /// <inheritdoc/>
         public IContentStream GetContentStream(IObjectId docId, string streamId, long? offset, long? length)
         {
             if (docId == null || docId.Id == null)
@@ -1201,7 +1256,7 @@ namespace PortCMIS.Client.Impl
         }
     }
 
-    public class QueryStatement : IQueryStatement
+    internal class QueryStatement : IQueryStatement
     {
         private ISession session;
         private string statement;

@@ -128,14 +128,14 @@ namespace PortCMIS.Client
         /// </summary>
         void Clear();
 
-        /// <summary>
+        /// <value>
         /// Gets the CMIS binding object.
-        /// </summary>
+        /// </value>
         ICmisBinding Binding { get; }
 
-        /// <summary>
+        /// <value>
         /// Gets the default operation context.
-        /// </summary>
+        /// </value>
         IOperationContext DefaultContext { get; set; }
 
         /// <summary>
@@ -155,53 +155,151 @@ namespace PortCMIS.Client
         /// </summary>
         IObjectId CreateObjectId(string id);
 
-        /// <summary>
-        /// Gets the CMIS repositoy info.
-        /// </summary>
+        /// <value>
+        /// Gets the CMIS repository info.
+        /// </value>
+        /// <cmis>1.0</cmis>
         IRepositoryInfo RepositoryInfo { get; }
 
-        /// <summary>
+        /// <value>
         /// Gets the internal object factory. 
-        /// </summary>
+        /// </value>
         IObjectFactory ObjectFactory { get; }
 
         // types
 
+        /// <summary>
+        /// Gets the definition of a type.
+        /// </summary>
+        /// <param name="typeId">the ID of the type</param>
+        /// <returns>the type definition</returns>
+        /// <cmis>1.0</cmis>
         IObjectType GetTypeDefinition(string typeId);
+
+        /// <summary>
+        /// Gets the type children of a type.
+        /// </summary>
+        /// <param name="typeId">the type ID or <c>null</c> to request the base types</param>
+        /// <param name="includePropertyDefinitions">indicates whether the property definitions should be included or not</param>
+        /// <returns>the type iterator, not <c>null</c></returns>
+        /// <cmis>1.0</cmis>
         IItemEnumerable<IObjectType> GetTypeChildren(string typeId, bool includePropertyDefinitions);
+
+        /// <summary>
+        /// Gets the type descendants of a type.
+        /// </summary>
+        /// <param name="typeId">the type ID or <c>null</c> to request the base types</param>
+        /// <param name="depth">the tree depth, must be greater than 0 or -1 for infinite depth</param>
+        /// <param name="includePropertyDefinitions">indicates whether the property definitions should be included or not</param>
+        /// <returns>the tree of types</returns>
         IList<ITree<IObjectType>> GetTypeDescendants(string typeId, int depth, bool includePropertyDefinitions);
 
         // navigation
 
+        /// <summary>
+        /// Gets the root folder of the repository.
+        /// </summary>
+        /// <returns>the root folder object, not <c>null</c></returns>
+        /// <cmis>1.0</cmis>
         IFolder GetRootFolder();
+
+        /// <summary>
+        /// Gets the root folder of the repository with the given <see cref="PortCMIS.Client.IOperationContext"/>.
+        /// </summary>
+        /// <param name="context">the operation context</param>
+        /// <returns>the root folder object, not <c>null</c></returns>
+        /// <cmis>1.0</cmis>
         IFolder GetRootFolder(IOperationContext context);
+
+        /// <summary>
+        /// Returns all checked out documents.
+        /// </summary>
+        /// <returns></returns>
+        /// <cmis>1.0</cmis>
         IItemEnumerable<IDocument> GetCheckedOutDocs();
+
+        /// <summary>
+        /// Returns all checked out documents with the given operation context.
+        /// </summary>
+        /// <returns></returns>
+        /// <cmis>1.0</cmis>
         IItemEnumerable<IDocument> GetCheckedOutDocs(IOperationContext context);
 
         /// <summary>
         /// Gets a CMIS object from the session cache. If the object is not in the cache or the cache is 
-        /// turned off per default <see cref="PortCMIS.Client.IOperationContext"/>, it will load the object 
-        /// from the repository and puts it into the cache.
+        /// turned off per default operation context, it will load the object from the repository and puts
+        /// it into the cache.
+        /// <para>
+        /// This method might return a stale object if the object has been found in the cache and has
+        /// been changed in or removed from the repository.
+        /// Use <see cref="PortCMIS.Client.ICmisObject.Refresh()"/> and <see cref="PortCMIS.Client.ICmisObject.RefreshIfOld(long)"/>
+        /// to update the object if necessary.
+        /// </para>
         /// </summary>
         /// <param name="objectId">the object ID</param>
+        /// <cmis>1.0</cmis>
         ICmisObject GetObject(IObjectId objectId);
+
+        /// <summary>
+        /// Gets a CMIS object from the session cache. If the object is not in the cache or the cache is 
+        /// turned off or the given operation context has caching turned off, it will load the object 
+        /// from the repository and puts it into the cache.
+        /// <para>
+        /// This method might return a stale object if the object has been found in the cache and has
+        /// been changed in or removed from the repository.
+        /// Use <see cref="PortCMIS.Client.ICmisObject.Refresh()"/> and <see cref="PortCMIS.Client.ICmisObject.RefreshIfOld(long)"/>
+        /// to update the object if necessary.
+        /// </para>
+        /// </summary>
+        /// <param name="objectId">the object ID</param>
+        /// <param name="context">the operation context</param>
+        /// <cmis>1.0</cmis>
         ICmisObject GetObject(IObjectId objectId, IOperationContext context);
 
         /// <summary>
         /// Gets a CMIS object from the session cache. If the object is not in the cache or the cache is 
-        /// turned off per default <see cref="PortCMIS.Client.IOperationContext"/>, it will load the object 
-        /// from the repository and puts it into the cache.
+        /// turned off per default operation context, it will load the object from the repository and puts
+        /// it into the cache.
+        /// <para>
+        /// This method might return a stale object if the object has been found in the cache and has
+        /// been changed in or removed from the repository.
+        /// Use <see cref="PortCMIS.Client.ICmisObject.Refresh()"/> and <see cref="PortCMIS.Client.ICmisObject.RefreshIfOld(long)"/>
+        /// to update the object if necessary.
+        /// </para>
         /// </summary>
         /// <param name="objectId">the object ID</param>
+        /// <cmis>1.0</cmis>
         ICmisObject GetObject(string objectId);
+
+        /// <summary>
+        /// Gets a CMIS object from the session cache. If the object is not in the cache or the cache is 
+        /// turned off or the given operation context has caching turned off, it will load the object 
+        /// from the repository and puts it into the cache.
+        /// <para>
+        /// This method might return a stale object if the object has been found in the cache and has
+        /// been changed in or removed from the repository.
+        /// Use <see cref="PortCMIS.Client.ICmisObject.Refresh()"/> and <see cref="PortCMIS.Client.ICmisObject.RefreshIfOld(long)"/>
+        /// to update the object if necessary.
+        /// </para>
+        /// </summary>
+        /// <param name="objectId">the object ID</param>
+        /// <param name="context">the operation context</param>
+        /// <cmis>1.0</cmis>
         ICmisObject GetObject(string objectId, IOperationContext context);
 
         /// <summary>
         /// Gets a CMIS object from the session cache. If the object is not in the cache or the cache is 
         /// turned off per default <see cref="PortCMIS.Client.IOperationContext"/>, it will load the object
         /// from the repository and puts it into the cache.
+        /// <para>
+        /// This method might return a stale object if the object has been found in the cache and has
+        /// been changed in or removed from the repository.
+        /// Use <see cref="PortCMIS.Client.ICmisObject.Refresh()"/> and <see cref="PortCMIS.Client.ICmisObject.RefreshIfOld(long)"/>
+        /// to update the object if necessary.
+        /// </para>
         /// </summary>
         /// <param name="path">the path to the object</param>
+        /// <cmis>1.0</cmis>
         ICmisObject GetObjectByPath(string path);
         ICmisObject GetObjectByPath(string path, IOperationContext context);
         ICmisObject GetObjectByPath(string parentPath, string name);
@@ -211,6 +309,7 @@ namespace PortCMIS.Client
         /// Gets the latest version in a version series.
         /// </summary>
         /// <param name="objectId">the document ID of an arbitrary version in the version series</param>
+        /// <cmis>1.0</cmis>
         IDocument GetLatestDocumentVersion(string objectId);
         IDocument GetLatestDocumentVersion(string objectId, IOperationContext context);
         IDocument GetLatestDocumentVersion(IObjectId objectId);
@@ -237,6 +336,7 @@ namespace PortCMIS.Client
         /// <param name="statement">the CMIS QL statement</param>
         /// <param name="searchAllVersions">indicates if all versions or only latest version should be searched</param>
         /// <returns>query results</returns>
+        /// <cmis>1.0</cmis>
         IItemEnumerable<IQueryResult> Query(string statement, bool searchAllVersions);
         IItemEnumerable<ICmisObject> QueryObjects(string typeId, string where, bool searchAllVersions, IOperationContext context);
         IQueryStatement CreateQueryStatement(string statement);
@@ -248,6 +348,7 @@ namespace PortCMIS.Client
         /// <param name="searchAllVersions">indicates if all versions or only latest version should be searched</param>
         /// <param name="context">the <see cref="PortCMIS.Client.IOperationContext"/></param>
         /// <returns>query results</returns>
+        /// <cmis>1.0</cmis>
         IItemEnumerable<IQueryResult> Query(string statement, bool searchAllVersions, IOperationContext context);
 
         string GetLatestChangeLogToken();
@@ -280,12 +381,51 @@ namespace PortCMIS.Client
         IItemEnumerable<IRelationship> GetRelationships(IObjectId objectId, bool includeSubRelationshipTypes,
                 RelationshipDirection? relationshipDirection, IObjectType type, IOperationContext context);
 
-        // delete
+        /// <summary>
+        /// Deletes an object and, if it is a document, all versions in the version series.
+        /// </summary>
+        /// <param name="objectId">the ID of the object</param>
+        /// <cmis>1.0</cmis>
         void Delete(IObjectId objectId);
+
+        /// <summary>
+        /// Deletes an object.
+        /// </summary>
+        /// <param name="objectId">the ID of the object</param>
+        /// <param name="allVersions">if this object is a document this parameter defines if only this version or all versions should be deleted</param>
+        /// <cmis>1.0</cmis>
         void Delete(IObjectId objectId, bool allVersions);
 
-        // content stream
+        /// <summary>
+        /// Deletes a folder and all subfolders.
+        /// </summary>
+        /// <param name="folderId"> the ID of the folder</param>
+        /// <param name="allVersions">if this object is a document this parameter defines
+        /// if only this version or all versions should be deleted</param>
+        /// <param name="unfile">defines how objects should be unfiled</param>
+        /// <param name="continueOnFailure">if <c>true</c> the repository tries to delete as many objects as possible;
+        /// if <c>false</c> the repository stops at the first object that could not be deleted</param>
+        /// <returns>a list of object IDs which failed to be deleted</returns>
+        /// <cmis>1.0</cmis>
+        IList<string> DeleteTree(IObjectId folderId, bool allVersions, UnfileObject? unfile, bool continueOnFailure);
+
+        /// <summary>
+        /// Retrieves the main content stream of a document.
+        /// </summary>
+        /// <param name="docId">the ID of the document</param>
+        /// <returns>the content stream or <c>null</c> if the document has no content stream</returns>
+        /// <cmis>1.0</cmis>
         IContentStream GetContentStream(IObjectId docId);
+
+        /// <summary>
+        /// Retrieves the main content stream of a document.
+        /// </summary>
+        /// <param name="docId">the ID of the document</param>
+        /// <param name="streamId">the stream ID</param>
+        /// <param name="offset">the offset of the stream or <c>null</c> to read the stream from the beginning</param>
+        /// <param name="length">the maximum length of the stream or <c>null</c> to read to the end of the stream</param>
+        /// <returns>the content stream or <c>null</c> if the document has no content stream</returns>
+        /// <cmis>1.0</cmis>
         IContentStream GetContentStream(IObjectId docId, string streamId, long? offset, long? length);
 
         // permissions
@@ -335,91 +475,98 @@ namespace PortCMIS.Client
     /// </summary>
     public interface IOperationContext
     {
-        /// <summary>
+        /// <value>
         /// Gets and sets the property filter.
-        /// </summary>
+        /// </value>
         /// <remarks>
         /// This is a set of query names.
         /// </remarks>
         HashSet<string> Filter { get; set; }
 
-        /// <summary>
+        /// <value>
         /// Gets and sets the property filter.
-        /// </summary>
+        /// </value>
         /// <remarks>
         /// This is a comma-separated list of query names.
         /// </remarks>
         string FilterString { get; set; }
 
-        /// <summary>
+        /// <value>
         /// Gets and sets if allowable actions should be retrieved.
-        /// </summary>
+        /// </value>
         bool IncludeAllowableActions { get; set; }
 
-        /// <summary>
-        /// Gets and sets if Acls should be retrieved.
-        /// </summary>
+        /// <value>
+        /// Gets and sets if ACLs should be retrieved.
+        /// </value>
         bool IncludeAcls { get; set; }
 
-        /// <summary>
+        /// <value>
         /// Gets and sets if relationships should be retrieved.
-        /// </summary>
+        /// </value>
         IncludeRelationships? IncludeRelationships { get; set; }
 
-        /// <summary>
+        /// <value>
         /// Gets and sets if policies should be retrieved.
-        /// </summary>
+        /// </value>
         bool IncludePolicies { get; set; }
 
-        /// <summary>
+        /// <value>
         /// Gets and sets the rendition filter.
-        /// </summary>
+        /// </value>
         /// <remarks>
         /// This is a set of rendition kinds or MIME types.
         /// </remarks>
         HashSet<string> RenditionFilter { get; set; }
 
-        /// <summary>
+        /// <value>
         /// Gets and sets the rendition filter.
-        /// </summary>
+        /// </value>
         /// <remarks>
         /// This is a comma-separated list of rendition kinds or MIME types.
         /// </remarks>
         string RenditionFilterString { get; set; }
 
-        /// <summary>
-        /// Gets and sets if path segements should be retrieved.
-        /// </summary>
+        /// <value>
+        /// Gets and sets if path segments should be retrieved.
+        /// </value>
         bool IncludePathSegments { get; set; }
 
-        /// <summary>
+        /// <value>
         /// Gets and sets order by list. 
-        /// </summary>
+        /// </value>
         /// <remarks>
         /// This is a comma-separated list of query names.
         /// </remarks>
         string OrderBy { get; set; }
 
-        /// <summary>
+        /// <value>
         /// Gets and sets if object fetched with this <see cref="PortCMIS.Client.IOperationContext"/>
         /// should be cached or not.
-        /// </summary>
+        /// </value>
         bool CacheEnabled { get; set; }
 
-        /// <summary>
+        /// <value>
         /// Gets the cache key. (For internal use.)
-        /// </summary>
+        /// </value>
         string CacheKey { get; }
 
-        /// <summary>
+        /// <value>
         /// Gets and sets how many items should be fetched per page.
-        /// </summary>
+        /// </value>
         int MaxItemsPerPage { get; set; }
     }
 
     public interface ITree<T>
     {
+        /// <value>
+        /// The node item.
+        /// </value>
         T Item { get; }
+
+        /// <value>
+        /// The children of this node.
+        /// </value>
         IList<ITree<T>> Children { get; }
     }
 
@@ -457,7 +604,7 @@ namespace PortCMIS.Client
         /// <summary>
         /// Sets the designated parameter to the query name of the given type ID.
         /// </summary>
-        ///<param name='parameterIndex'>the parameter index (one-based)</param>
+        /// <param name='parameterIndex'>the parameter index (one-based)</param>
         /// <param name='typeId'>the type ID</param>
 
         void SetType(int parameterIndex, string typeId);
@@ -465,42 +612,42 @@ namespace PortCMIS.Client
         /// <summary>
         /// Sets the designated parameter to the query name of the given type.
         /// </summary>
-        ///<param name='parameterIndex'>the parameter index (one-based)</param>
+        /// <param name='parameterIndex'>the parameter index (one-based)</param>
         /// <param name='type'>the object type</param>
         void SetType(int parameterIndex, IObjectType type);
 
         /// <summary>
         /// Sets the designated parameter to the query name of the given property.
         /// </summary>
-        ///<param name='parameterIndex'>the parameter index (one-based)</param>
+        /// <param name='parameterIndex'>the parameter index (one-based)</param>
         /// <param name='propertyId'>the property ID</param>
         void SetProperty(int parameterIndex, string typeId, string propertyId);
 
         /// <summary>
         /// Sets the designated parameter to the query name of the given property.
         /// </summary>
-        ///<param name='parameterIndex'>the parameter index (one-based)</param>
+        /// <param name='parameterIndex'>the parameter index (one-based)</param>
         /// <param name='propertyDefinition'>the property definition</param>
         void SetProperty(int parameterIndex, IPropertyDefinition propertyDefinition);
 
         /// <summary>
         /// Sets the designated parameter to the given decimal.
         /// </summary>
-        ///<param name='parameterIndex'>the parameter index (one-based)</param>
+        /// <param name='parameterIndex'>the parameter index (one-based)</param>
         /// <param name='num'>the number</param>
         void SetInteger(int parameterIndex, params BigInteger[] num);
 
         /// <summary>
         /// Sets the designated parameter to the given string.
         /// </summary>
-        ///<param name='parameterIndex'>the parameter index (one-based)</param>
+        /// <param name='parameterIndex'>the parameter index (one-based)</param>
         /// <param name='num'>the number</param>
         void SetDecimal(int parameterIndex, params decimal[] num);
 
         /// <summary>
         /// Sets the designated parameter to the given string.
         /// </summary>
-        ///<param name='parameterIndex'>the parameter index (one-based)</param>
+        /// <param name='parameterIndex'>the parameter index (one-based)</param>
         /// <param name='str'>the string</param>
         void SetString(int parameterIndex, params string[] str);
 
@@ -508,7 +655,7 @@ namespace PortCMIS.Client
         /// Sets the designated parameter to the given string. It does not escape
         /// backslashes ('\') in front of '%' and '_'.
         /// </summary>
-        ///<param name='parameterIndex'>the parameter index (one-based)</param>
+        /// <param name='parameterIndex'>the parameter index (one-based)</param>
         /// <param name='str'>the LIKE string</param>
         void SetStringLike(int parameterIndex, string str);
 
@@ -540,36 +687,35 @@ namespace PortCMIS.Client
         /// <summary>
         /// Sets the designated parameter to the given object ID.
         /// </summary>
-        ///<param name='parameterIndex'>the parameter index (one-based)</param>
-        /// <param name='id'>
-        ///            the object ID</param>
+        /// <param name='parameterIndex'>the parameter index (one-based)</param>
+        /// <param name='id'>the object ID</param>
         void SetId(int parameterIndex, params IObjectId[] id);
 
         /// <summary>
         /// Sets the designated parameter to the given URI.
         /// </summary>
-        ///<param name='parameterIndex'>the parameter index (one-based)</param>
+        /// <param name='parameterIndex'>the parameter index (one-based)</param>
         /// <param name='uri'>the URI</param>
         void SetUri(int parameterIndex, params Uri[] uri);
 
         /// <summary>
         /// Sets the designated parameter to the given boolean.
         /// </summary>
-        ///<param name='parameterIndex'>the parameter index (one-based)</param>
+        /// <param name='parameterIndex'>the parameter index (one-based)</param>
         /// <param name='bool'>the boolean</param>
         void SetBoolean(int parameterIndex, params bool[] boolean);
 
         /// <summary>
         /// Sets the designated parameter to the given DateTime value.
         /// </summary>
-        ///<param name='parameterIndex'>the parameter index (one-based)</param>
+        /// <param name='parameterIndex'>the parameter index (one-based)</param>
         /// <param name='cal'>the DateTime value as Calendar object</param>
         void SetDateTime(int parameterIndex, params DateTime[] dt);
 
         /// <summary>
         /// Sets the designated parameter to the given DateTime value.
         /// </summary>
-        ///<param name='parameterIndex'>the parameter index (one-based)</param>
+        /// <param name='parameterIndex'>the parameter index (one-based)</param>
         /// <param name='cal'>the DateTime value in milliseconds from midnight, January 1, 1970 UTC.</param>
         void SetDateTime(int parameterIndex, params long[] ms);
 
@@ -577,7 +723,7 @@ namespace PortCMIS.Client
         /// Sets the designated parameter to the given DateTime value with the prefix
         /// 'TIMESTAMP '.
         /// </summary>
-        ///<param name='parameterIndex'>the parameter index (one-based)</param>
+        /// <param name='parameterIndex'>the parameter index (one-based)</param>
         /// <param name='cal'>the DateTime value as Calendar object
         void SetDateTimeTimestamp(int parameterIndex, params DateTime[] dt);
 
@@ -585,7 +731,7 @@ namespace PortCMIS.Client
         /// Sets the designated parameter to the given DateTime value with the prefix
         /// 'TIMESTAMP '.
         /// </summary>
-        ///<param name='parameterIndex'>the parameter index (one-based)</param>
+        /// <param name='parameterIndex'>the parameter index (one-based)</param>
         /// <param name='cal'>the DateTime value in milliseconds from midnight, January 1, 1970 UTC.</param>
         void SetDateTimeTimestamp(int parameterIndex, params long[] ms);
 
@@ -620,6 +766,9 @@ namespace PortCMIS.Client
     /// </summary>
     public interface IObjectType : ITypeDefinition
     {
+        /// <value>
+        /// The base type.
+        /// </value>
         bool IsBaseType { get; }
         IObjectType GetBaseType();
         IObjectType GetParentType();
@@ -632,7 +781,14 @@ namespace PortCMIS.Client
     /// </summary>
     public interface IDocumentType : IObjectType
     {
+        /// <value>
+        /// The versionable flag.
+        /// </value>
         bool? IsVersionable { get; }
+
+        /// <value>
+        /// Content stream allowed.
+        /// </value>
         ContentStreamAllowed? ContentStreamAllowed { get; }
     }
 
@@ -682,9 +838,9 @@ namespace PortCMIS.Client
 
     public interface IObjectId
     {
-        /// <summary>
-        /// Gets the object ID.
-        /// </summary>
+        /// <value>
+        /// The object ID.
+        /// </value>
         string Id { get; }
     }
 
@@ -700,71 +856,71 @@ namespace PortCMIS.Client
     /// </summary>
     public interface IProperty
     {
-        /// <summary>
-        /// Gets the property ID.
-        /// </summary>
+        /// <value>
+        /// The property ID.
+        /// </value>
         string Id { get; }
 
-        /// <summary>
-        /// Gets the property local name.
-        /// </summary>
+        /// <value>
+        /// The property local name.
+        /// </value>
         string LocalName { get; }
 
-        /// <summary>
-        /// Gets the property display name.
-        /// </summary>
+        /// <value>
+        /// Property display name.
+        /// </value>
         string DisplayName { get; }
 
-        /// <summary>
-        /// Gets the property query name.
-        /// </summary>
+        /// <value>
+        /// Property query name.
+        /// </value>
         string QueryName { get; }
 
-        /// <summary>
-        /// Gets if the property is a multi-value proprty.
-        /// </summary>
+        /// <value>
+        /// Gets if the property is a multi-value property.
+        /// </value>
         bool IsMultiValued { get; }
 
-        /// <summary>
-        /// Gets the proprty type.
-        /// </summary>
+        /// <value>
+        /// The property type.
+        /// </value>
         PropertyType? PropertyType { get; }
 
-        /// <summary>
-        /// Gets the property defintion.
-        /// </summary>
+        /// <value>
+        /// The property definition.
+        /// </value>
         IPropertyDefinition PropertyDefinition { get; }
 
-        /// <summary>
-        /// Gets the value of the property.
-        /// </summary>
+        /// <value>
+        /// The property value.
+        /// </value>
         /// <remarks>
         /// If the property is a single-value property the single value is returned.
         /// If the property is a multi-value property a IList&lt;object&gt; is returned.
         /// </remarks>
         object Value { get; }
 
-        /// <summary>
-        /// Gets the value list of the property.
-        /// </summary>
+        /// <value>
+        /// The value list of the property.
+        /// </value>
         /// <remarks>
-        /// If the property is a single-value property a list with one or no items is returend.
+        /// If the property is a single-value property a list with one or no items is returned.
         /// </remarks>
         IList<object> Values { get; }
 
-        /// <summary>
-        /// Gets the first value of the value list or <c>null</c> if the list has no values.
-        /// </summary>
+        /// <value>
+        /// The first value of the value list or <c>null</c> if the list has no values.
+        /// </value>
         object FirstValue { get; }
 
-        /// <summary>
-        /// Gets a string representation of the first value of the value list.
-        /// </summary>
+        /// <value>
+        /// A string representation of the first value of the value list.
+        /// </value>
         string ValueAsString { get; }
 
-        /// <summary>
-        /// Gets a string representation of the value list.
-        /// </summary>
+        /// <value>
+        /// A string representation of the value list.
+        /// </value>
         string ValuesAsString { get; }
     }
 
@@ -773,14 +929,14 @@ namespace PortCMIS.Client
     /// </summary>
     public interface ICmisObjectProperties
     {
-        /// <summary>
-        /// Gets a list of all available CMIS properties.
-        /// </summary>
+        /// <value>
+        /// List of all available CMIS properties.
+        /// </value>
         IList<IProperty> Properties { get; }
 
-        /// <summary>
-        /// available
-        /// </summary>
+        /// <value>
+        /// Gets a property by property ID.
+        /// </value>
         /// <param name="propertyId">the property ID</param>
         /// <returns>the property or <c>null</c> if the property is not available</returns>
         IProperty this[string propertyId] { get; }
@@ -827,54 +983,51 @@ namespace PortCMIS.Client
         /// <exception cref="InvalidCastException">the conversion is not supported</exception>
         DateTime? GetPropertyAsDateTimeValue(string propertyId);
 
-        /// <summary>
-        /// Gets the name of this CMIS object (CMIS property <c>cmis:name</c>).
-        /// </summary>
+        /// <value>
+        /// The name of this CMIS object (CMIS property <c>cmis:name</c>).
+        /// </value>
         string Name { get; }
 
-        /// <summary>
-        /// Gets the user who created this CMIS object (CMIS property <c>cmis:createdBy</c>).
-        /// </summary>
+        /// <value>
+        /// The user who created this CMIS object (CMIS property <c>cmis:createdBy</c>).
+        /// </value>
         string CreatedBy { get; }
 
-        /// <summary>
-        /// Gets the timestamp when this CMIS object has been created (CMIS property <c>cmis:creationDate</c>).
-        /// </summary>
+        /// <value>
+        /// The timestamp when this CMIS object has been created (CMIS property <c>cmis:creationDate</c>).
+        /// </value>
         DateTime? CreationDate { get; }
 
-        /// <summary>
-        /// Gets the user who modified this CMIS object (CMIS property <c>cmis:lastModifiedBy</c>).
-        /// </summary>
+        /// <value>
+        /// The user who modified this CMIS object (CMIS property <c>cmis:lastModifiedBy</c>).
+        /// </value>
         string LastModifiedBy { get; }
 
-        /// <summary>
-        /// Gets the timestamp when this CMIS object has been modified (CMIS property <c>cmis:lastModificationDate</c>).
-        /// </summary>
+        /// <value>
+        /// The timestamp when this CMIS object has been modified (CMIS property <c>cmis:lastModificationDate</c>).
+        /// </value>
         DateTime? LastModificationDate { get; }
 
-        /// <summary>
-        /// Gets the ID of the base type of this CMIS object (CMIS property <c>cmis:baseTypeId</c>).
-        /// </summary>
+        /// <value>
+        /// The ID of the base type of this CMIS object (CMIS property <c>cmis:baseTypeId</c>).
+        /// </value>
         BaseTypeId BaseTypeId { get; }
 
-        /// <summary>
-        /// Gets the base type of this CMIS object (object type identified by <c>cmis:baseTypeId</c>).
-        /// </summary>
+        /// <value>
+        /// The base type of this CMIS object (object type identified by <c>cmis:baseTypeId</c>).
+        /// </value>
         IObjectType BaseType { get; }
 
-        /// <summary>
-        /// Gets the type of this CMIS object (object type identified by <c>cmis:objectTypeId</c>).
-        /// </summary>
+        /// <value>
+        /// The type of this CMIS object (object type identified by <c>cmis:objectTypeId</c>).
+        /// </value>
         IObjectType ObjectType { get; }
 
-        /// <summary>
-        /// Gets the change token (CMIS property <c>cmis:changeToken</c>).
-        /// </summary>
+        /// <value>
+        /// The change token (CMIS property <c>cmis:changeToken</c>).
+        /// </value>
         string ChangeToken { get; }
 
-        /// <summary>
-        /// Gets the secondary object types.
-        /// </summary>
         /// <value>
         /// The secondary types.
         /// </value>
@@ -896,19 +1049,19 @@ namespace PortCMIS.Client
     /// </summary>
     public interface ICmisObject : IObjectId, ICmisObjectProperties
     {
-        /// <summary>
-        /// Gets the allowable actions if they have been fetched for this object.
-        /// </summary>
+        /// <value>
+        /// The allowable actions if they have been fetched for this object.
+        /// </value>
         IAllowableActions AllowableActions { get; }
 
-        /// <summary>
-        /// Gets the relationships if they have been fetched for this object.
-        /// </summary>
+        /// <value>
+        /// The relationships if they have been fetched for this object.
+        /// </value>
         IList<IRelationship> Relationships { get; }
 
-        /// <summary>
-        /// Gets the Acl if it has been fetched for this object.
-        /// </summary>
+        /// <value>
+        /// The ACL if it has been fetched for this object.
+        /// </value>
         IAcl Acl { get; }
 
         /// <summary>
@@ -947,7 +1100,6 @@ namespace PortCMIS.Client
         /// <returns>the object ID of the updated object (a repository might have created a new object)</returns>
         IObjectId Rename(string newName, bool refresh);
 
-
         /// <summary>
         /// Gets the renditions if they have been fetched for this object.
         /// </summary>
@@ -971,19 +1123,19 @@ namespace PortCMIS.Client
         /// <summary>
         /// Adds and removes ACEs to this object.
         /// </summary>
-        /// <returns>the new Acl of this object</returns>
+        /// <returns>the new ACL of this object</returns>
         IAcl ApplyAcl(IList<IAce> addAces, IList<IAce> removeAces, AclPropagation? aclPropagation);
 
         /// <summary>
         /// Adds ACEs to this object.
         /// </summary>
-        /// <returns>the new Acl of this object</returns>
+        /// <returns>the new ACL of this object</returns>
         IAcl AddAcl(IList<IAce> addAces, AclPropagation? aclPropagation);
 
         /// <summary>
         /// Removes ACEs from this object.
         /// </summary>
-        /// <returns>the new Acl of this object</returns>
+        /// <returns>the new ACL of this object</returns>
         IAcl RemoveAcl(IList<IAce> removeAces, AclPropagation? aclPropagation);
 
         /// <summary>
@@ -991,9 +1143,9 @@ namespace PortCMIS.Client
         /// </summary>
         IList<ICmisExtensionElement> GetExtensions(ExtensionLevel level);
 
-        /// <summary>
-        /// Gets the timestamp of the last refresh.
-        /// </summary>
+        /// <value>
+        /// The timestamp of the last refresh.
+        /// </value>
         DateTime RefreshTimestamp { get; }
 
         /// <summary>
@@ -1020,17 +1172,17 @@ namespace PortCMIS.Client
         /// <returns>the object in the new location</returns>
         IFileableCmisObject Move(IObjectId sourceFolderId, IObjectId targetFolderId);
 
-        /// <summary>
+        /// <value>
         /// Gets a list of all parent folders. 
-        /// </summary>
+        /// </value>
         /// <remarks>
         /// Returns an empty list if it is an unfiled object or the root folder.
         /// </remarks>
         IList<IFolder> Parents { get; }
 
-        /// <summary>
-        /// Gets all paths for this object
-        /// </summary>
+        /// <value>
+        /// All paths for this object
+        /// </value>
         /// <remarks>
         /// Returns an empty list for unfiled objects.
         /// </remarks>
@@ -1055,78 +1207,78 @@ namespace PortCMIS.Client
     /// </summary>
     public interface IDocumentProperties
     {
-        /// <summary>
+        /// <value>
         /// Gets if this CMIS object is immutable (CMIS property <c>cmis:isImmutable</c>).
-        /// </summary>
+        /// </value>
         bool? IsImmutable { get; }
 
-        /// <summary>
+        /// <value>
         /// Gets if this CMIS object is the latest version (CMIS property <c>cmis:isLatestVersion</c>)
-        /// </summary>
+        /// </value>
         bool? IsLatestVersion { get; }
 
-        /// <summary>
+        /// <value>
         /// Gets if this CMIS object is the latest version (CMIS property <c>cmis:isMajorVersion</c>).
-        /// </summary>
+        /// </value>
         bool? IsMajorVersion { get; }
 
-        /// <summary>
+        /// <value>
         /// Gets if this CMIS object is the latest major version (CMIS property <c>cmis:isLatestMajorVersion</c>).
-        /// </summary>
+        /// </value>
         bool? IsLatestMajorVersion { get; }
 
-        /// <summary>
+        /// <value>
         /// Gets the version label (CMIS property <c>cmis:versionLabel</c>).
-        /// </summary>
+        /// </value>
         string VersionLabel { get; }
 
-        /// <summary>
+        /// <value>
         /// Gets the version series ID (CMIS property <c>cmis:versionSeriesId</c>).
-        /// </summary>
+        /// </value>
         string VersionSeriesId { get; }
 
-        /// <summary>
+        /// <value>
         /// Gets if this version series is checked out (CMIS property <c>cmis:isVersionSeriesCheckedOut</c>).
-        /// </summary>
+        /// </value>
         bool? IsVersionSeriesCheckedOut { get; }
 
-        /// <summary>
+        /// <value>
         /// Gets the user who checked out this version series (CMIS property <c>cmis:versionSeriesCheckedOutBy</c>).
-        /// </summary>
+        /// </value>
         string VersionSeriesCheckedOutBy { get; }
 
-        /// <summary>
+        /// <value>
         /// Gets the PWC ID of this version series (CMIS property <c>cmis:versionSeriesCheckedOutId</c>).
-        /// </summary>
+        /// </value>
         string VersionSeriesCheckedOutId { get; }
 
-        /// <summary>
+        /// <value>
         /// Gets the checkin comment (CMIS property <c>cmis:checkinComment</c>).
-        /// </summary>
+        /// </value>
         string CheckinComment { get; }
 
-        /// <summary>
-        /// Gets the content stream length or <c>null</c> if the document has no content (CMIS property <c>cmis:contentStreamLength</c>).
-        /// </summary>
+        /// <value>
+        /// The content stream length or <c>null</c> if the document has no content (CMIS property <c>cmis:contentStreamLength</c>).
+        /// </value>
         long? ContentStreamLength { get; }
 
-        /// <summary>
-        /// Gets the content stream MIME type or <c>null</c> if the document has no content (CMIS property <c>cmis:contentStreamMimeType</c>).
-        /// </summary>
+        /// <value>
+        /// The content stream MIME type or <c>null</c> if the document has no content (CMIS property <c>cmis:contentStreamMimeType</c>).
+        /// </value>
         string ContentStreamMimeType { get; }
 
-        /// <summary>
-        /// Gets the content stream filename or <c>null</c> if the document has no content (CMIS property <c>cmis:contentStreamFileName</c>).
-        /// </summary>
+        /// <value>
+        /// The content stream filename or <c>null</c> if the document has no content (CMIS property <c>cmis:contentStreamFileName</c>).
+        /// </value>
         string ContentStreamFileName { get; }
 
-        /// <summary>
-        /// Gets the content stream ID or <c>null</c> if the document has no content (CMIS property <c>cmis:contentStreamId</c>).
-        /// </summary>
+        /// <value>
+        /// The content stream ID or <c>null</c> if the document has no content (CMIS property <c>cmis:contentStreamId</c>).
+        /// </value>
         string ContentStreamId { get; }
 
-        /// <summary>
-        /// Gets the content stream hashes or <c>null</c> if the document has no content or the reposiporty hasn't provided content hashes (CMIS property <c>cmis:contentStreamHash</c>).
+        /// <value>
+        /// The content stream hashes or <c>null</c> if the document has no content or the repository hasn't provided content hashes (CMIS property <c>cmis:contentStreamHash</c>).
         /// </summary>
         IList<IContentStreamHash> ContentStreamHashes { get; }
     }
@@ -1271,7 +1423,14 @@ namespace PortCMIS.Client
     /// </summary>
     public interface IFolderProperties
     {
+        /// <value>
+        /// The parent ID.
+        /// </value>
         string ParentId { get; }
+
+        /// <value>
+        /// The list of allowable child object types.
+        /// </value>
         IList<IObjectType> AllowedChildObjectTypes { get; }
     }
 
@@ -1353,23 +1512,23 @@ namespace PortCMIS.Client
         IItemEnumerable<ICmisObject> GetChildren();
 
         /// <summary>
-        /// Gets the children of this folder ussing the given <see cref="PortCMIS.Client.IOperationContext"/>.
+        /// Gets the children of this folder using the given <see cref="PortCMIS.Client.IOperationContext"/>.
         /// </summary>
         IItemEnumerable<ICmisObject> GetChildren(IOperationContext context);
 
-        /// <summary>
+        /// <value>
         /// Gets if this folder is the root folder.
-        /// </summary>
+        /// </value>
         bool IsRootFolder { get; }
 
-        /// <summary>
-        /// Gets the parent of this folder or <c>null</c> if this folder is the root folder.
-        /// </summary>
+        /// <value>
+        /// The parent of this folder or <c>null</c> if this folder is the root folder.
+        /// </value>
         IFolder FolderParent { get; }
 
-        /// <summary>
-        /// Gets the path of this folder.
-        /// </summary>
+        /// <value>
+        /// The path of this folder.
+        /// </value>
         string Path { get; }
 
         IItemEnumerable<IDocument> GetCheckedOutDocs();
@@ -1381,9 +1540,9 @@ namespace PortCMIS.Client
     /// </summary>
     public interface IPolicyProperties
     {
-        /// <summary>
-        /// Gets the policy text of this CMIS policy (CMIS property <c>cmis:policyText</c>).
-        /// </summary>
+        /// <value>
+        /// The policy text of this CMIS policy (CMIS property <c>cmis:policyText</c>).
+        /// </value>
         string PolicyText { get; }
     }
 
@@ -1399,14 +1558,14 @@ namespace PortCMIS.Client
     /// </summary>
     public interface IRelationshipProperties
     {
-        /// <summary>
-        /// Gets the ID of the relationship source object.
-        /// </summary>
+        /// <value>
+        /// The ID of the relationship source object.
+        /// </value>
         IObjectId SourceId { get; }
 
-        /// <summary>
-        /// Gets the ID of the relationships target object.
-        /// </summary>
+        /// <value>
+        /// The ID of the relationships target object.
+        /// </value>
         IObjectId TargetId { get; }
     }
 
@@ -1467,19 +1626,19 @@ namespace PortCMIS.Client
     /// </summary>
     public interface IContentStreamHash
     {
-        /// <summary>
-        /// Returns the content stream hash property value.
-        /// </summary>
+        /// <value>
+        /// The content stream hash property value.
+        /// </value>
         string PropertyValue { get; }
 
-        /// <summary>
-        /// Returns the hash algorithm.
-        /// </summary>
+        /// <value>
+        /// The hash algorithm.
+        /// </value>
         string Algorithm { get; }
 
-        /// <summary>
-        /// Returns the hash value.
-        /// </summary>
+        /// <value>
+        /// The hash value.
+        /// </value>
         string Hash { get; }
     }
 
@@ -1488,15 +1647,15 @@ namespace PortCMIS.Client
     /// </summary>
     public interface IQueryResult
     {
-        /// <summary>
+        /// <value>
         /// Gets the property.
-        /// </summary>
+        /// </value>
         /// <param name="queryName">the propertys query name or alias</param>
         IPropertyData this[string queryName] { get; }
 
-        /// <summary>
-        /// Gets a list of all properties in this query result.
-        /// </summary>
+        /// <value>
+        /// List of all properties in this query result.
+        /// </value>
         IList<IPropertyData> Properties { get; }
 
         /// <summary>
@@ -1530,35 +1689,71 @@ namespace PortCMIS.Client
         /// </summary>
         IList<object> GetPropertyMultivalueById(string propertyId);
 
-        /// <summary>
-        /// Gets the allowable actions if they were requested.
-        /// </summary>
+        /// <value>
+        /// The allowable actions if they were requested.
+        /// </value>
         IAllowableActions AllowableActions { get; }
 
-        /// <summary>
-        /// Gets the relationships if they were requested.
-        /// </summary>
+        /// <value>
+        /// The relationships if they were requested.
+        /// </value>
         IList<IRelationship> Relationships { get; }
 
-        /// <summary>
-        /// Gets the renditions if they were requested.
-        /// </summary>
+        /// <value>
+        /// The renditions if they were requested.
+        /// </value>
         IList<IRendition> Renditions { get; }
     }
 
+    /// <summary>
+    /// A change event.
+    /// </summary>
     public interface IChangeEvent : IChangeEventInfo
     {
+        /// <value>
+        /// The object ID.
+        /// </value>
         string ObjectId { get; }
+
+        /// <value>
+        /// The object properties, if provided.
+        /// </value>
         IDictionary<string, IList<object>> Properties { get; }
+
+        /// <value>
+        /// The policy IDs, if provided.
+        /// </value>
         IList<string> PolicyIds { get; }
+
+        /// <value>
+        /// The ACL, if provided.
+        /// </value>
         IAcl Acl { get; }
     }
 
+    /// <summary>
+    /// A collection of change events.
+    /// </summary>
     public interface IChangeEvents
     {
+        /// <value>
+        /// The latest change log token.
+        /// </value>
         string LatestChangeLogToken { get; }
+
+        /// <value>
+        /// The list of change events.
+        /// </value>
         IList<IChangeEvent> ChangeEventList { get; }
+
+        /// <value>
+        /// The hasMoreItems flag, if provided.
+        /// </value>
         bool? HasMoreItems { get; }
+
+        /// <value>
+        /// The total number of change events, if provided.
+        /// </value>
         BigInteger? TotalNumItems { get; }
     }
 }

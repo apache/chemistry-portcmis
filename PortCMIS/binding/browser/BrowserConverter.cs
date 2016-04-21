@@ -42,9 +42,9 @@ namespace PortCMIS.Binding.Browser
             Change
         }
 
-        /**
-         * Converts a repository info object.
-         */
+        /// <summary>
+        /// Converts a repository info object.
+        /// </summary>
         internal static JsonObject Convert(IRepositoryInfo repositoryInfo, string repositoryUrl,
                 string rootUrl, bool addExtendedDatetimeExtensionFeature)
         {
@@ -150,9 +150,9 @@ namespace PortCMIS.Binding.Browser
             return jsonFeature;
         }
 
-        /**
-         * Converts a capabilities object.
-         */
+        /// <summary>
+        /// Converts a capabilities object.
+        /// </summary>
         internal static JsonObject Convert(IRepositoryCapabilities capabilities)
         {
             if (capabilities == null)
@@ -241,9 +241,9 @@ namespace PortCMIS.Binding.Browser
             return result;
         }
 
-        /**
-         * Converts an Acl capabilities object.
-         */
+        /// <summary>
+        /// Converts an Acl capabilities object.
+        /// </summary>
         internal static JsonObject Convert(IAclCapabilities capabilities)
         {
             if (capabilities == null)
@@ -724,7 +724,7 @@ namespace PortCMIS.Binding.Browser
                 throw new CmisRuntimeException("Invalid property type '" + id + "'! Cardinality not set!");
             }
 
-            // set specfic values
+            // set specific values
             switch (propertyType)
             {
                 case PropertyType.String:
@@ -827,9 +827,9 @@ namespace PortCMIS.Binding.Browser
             return result;
         }
 
-        /**
-         * Converts choices.
-         */
+        /// <summary>
+        /// Converts choices.
+        /// </summary>
         private static IList<IChoice<string>> ConvertChoicesString(JsonArray choices)
         {
             if (choices == null)
@@ -874,9 +874,9 @@ namespace PortCMIS.Binding.Browser
             return result;
         }
 
-        /**
-         * Converts choices.
-         */
+        /// <summary>
+        /// Converts choices.
+        /// </summary>
         private static IList<IChoice<bool?>> ConvertChoicesBoolean(JsonArray choices)
         {
             if (choices == null)
@@ -925,9 +925,9 @@ namespace PortCMIS.Binding.Browser
             return result;
         }
 
-        /**
-         * Converts choices.
-         */
+        /// <summary>
+        /// Converts choices.
+        /// </summary>
         private static IList<IChoice<BigInteger?>> ConvertChoicesInteger(JsonArray choices)
         {
             if (choices == null)
@@ -975,9 +975,9 @@ namespace PortCMIS.Binding.Browser
             return result;
         }
 
-        /**
-         * Converts choices.
-         */
+        /// <summary>
+        /// Converts choices.
+        /// </summary>
         private static IList<IChoice<decimal?>> ConvertChoicesDecimal(JsonArray choices)
         {
             if (choices == null)
@@ -1025,9 +1025,9 @@ namespace PortCMIS.Binding.Browser
             return result;
         }
 
-        /**
-         * Converts choices.
-         */
+        /// <summary>
+        /// Converts choices.
+        /// </summary>
         private static IList<IChoice<DateTime?>> ConvertChoicesDateTime(JsonArray choices)
         {
             if (choices == null)
@@ -1075,9 +1075,9 @@ namespace PortCMIS.Binding.Browser
             return result;
         }
 
-        /**
-         * Converts an object.
-         */
+        /// <summary>
+        /// Converts an object.
+        /// </summary>
         internal static JsonObject Convert(IObjectData objectData, ITypeCache typeCache, PropertyMode propertyMode, bool succinct, DateTimeFormat dateTimeFormat)
         {
             if (objectData == null)
@@ -1192,9 +1192,9 @@ namespace PortCMIS.Binding.Browser
             return result;
         }
 
-        /**
-         * Converts a bag of properties.
-         */
+        /// <summary>
+        /// Converts a bag of properties.
+        /// </summary>
         internal static JsonObject Convert(IProperties properties, string objectId, ITypeCache typeCache, PropertyMode propertyMode, bool succinct, DateTimeFormat dateTimeFormat)
         {
             if (properties == null)
@@ -1247,9 +1247,9 @@ namespace PortCMIS.Binding.Browser
             return result;
         }
 
-        /**
-         * Converts a property.
-         */
+        /// <summary>
+        /// Converts a property.
+        /// </summary>
         internal static object Convert(IPropertyData property, IPropertyDefinition propDef, bool succinct, DateTimeFormat dateTimeFormat)
         {
             if (property == null)
@@ -1365,9 +1365,9 @@ namespace PortCMIS.Binding.Browser
             }
         }
 
-        /**
-         * Converts allowable actions.
-         */
+        /// <summary>
+        /// Converts allowable actions.
+        /// </summary>
         internal static JsonObject Convert(IAllowableActions allowableActions)
         {
             if (allowableActions == null)
@@ -1391,9 +1391,9 @@ namespace PortCMIS.Binding.Browser
             return result;
         }
 
-        /**
-         * Converts an Acl.
-         */
+        /// <summary>
+        /// Converts an Acl.
+        /// </summary>
         internal static JsonObject Convert(IAcl acl)
         {
             if (acl == null || acl.Aces == null)
@@ -1438,9 +1438,9 @@ namespace PortCMIS.Binding.Browser
             return result;
         }
 
-        /**
-         * Converts a rendition.
-         */
+        /// <summary>
+        /// Converts a rendition.
+        /// </summary>
         internal static JsonObject Convert(IRenditionData rendition)
         {
             if (rendition == null)
@@ -1464,9 +1464,9 @@ namespace PortCMIS.Binding.Browser
             return result;
         }
 
-        /**
-         * Converts a query object list.
-         */
+        /// <summary>
+        /// Converts a query object list.
+        /// </summary>
         internal static JsonObject Convert(IObjectList list, ITypeCache typeCache, PropertyMode propertyMode,
                  bool succinct, DateTimeFormat dateTimeFormat)
         {
@@ -1506,9 +1506,9 @@ namespace PortCMIS.Binding.Browser
             return result;
         }
 
-        /**
-         * Converts an object in a folder list.
-         */
+        /// <summary>
+        /// Converts an object in a folder list.
+        /// </summary>
         internal static JsonObject Convert(IObjectInFolderData objectInFolder, ITypeCache typeCache,
                  bool succinct, DateTimeFormat dateTimeFormat)
         {
@@ -1526,9 +1526,9 @@ namespace PortCMIS.Binding.Browser
             return result;
         }
 
-        /**
-         * Converts a folder list.
-         */
+        /// <summary>
+        /// Converts a folder list.
+        /// </summary>
         internal static JsonObject Convert(IObjectInFolderList objectInFolderList, ITypeCache typeCache,
                  bool succinct, DateTimeFormat dateTimeFormat)
         {
@@ -1559,9 +1559,9 @@ namespace PortCMIS.Binding.Browser
             return result;
         }
 
-        /**
-         * Converts a folder container.
-         */
+        /// <summary>
+        /// Converts a folder container.
+        /// </summary>
         internal static JsonObject Convert(IObjectInFolderContainer container, ITypeCache typeCache, bool succinct, DateTimeFormat dateTimeFormat)
         {
             if (container == null)
@@ -1588,9 +1588,9 @@ namespace PortCMIS.Binding.Browser
             return result;
         }
 
-        /**
-         * Converts an object parent.
-         */
+        /// <summary>
+        /// Converts an object parent.
+        /// </summary>
         internal static JsonObject Convert(IObjectParentData parent, ITypeCache typeCache, bool succinct, DateTimeFormat dateTimeFormat)
         {
             if ((parent == null) || (parent.Object == null))
@@ -1610,9 +1610,9 @@ namespace PortCMIS.Binding.Browser
             return result;
         }
 
-        /**
-         * Converts a type definition.
-         */
+        /// <summary>
+        /// Converts a type definition.
+        /// </summary>
         internal static JsonObject Convert(ITypeDefinition type, DateTimeFormat dateTimeFormat)
         {
             if (type == null)
@@ -1680,9 +1680,9 @@ namespace PortCMIS.Binding.Browser
             return result;
         }
 
-        /**
-         * Converts a property type definition.
-         */
+        /// <summary>
+        /// Converts a property type definition.
+        /// </summary>
         internal static JsonObject Convert(IPropertyDefinition propertyDefinition, DateTimeFormat dateTimeFormat)
         {
             if (propertyDefinition == null)
@@ -1809,9 +1809,9 @@ namespace PortCMIS.Binding.Browser
             target.Add(BrowserConstants.JsonPropertyTypeChoice, ConvertChoices(choices, cardinality, dateTimeFormat));
         }
 
-        /**
-         * Converts choices.
-         */
+        /// <summary>
+        /// Converts choices.
+        /// </summary>
         private static JsonArray ConvertChoices<T>(IList<IChoice<T>> choices, Cardinality? cardinality, DateTimeFormat dateTimeFormat)
         {
             if (choices == null)
@@ -1855,9 +1855,9 @@ namespace PortCMIS.Binding.Browser
             return result;
         }
 
-        /**
-         * Converts a type definition list.
-         */
+        /// <summary>
+        /// Converts a type definition list.
+        /// </summary>
         internal static JsonObject Convert(ITypeDefinitionList list, DateTimeFormat dateTimeFormat)
         {
             if (list == null)
@@ -1887,9 +1887,9 @@ namespace PortCMIS.Binding.Browser
             return result;
         }
 
-        /**
-         * Converts a type definition list.
-         */
+        /// <summary>
+        /// Converts a type definition list.
+        /// </summary>
         internal static ITypeDefinitionList ConvertTypeChildren(JsonObject json)
         {
             if (json == null)
@@ -1922,9 +1922,9 @@ namespace PortCMIS.Binding.Browser
             return result;
         }
 
-        /**
-         * Converts a type definition container.
-         */
+        /// <summary>
+        /// Converts a type definition container.
+        /// </summary>
         internal static JsonObject Convert(ITypeDefinitionContainer container, DateTimeFormat dateTimeFormat)
         {
             if (container == null)
@@ -1951,9 +1951,9 @@ namespace PortCMIS.Binding.Browser
             return result;
         }
 
-        /**
-         * Converts a type definition list.
-         */
+        /// <summary>
+        /// Converts a type definition list.
+        /// </summary>
         internal static IList<ITypeDefinitionContainer> ConvertTypeDescendants(JsonArray json)
         {
             if (json == null)
@@ -1996,9 +1996,9 @@ namespace PortCMIS.Binding.Browser
             return result;
         }
 
-        /**
-         * Converts an object.
-         */
+        /// <summary>
+        /// Converts an object.
+        /// </summary>
         internal static IObjectData ConvertObject(JsonObject json, ITypeCache typeCache)
         {
             if (json == null)
@@ -2052,9 +2052,9 @@ namespace PortCMIS.Binding.Browser
             return result;
         }
 
-        /**
-         * Converts an object.
-         */
+        /// <summary>
+        /// Converts an object.
+        /// </summary>
         internal static IList<IObjectData> ConvertObjects(List<object> json, ITypeCache typeCache)
         {
             if (json == null)
@@ -2075,9 +2075,9 @@ namespace PortCMIS.Binding.Browser
             return result;
         }
 
-        /**
-         * Converts an Acl.
-         */
+        /// <summary>
+        /// Converts an Acl.
+        /// </summary>
         internal static IAcl ConvertAcl(JsonObject json)
         {
             if (json == null)
@@ -2099,7 +2099,8 @@ namespace PortCMIS.Binding.Browser
                     {
                         Ace ace = new Ace();
 
-                        ace.IsDirect = GetBoolean(entry, BrowserConstants.JsonAceIsDirect);
+                        bool? isDirect = GetBoolean(entry, BrowserConstants.JsonAceIsDirect);
+                        ace.IsDirect = (isDirect != null ? (bool) isDirect : true);
 
                         JsonArray jsonPermissions = GetJsonArray(entry, BrowserConstants.JsonAcePermissions);
                         if (jsonPermissions != null)
@@ -2143,9 +2144,9 @@ namespace PortCMIS.Binding.Browser
             return result;
         }
 
-        /**
-         * Converts allowable actions.
-         */
+        /// <summary>
+        /// Converts allowable actions.
+        /// </summary>
         internal static AllowableActions ConvertAllowableActions(JsonObject json)
         {
             if (json == null)
@@ -2174,9 +2175,9 @@ namespace PortCMIS.Binding.Browser
             return result;
         }
 
-        /**
-         * Converts a list of policy ids.
-         */
+        /// <summary>
+        /// Converts a list of policy ids.
+        /// </summary>
         internal static PolicyIdList ConvertPolicyIds(JsonObject json)
         {
             if (json == null)
@@ -2206,9 +2207,9 @@ namespace PortCMIS.Binding.Browser
             return result;
         }
 
-        /**
-         * Converts properties.
-         */
+        /// <summary>
+        /// Converts properties.
+        /// </summary>
         internal static IProperties ConvertProperties(JsonObject json, JsonObject extJson)
         {
             if (json == null)
@@ -2302,9 +2303,9 @@ namespace PortCMIS.Binding.Browser
             return result;
         }
 
-        /**
-         * Converts properties.
-         */
+        /// <summary>
+        /// Converts properties.
+        /// </summary>
         internal static IProperties ConvertSuccinctProperties(JsonObject json, JsonObject extJson, ITypeCache typeCache)
         {
             if (json == null)
@@ -2618,9 +2619,9 @@ namespace PortCMIS.Binding.Browser
             return result;
         }
 
-        /**
-         * Converts a rendition.
-         */
+        /// <summary>
+        /// Converts a rendition.
+        /// </summary>
         internal static IRenditionData ConvertRendition(JsonObject json)
         {
             if (json == null)
@@ -2644,9 +2645,9 @@ namespace PortCMIS.Binding.Browser
             return result;
         }
 
-        /**
-         * Converts a list of renditions.
-         */
+        /// <summary>
+        /// Converts a list of renditions.
+        /// </summary>
         internal static IList<IRenditionData> ConvertRenditions(List<object> json)
         {
             if (json == null)
@@ -2668,9 +2669,9 @@ namespace PortCMIS.Binding.Browser
             return result;
         }
 
-        /**
-         * Converts a object list.
-         */
+        /// <summary>
+        /// Converts a object list.
+        /// </summary>
         internal static ObjectInFolderList ConvertObjectInFolderList(JsonObject json, ITypeCache typeCache)
         {
             if (json == null)
@@ -2704,9 +2705,9 @@ namespace PortCMIS.Binding.Browser
             return result;
         }
 
-        /**
-         * Converts an object in a folder.
-         */
+        /// <summary>
+        /// Converts an object in a folder.
+        /// </summary>
         internal static ObjectInFolderData ConvertObjectInFolder(JsonObject json, ITypeCache typeCache)
         {
             if (json == null)
@@ -2724,9 +2725,9 @@ namespace PortCMIS.Binding.Browser
             return result;
         }
 
-        /**
-         * Converts a descendants tree.
-         */
+        /// <summary>
+        /// Converts a descendants tree.
+        /// </summary>
         internal static IList<IObjectInFolderContainer> ConvertDescendants(JsonArray json, ITypeCache typeCache)
         {
             if (json == null)
@@ -2748,9 +2749,9 @@ namespace PortCMIS.Binding.Browser
             return result;
         }
 
-        /**
-         * Converts a descendant.
-         */
+        /// <summary>
+        /// Converts a descendant.
+        /// </summary>
         internal static IObjectInFolderContainer ConvertDescendant(JsonObject json, ITypeCache typeCache)
         {
             if (json == null)
@@ -2783,9 +2784,9 @@ namespace PortCMIS.Binding.Browser
             return result;
         }
 
-        /**
-         * Converts an object parents list.
-         */
+        /// <summary>
+        /// Converts an object parents list.
+        /// </summary>
         internal static IList<IObjectParentData> ConvertObjectParents(JsonArray json, ITypeCache typeCache)
         {
             if (json == null)
@@ -2814,9 +2815,9 @@ namespace PortCMIS.Binding.Browser
             return result;
         }
 
-        /**
-         * Converts a object list.
-         */
+        /// <summary>
+        /// Converts a object list.
+        /// </summary>
         internal static IObjectList ConvertObjectList(JsonObject json, ITypeCache typeCache, bool isQueryResult)
         {
             if (json == null)
@@ -2861,9 +2862,9 @@ namespace PortCMIS.Binding.Browser
 
         // -----------------------------------------------------------------
 
-        /**
-         * Converts FailedToDelete ids.
-         */
+        /// <summary>
+        /// Converts FailedToDelete ids.
+        /// </summary>
         internal static JsonObject Convert(IFailedToDeleteData ftd)
         {
             if (ftd == null)
@@ -2889,9 +2890,9 @@ namespace PortCMIS.Binding.Browser
             return result;
         }
 
-        /**
-         * Converts FailedToDelete ids.
-         */
+        /// <summary>
+        /// Converts FailedToDelete ids.
+        /// </summary>
         internal static IFailedToDeleteData ConvertFailedToDelete(JsonObject json)
         {
             if (json == null)
@@ -2924,9 +2925,9 @@ namespace PortCMIS.Binding.Browser
 
         // -----------------------------------------------------------------
 
-        /**
-         * Converts bulk update data.
-         */
+        /// <summary>
+        /// Converts bulk update data.
+        /// </summary>
         internal static JsonObject Convert(IBulkUpdateObjectIdAndChangeToken oc)
         {
             if (oc == null)
@@ -2945,9 +2946,9 @@ namespace PortCMIS.Binding.Browser
             return result;
         }
 
-        /**
-         * Converts bulk update data lists.
-         */
+        /// <summary>
+        /// Converts bulk update data lists.
+        /// </summary>
         internal static IList<IBulkUpdateObjectIdAndChangeToken> ConvertBulkUpdate(JsonArray json)
         {
             if (json == null)
@@ -2969,9 +2970,9 @@ namespace PortCMIS.Binding.Browser
             return result;
         }
 
-        /**
-         * Converts bulk update data.
-         */
+        /// <summary>
+        /// Converts bulk update data.
+        /// </summary>
         internal static IBulkUpdateObjectIdAndChangeToken ConvertBulkUpdate(JsonObject json)
         {
             if (json == null)
@@ -3277,7 +3278,7 @@ namespace PortCMIS.Binding.Browser
                     break;
             }
 
-            throw new CmisRuntimeException("Unkown property type!");
+            throw new CmisRuntimeException("Unknown property type!");
         }
 
         internal static JsonArray GetJsonArrayFromList<T>(IList<T> list)

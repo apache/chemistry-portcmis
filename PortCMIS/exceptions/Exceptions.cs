@@ -26,30 +26,82 @@ namespace PortCMIS.Exceptions
     /// </summary>
     public abstract class CmisBaseException : Exception
     {
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public CmisBaseException() : base() { Code = null; }
+
+        /// <summary>
+        /// Constructor.
+        /// <param name="message">The exception message.</param>
+        /// </summary>
         public CmisBaseException(string message) : base(message) { Code = null; }
+
+        /// <summary>
+        /// Constructor.
+        /// <param name="message">The exception message.</param>
+        /// <param name="inner">The inner exception.</param>
+        /// </summary>
         public CmisBaseException(string message, Exception inner) : base(message, inner) { Code = null; }
+
+        /// <summary>
+        /// Constructor.
+        /// <param name="message">The exception message.</param>
+        /// <param name="code">The exception code. (Web Services only.)</param>
+        /// </summary>
         public CmisBaseException(string message, long? code)
             : this(message)
         {
             Code = code;
         }
+
+        /// <summary>
+        /// Constructor.
+        /// <param name="message">The exception message.</param>
+        /// <param name="errorContent">The error content</param>
+        /// </summary>
         public CmisBaseException(string message, string errorContent)
             : this(message)
         {
             ErrorContent = errorContent;
         }
+
+        /// <summary>
+        /// Constructor.
+        /// <param name="message">The exception message.</param>
+        /// <param name="errorContent">The error content</param>
+        /// <param name="inner">The inner exception.</param>
+        /// </summary>
         public CmisBaseException(string message, string errorContent, Exception inner)
             : this(message, inner)
         {
             ErrorContent = errorContent;
         }
+
+        /// <summary>
+        /// The exception code.
+        /// </summary>
+        /// <remarks>Only used by the Web Services binding.</remarks>
+        /// <value>The exception code.</value>
         public long? Code { get; protected set; }
+
+        /// <summary>
+        /// The unparsed error message.
+        /// </summary>
+        /// <value>The unparsed error message.</value>
         public string ErrorContent { get; protected set; }
 
-        public abstract string GetExtensionName();
+        /// <summary>
+        /// The CMIS exception name.
+        /// </summary>
+        /// <value>The CMIS exception name.</value>
+        public abstract string Name { get; }
+
     }
 
+    /// <summary>
+    /// Connection exception.
+    /// </summary>
     public class CmisConnectionException : CmisBaseException
     {
         public CmisConnectionException() : base() { }
@@ -61,12 +113,12 @@ namespace PortCMIS.Exceptions
 
         public const string ExceptionName = "connection";
 
-        public override string GetExtensionName()
-        {
-            return ExceptionName;
-        }
+        public override string Name { get { return ExceptionName; } }
     }
 
+    /// <summary>
+    /// Constraint exception.
+    /// </summary>
     public class CmisConstraintException : CmisBaseException
     {
         public CmisConstraintException() : base() { }
@@ -78,12 +130,12 @@ namespace PortCMIS.Exceptions
 
         public const string ExceptionName = "constraint";
 
-        public override string GetExtensionName()
-        {
-            return ExceptionName;
-        }
+        public override string Name { get { return ExceptionName; } }
     }
 
+    /// <summary>
+    /// Content Already Exists exception.
+    /// </summary>
     public class CmisContentAlreadyExistsException : CmisBaseException
     {
         public CmisContentAlreadyExistsException() : base() { }
@@ -95,12 +147,12 @@ namespace PortCMIS.Exceptions
 
         public const string ExceptionName = "contentAlreadyExists";
 
-        public override string GetExtensionName()
-        {
-            return ExceptionName;
-        }
+        public override string Name { get { return ExceptionName; } }
     }
 
+    /// <summary>
+    /// Filter Not Valid exception.
+    /// </summary>
     public class CmisFilterNotValidException : CmisBaseException
     {
         public CmisFilterNotValidException() : base() { }
@@ -112,12 +164,12 @@ namespace PortCMIS.Exceptions
 
         public const string ExceptionName = "filterNotValid";
 
-        public override string GetExtensionName()
-        {
-            return ExceptionName;
-        }
+        public override string Name { get { return ExceptionName; } }
     }
 
+    /// <summary>
+    /// Invalid Argument exception.
+    /// </summary>
     public class CmisInvalidArgumentException : CmisBaseException
     {
         public CmisInvalidArgumentException() : base() { }
@@ -129,12 +181,12 @@ namespace PortCMIS.Exceptions
 
         public const string ExceptionName = "invalidArgument";
 
-        public override string GetExtensionName()
-        {
-            return ExceptionName;
-        }
+        public override string Name { get { return ExceptionName; } }
     }
 
+    /// <summary>
+    /// Name Constraint Violation exception.
+    /// </summary>
     public class CmisNameConstraintViolationException : CmisBaseException
     {
         public CmisNameConstraintViolationException() : base() { }
@@ -146,12 +198,12 @@ namespace PortCMIS.Exceptions
 
         public const string ExceptionName = "nameConstraintViolation";
 
-        public override string GetExtensionName()
-        {
-            return ExceptionName;
-        }
+        public override string Name { get { return ExceptionName; } }
     }
 
+    /// <summary>
+    /// Not Supported exception.
+    /// </summary>
     public class CmisNotSupportedException : CmisBaseException
     {
         public CmisNotSupportedException() : base() { }
@@ -163,12 +215,12 @@ namespace PortCMIS.Exceptions
 
         public const string ExceptionName = "notSupported";
 
-        public override string GetExtensionName()
-        {
-            return ExceptionName;
-        }
+        public override string Name { get { return ExceptionName; } }
     }
 
+    /// <summary>
+    /// Object Not Found exception.
+    /// </summary>
     public class CmisObjectNotFoundException : CmisBaseException
     {
         public CmisObjectNotFoundException() : base() { }
@@ -180,12 +232,12 @@ namespace PortCMIS.Exceptions
 
         public const string ExceptionName = "objectNotFound";
 
-        public override string GetExtensionName()
-        {
-            return ExceptionName;
-        }
+        public override string Name { get { return ExceptionName; } }
     }
 
+    /// <summary>
+    /// Permission Denied exception.
+    /// </summary>
     public class CmisPermissionDeniedException : CmisBaseException
     {
         public CmisPermissionDeniedException() : base() { }
@@ -197,12 +249,12 @@ namespace PortCMIS.Exceptions
 
         public const string ExceptionName = "permissionDenied";
 
-        public override string GetExtensionName()
-        {
-            return ExceptionName;
-        }
+        public override string Name { get { return ExceptionName; } }
     }
 
+    /// <summary>
+    /// Runtime exception.
+    /// </summary>
     public class CmisRuntimeException : CmisBaseException
     {
         public CmisRuntimeException() : base() { }
@@ -214,12 +266,12 @@ namespace PortCMIS.Exceptions
 
         public const string ExceptionName = "runtime";
 
-        public override string GetExtensionName()
-        {
-            return ExceptionName;
-        }
+        public override string Name { get { return ExceptionName; } }
     }
 
+    /// <summary>
+    /// Storage exception.
+    /// </summary>
     public class CmisStorageException : CmisBaseException
     {
         public CmisStorageException() : base() { }
@@ -231,12 +283,12 @@ namespace PortCMIS.Exceptions
 
         public const string ExceptionName = "storage";
 
-        public override string GetExtensionName()
-        {
-            return ExceptionName;
-        }
+        public override string Name { get { return ExceptionName; } }
     }
 
+    /// <summary>
+    /// Stream Not Supported exception.
+    /// </summary>
     public class CmisStreamNotSupportedException : CmisBaseException
     {
         public CmisStreamNotSupportedException() : base() { }
@@ -248,12 +300,12 @@ namespace PortCMIS.Exceptions
 
         public const string ExceptionName = "streamNotSupported";
 
-        public override string GetExtensionName()
-        {
-            return ExceptionName;
-        }
+        public override string Name { get { return ExceptionName; } }
     }
 
+    /// <summary>
+    /// Update Conflict exception.
+    /// </summary>
     public class CmisUpdateConflictException : CmisBaseException
     {
         public CmisUpdateConflictException() : base() { }
@@ -265,12 +317,12 @@ namespace PortCMIS.Exceptions
 
         public const string ExceptionName = "updateConflict";
 
-        public override string GetExtensionName()
-        {
-            return ExceptionName;
-        }
+        public override string Name { get { return ExceptionName; } }
     }
 
+    /// <summary>
+    /// Versioning exception.
+    /// </summary>
     public class CmisVersioningException : CmisBaseException
     {
         public CmisVersioningException() : base() { }
@@ -282,12 +334,12 @@ namespace PortCMIS.Exceptions
 
         public const string ExceptionName = "versioning";
 
-        public override string GetExtensionName()
-        {
-            return ExceptionName;
-        }
+        public override string Name { get { return ExceptionName; } }
     }
 
+    /// <summary>
+    /// Unauthorized exception.
+    /// </summary>
     public class CmisUnauthorizedException : CmisRuntimeException
     {
         public CmisUnauthorizedException() : base() { }
@@ -296,13 +348,11 @@ namespace PortCMIS.Exceptions
         public CmisUnauthorizedException(string message, long? code) : base(message) { }
         public CmisUnauthorizedException(string message, string errorContent) : base(message) { }
         public CmisUnauthorizedException(string message, string errorContent, Exception inner) : base(message, errorContent, inner) { }
-
-        public override string GetExtensionName()
-        {
-            return ExceptionName;
-        }
     }
 
+    /// <summary>
+    /// Proxy Authentication exception.
+    /// </summary>
     public class CmisProxyAuthenticationException : CmisRuntimeException
     {
         public CmisProxyAuthenticationException() : base() { }
@@ -311,13 +361,11 @@ namespace PortCMIS.Exceptions
         public CmisProxyAuthenticationException(string message, long? code) : base(message) { }
         public CmisProxyAuthenticationException(string message, string errorContent) : base(message) { }
         public CmisProxyAuthenticationException(string message, string errorContent, Exception inner) : base(message, errorContent, inner) { }
-
-        public override string GetExtensionName()
-        {
-            return ExceptionName;
-        }
     }
 
+    /// <summary>
+    /// Service Unavailable exception.
+    /// </summary>
     public class CmisServiceUnavailableException : CmisRuntimeException
     {
         public CmisServiceUnavailableException() : base() { }
@@ -326,13 +374,11 @@ namespace PortCMIS.Exceptions
         public CmisServiceUnavailableException(string message, long? code) : base(message) { }
         public CmisServiceUnavailableException(string message, string errorContent) : base(message) { }
         public CmisServiceUnavailableException(string message, string errorContent, Exception inner) : base(message, errorContent, inner) { }
-
-        public override string GetExtensionName()
-        {
-            return ExceptionName;
-        }
     }
 
+    /// <summary>
+    /// Invalid Server Data exception.
+    /// </summary>
     public class CmisInvalidServerData : InvalidOperationException
     {
         public CmisInvalidServerData() : base() { }

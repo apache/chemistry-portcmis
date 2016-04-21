@@ -43,6 +43,57 @@ namespace PortCMIS.Binding.AtomPub
         public const string PREFIX_RESTATOM = "cmisra";
         public const string PREFIX_APACHE_CHEMISTY = "chemistry";
 
+        // service doc
+        public const string TAG_SERVICE = "service";
+        public const string TAG_WORKSPACE = "workspace";
+        public const string TAG_COLLECTION = "collection";
+        public const string TAG_COLLECTION_TYPE = "collectionType";
+        public const string TAG_URI_TEMPLATE = "uritemplate";
+        public const string TAG_TEMPLATE_TEMPLATE = "template";
+        public const string TAG_TEMPLATE_TYPE = "type";
+        public const string TAG_LINK = "link";
+
+        // atom
+        public const string TAG_ATOM_ID = "id";
+        public const string TAG_ATOM_TITLE = "title";
+        public const string TAG_ATOM_UPDATED = "updated";
+
+        // feed
+        public const string TAG_FEED = "feed";
+
+        // entry
+        public const string TAG_ENTRY = "entry";
+        public const string TAG_NUM_ITEMS = "numItems";
+        public const string TAG_PATH_SEGMENT = "pathSegment";
+        public const string TAG_RELATIVE_PATH_SEGMENT = "relativePathSegment";
+        public const string TAG_CHILDREN = "children";
+        public const string TAG_CONTENT = "content";
+        public const string TAG_CONTENT_MEDIATYPE = "mediatype";
+        public const string TAG_CONTENT_BASE64 = "base64";
+        public const string TAG_CONTENT_FILENAME = "filename";
+
+        public const string ATTR_DOCUMENT_TYPE = "cmisTypeDocumentDefinitionType";
+        public const string ATTR_FOLDER_TYPE = "cmisTypeFolderDefinitionType";
+        public const string ATTR_RELATIONSHIP_TYPE = "cmisTypeRelationshipDefinitionType";
+        public const string ATTR_POLICY_TYPE = "cmisTypePolicyDefinitionType";
+        public const string ATTR_ITEM_TYPE = "cmisTypeItemDefinitionType";
+        public const string ATTR_SECONDARY_TYPE = "cmisTypeSecondaryDefinitionType";
+
+        // allowable actions
+        public const string TAG_ALLOWABLEACTIONS = "allowableActions";
+
+        // ACL
+        public const string TAG_ACL = "acl";
+
+        // HTML
+        public const string TAG_HTML = "html";
+
+        // links
+        public const string LINK_REL = "rel";
+        public const string LINK_HREF = "href";
+        public const string LINK_TYPE = "type";
+        public const string CONTENT_SRC = "src";
+
         // tags
         public const string TAG_REPOSITORY_INFO = "repositoryInfo";
 
@@ -167,13 +218,6 @@ namespace PortCMIS.Binding.AtomPub
         public const string TAG_PROPERTY_VALUE = "value";
 
         public const string TAG_TYPE = "type";
-
-        public const string ATTR_DOCUMENT_TYPE = "cmisTypeDocumentDefinitionType";
-        public const string ATTR_FOLDER_TYPE = "cmisTypeFolderDefinitionType";
-        public const string ATTR_RELATIONSHIP_TYPE = "cmisTypeRelationshipDefinitionType";
-        public const string ATTR_POLICY_TYPE = "cmisTypePolicyDefinitionType";
-        public const string ATTR_ITEM_TYPE = "cmisTypeItemDefinitionType";
-        public const string ATTR_SECONDARY_TYPE = "cmisTypeSecondaryDefinitionType";
 
         public const string TAG_TYPE_ID = "id";
         public const string TAG_TYPE_LOCALNAME = "localName";

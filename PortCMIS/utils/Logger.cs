@@ -24,7 +24,7 @@ using System.Text;
 namespace PortCMIS.Utils
 {
     /// <summary>
-    /// Simplistic logginh.
+    /// Simplistic logging.
     /// </summary>
     public class Logger
     {
@@ -34,15 +34,21 @@ namespace PortCMIS.Utils
             Error, Warn, Info, Debug, Trace
         }
 
+        /// <value>the log level</value>
         public static LogLevel Level { get; set; }
         public static bool ToDebug { get; set; }
         public static bool ToWriter { get; set; }
         public static TextWriter Writer { private get; set; }
 
+        /// <value>Is the error log level enabled?</value>
         public static bool IsErrorEnabled { get { return true; } }
+        /// <value>Is the warn log level enabled?</value>
         public static bool IsWarnEnabled { get { return Level == LogLevel.Warn || Level == LogLevel.Info || Level == LogLevel.Debug || Level == LogLevel.Trace; } }
+        /// <value>Is the info log level enabled?</value>
         public static bool IsInfoEnabled { get { return Level == LogLevel.Info || Level == LogLevel.Debug || Level == LogLevel.Trace; } }
+        /// <value>Is the debug log level enabled?</value>
         public static bool IsDebugEnabled { get { return Level == LogLevel.Debug || Level == LogLevel.Trace; } }
+        /// <value>Is the trace log level enabled?</value>
         public static bool IsTraceEnabled { get { return Level == LogLevel.Trace; } }
 
         static Logger()
@@ -58,6 +64,11 @@ namespace PortCMIS.Utils
 
         private static object loggerLock = new object();
 
+        /// <summary>
+        /// Logs an error message.
+        /// </summary>
+        /// <param name="message">the message</param>
+        /// <param name="e">the exception</param>
         public static void Error(string message, Exception e = null)
         {
             lock (loggerLock)
@@ -66,6 +77,11 @@ namespace PortCMIS.Utils
             }
         }
 
+        /// <summary>
+        /// Logs a warn message.
+        /// </summary>
+        /// <param name="message">the message</param>
+        /// <param name="e">the exception</param>
         public static void Warn(string message, Exception e = null)
         {
             lock (loggerLock)
@@ -77,6 +93,11 @@ namespace PortCMIS.Utils
             }
         }
 
+        /// <summary>
+        /// Logs an info message.
+        /// </summary>
+        /// <param name="message">the message</param>
+        /// <param name="e">the exception</param>
         public static void Info(string message, Exception e = null)
         {
             lock (loggerLock)
@@ -88,6 +109,11 @@ namespace PortCMIS.Utils
             }
         }
 
+        /// <summary>
+        /// Logs a debug message.
+        /// </summary>
+        /// <param name="message">the message</param>
+        /// <param name="e">the exception</param>
         public static void Debug(string message, Exception e = null)
         {
             lock (loggerLock)
@@ -99,6 +125,11 @@ namespace PortCMIS.Utils
             }
         }
 
+        /// <summary>
+        /// Logs a trace message.
+        /// </summary>
+        /// <param name="message">the message</param>
+        /// <param name="e">the exception</param>
         public static void Trace(string message, Exception e = null)
         {
             lock (loggerLock)
@@ -145,6 +176,5 @@ namespace PortCMIS.Utils
                 Writer.Flush();
             }
         }
-
     }
 }

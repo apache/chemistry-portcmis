@@ -27,29 +27,61 @@ namespace PortCMIS.Data.Extensions
 {
     public interface ICmisExtensionElement
     {
+        /// <value>
+        /// Extension name.
+        /// </value>
         string Name { get; }
+
+        /// <value>
+        /// Extension name space.
+        /// </value>
         string Namespace { get; }
+
+        /// <value>
+        /// Extension value.
+        /// </value>
         string Value { get; }
+
+        /// <value>
+        /// Extension attributes.
+        /// </value>
         IDictionary<string, string> Attributes { get; }
+
+        /// <value>
+        /// Extension children.
+        /// </value>
         IList<ICmisExtensionElement> Children { get; }
     }
 
     public class CmisExtensionElement : ICmisExtensionElement
     {
+        /// <inheritdoc/>
         public string Name { get; set; }
+
+        /// <inheritdoc/>
         public string Namespace { get; set; }
+
+        /// <inheritdoc/>
         public string Value { get; set; }
+
+        /// <inheritdoc/>
         public IDictionary<string, string> Attributes { get; set; }
+
+        /// <inheritdoc/>
         public IList<ICmisExtensionElement> Children { get; set; }
     }
 
     public interface IExtensionsData
     {
+        /// <value>
+        /// List of extensions.
+        /// </value>
         IList<ICmisExtensionElement> Extensions { get; set; }
     }
 
     public class ExtensionsData : IExtensionsData
     {
+        /// <inheritdoc/>
         public IList<ICmisExtensionElement> Extensions { get; set; }
     }
 }

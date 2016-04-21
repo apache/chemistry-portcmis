@@ -27,6 +27,7 @@ namespace PortCMIS.Client
         // ---- provider parameter ----
         // Predefined binding types
         public const string BindingType = "org.apache.chemistry.portcmis.binding.spi.type";
+        public const string ForceCmisVersion = "org.apache.chemistry.portcmis.cmisversion";
         // Class name of the binding class.
         public const string BindingSpiClass = "org.apache.chemistry.portcmis.binding.spi.classname";
         // URL of the AtomPub service document.

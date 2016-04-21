@@ -21,9 +21,16 @@ namespace PortCMIS
 {
     public static class BindingType
     {
+        /// <summary>Binding type AtomPub</summary>
         public const string AtomPub = "atompub";
+
+        /// <summary>Binding type Web Services</summary>
         public const string WebServices = "webservices";
+
+        /// <summary>Binding type Browser</summary>
         public const string Browser = "browser";
+
+        /// <summary>Custom binding type</summary>
         public const string Custom = "custom";
     }
 }

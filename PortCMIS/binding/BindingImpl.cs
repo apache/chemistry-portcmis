@@ -81,7 +81,7 @@ namespace PortCMIS.Binding.Impl
                     }
                     catch (Exception e)
                     {
-                        throw new CmisRuntimeException("Could not load authentictaion provider: " + e.Message, e);
+                        throw new CmisRuntimeException("Could not load authentication provider: " + e.Message, e);
                     }
                 }
             }
@@ -467,7 +467,7 @@ namespace PortCMIS.Binding.Impl
     }
 
     /// <summary>
-    /// Repository service proxy that caches repository infos and type defintions.
+    /// Repository service proxy that caches repository infos and type definitions.
     /// </summary>
     internal class BindingRepositoryService : IRepositoryService
     {

@@ -25,6 +25,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace PortCMIS.Binding
@@ -38,6 +39,8 @@ namespace PortCMIS.Binding
         object Get(string[] keys);
         void Remove(string[] keys);
         int Check(string[] keys);
+        void Lock();
+        void Unlock();
     }
 
     internal interface IBindingCacheLevel
@@ -222,6 +225,16 @@ namespace PortCMIS.Binding
 
                 return keys.Length;
             }
+        }
+
+        public void Lock()
+        {
+            Monitor.Enter(cacheLock);
+        }
+
+        public void Unlock()
+        {
+            Monitor.Exit(cacheLock);
         }
 
         // --- internal ---

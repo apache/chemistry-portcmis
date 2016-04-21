@@ -82,6 +82,9 @@ namespace PortCMIS.Binding
         void ClearRepositoryCache(string repositoryId);
     }
 
+    /// <summary>
+    /// Basic authentication provider 
+    /// </summary>
     public interface IAuthenticationProvider
     {
         IBindingSession Session { get; set; }
@@ -291,6 +294,10 @@ namespace PortCMIS.Binding
                 {
                     sessionParameters[SessionParameter.AuthenticationProviderClass] = StandardAuthenticationProviderClass;
                 }
+            }
+            if (!sessionParameters.ContainsKey(SessionParameter.HttpInvokerClass))
+            {
+                sessionParameters[SessionParameter.HttpInvokerClass] = DefaultHttpInvokerClass;
             }
 
             AddDefaultParameters(sessionParameters);

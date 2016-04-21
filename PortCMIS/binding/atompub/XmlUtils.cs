@@ -31,16 +31,16 @@ using PortCMIS.Exceptions;
 
 namespace PortCMIS.Binding.AtomPub
 {
-    class XmlUtils
+    internal class XmlUtils
     {
 
         // --------------
         // --- writer ---
         // --------------
 
-        /**
-         * Creates a new XML writer.
-         */
+        /// <summary>
+        /// Creates a new XML writer.
+        /// </summary>
         public static XmlWriter createWriter(Stream stream)
         {
             XmlWriterSettings settings = new XmlWriterSettings();
@@ -48,10 +48,10 @@ namespace PortCMIS.Binding.AtomPub
             return XmlWriter.Create(stream, settings);
         }
 
-        /**
-         * Starts a XML document.
-         */
-        public static void startXmlDocument(XmlWriter writer, string rootLocalName, string rootNamespace)
+        /// <summary>
+        /// Starts a XML document.
+        /// </summary>
+        public static void StartXmlDocument(XmlWriter writer)
         {
             // writer.setPrefix(XmlConstants.PREFIX_ATOM, XmlConstants.NAMESPACE_ATOM);
             // writer.setPrefix(XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS);
@@ -61,19 +61,18 @@ namespace PortCMIS.Binding.AtomPub
             writer.WriteStartDocument();
         }
 
-        /**
-         * Ends a XML document.
-         */
-        public static void endXmlDocument(XmlWriter writer)
+        /// <summary>
+        /// Ends a XML document.
+        /// </summary>
+        public static void EndXmlDocument(XmlWriter writer)
         {
             writer.WriteEndDocument();
-            writer.Dispose();
         }
 
-        /**
-         * Writes a String tag.
-         */
-        public static void write(XmlWriter writer, string prefix, string ns, string tag, string value)
+        /// <summary>
+        /// Writes a String tag.
+        /// </summary>
+        public static void Write(XmlWriter writer, string prefix, string ns, string tag, string value)
         {
             if (value == null)
             {
@@ -92,23 +91,23 @@ namespace PortCMIS.Binding.AtomPub
             writer.WriteEndElement();
         }
 
-        /**
-         * Writes an Integer tag.
-         */
-        public static void write(XmlWriter writer, string prefix, string ns, string tag, BigInteger? value)
+        /// <summary>
+        /// Writes an Integer tag.
+        /// </summary>
+        public static void Write(XmlWriter writer, string prefix, string ns, string tag, BigInteger? value)
         {
             if (value == null)
             {
                 return;
             }
 
-            write(writer, prefix, ns, tag, ((BigInteger)value).ToString("#", CultureInfo.InvariantCulture));
+            Write(writer, prefix, ns, tag, ((BigInteger)value).ToString("#", CultureInfo.InvariantCulture));
         }
 
-        /**
-         * Writes a Decimal tag.
-         */
-        public static void write(XmlWriter writer, String prefix, String ns, String tag, decimal? value)
+        /// <summary>
+        /// Writes a Decimal tag.
+        /// </summary>
+        public static void Write(XmlWriter writer, String prefix, String ns, String tag, decimal? value)
         {
             if (value == null)
             {
@@ -127,10 +126,10 @@ namespace PortCMIS.Binding.AtomPub
             writer.WriteEndElement();
         }
 
-        /**
-         * Writes a DateTime tag.
-         */
-        public static void write(XmlWriter writer, String prefix, String ns, String tag, DateTime? value)
+        /// <summary>
+        /// Writes a DateTime tag.
+        /// </summary>
+        public static void Write(XmlWriter writer, String prefix, String ns, String tag, DateTime? value)
         {
             if (value == null)
             {
@@ -149,30 +148,30 @@ namespace PortCMIS.Binding.AtomPub
             writer.WriteEndElement();
         }
 
-        /**
-         * Writes a Boolean tag.
-         */
-        public static void write(XmlWriter writer, string prefix, string ns, string tag, bool? value)
+        /// <summary>
+        /// Writes a Boolean tag.
+        /// </summary>
+        public static void Write(XmlWriter writer, string prefix, string ns, string tag, bool? value)
         {
             if (value == null)
             {
                 return;
             }
 
-            write(writer, prefix, ns, tag, (bool)value ? "true" : "false");
+            Write(writer, prefix, ns, tag, (bool)value ? "true" : "false");
         }
 
-        /**
-         * Writes an Enum tag.
-         */
-        public static void write(XmlWriter writer, String prefix, String ns, String tag, Enum value)
+        /// <summary>
+        /// Writes an Enum tag.
+        /// </summary>
+        public static void Write(XmlWriter writer, String prefix, String ns, String tag, Enum value)
         {
             if (value == null)
             {
                 return;
             }
 
-            write(writer, prefix, ns, tag, value.GetCmisValue());
+            Write(writer, prefix, ns, tag, value.GetCmisValue());
         }
 
 
@@ -180,10 +179,10 @@ namespace PortCMIS.Binding.AtomPub
         // ---- parser ---
         // ---------------
 
-        /**
-         * Creates a new XML parser with OpenCMIS default settings.
-         */
-        public static XmlReader createParser(Stream stream)
+        /// <summary>
+        /// Creates a new XML parser with OpenCMIS default settings.
+        /// </summary>
+        public static XmlReader CreateParser(Stream stream)
         {
             XmlReaderSettings settings = new XmlReaderSettings();
             settings.MaxCharactersInDocument = 0;
@@ -191,29 +190,27 @@ namespace PortCMIS.Binding.AtomPub
             return XmlReader.Create(stream, settings);
         }
 
-        /**
-         * Moves the parser to the next element.
-         */
-        public static bool next(XmlReader parser)
+        /// <summary>
+        /// Moves the parser to the next element.
+        /// </summary>
+        public static bool Next(XmlReader parser)
         {
             return parser.Read();
         }
 
-        /**
-         * Skips a tag or subtree.
-         */
-        public static void skip(XmlReader parser)
+        /// <summary>
+        /// Skips a tag or subtree.
+        /// </summary>
+        public static void Skip(XmlReader parser)
         {
             parser.Skip();
         }
 
-        /**
-         * Moves the parser to the next start element.
-         * 
-         * @return <code>true</code> if another start element has been found,
-         *         <code>false</code> otherwise
-         */
-        public static bool findNextStartElemenet(XmlReader parser)
+        /// <summary>
+        /// Moves the parser to the next start element.
+        /// <returns><c>true</c> if another start element has been found, <c>false</c> otherwise</returns>
+        /// </summary>
+        public static bool FindNextStartElemenet(XmlReader parser)
         {
             while (true)
             {
@@ -231,49 +228,52 @@ namespace PortCMIS.Binding.AtomPub
             }
         }
 
-        /**
-         * Parses a tag that contains text.
-         */
-        public static String readText(XmlReader parser, int maxLength)
+        /// <summary>
+        /// Parses a tag that contains text.
+        /// </summary>
+        public static String ReadText(XmlReader parser, int maxLength)
         {
             StringBuilder sb = new StringBuilder();
 
-            next(parser);
-
-            while (true)
+            if (!parser.IsEmptyElement)
             {
-                XmlNodeType nodeType = parser.NodeType;
-                if (nodeType == XmlNodeType.EndElement)
-                {
-                    break;
-                }
-                else if (nodeType == XmlNodeType.Text || nodeType == XmlNodeType.CDATA)
-                {
-                    char[] buffer = new char[8 * 1024];
+                Next(parser);
 
-                    int len;
-                    while ((len = parser.ReadValueChunk(buffer, 0, buffer.Length)) > 0)
+                while (true)
+                {
+                    XmlNodeType nodeType = parser.NodeType;
+                    if (nodeType == XmlNodeType.EndElement)
                     {
-                        if (sb.Length + len > maxLength)
-                        {
-                            throw new CmisInvalidArgumentException("String limit exceeded!");
-                        }
-
-                        sb.Append(buffer, 0, len);
+                        break;
                     }
-                }
-                else if (nodeType == XmlNodeType.Element)
-                {
-                    throw new CmisInvalidArgumentException("Unexpected tag: " + parser.Name);
-                }
+                    else if (nodeType == XmlNodeType.Text || nodeType == XmlNodeType.CDATA)
+                    {
+                        char[] buffer = new char[8 * 1024];
 
-                if (!next(parser))
-                {
-                    break;
+                        int len;
+                        while ((len = parser.ReadValueChunk(buffer, 0, buffer.Length)) > 0)
+                        {
+                            if (sb.Length + len > maxLength)
+                            {
+                                throw new CmisInvalidArgumentException("String limit exceeded!");
+                            }
+
+                            sb.Append(buffer, 0, len);
+                        }
+                    }
+                    else if (nodeType == XmlNodeType.Element)
+                    {
+                        throw new CmisInvalidArgumentException("Unexpected tag: " + parser.Name);
+                    }
+
+                    if (!Next(parser))
+                    {
+                        break;
+                    }
                 }
             }
 
-            next(parser);
+            Next(parser);
 
             return sb.ToString();
         }

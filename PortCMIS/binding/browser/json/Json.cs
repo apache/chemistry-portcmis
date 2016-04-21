@@ -17,11 +17,6 @@
 * under the License.
 */
 
-/**
- * This JSON parser implemenation is based on
- * JSON.simple <http://code.google.com/p/json-simple/>.
- */
-
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -32,6 +27,10 @@ using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
+/// <summary>
+/// This JSON parser implementation is based on
+/// JSON.simple <http://code.google.com/p/json-simple/>.
+/// </summary>
 namespace PortCMIS.Binding.Browser.Json
 {
     /// <summary>
@@ -681,7 +680,7 @@ namespace PortCMIS.Binding.Browser.Json
                     sb.Append("Unexpected exception at position ").Append(Position).Append(": ").Append(UnexpectedObject);
                     break;
                 default:
-                    sb.Append("Unkown error at position ").Append(Position).Append('.');
+                    sb.Append("Unknown error at position ").Append(Position).Append('.');
                     break;
             }
             return sb.ToString();
@@ -858,7 +857,7 @@ namespace PortCMIS.Binding.Browser.Json
 
         // error messages for the codes above
         private static readonly string[] ZZ_ERROR_MSG = { 
-                                              "Unkown internal scanner error",
+                                              "Unknown internal scanner error",
                                               "Error: could not match input",
                                               "Error: pushback value was too large"
                                           };
@@ -901,10 +900,10 @@ namespace PortCMIS.Binding.Browser.Json
         /** the current lexical state */
         private int zzLexicalState = YyInitial;
 
-        /**
-         * this buffer contains the current text to be matched and is the source of
-         * the yytext() string
-         */
+        /// <summary>
+        /// this buffer contains the current text to be matched and is the source of
+        /// the yytext() string
+        /// </summary>
         private char[] zzBuffer = new char[ZzBufferSize];
 
         /** the textposition at the last accepting state */
@@ -916,10 +915,9 @@ namespace PortCMIS.Binding.Browser.Json
         /** startRead marks the beginning of the yytext() string in the buffer */
         private int zzStartRead;
 
-        /**
-         * endRead marks the last character in the buffer, that has been read from
-         * input
-         */
+        /// <summary>
+        /// endRead marks the last character in the buffer, that has been read from input
+        /// </summary>
         private int zzEndRead;
 
         /** the number of characters up to the start of the matched text */

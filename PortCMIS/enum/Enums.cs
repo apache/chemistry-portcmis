@@ -23,22 +23,46 @@ using System.Reflection;
 
 namespace PortCMIS.Enums
 {
+    /// <summary>
+    /// Base Type ID.
+    /// </summary>
     public enum BaseTypeId
     {
+        /// <summary>
+        /// CMIS Document Type.
+        /// </summary>
         [CmisValue("cmis:document")]
         CmisDocument,
+        /// <summary>
+        /// CMIS Folder Type.
+        /// </summary>
         [CmisValue("cmis:folder")]
         CmisFolder,
+        /// <summary>
+        /// CMIS Relationship Type.
+        /// </summary>
         [CmisValue("cmis:relationship")]
         CmisRelationship,
+        /// <summary>
+        /// CMIS Policy Type.
+        /// </summary>
         [CmisValue("cmis:policy")]
         CmisPolicy,
+        /// <summary>
+        /// CMIS Item Type.
+        /// </summary>
         [CmisValue("cmis:item")]
         CmisItem,
+        /// <summary>
+        /// CMIS Secondary Type.
+        /// </summary>
         [CmisValue("cmis:secondary")]
         CmisSecondary
     }
 
+    /// <summary>
+    /// Repository Capability: Content Stream Updates
+    /// </summary>
     public enum CapabilityContentStreamUpdates
     {
         [CmisValue("anytime")]
@@ -49,6 +73,9 @@ namespace PortCMIS.Enums
         None
     }
 
+    /// <summary>
+    /// Repository Capability: Content Changes.
+    /// </summary>
     public enum CapabilityChanges
     {
         [CmisValue("none")]
@@ -61,6 +88,9 @@ namespace PortCMIS.Enums
         All
     }
 
+    /// <summary>
+    /// Repository Capability: Renditions.
+    /// </summary>
     public enum CapabilityRenditions
     {
         [CmisValue("none")]
@@ -69,6 +99,9 @@ namespace PortCMIS.Enums
         Read
     }
 
+    /// <summary>
+    /// Repository Capability: Query.
+    /// </summary>
     public enum CapabilityQuery
     {
         [CmisValue("none")]
@@ -83,6 +116,9 @@ namespace PortCMIS.Enums
         BothCombined
     }
 
+    /// <summary>
+    /// Repository Capability: Query Joins.
+    /// </summary>
     public enum CapabilityJoin
     {
         [CmisValue("none")]
@@ -93,6 +129,9 @@ namespace PortCMIS.Enums
         InnerAndOuter
     }
 
+    /// <summary>
+    /// Repository Capability: ACL.
+    /// </summary>
     public enum CapabilityAcl
     {
         [CmisValue("none")]
@@ -103,6 +142,9 @@ namespace PortCMIS.Enums
         Manage
     }
 
+    /// <summary>
+    /// Repository Capability: Order by.
+    /// </summary>
     public enum CapabilityOrderBy
     {
         [CmisValue("none")]
@@ -113,16 +155,31 @@ namespace PortCMIS.Enums
         Custom
     }
 
+    /// <summary>
+    /// Supported Permissions.
+    /// </summary>
     public enum SupportedPermissions
     {
+        /// <summary>
+        /// Basic permissions.
+        /// </summary>
         [CmisValue("basic")]
         Basic,
+        /// <summary>
+        /// Repository specific permissions.
+        /// </summary>
         [CmisValue("repository")]
         Repository,
+        /// <summary>
+        /// Basic and repository specific permissions.
+        /// </summary>
         [CmisValue("both")]
         Both
     }
 
+    /// <summary>
+    /// ACL Propagation flag.
+    /// </summary>
     public enum AclPropagation
     {
         [CmisValue("repositorydetermined")]
@@ -133,6 +190,9 @@ namespace PortCMIS.Enums
         Propagate
     }
 
+    /// <summary>
+    /// Content Stream Allowed flag.
+    /// </summary>
     public enum ContentStreamAllowed
     {
         [CmisValue("notallowed")]
@@ -143,6 +203,9 @@ namespace PortCMIS.Enums
         Required
     }
 
+    /// <summary>
+    /// Property Data Type.
+    /// </summary>
     public enum PropertyType
     {
         [CmisValue("boolean")]
@@ -163,26 +226,53 @@ namespace PortCMIS.Enums
         Uri
     }
 
+    /// <summary>
+    /// Property Cardinality.
+    /// </summary>
     public enum Cardinality
     {
+        /// <summary>
+        /// Single value property.
+        /// </summary>
         [CmisValue("single")]
         Single,
+        /// <summary>
+        /// Multivalue property.
+        /// </summary>
         [CmisValue("multi")]
         Multi
     }
 
+    /// <summary>
+    /// Property Updatability.
+    /// </summary>
     public enum Updatability
     {
+        /// <summary>
+        /// Read-only property set by repository.
+        /// </summary>
         [CmisValue("readonly")]
         ReadOnly,
+        /// <summary>
+        /// Read-write property.
+        /// </summary>
         [CmisValue("readwrite")]
         ReadWrite,
+        /// <summary>
+        /// Property that can only be set if the document is checked out.
+        /// </summary>
         [CmisValue("whencheckedout")]
         WhenCheckedOut,
+        /// <summary>
+        /// Property that can only be set at object creation.
+        /// </summary>
         [CmisValue("oncreate")]
         OnCreate
     }
 
+    /// <summary>
+    /// DateTime Property Resolution.
+    /// </summary>
     public enum DateTimeResolution
     {
         [CmisValue("year")]
@@ -193,6 +283,9 @@ namespace PortCMIS.Enums
         Time
     }
 
+    /// <summary>
+    /// Decimal Property Precision.
+    /// </summary>
     public enum DecimalPrecision
     {
         [CmisValue("32")]
@@ -201,6 +294,9 @@ namespace PortCMIS.Enums
         Bits64
     }
 
+    /// <summary>
+    /// Include Relationships flag.
+    /// </summary>
     public enum IncludeRelationships
     {
         [CmisValue("none")]
@@ -213,6 +309,9 @@ namespace PortCMIS.Enums
         Both
     }
 
+    /// <summary>
+    /// Versioning State flag.
+    /// </summary>
     public enum VersioningState
     {
         [CmisValue("none")]
@@ -225,6 +324,9 @@ namespace PortCMIS.Enums
         CheckedOut
     }
 
+    /// <summary>
+    /// Unfile Object flag.
+    /// </summary>
     public enum UnfileObject
     {
         [CmisValue("unfile")]
@@ -235,6 +337,9 @@ namespace PortCMIS.Enums
         Delete
     }
 
+    /// <summary>
+    /// Relationship Direction flag.
+    /// </summary>
     public enum RelationshipDirection
     {
         [CmisValue("source")]
@@ -245,36 +350,75 @@ namespace PortCMIS.Enums
         Either
     }
 
+    /// <summary>
+    /// Return Version flag.
+    /// </summary>
     public enum ReturnVersion
     {
+        /// <summary>
+        /// Return this version.
+        /// </summary>
         [CmisValue("this")]
         This,
+        /// <summary>
+        /// Return latest version.
+        /// </summary>
         [CmisValue("latest")]
         Latest,
+        /// <summary>
+        /// Return latest major version.
+        /// </summary>
         [CmisValue("latestmajor")]
         LatestMajor
     }
 
+    /// <summary>
+    /// Change Type in change logs.
+    /// </summary>
     public enum ChangeType
     {
+        /// <summary>
+        /// Object has been created.
+        /// </summary>
         [CmisValue("created")]
         Created,
+        /// <summary>
+        /// Object has been updated.
+        /// </summary>
         [CmisValue("updated")]
         Updated,
+        /// <summary>
+        /// Object has been deleted.
+        /// </summary>
         [CmisValue("deleted")]
         Deleted,
+        /// <summary>
+        /// Permissions (ACL, policies) have been changed.
+        /// </summary>
         [CmisValue("security")]
         Security
     }
 
+    /// <summary>
+    /// Browser Binding DateTime Format.
+    /// </summary>
     public enum DateTimeFormat
     {
+        /// <summary>
+        /// Simple format (milliseconds).
+        /// </summary>
         [CmisValue("simple")]
         Simple,
+        /// <summary>
+        /// Extended format (ISO format).
+        /// </summary>
         [CmisValue("extended")]
         Extended
     }
 
+    /// <summary>
+    /// Allowable Actions.
+    /// </summary>
     public enum Action
     {
         [CmisValue("canDeleteObject")]
@@ -339,10 +483,19 @@ namespace PortCMIS.Enums
         CanApplyAcl
     }
 
+    /// <summary>
+    /// CMIS Version.
+    /// </summary>
     public enum CmisVersion
     {
+        /// <summary>
+        /// CMIS 1.0
+        /// </summary>
         [CmisValue("1.0")]
         Cmis_1_0,
+        /// <summary>
+        /// CMIS 1.1
+        /// </summary>
         [CmisValue("1.1")]
         Cmis_1_1
     }
@@ -363,6 +516,9 @@ namespace PortCMIS.Enums
         }
     }
 
+    /// <summary>
+    /// Handles translations from Enums into CMIS values and vice versa.
+    /// </summary>
     public static class CmisValue
     {
         public static string GetCmisValue(this Enum value)

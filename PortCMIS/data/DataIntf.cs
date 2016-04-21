@@ -28,22 +28,94 @@ namespace PortCMIS.Data
 {
     public interface IRepositoryInfo : IExtensionsData
     {
+        /// <value>
+        /// Repository ID.
+        /// </value>
         string Id { get; }
+
+        /// <value>
+        /// Repository Name.
+        /// </value>
         string Name { get; }
+
+        /// <value>
+        /// Repository description.
+        /// </value>
         string Description { get; }
+
+        /// <value>
+        /// Repository vendor.
+        /// </value>
         string VendorName { get; }
+
+        /// <value>
+        /// Repository product name.
+        /// </value>
         string ProductName { get; }
+
+        /// <value>
+        /// Repository product version.
+        /// </value>
         string ProductVersion { get; }
+
+        /// <value>
+        /// Root folder ID.
+        /// </value>
         string RootFolderId { get; }
+
+        /// <value>
+        /// Repository capabilities.
+        /// </value>
         IRepositoryCapabilities Capabilities { get; }
+
+        /// <value>
+        /// Repository ACL capabilities.
+        /// </value>
         IAclCapabilities AclCapabilities { get; }
+
+        /// <value>
+        /// Latest change log token.
+        /// </value>
         string LatestChangeLogToken { get; }
+
+        /// <value>
+        /// CMIS version (string).
+        /// </value>
         string CmisVersionSupported { get; }
+
+        /// <value>
+        /// CMIS version (enum).
+        /// </value>
+        CmisVersion CmisVersion { get; }
+
+        /// <value>
+        /// Repository thin client URI.
+        /// </value>
         string ThinClientUri { get; }
+
+        /// <value>
+        /// Changes incomplete flag.
+        /// </value>
         bool? ChangesIncomplete { get; }
+
+        /// <value>
+        /// List of changable base types.
+        /// </value>
         IList<BaseTypeId?> ChangesOnType { get; }
+
+        /// <value>
+        /// Principal ID of an anonymous user, if supported.
+        /// </value>
         string PrincipalIdAnonymous { get; }
+
+        /// <value>
+        /// Principal ID of an unauthenticated user, if supported.
+        /// </value>
         string PrincipalIdAnyone { get; }
+
+        /// <value>
+        /// List of extension features.
+        /// </value>
         IList<IExtensionFeature> ExtensionFeatures { get; }
     }
 
@@ -343,7 +415,7 @@ namespace PortCMIS.Data
         IPrincipal Principal { get; }
         string PrincipalId { get; }
         IList<string> Permissions { get; }
-        bool? IsDirect { get; }
+        bool IsDirect { get; }
     }
 
     public interface IAcl : IExtensionsData
