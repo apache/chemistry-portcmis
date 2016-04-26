@@ -24,36 +24,114 @@ using System.Collections.Generic;
 namespace PortCMIS.Client
 {
     /// <summary>
-    /// Client cache interface.
+    /// Client object cache interface.
     /// </summary>
     public interface ICache
     {
+        /// <summary>
+        /// Initializes the cache.
+        /// </summary>
+        /// <param name="session">the session</param>
+        /// <param name="parameters">cache parameters</param>
         void Initialize(ISession session, IDictionary<string, string> parameters);
+
+        /// <summary>
+        /// Returns whether the cache contains an object with given object ID and cache key.
+        /// </summary>
+        /// <param name="objectId">the object ID</param>
+        /// <param name="cacheKey">the cache key</param>
+        /// <returns><c>true</c> if the object is in the cache, <c>false</c> otherwise</returns>
         bool ContainsId(string objectId, string cacheKey);
+
+        /// <summary>
+        /// Returns whether the cache contains an object with given path and cache key.
+        /// </summary>
+        /// <param name="path">the path</param>
+        /// <param name="cacheKey">the cache key</param>
+        /// <returns><c>true</c> if the object is in the cache, <c>false</c> otherwise</returns>
         bool ContainsPath(string path, string cacheKey);
+
+        /// <summary>
+        /// Puts an object into the cache.
+        /// </summary>
+        /// <param name="cmisObject">the object</param>
+        /// <param name="cacheKey">the cache key</param>
         void Put(ICmisObject cmisObject, string cacheKey);
+
+        /// <summary>
+        /// Puts an object with a path into the cache.
+        /// </summary>
+        /// <param name="path">the path</param>
+        /// <param name="cmisObject">the object</param>
+        /// <param name="cacheKey">the cache key</param>
         void PutPath(string path, ICmisObject cmisObject, string cacheKey);
+
+        /// <summary>
+        /// Gets an object by ID.
+        /// </summary>
+        /// <param name="objectId">the object ID</param>
+        /// <param name="cacheKey">the cache key</param>
+        /// <returns>the object or <c>null</c> if the object is not in the cache</returns>
         ICmisObject GetById(string objectId, string cacheKey);
+
+        /// <summary>
+        /// Gets an object by path.
+        /// </summary>
+        /// <param name="path">the path</param>
+        /// <param name="cacheKey">the cache key</param>
+        /// <returns>the object or <c>null</c> if the object is not in the cache</returns>
         ICmisObject GetByPath(string path, string cacheKey);
+
+        /// <summary>
+        /// Removes an object from the cache.
+        /// </summary>
+        /// <param name="objectId">the object ID</param>
         void Remove(string objectId);
+
+        /// <summary>
+        /// Clears the cache.
+        /// </summary>
         void Clear();
+
+        /// <value>
+        /// The number of objects in the cache.
+        /// </value>
         int CacheSize { get; }
     }
 
     /// <summary>
-    /// Cache implementation that doesn't cache.
+    /// Cache implementation that doesn't cache anything.
     /// </summary>
     public class NoCache : ICache
     {
+        /// <inheritdoc/> 
         public void Initialize(ISession session, IDictionary<string, string> parameters) { }
+
+        /// <inheritdoc/> 
         public bool ContainsId(string objectId, string cacheKey) { return false; }
+
+        /// <inheritdoc/> 
         public bool ContainsPath(string path, string cacheKey) { return false; }
+
+        /// <inheritdoc/> 
         public void Put(ICmisObject cmisObject, string cacheKey) { }
+
+        /// <inheritdoc/> 
         public void PutPath(string path, ICmisObject cmisObject, string cacheKey) { }
+
+        /// <inheritdoc/> 
         public ICmisObject GetById(string objectId, string cacheKey) { return null; }
+
+        /// <inheritdoc/> 
         public ICmisObject GetByPath(string path, string cacheKey) { return null; }
+
+        /// <inheritdoc/> 
         public void Remove(string objectId) { }
+
+        /// <inheritdoc/> 
         public void Clear() { }
+
+        /// <inheritdoc/> 
         public int CacheSize { get { return 0; } }
     }
 
@@ -71,6 +149,7 @@ namespace PortCMIS.Client
 
         public CmisObjectCache() { }
 
+        /// <inheritdoc/> 
         public void Initialize(ISession session, IDictionary<string, string> parameters)
         {
             lock (cacheLock)
@@ -152,11 +231,13 @@ namespace PortCMIS.Client
             }
         }
 
+        /// <inheritdoc/> 
         public void Clear()
         {
             InitializeInternals();
         }
 
+        /// <inheritdoc/> 
         public bool ContainsId(string objectId, string cacheKey)
         {
             lock (cacheLock)
@@ -165,6 +246,7 @@ namespace PortCMIS.Client
             }
         }
 
+        /// <inheritdoc/> 
         public bool ContainsPath(string path, string cacheKey)
         {
             lock (cacheLock)
@@ -173,6 +255,7 @@ namespace PortCMIS.Client
             }
         }
 
+        /// <inheritdoc/> 
         public ICmisObject GetById(string objectId, string cacheKey)
         {
             lock (cacheLock)
@@ -193,6 +276,7 @@ namespace PortCMIS.Client
             }
         }
 
+        /// <inheritdoc/> 
         public ICmisObject GetByPath(string path, string cacheKey)
         {
             lock (cacheLock)
@@ -207,6 +291,7 @@ namespace PortCMIS.Client
             }
         }
 
+        /// <inheritdoc/> 
         public void Put(ICmisObject cmisObject, string cacheKey)
         {
             // no object, no id, no cache key - no cache
@@ -235,6 +320,7 @@ namespace PortCMIS.Client
             }
         }
 
+        /// <inheritdoc/> 
         public void PutPath(string path, ICmisObject cmisObject, string cacheKey)
         {
             // no path, no object, no id, no cache key - no cache
@@ -250,6 +336,7 @@ namespace PortCMIS.Client
             }
         }
 
+        /// <inheritdoc/> 
         public void Remove(string objectId)
         {
             if (objectId == null)
@@ -263,6 +350,7 @@ namespace PortCMIS.Client
             }
         }
 
+        /// <inheritdoc/> 
         public int CacheSize
         {
             get { return cacheSize; }

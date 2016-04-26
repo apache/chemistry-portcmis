@@ -291,30 +291,65 @@ namespace PortCMIS.Data
         public IDictionary<string, string> FeatureData { get; set; }
     }
 
+    /// <summary>
+    /// Base type definition implementation.
+    /// </summary>
     public abstract class AbstractTypeDefinition : ExtensionsData, ITypeDefinition
     {
         private List<IPropertyDefinition> propertyDefintionList = new List<IPropertyDefinition>();
         private Dictionary<string, IPropertyDefinition> propertyDefintionDict = new Dictionary<string, IPropertyDefinition>();
         private string parentTypeId;
+
+        /// <inheritdoc/>
         public string Id { get; set; }
+
+        /// <inheritdoc/>
         public string LocalName { get; set; }
+
+        /// <inheritdoc/>
         public string LocalNamespace { get; set; }
+
+        /// <inheritdoc/>
         public string DisplayName { get; set; }
+
+        /// <inheritdoc/>
         public string QueryName { get; set; }
+
+        /// <inheritdoc/>
         public string Description { get; set; }
+
+        /// <inheritdoc/>
         public BaseTypeId BaseTypeId { get; set; }
+
+        /// <inheritdoc/>
         public string ParentTypeId
         {
             get { return parentTypeId; }
             set { parentTypeId = (value == null || value.Length == 0 ? null : value); }
         }
+
+        /// <inheritdoc/>
         public bool? IsCreatable { get; set; }
+
+        /// <inheritdoc/>
         public bool? IsFileable { get; set; }
+
+        /// <inheritdoc/>
         public bool? IsQueryable { get; set; }
+
+        /// <inheritdoc/>
         public bool? IsFulltextIndexed { get; set; }
+
+        /// <inheritdoc/>
         public bool? IsIncludedInSupertypeQuery { get; set; }
+
+        /// <inheritdoc/>
         public bool? IsControllablePolicy { get; set; }
+
+        /// <inheritdoc/>
         public bool? IsControllableAcl { get; set; }
+
+        /// <inheritdoc/>
         public IPropertyDefinition this[string propertyId]
         {
             get
@@ -324,6 +359,8 @@ namespace PortCMIS.Data
                 return propertyDefinition;
             }
         }
+
+        /// <inheritdoc/>
         public IList<IPropertyDefinition> PropertyDefinitions
         {
             get
@@ -331,6 +368,8 @@ namespace PortCMIS.Data
                 return propertyDefintionList;
             }
         }
+
+        /// <inheritdoc/>
         public ITypeMutability TypeMutability { get; set; }
 
         public void Initialize(ITypeDefinition typeDefinition)
@@ -374,54 +413,97 @@ namespace PortCMIS.Data
         }
     }
 
+    /// <summary>
+    /// Type mutability implementation.
+    /// </summary>
     public class TypeMutability : ExtensionsData, ITypeMutability
     {
+        /// <inheritdoc/>
         public bool? CanCreate { get; set; }
+
+        /// <inheritdoc/>
         public bool? CanUpdate { get; set; }
+
+        /// <inheritdoc/>
         public bool? CanDelete { get; set; }
     }
 
+    /// <summary>
+    /// Document type definition implementation.
+    /// </summary>
     public class DocumentTypeDefinition : AbstractTypeDefinition, IDocumentTypeDefinition
     {
+        /// <inheritdoc/>
         public bool? IsVersionable { get; set; }
+
+        /// <inheritdoc/>
         public ContentStreamAllowed? ContentStreamAllowed { get; set; }
     }
 
+    /// <summary>
+    /// Folder type definition implementation.
+    /// </summary>
     public class FolderTypeDefinition : AbstractTypeDefinition, IFolderTypeDefinition
     {
     }
 
+    /// <summary>
+    /// Policy type definition implementation.
+    /// </summary>
     public class PolicyTypeDefinition : AbstractTypeDefinition, IPolicyTypeDefinition
     {
     }
 
+    /// <summary>
+    /// Item type definition implementation.
+    /// </summary>
     public class ItemTypeDefinition : AbstractTypeDefinition, IItemTypeDefinition
     {
     }
 
+    /// <summary>
+    /// Secondary type definition implementation.
+    /// </summary>
     public class SecondaryTypeDefinition : AbstractTypeDefinition, ISecondaryTypeDefinition
     {
     }
 
+    /// <summary>
+    /// Relationship type definition implementation.
+    /// </summary>
     public class RelationshipTypeDefinition : AbstractTypeDefinition, IRelationshipTypeDefinition
     {
+        /// <inheritdoc/>
         public IList<string> AllowedSourceTypeIds { get; set; }
+
+        /// <inheritdoc/>
         public IList<string> AllowedTargetTypeIds { get; set; }
     }
 
     public class TypeDefinitionList : ExtensionsData, ITypeDefinitionList
     {
+        /// <inheritdoc/>
         public IList<ITypeDefinition> List { get; set; }
+
+        /// <inheritdoc/>
         public bool? HasMoreItems { get; set; }
+
+        /// <inheritdoc/>
         public BigInteger? NumItems { get; set; }
     }
 
     public class TypeDefinitionContainer : ExtensionsData, ITypeDefinitionContainer
     {
+        /// <inheritdoc/>
         public ITypeDefinition TypeDefinition { get; set; }
+
+        /// <inheritdoc/>
         public IList<ITypeDefinitionContainer> Children { get; set; }
     }
 
+    /// <summary>
+    /// Property definition implementation.
+    /// </summary>
     public abstract class PropertyDefinition : ExtensionsData, IPropertyDefinition
     {
         /// <inheritdoc/>

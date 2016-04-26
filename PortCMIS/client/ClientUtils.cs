@@ -96,6 +96,7 @@ namespace PortCMIS.Client.Impl
             GenerateCacheKey();
         }
 
+        /// <inheritdoc/>
         public HashSet<string> Filter
         {
             get { return filter == null ? null : new HashSet<string>(filter); }
@@ -136,6 +137,7 @@ namespace PortCMIS.Client.Impl
             }
         }
 
+        /// <inheritdoc/>
         public string FilterString
         {
             get
@@ -181,30 +183,35 @@ namespace PortCMIS.Client.Impl
             }
         }
 
+        /// <inheritdoc/>
         public bool IncludeAllowableActions
         {
             get { return includeAllowableActions; }
             set { includeAllowableActions = value; GenerateCacheKey(); }
         }
 
+        /// <inheritdoc/>
         public bool IncludeAcls
         {
             get { return includeAcls; }
             set { includeAcls = value; GenerateCacheKey(); }
         }
 
+        /// <inheritdoc/>
         public IncludeRelationships? IncludeRelationships
         {
             get { return includeRelationships; }
             set { includeRelationships = value; GenerateCacheKey(); }
         }
 
+        /// <inheritdoc/>
         public bool IncludePolicies
         {
             get { return includePolicies; }
             set { includePolicies = value; GenerateCacheKey(); }
         }
 
+        /// <inheritdoc/>
         public HashSet<string> RenditionFilter
         {
             get { return renditionFilter == null ? null : new HashSet<string>(renditionFilter); }
@@ -243,6 +250,7 @@ namespace PortCMIS.Client.Impl
             }
         }
 
+        /// <inheritdoc/>
         public string RenditionFilterString
         {
             get
@@ -278,29 +286,34 @@ namespace PortCMIS.Client.Impl
             }
         }
 
+        /// <inheritdoc/>
         public bool IncludePathSegments
         {
             get { return includePathSegments; }
             set { includePathSegments = value; GenerateCacheKey(); }
         }
 
+        /// <inheritdoc/>
         public string OrderBy
         {
             get { return orderBy; }
             set { orderBy = value; GenerateCacheKey(); }
         }
 
+        /// <inheritdoc/>
         public bool CacheEnabled
         {
             get { return cacheEnabled; }
             set { cacheEnabled = value; GenerateCacheKey(); }
         }
 
+        /// <inheritdoc/>
         public string CacheKey
         {
             get { return cacheKey; }
         }
 
+        /// <inheritdoc/>
         public int MaxItemsPerPage
         {
             get { return maxItemsPerPage; }

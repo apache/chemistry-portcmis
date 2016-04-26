@@ -91,10 +91,9 @@ namespace PortCMIS.Exceptions
         /// <value>The unparsed error message.</value>
         public string ErrorContent { get; protected set; }
 
-        /// <summary>
-        /// The CMIS exception name.
-        /// </summary>
-        /// <value>The CMIS exception name.</value>
+        /// <value>
+        /// The CMIS exception name
+        /// </value>
         public abstract string Name { get; }
 
     }
@@ -104,15 +103,40 @@ namespace PortCMIS.Exceptions
     /// </summary>
     public class CmisConnectionException : CmisBaseException
     {
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public CmisConnectionException() : base() { }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public CmisConnectionException(string message) : base(message) { }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public CmisConnectionException(string message, Exception inner) : base(message, inner) { }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public CmisConnectionException(string message, long? code) : base(message) { }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public CmisConnectionException(string message, string errorContent) : base(message) { }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public CmisConnectionException(string message, string errorContent, Exception inner) : base(message, errorContent, inner) { }
 
+        /// <summary>The CMIS exception name</summary>
         public const string ExceptionName = "connection";
 
+        /// <inheritdoc/>
         public override string Name { get { return ExceptionName; } }
     }
 
@@ -121,15 +145,40 @@ namespace PortCMIS.Exceptions
     /// </summary>
     public class CmisConstraintException : CmisBaseException
     {
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public CmisConstraintException() : base() { }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public CmisConstraintException(string message) : base(message) { }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public CmisConstraintException(string message, Exception inner) : base(message, inner) { }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public CmisConstraintException(string message, long? code) : base(message) { }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public CmisConstraintException(string message, string errorContent) : base(message) { }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public CmisConstraintException(string message, string errorContent, Exception inner) : base(message, errorContent, inner) { }
 
+        /// <summary>The CMIS exception name</summary>
         public const string ExceptionName = "constraint";
 
+        /// <inheritdoc/>
         public override string Name { get { return ExceptionName; } }
     }
 
@@ -138,15 +187,40 @@ namespace PortCMIS.Exceptions
     /// </summary>
     public class CmisContentAlreadyExistsException : CmisBaseException
     {
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public CmisContentAlreadyExistsException() : base() { }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public CmisContentAlreadyExistsException(string message) : base(message) { }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public CmisContentAlreadyExistsException(string message, Exception inner) : base(message, inner) { }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public CmisContentAlreadyExistsException(string message, long? code) : base(message) { }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public CmisContentAlreadyExistsException(string message, string errorContent) : base(message) { }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public CmisContentAlreadyExistsException(string message, string errorContent, Exception inner) : base(message, errorContent, inner) { }
 
+        /// <summary>The CMIS exception name</summary>
         public const string ExceptionName = "contentAlreadyExists";
 
+        /// <inheritdoc/>
         public override string Name { get { return ExceptionName; } }
     }
 
@@ -155,15 +229,40 @@ namespace PortCMIS.Exceptions
     /// </summary>
     public class CmisFilterNotValidException : CmisBaseException
     {
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public CmisFilterNotValidException() : base() { }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public CmisFilterNotValidException(string message) : base(message) { }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public CmisFilterNotValidException(string message, Exception inner) : base(message, inner) { }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public CmisFilterNotValidException(string message, long? code) : base(message) { }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public CmisFilterNotValidException(string message, string errorContent) : base(message) { }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public CmisFilterNotValidException(string message, string errorContent, Exception inner) : base(message, errorContent, inner) { }
 
+        /// <summary>The CMIS exception name</summary>
         public const string ExceptionName = "filterNotValid";
 
+        /// <inheritdoc/>
         public override string Name { get { return ExceptionName; } }
     }
 
@@ -172,15 +271,40 @@ namespace PortCMIS.Exceptions
     /// </summary>
     public class CmisInvalidArgumentException : CmisBaseException
     {
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public CmisInvalidArgumentException() : base() { }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public CmisInvalidArgumentException(string message) : base(message) { }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public CmisInvalidArgumentException(string message, Exception inner) : base(message, inner) { }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public CmisInvalidArgumentException(string message, long? code) : base(message) { }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public CmisInvalidArgumentException(string message, string errorContent) : base(message) { }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public CmisInvalidArgumentException(string message, string errorContent, Exception inner) : base(message, errorContent, inner) { }
 
+        /// <summary>The CMIS exception name</summary>
         public const string ExceptionName = "invalidArgument";
 
+        /// <inheritdoc/>
         public override string Name { get { return ExceptionName; } }
     }
 
@@ -189,15 +313,40 @@ namespace PortCMIS.Exceptions
     /// </summary>
     public class CmisNameConstraintViolationException : CmisBaseException
     {
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public CmisNameConstraintViolationException() : base() { }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public CmisNameConstraintViolationException(string message) : base(message) { }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public CmisNameConstraintViolationException(string message, Exception inner) : base(message, inner) { }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public CmisNameConstraintViolationException(string message, long? code) : base(message) { }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public CmisNameConstraintViolationException(string message, string errorContent) : base(message) { }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public CmisNameConstraintViolationException(string message, string errorContent, Exception inner) : base(message, errorContent, inner) { }
 
+        /// <summary>The CMIS exception name</summary>
         public const string ExceptionName = "nameConstraintViolation";
 
+        /// <inheritdoc/>
         public override string Name { get { return ExceptionName; } }
     }
 
@@ -206,15 +355,40 @@ namespace PortCMIS.Exceptions
     /// </summary>
     public class CmisNotSupportedException : CmisBaseException
     {
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public CmisNotSupportedException() : base() { }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public CmisNotSupportedException(string message) : base(message) { }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public CmisNotSupportedException(string message, Exception inner) : base(message, inner) { }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public CmisNotSupportedException(string message, long? code) : base(message) { }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public CmisNotSupportedException(string message, string errorContent) : base(message) { }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public CmisNotSupportedException(string message, string errorContent, Exception inner) : base(message, errorContent, inner) { }
 
+        /// <summary>The CMIS exception name</summary>
         public const string ExceptionName = "notSupported";
 
+        /// <inheritdoc/>
         public override string Name { get { return ExceptionName; } }
     }
 
@@ -223,15 +397,40 @@ namespace PortCMIS.Exceptions
     /// </summary>
     public class CmisObjectNotFoundException : CmisBaseException
     {
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public CmisObjectNotFoundException() : base() { }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public CmisObjectNotFoundException(string message) : base(message) { }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public CmisObjectNotFoundException(string message, Exception inner) : base(message, inner) { }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public CmisObjectNotFoundException(string message, long? code) : base(message) { }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public CmisObjectNotFoundException(string message, string errorContent) : base(message) { }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public CmisObjectNotFoundException(string message, string errorContent, Exception inner) : base(message, errorContent, inner) { }
 
+        /// <summary>The CMIS exception name</summary>
         public const string ExceptionName = "objectNotFound";
 
+        /// <inheritdoc/>
         public override string Name { get { return ExceptionName; } }
     }
 
@@ -240,15 +439,40 @@ namespace PortCMIS.Exceptions
     /// </summary>
     public class CmisPermissionDeniedException : CmisBaseException
     {
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public CmisPermissionDeniedException() : base() { }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public CmisPermissionDeniedException(string message) : base(message) { }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public CmisPermissionDeniedException(string message, Exception inner) : base(message, inner) { }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public CmisPermissionDeniedException(string message, long? code) : base(message) { }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public CmisPermissionDeniedException(string message, string errorContent) : base(message) { }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public CmisPermissionDeniedException(string message, string errorContent, Exception inner) : base(message, errorContent, inner) { }
 
+        /// <summary>The CMIS exception name</summary>
         public const string ExceptionName = "permissionDenied";
 
+        /// <inheritdoc/>
         public override string Name { get { return ExceptionName; } }
     }
 
@@ -257,15 +481,40 @@ namespace PortCMIS.Exceptions
     /// </summary>
     public class CmisRuntimeException : CmisBaseException
     {
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public CmisRuntimeException() : base() { }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public CmisRuntimeException(string message) : base(message) { }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public CmisRuntimeException(string message, Exception inner) : base(message, inner) { }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public CmisRuntimeException(string message, long? code) : base(message) { }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public CmisRuntimeException(string message, string errorContent) : base(message) { }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public CmisRuntimeException(string message, string errorContent, Exception inner) : base(message, errorContent, inner) { }
 
+        /// <summary>The CMIS exception name</summary>
         public const string ExceptionName = "runtime";
 
+        /// <inheritdoc/>
         public override string Name { get { return ExceptionName; } }
     }
 
@@ -274,15 +523,40 @@ namespace PortCMIS.Exceptions
     /// </summary>
     public class CmisStorageException : CmisBaseException
     {
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public CmisStorageException() : base() { }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public CmisStorageException(string message) : base(message) { }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public CmisStorageException(string message, Exception inner) : base(message, inner) { }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public CmisStorageException(string message, long? code) : base(message) { }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public CmisStorageException(string message, string errorContent) : base(message) { }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public CmisStorageException(string message, string errorContent, Exception inner) : base(message, errorContent, inner) { }
 
+        /// <summary>The CMIS exception name</summary>
         public const string ExceptionName = "storage";
 
+        /// <inheritdoc/>
         public override string Name { get { return ExceptionName; } }
     }
 
@@ -291,15 +565,40 @@ namespace PortCMIS.Exceptions
     /// </summary>
     public class CmisStreamNotSupportedException : CmisBaseException
     {
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public CmisStreamNotSupportedException() : base() { }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public CmisStreamNotSupportedException(string message) : base(message) { }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public CmisStreamNotSupportedException(string message, Exception inner) : base(message, inner) { }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public CmisStreamNotSupportedException(string message, long? code) : base(message) { }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public CmisStreamNotSupportedException(string message, string errorContent) : base(message) { }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public CmisStreamNotSupportedException(string message, string errorContent, Exception inner) : base(message, errorContent, inner) { }
 
+        /// <summary>The CMIS exception name</summary>
         public const string ExceptionName = "streamNotSupported";
 
+        /// <inheritdoc/>
         public override string Name { get { return ExceptionName; } }
     }
 
@@ -308,15 +607,40 @@ namespace PortCMIS.Exceptions
     /// </summary>
     public class CmisUpdateConflictException : CmisBaseException
     {
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public CmisUpdateConflictException() : base() { }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public CmisUpdateConflictException(string message) : base(message) { }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public CmisUpdateConflictException(string message, Exception inner) : base(message, inner) { }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public CmisUpdateConflictException(string message, long? code) : base(message) { }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public CmisUpdateConflictException(string message, string errorContent) : base(message) { }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public CmisUpdateConflictException(string message, string errorContent, Exception inner) : base(message, errorContent, inner) { }
 
+        /// <summary>The CMIS exception name</summary>
         public const string ExceptionName = "updateConflict";
 
+        /// <inheritdoc/>
         public override string Name { get { return ExceptionName; } }
     }
 
@@ -325,15 +649,40 @@ namespace PortCMIS.Exceptions
     /// </summary>
     public class CmisVersioningException : CmisBaseException
     {
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public CmisVersioningException() : base() { }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public CmisVersioningException(string message) : base(message) { }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public CmisVersioningException(string message, Exception inner) : base(message, inner) { }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public CmisVersioningException(string message, long? code) : base(message) { }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public CmisVersioningException(string message, string errorContent) : base(message) { }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public CmisVersioningException(string message, string errorContent, Exception inner) : base(message, errorContent, inner) { }
 
+        /// <summary>The CMIS exception name</summary>
         public const string ExceptionName = "versioning";
 
+        /// <inheritdoc/>
         public override string Name { get { return ExceptionName; } }
     }
 
@@ -342,11 +691,34 @@ namespace PortCMIS.Exceptions
     /// </summary>
     public class CmisUnauthorizedException : CmisRuntimeException
     {
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public CmisUnauthorizedException() : base() { }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public CmisUnauthorizedException(string message) : base(message) { }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public CmisUnauthorizedException(string message, Exception inner) : base(message, inner) { }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public CmisUnauthorizedException(string message, long? code) : base(message) { }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public CmisUnauthorizedException(string message, string errorContent) : base(message) { }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public CmisUnauthorizedException(string message, string errorContent, Exception inner) : base(message, errorContent, inner) { }
     }
 
@@ -355,11 +727,34 @@ namespace PortCMIS.Exceptions
     /// </summary>
     public class CmisProxyAuthenticationException : CmisRuntimeException
     {
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public CmisProxyAuthenticationException() : base() { }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public CmisProxyAuthenticationException(string message) : base(message) { }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public CmisProxyAuthenticationException(string message, Exception inner) : base(message, inner) { }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public CmisProxyAuthenticationException(string message, long? code) : base(message) { }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public CmisProxyAuthenticationException(string message, string errorContent) : base(message) { }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public CmisProxyAuthenticationException(string message, string errorContent, Exception inner) : base(message, errorContent, inner) { }
     }
 
@@ -368,11 +763,34 @@ namespace PortCMIS.Exceptions
     /// </summary>
     public class CmisServiceUnavailableException : CmisRuntimeException
     {
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public CmisServiceUnavailableException() : base() { }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public CmisServiceUnavailableException(string message) : base(message) { }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public CmisServiceUnavailableException(string message, Exception inner) : base(message, inner) { }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public CmisServiceUnavailableException(string message, long? code) : base(message) { }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public CmisServiceUnavailableException(string message, string errorContent) : base(message) { }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public CmisServiceUnavailableException(string message, string errorContent, Exception inner) : base(message, errorContent, inner) { }
     }
 
@@ -381,8 +799,19 @@ namespace PortCMIS.Exceptions
     /// </summary>
     public class CmisInvalidServerData : InvalidOperationException
     {
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public CmisInvalidServerData() : base() { }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public CmisInvalidServerData(string message) : base(message) { }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public CmisInvalidServerData(string message, Exception inner) : base(message, inner) { }
     }
 }

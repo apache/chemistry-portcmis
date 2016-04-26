@@ -26,6 +26,9 @@ using System.Numerics;
 
 namespace PortCMIS.Data
 {
+    /// <summary>
+    /// Represents a repository info.
+    /// </summary>
     public interface IRepositoryInfo : IExtensionsData
     {
         /// <value>
@@ -192,6 +195,9 @@ namespace PortCMIS.Data
         IDictionary<string, string> FeatureData { get; }
     }
 
+    /// <summary>
+    /// Type definition.
+    /// </summary>
     public interface ITypeDefinition : IExtensionsData
     {
         string Id { get; }
@@ -214,35 +220,74 @@ namespace PortCMIS.Data
         ITypeMutability TypeMutability { get; }
     }
 
+    /// <summary>
+    /// TypeMutability flags.
+    /// </summary>
     public interface ITypeMutability : IExtensionsData
     {
+        /// <value>
+        /// Defines whether subtypes can be created.
+        /// </value>
         bool? CanCreate { get; }
+
+        /// <value>
+        /// Defines whether the type can be updated.
+        /// </value>
         bool? CanUpdate { get; }
+
+        /// <value>
+        /// Defines whether the type can be deleted.
+        /// </value>
         bool? CanDelete { get; }
     }
 
+    /// <summary>
+    /// Document type definition.
+    /// </summary>
     public interface IDocumentTypeDefinition : ITypeDefinition
     {
+        /// <value>
+        /// Defines whether the type is versionabel or not.
+        /// </summary>
         bool? IsVersionable { get; }
+
+        /// <value>
+        /// Defines if content streams are supported for this type.
+        /// </value>
         ContentStreamAllowed? ContentStreamAllowed { get; }
     }
 
+    /// <summary>
+    /// Folder type definition.
+    /// </summary>
     public interface IFolderTypeDefinition : ITypeDefinition
     {
     }
 
+    /// <summary>
+    /// Secondary type definition.
+    /// </summary>
     public interface ISecondaryTypeDefinition : ITypeDefinition
     {
     }
 
+    /// <summary>
+    /// Policy type definition.
+    /// </summary>
     public interface IPolicyTypeDefinition : ITypeDefinition
     {
     }
 
+    /// <summary>
+    /// Item type definition.
+    /// </summary>
     public interface IItemTypeDefinition : ITypeDefinition
     {
     }
 
+    /// <summary>
+    /// Relationship type definition.
+    /// </summary>
     public interface IRelationshipTypeDefinition : ITypeDefinition
     {
         IList<string> AllowedSourceTypeIds { get; }
@@ -262,6 +307,9 @@ namespace PortCMIS.Data
         IList<ITypeDefinitionContainer> Children { get; }
     }
 
+    /// <summary>
+    /// Property definition.
+    /// </summary>
     public interface IPropertyDefinition : IExtensionsData
     {
         string Id { get; }
@@ -405,33 +453,66 @@ namespace PortCMIS.Data
         object FirstValue { get; }
     }
 
+    /// <summary>
+    /// Represents a principal.
+    /// </summary>
     public interface IPrincipal : IExtensionsData
     {
+        /// <value>The principal ID</value>
         string Id { get; }
     }
 
+    /// <summary>
+    /// Represents an ACE.
+    /// </summary>
     public interface IAce : IExtensionsData
     {
+        /// <value>The principal</value>
         IPrincipal Principal { get; }
+
+        /// <value>The principal ID</value>
         string PrincipalId { get; }
+
+        /// <value>The list of permissions</value>
         IList<string> Permissions { get; }
+
+        /// <value>Indicates whether the ACE is a direct ACE or not</value>
         bool IsDirect { get; }
     }
 
+    /// <summary>
+    /// Represents an ACL.
+    /// </summary>
     public interface IAcl : IExtensionsData
     {
+        /// <value>The list of ACEs</value>
         IList<IAce> Aces { get; }
+
+        /// <value>Indicates whether the ACL is exact or not</value>
         bool? IsExact { get; }
     }
 
+    /// <summary>
+    /// Represents a content stream.
+    /// </summary>
     public interface IContentStream : IExtensionsData
     {
+        /// <value>The stream length, if known</value>
         BigInteger? Length { get; }
+
+        /// <value>The MIME type, if known</value>
         string MimeType { get; }
+
+        /// <value>The file name, if known</value>
         string FileName { get; }
+
+        /// <value>The stream</value>
         Stream Stream { get; }
     }
 
+    /// <summary>
+    /// Represents a partial content stream.
+    /// </summary>
     public interface IPartialContentStream : IContentStream
     {
     }

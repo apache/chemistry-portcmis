@@ -36,26 +36,31 @@ namespace PortCMIS.Binding.Http
         private const string InvokerHttpClient = "org.apache.chemistry.portcmis.invoker.httpclient";
         private object invokerLock = new object();
 
+        /// <inheritdoc/>
         public IResponse InvokeGET(UrlBuilder url, IBindingSession session)
         {
             return Invoke(url, HttpMethod.Get, null, session, null, null, null);
         }
 
+        /// <inheritdoc/>
         public IResponse InvokeGET(UrlBuilder url, IBindingSession session, long? offset, long? length)
         {
             return Invoke(url, HttpMethod.Get, null, session, offset, length, null);
         }
 
+        /// <inheritdoc/>
         public IResponse InvokePOST(UrlBuilder url, HttpContent content, IBindingSession session)
         {
             return Invoke(url, HttpMethod.Post, content, session, null, null, null);
         }
 
+        /// <inheritdoc/>
         public IResponse InvokePUT(UrlBuilder url, IDictionary<string, string> headers, HttpContent content, IBindingSession session)
         {
             return Invoke(url, HttpMethod.Put, content, session, null, null, headers);
         }
 
+        /// <inheritdoc/>
         public IResponse InvokeDELETE(UrlBuilder url, IBindingSession session)
         {
             return Invoke(url, HttpMethod.Delete, null, session, null, null, null);

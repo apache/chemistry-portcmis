@@ -26,8 +26,14 @@ using PortCMIS.Data;
 
 namespace PortCMIS.Const
 {
+    /// <summary>
+    /// CMIS extensions defined by the CMIS TC.
+    /// </summary>
     public class ExtensionFeatures
     {
+        /// <summary>
+        /// DateTime format extension for the Browers Bindings.
+        /// </summary>
         public readonly static IExtensionFeature ExtendedDatetimeFormat = new ExtensionFeature()
         {
             Id = "http://docs.oasis-open.org/ns/cmis/extension/datetimeformat",
@@ -37,6 +43,9 @@ namespace PortCMIS.Const
             Description = "Adds an additional DateTime format for the Browser Binding."
         };
 
+        /// <summary>
+        /// Content Stream Hash property extension.
+        /// </summary>
         public readonly static IExtensionFeature ContentStreamHash = new ExtensionFeature()
         {
             Id = "http://docs.oasis-open.org/ns/cmis/extension/contentstreamhash",

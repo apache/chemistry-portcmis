@@ -68,6 +68,7 @@ namespace PortCMIS.Binding.Browser
         private PolicyService policyService;
         private AclService aclService;
 
+        /// <inheritdoc/>
         public void Initialize(IBindingSession session)
         {
             this.session = session as BindingSession;
@@ -87,56 +88,67 @@ namespace PortCMIS.Binding.Browser
             aclService = new AclService(this.session);
         }
 
+        /// <inheritdoc/>
         public IRepositoryService GetRepositoryService()
         {
             return repositoryService;
         }
 
+        /// <inheritdoc/>
         public INavigationService GetNavigationService()
         {
             return navigationService;
         }
 
+        /// <inheritdoc/>
         public IObjectService GetObjectService()
         {
             return objectService;
         }
 
+        /// <inheritdoc/>
         public IVersioningService GetVersioningService()
         {
             return versioningService;
         }
 
+        /// <inheritdoc/>
         public IRelationshipService GetRelationshipService()
         {
             return relationshipService;
         }
 
+        /// <inheritdoc/>
         public IDiscoveryService GetDiscoveryService()
         {
             return discoveryService;
         }
 
+        /// <inheritdoc/>
         public IMultiFilingService GetMultiFilingService()
         {
             return multiFilingService;
         }
 
+        /// <inheritdoc/>
         public IAclService GetAclService()
         {
             return aclService;
         }
 
+        /// <inheritdoc/>
         public IPolicyService GetPolicyService()
         {
             return policyService;
         }
 
+        /// <inheritdoc/>
         public void ClearAllCaches()
         {
             session.RemoveValue(RepositoryUrlCache);
         }
 
+        /// <inheritdoc/>
         public void ClearRepositoryCache(string repositoryId)
         {
             RepositoryUrlCache repUrlCache = session.GetValue(RepositoryUrlCache) as RepositoryUrlCache;
@@ -146,6 +158,7 @@ namespace PortCMIS.Binding.Browser
             }
         }
 
+        /// <inheritdoc/>
         public void Dispose()
         {
             // nothing to do

@@ -51,11 +51,13 @@ namespace PortCMIS.Client.Impl
             return new SessionFactory();
         }
 
+        /// <inheritdoc/>
         public ISession CreateSession(IDictionary<string, string> parameters)
         {
             return CreateSession(parameters, null, null, null);
         }
 
+        /// <inheritdoc/>
         public ISession CreateSession(IDictionary<string, string> parameters, IObjectFactory objectFactory, IAuthenticationProvider authenticationProvider, ICache cache)
         {
             Session session = new Session(parameters, objectFactory, authenticationProvider, cache);
@@ -64,11 +66,21 @@ namespace PortCMIS.Client.Impl
             return session;
         }
 
+        /// <inheritdoc/>
         public IList<IRepository> GetRepositories(IDictionary<string, string> parameters)
         {
             return GetRepositories(parameters, null, null, null);
         }
 
+        /// <summary>
+        /// Gets all repository available at the specified endpoint.
+        /// </summary>
+        /// <param name="parameters">the session parameters</param>
+        /// <param name="objectFactory">Object factory.</param>
+        /// <param name="authenticationProvider">Authentication provider.</param>
+        /// <param name="cache">Client object cache.</param>
+        /// <returns>a list of all available repositories</returns>
+        /// <seealso cref="PortCMIS.SessionParameter"/>
         public IList<IRepository> GetRepositories(IDictionary<string, string> parameters, IObjectFactory objectFactory, IAuthenticationProvider authenticationProvider, ICache cache)
         {
             ICmisBinding binding = CmisBindingHelper.CreateBinding(parameters);
@@ -350,11 +362,13 @@ namespace PortCMIS.Client.Impl
 
         // session context
 
+        /// <inheritdoc/>
         public IOperationContext CreateOperationContext()
         {
             return new OperationContext();
         }
 
+        /// <inheritdoc/>
         public IOperationContext CreateOperationContext(HashSet<string> filter, bool includeAcls, bool includeAllowableActions, bool includePolicies,
             IncludeRelationships includeRelationships, HashSet<string> renditionFilter, bool includePathSegments, string orderBy,
             bool cacheEnabled, int maxItemsPerPage)
@@ -363,6 +377,7 @@ namespace PortCMIS.Client.Impl
                 includePathSegments, orderBy, cacheEnabled, maxItemsPerPage);
         }
 
+        /// <inheritdoc/>
         public IObjectId CreateObjectId(string id)
         {
             return new ObjectId(id);
@@ -759,6 +774,7 @@ namespace PortCMIS.Client.Impl
             return result as IDocument;
         }
 
+        /// <inheritdoc/>
         public void RemoveObjectFromCache(IObjectId objectId)
         {
             if (objectId == null || objectId.Id == null)
@@ -769,6 +785,7 @@ namespace PortCMIS.Client.Impl
             RemoveObjectFromCache(objectId.Id);
         }
 
+        /// <inheritdoc/>
         public void RemoveObjectFromCache(string objectId)
         {
             Cache.Remove(objectId);
@@ -888,21 +905,25 @@ namespace PortCMIS.Client.Impl
             return new CollectionEnumerable<ICmisObject>(new PageFetcher<ICmisObject>(DefaultContext.MaxItemsPerPage, fetchPageDelegate));
         }
 
+        /// <inheritdoc/>
         public IQueryStatement CreateQueryStatement(string statement)
         {
             return new QueryStatement(this, statement);
         }
 
+        /// <inheritdoc/>
         public string GetLatestChangeLogToken()
         {
             return Binding.GetRepositoryService().GetRepositoryInfo(RepositoryId, null).LatestChangeLogToken;
         }
 
+        /// <inheritdoc/>
         public IChangeEvents GetContentChanges(string changeLogToken, bool includeProperties, long maxNumItems)
         {
             return GetContentChanges(changeLogToken, includeProperties, maxNumItems, DefaultContext);
         }
 
+        /// <inheritdoc/>
         public IChangeEvents GetContentChanges(string changeLogToken, bool includeProperties, long maxNumItems,
                 IOperationContext context)
         {
@@ -933,12 +954,14 @@ namespace PortCMIS.Client.Impl
             return newId == null ? null : CreateObjectId(newId);
         }
 
+        /// <inheritdoc/>
         public IObjectId CreateDocument(IDictionary<string, object> properties, IObjectId folderId, IContentStream contentStream,
             VersioningState? versioningState)
         {
             return CreateDocument(properties, folderId, contentStream, versioningState, null, null, null);
         }
 
+        /// <inheritdoc/>
         public IObjectId CreateDocumentFromSource(IObjectId source, IDictionary<string, object> properties, IObjectId folderId,
             VersioningState? versioningState, IList<IPolicy> policies, IList<IAce> addAces, IList<IAce> removeAces)
         {
@@ -977,12 +1000,14 @@ namespace PortCMIS.Client.Impl
             return newId == null ? null : CreateObjectId(newId);
         }
 
+        /// <inheritdoc/>
         public IObjectId CreateDocumentFromSource(IObjectId source, IDictionary<string, object> properties, IObjectId folderId,
                 VersioningState? versioningState)
         {
             return CreateDocumentFromSource(source, properties, folderId, versioningState, null, null, null);
         }
 
+        /// <inheritdoc/>
         public IObjectId CreateFolder(IDictionary<string, object> properties, IObjectId folderId, IList<IPolicy> policies,
             IList<IAce> addAces, IList<IAce> removeAces)
         {
@@ -1002,11 +1027,13 @@ namespace PortCMIS.Client.Impl
             return newId == null ? null : CreateObjectId(newId);
         }
 
+        /// <inheritdoc/>
         public IObjectId CreateFolder(IDictionary<string, object> properties, IObjectId folderId)
         {
             return CreateFolder(properties, folderId, null, null, null);
         }
 
+        /// <inheritdoc/>
         public IObjectId CreatePolicy(IDictionary<string, object> properties, IObjectId folderId, IList<IPolicy> policies,
             IList<IAce> addAces, IList<IAce> removeAces)
         {
@@ -1022,11 +1049,13 @@ namespace PortCMIS.Client.Impl
             return newId == null ? null : CreateObjectId(newId);
         }
 
+        /// <inheritdoc/>
         public IObjectId CreatePolicy(IDictionary<string, object> properties, IObjectId folderId)
         {
             return CreatePolicy(properties, folderId, null, null, null);
         }
 
+        /// <inheritdoc/>
         public IObjectId CreateItem(IDictionary<string, object> properties, IObjectId folderId, IList<IPolicy> policies, IList<IAce> addAces,
                 IList<IAce> removeAces)
         {
@@ -1042,11 +1071,13 @@ namespace PortCMIS.Client.Impl
             return newId == null ? null : CreateObjectId(newId);
         }
 
+        /// <inheritdoc/>
         public IObjectId CreateItem(IDictionary<string, object> properties, IObjectId folderId)
         {
             return CreateItem(properties, folderId, null, null, null);
         }
 
+        /// <inheritdoc/>
         public IObjectId CreateRelationship(IDictionary<string, object> properties, IList<IPolicy> policies, IList<IAce> addAces,
                 IList<IAce> removeAces)
         {
@@ -1061,11 +1092,13 @@ namespace PortCMIS.Client.Impl
             return newId == null ? null : CreateObjectId(newId);
         }
 
+        /// <inheritdoc/>
         public IObjectId CreateRelationship(IDictionary<string, object> properties)
         {
             return CreateRelationship(properties, null, null, null);
         }
 
+        /// <inheritdoc/>
         public IItemEnumerable<IRelationship> GetRelationships(IObjectId objectId, bool includeSubRelationshipTypes,
                 RelationshipDirection? relationshipDirection, IObjectType type, IOperationContext context)
         {
@@ -1178,6 +1211,7 @@ namespace PortCMIS.Client.Impl
 
         // permissions
 
+        /// <inheritdoc/>
         public IAcl GetAcl(IObjectId objectId, bool onlyBasicPermissions)
         {
             if (objectId == null || objectId.Id == null)
@@ -1188,6 +1222,7 @@ namespace PortCMIS.Client.Impl
             return Binding.GetAclService().GetAcl(RepositoryId, objectId.Id, onlyBasicPermissions, null);
         }
 
+        /// <inheritdoc/>
         public IAcl ApplyAcl(IObjectId objectId, IList<IAce> addAces, IList<IAce> removeAces, AclPropagation? aclPropagation)
         {
             if (objectId == null || objectId.Id == null)
@@ -1199,6 +1234,7 @@ namespace PortCMIS.Client.Impl
                 ObjectFactory.ConvertAces(removeAces), aclPropagation, null);
         }
 
+        /// <inheritdoc/>
         public void ApplyPolicy(IObjectId objectId, params IObjectId[] policyIds)
         {
             if (objectId == null || objectId.Id == null)
@@ -1227,6 +1263,7 @@ namespace PortCMIS.Client.Impl
             }
         }
 
+        /// <inheritdoc/>
         public void RemovePolicy(IObjectId objectId, params IObjectId[] policyIds)
         {
             if (objectId == null || objectId.Id == null)
@@ -1278,11 +1315,13 @@ namespace PortCMIS.Client.Impl
             this.statement = statement.Trim();
         }
 
+        /// <inheritdoc/>
         public void SetType(int parameterIndex, string typeId)
         {
             SetType(parameterIndex, session.GetTypeDefinition(typeId));
         }
 
+        /// <inheritdoc/>
         public void SetType(int parameterIndex, IObjectType type)
         {
             if (type == null)
@@ -1298,6 +1337,7 @@ namespace PortCMIS.Client.Impl
             parametersDict[parameterIndex] = type.QueryName;
         }
 
+        /// <inheritdoc/>
         public void SetProperty(int parameterIndex, string typeId, string propertyId)
         {
             IObjectType type = session.GetTypeDefinition(typeId);
@@ -1311,6 +1351,7 @@ namespace PortCMIS.Client.Impl
             SetProperty(parameterIndex, propertyDefinition);
         }
 
+        /// <inheritdoc/>
         public void SetProperty(int parameterIndex, IPropertyDefinition propertyDefinition)
         {
             if (propertyDefinition == null)
@@ -1327,6 +1368,7 @@ namespace PortCMIS.Client.Impl
             parametersDict[parameterIndex] = queryName;
         }
 
+        /// <inheritdoc/>
         public void SetInteger(int parameterIndex, params BigInteger[] num)
         {
             if (num == null || num.Length == 0)
@@ -1348,6 +1390,7 @@ namespace PortCMIS.Client.Impl
             parametersDict[parameterIndex] = slb.ToString();
         }
 
+        /// <inheritdoc/>
         public void SetDecimal(int parameterIndex, params decimal[] num)
         {
             if (num == null || num.Length == 0)
@@ -1364,6 +1407,7 @@ namespace PortCMIS.Client.Impl
             parametersDict[parameterIndex] = slb.ToString();
         }
 
+        /// <inheritdoc/>
         public void SetString(int parameterIndex, params string[] str)
         {
             if (str == null || str.Length == 0)
@@ -1385,6 +1429,7 @@ namespace PortCMIS.Client.Impl
             parametersDict[parameterIndex] = slb.ToString();
         }
 
+        /// <inheritdoc/>
         public void SetStringLike(int parameterIndex, string str)
         {
             if (str == null)
@@ -1395,6 +1440,7 @@ namespace PortCMIS.Client.Impl
             parametersDict[parameterIndex] = EscapeLike(str);
         }
 
+        /// <inheritdoc/>
         public void SetStringContains(int parameterIndex, string str)
         {
             if (str == null)
@@ -1405,6 +1451,7 @@ namespace PortCMIS.Client.Impl
             parametersDict[parameterIndex] = EscapeContains(str);
         }
 
+        /// <inheritdoc/>
         public void SetId(int parameterIndex, params  IObjectId[] id)
         {
             if (id == null || id.Length == 0)
@@ -1426,6 +1473,7 @@ namespace PortCMIS.Client.Impl
             parametersDict[parameterIndex] = slb.ToString();
         }
 
+        /// <inheritdoc/>
         public void SetUri(int parameterIndex, params Uri[] uri)
         {
             if (uri == null || uri.Length == 0)
@@ -1447,6 +1495,7 @@ namespace PortCMIS.Client.Impl
             parametersDict[parameterIndex] = slb.ToString();
         }
 
+        /// <inheritdoc/>
         public void SetBoolean(int parameterIndex, params bool[] boolean)
         {
             if (boolean == null || boolean.Length == 0)
@@ -1463,26 +1512,31 @@ namespace PortCMIS.Client.Impl
             parametersDict[parameterIndex] = slb.ToString();
         }
 
+        /// <inheritdoc/>
         public void SetDateTime(int parameterIndex, params DateTime[] dt)
         {
             SetDateTime(parameterIndex, false, dt);
         }
 
+        /// <inheritdoc/>
         public void SetDateTime(int parameterIndex, params long[] ms)
         {
             SetDateTime(parameterIndex, false, ms);
         }
 
+        /// <inheritdoc/>
         public void SetDateTimeTimestamp(int parameterIndex, params DateTime[] dt)
         {
             SetDateTime(parameterIndex, true, dt);
         }
 
+        /// <inheritdoc/>
         public void SetDateTimeTimestamp(int parameterIndex, params long[] ms)
         {
             SetDateTime(parameterIndex, true, ms);
         }
 
+        /// <inheritdoc/>
         protected void SetDateTime(int parameterIndex, bool prefix, params DateTime[] cal)
         {
             if (cal == null || cal.Length == 0)
@@ -1517,6 +1571,7 @@ namespace PortCMIS.Client.Impl
             parametersDict[parameterIndex] = sb.ToString();
         }
 
+        /// <inheritdoc/>
         protected void SetDateTime(int parameterIndex, bool prefix, params long[] ms)
         {
             if (ms == null || ms.Length == 0)
@@ -1546,6 +1601,7 @@ namespace PortCMIS.Client.Impl
             parametersDict[parameterIndex] = sb.ToString();
         }
 
+        /// <inheritdoc/>
         public string ToQueryString()
         {
             bool inStr = false;
@@ -1590,11 +1646,13 @@ namespace PortCMIS.Client.Impl
             return sb.ToString();
         }
 
+        /// <inheritdoc/>
         public IItemEnumerable<IQueryResult> Query(bool searchAllVersions)
         {
             return session.Query(ToQueryString(), searchAllVersions);
         }
 
+        /// <inheritdoc/>
         public IItemEnumerable<IQueryResult> Query(bool searchAllVersions, IOperationContext context)
         {
             return session.Query(ToQueryString(), searchAllVersions, context);

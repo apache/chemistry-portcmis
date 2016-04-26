@@ -32,34 +32,150 @@ using System.Threading.Tasks;
 
 namespace PortCMIS.Binding
 {
+    /// <summary>
+    /// Low-level CMIS binding interface.
+    /// </summary>
     public interface ICmisBinding : IDisposable
     {
+        /// <value>
+        /// Binding type.
+        /// </value>
         string BindingType { get; }
+
+        /// <summary>
+        /// Returns the repository service instance.
+        /// </summary>
+        /// <returns>the repository service instance</returns>
         IRepositoryService GetRepositoryService();
+
+        /// <summary>
+        /// Returns the navigation service instance.
+        /// </summary>
+        /// <returns>the navigation service instance</returns>
         INavigationService GetNavigationService();
+
+        /// <summary>
+        /// Returns the object service instance.
+        /// </summary>
+        /// <returns>the object service instance</returns>
         IObjectService GetObjectService();
+
+        /// <summary>
+        /// Returns the versioning service instance.
+        /// </summary>
+        /// <returns>the versioning service instance</returns>
         IVersioningService GetVersioningService();
+
+        /// <summary>
+        /// Returns the relationship service instance.
+        /// </summary>
+        /// <returns>the relationship service instance</returns>
         IRelationshipService GetRelationshipService();
+
+        /// <summary>
+        /// Returns the discovery service instance.
+        /// </summary>
+        /// <returns>the discovery service instance</returns>
         IDiscoveryService GetDiscoveryService();
+
+        /// <summary>
+        /// Returns the multi-filing service instance.
+        /// </summary>
+        /// <returns>the multi-filing service instance</returns>
         IMultiFilingService GetMultiFilingService();
+
+        /// <summary>
+        /// Returns the ACL service instance.
+        /// </summary>
+        /// <returns>the ACL service instance</returns>
         IAclService GetAclService();
+
+        /// <summary>
+        /// Returns the policy service instance.
+        /// </summary>
+        /// <returns>the policy service instance</returns>
         IPolicyService GetPolicyService();
+
+        /// <summary>
+        /// Returns the authentication provider instance.
+        /// </summary>
+        /// <returns>the authentication provider instance</returns>
         IAuthenticationProvider GetAuthenticationProvider();
+
+        /// <summary>
+        /// Clears all low-level caches.
+        /// </summary>
         void ClearAllCaches();
+
+        /// <summary>
+        /// Clears all low-level caches for the given repository.
+        /// </summary>
+        /// <param name="repositoryId">the repository ID</param>
         void ClearRepositoryCache(string repositoryId);
     }
 
+    /// <summary>
+    /// Binding Session interface.
+    /// </summary>
     public interface IBindingSession
     {
+        /// <summary>
+        /// Gets a value from the session.
+        /// </summary>
+        /// <param name="key">the key</param>
+        /// <returns>the value or <c>null</c> if the key is unknown</returns>
         object GetValue(string key);
+
+        /// <summary>
+        /// Gets a value from the session.
+        /// </summary>
+        /// <param name="key">the key</param>
+        /// <param name="defValue">the default value</param>
+        /// <returns>the value or the default value if the key is unknown</returns>
         object GetValue(string key, object defValue);
+
+        /// <summary>
+        /// Gets a value as an integer from the session.
+        /// </summary>
+        /// <param name="key">the key</param>
+        /// <param name="defValue">the default value</param>
+        /// <returns>the value or the default value if the key is unknown or the value cannot be returned as an integer</returns>
         int GetValue(string key, int defValue);
+
+        /// <summary>
+        /// Gets a value as a boolean from the session.
+        /// </summary>
+        /// <param name="key">the key</param>
+        /// <param name="defValue">the default value</param>
+        /// <returns>the value or the default value if the key is unknown or the value cannot be returned as a boolean</returns>
         bool GetValue(string key, bool defValue);
 
+        /// <summary>
+        /// Adds a key-value pair to the session.
+        /// </summary>
+        /// <param name="key">the key</param>
+        /// <param name="value">the value</param>
         void PutValue(string key, object value);
+
+        /// <summary>
+        /// Removes a key-value pair.
+        /// </summary>
+        /// <param name="key">the key</param>
         void RemoveValue(string key);
 
+        /// <summary>
+        /// Gets the authentication provider from the session.
+        /// </summary>
+        /// <returns>the authentication provider or <c>null</c> if no authentication provider has been set</returns>
         IAuthenticationProvider GetAuthenticationProvider();
+
+        /// <summary>
+        /// Gets the HTTP invoker from the session.
+        /// </summary>
+        /// <remarks>
+        /// If no HTTP invoker has been set, a HTTP invoker is created, added to the session and returned.
+        /// </remarks>
+        /// <returns>the HTTP invoker</returns>
         IHttpInvoker GetHttpInvoker();
     }
 
@@ -68,44 +184,126 @@ namespace PortCMIS.Binding
     /// </summary>
     public interface ICmisSpi : IDisposable
     {
+        /// <summary>
+        /// Initializes the SPI with a binding session.
+        /// </summary>
+        /// <param name="session">the binding session</param>
         void Initialize(IBindingSession session);
+
+        /// <summary>
+        /// Returns the repository service instance.
+        /// </summary>
         IRepositoryService GetRepositoryService();
+
+        /// <summary>
+        /// Returns the navigation service instance.
+        /// </summary>
         INavigationService GetNavigationService();
+
+        /// <summary>
+        /// Returns the object service instance.
+        /// </summary>
         IObjectService GetObjectService();
+
+        /// <summary>
+        /// Returns the versioning service instance.
+        /// </summary>
         IVersioningService GetVersioningService();
+
+        /// <summary>
+        /// Returns the relationship service instance.
+        /// </summary>
         IRelationshipService GetRelationshipService();
+
+        /// <summary>
+        /// Returns the discovery service instance.
+        /// </summary>
         IDiscoveryService GetDiscoveryService();
+
+        /// <summary>
+        /// Returns the multi-filing service instance.
+        /// </summary>
         IMultiFilingService GetMultiFilingService();
+
+        /// <summary>
+        /// Returns the ACL service instance.
+        /// </summary>
         IAclService GetAclService();
+
+        /// <summary>
+        /// Returns the repository service instance.
+        /// </summary>
         IPolicyService GetPolicyService();
+
+        /// <summary>
+        /// Clears all caches.
+        /// </summary>
         void ClearAllCaches();
+
+        /// <summary>
+        /// Clears all caches of a repository.
+        /// </summary>
+        /// <param name="repositoryId">the repository ID</param>
         void ClearRepositoryCache(string repositoryId);
     }
 
     /// <summary>
-    /// Basic authentication provider 
+    /// Authentication provider interface.
     /// </summary>
     public interface IAuthenticationProvider
     {
+        /// <value>Binding session instance</value>
         IBindingSession Session { get; set; }
     }
 
+    /// <summary>
+    /// Authentication provider interface for the portable HTTP client.
+    /// </summary>
     public interface IPortableAuthenticationProvider : IAuthenticationProvider
     {
+        /// <summary>
+        /// Prepares the HTTP client handler before it is used.
+        /// </summary>
+        /// <param name="httpClientHandler">the HTTP client handler</param>
         void PrepareHttpClientHandler(HttpClientHandler httpClientHandler);
+
+        /// <summary>
+        /// Prepares the HTTP request message before it is used.
+        /// </summary>
+        /// <param name="httpRequestMessage">the HTTP request message</param>
         void PrepareHttpRequestMessage(HttpRequestMessage httpRequestMessage);
+
+        /// <summary>
+        /// Handles the HTTP response if necessary.
+        /// </summary>
+        /// <param name="httpResponseMessage">the HTTP response message</param>
         void HandleResponse(HttpResponseMessage httpResponseMessage);
     }
 
+    /// <summary>
+    /// Base implementation of an authentication provider.
+    /// </summary>
     public abstract class AbstractAuthenticationProvider : IPortableAuthenticationProvider
     {
+        /// <value>Binding session instance</value>
         public IBindingSession Session { get; set; }
+
+        /// <value>HTTP cookie container</value>
         public CookieContainer CookieContainer { get; private set; }
+
+        /// <value>User</value>
         public string User { get { return Session.GetValue(SessionParameter.User) as string; } }
+
+        /// <value>Password</value>
         public string Password { get { return Session.GetValue(SessionParameter.Password) as string; } }
+
+        /// <value>Proxy user</value>
         public string ProxyUser { get { return Session.GetValue(SessionParameter.ProxyUser) as string; } }
+
+        /// <value>Proxy password</value>
         public string ProxyPassword { get { return Session.GetValue(SessionParameter.ProxyPassword) as string; } }
 
+        /// <inheritdoc/>
         public virtual void PrepareHttpClientHandler(HttpClientHandler httpClientHandler)
         {
             httpClientHandler.PreAuthenticate = true;
@@ -115,32 +313,48 @@ namespace PortCMIS.Binding
             httpClientHandler.CookieContainer = CookieContainer;
         }
 
+        /// <inheritdoc/>
         public virtual void PrepareHttpRequestMessage(HttpRequestMessage httpRequestMessage)
         {
         }
 
+        /// <inheritdoc/>
         public virtual void HandleResponse(HttpResponseMessage httpResponseMessage)
         {
         }
     }
 
+    /// <summary>
+    /// Standard Authentication Provider.
+    /// </summary>
     public class StandardAuthenticationProvider : AbstractAuthenticationProvider
     {
+        /// <value>OAuth bearer token</value>
         public string BearerToken { get { return Session.GetValue(SessionParameter.OAuthBearerToken) as string; } }
+
+        /// <value>CSRF header</value>
         public string CsrfHeader { get { return Session.GetValue(SessionParameter.CsrfHeader) as string; } }
 
+        /// <value>Authentication header</value>
         protected AuthenticationHeaderValue AuthenticationHeader { get; set; }
+
+        /// <value>proxy authentication header</value>
         protected AuthenticationHeaderValue ProxyAuthenticationHeader { get; set; }
 
         private object tokenLock = new object();
         private string token = "fetch";
+
+        /// <value>CSRF header name</value>
         protected string CsrfHeaderName { get; set; }
+
+        /// <value>CSRF header token</value>
         protected string CsrfToken
         {
             get { lock (tokenLock) { return token; } }
             set { lock (tokenLock) { token = value; } }
         }
 
+        /// <inheritdoc/>
         public override void PrepareHttpClientHandler(HttpClientHandler httpClientHandler)
         {
             base.PrepareHttpClientHandler(httpClientHandler);
@@ -175,6 +389,7 @@ namespace PortCMIS.Binding
             }
         }
 
+        /// <inheritdoc/>
         public override void PrepareHttpRequestMessage(HttpRequestMessage httpRequestMessage)
         {
             base.PrepareHttpRequestMessage(httpRequestMessage);
@@ -195,6 +410,7 @@ namespace PortCMIS.Binding
             }
         }
 
+        /// <inheritdoc/>
         public override void HandleResponse(HttpResponseMessage httpResponseMessage)
         {
             base.HandleResponse(httpResponseMessage);

@@ -69,7 +69,7 @@ namespace PortCMIS.Client
         /// ISession session = factory.CreateSession(parameters);
         /// </code>
         /// </example>
-        /// <seealso cref="PortCMIS.SessionParameter"/>
+        /// <seealso cref="PortCMIS.Client.SessionParameter"/>
         ISession CreateSession(IDictionary<string, string> parameters);
 
         /// <summary>
@@ -80,6 +80,7 @@ namespace PortCMIS.Client
         /// <param name="objectFactory">Object factory.</param>
         /// <param name="authenticationProvider">Authentication provider.</param>
         /// <param name="cache">Client object cache.</param>
+        /// <seealso cref="PortCMIS.Client.SessionParameter"/>
         ISession CreateSession(IDictionary<string, string> parameters, IObjectFactory objectFactory, IAuthenticationProvider authenticationProvider, ICache cache);
 
         /// <summary>
@@ -87,7 +88,7 @@ namespace PortCMIS.Client
         /// </summary>
         /// <param name="parameters">the session parameters</param>
         /// <returns>a list of all available repositories</returns>
-        /// <seealso cref="PortCMIS.SessionParameter"/>
+        /// <seealso cref="PortCMIS.Client.SessionParameter"/>
         IList<IRepository> GetRepositories(IDictionary<string, string> parameters);
     }
 
@@ -289,7 +290,7 @@ namespace PortCMIS.Client
 
         /// <summary>
         /// Gets a CMIS object from the session cache. If the object is not in the cache or the cache is 
-        /// turned off per default <see cref="PortCMIS.Client.IOperationContext"/>, it will load the object
+        /// turned off per default operation context, it will load the object
         /// from the repository and puts it into the cache.
         /// <para>
         /// This method might return a stale object if the object has been found in the cache and has
@@ -301,8 +302,54 @@ namespace PortCMIS.Client
         /// <param name="path">the path to the object</param>
         /// <cmis>1.0</cmis>
         ICmisObject GetObjectByPath(string path);
+
+        /// <summary>
+        /// Gets a CMIS object from the session cache. If the object is not in the cache or the cache is 
+        /// turned off or the given operation context has caching turned off, it will load the object
+        /// from the repository and puts it into the cache.
+        /// <para>
+        /// This method might return a stale object if the object has been found in the cache and has
+        /// been changed in or removed from the repository.
+        /// Use <see cref="PortCMIS.Client.ICmisObject.Refresh()"/> and <see cref="PortCMIS.Client.ICmisObject.RefreshIfOld(long)"/>
+        /// to update the object if necessary.
+        /// </para>
+        /// </summary>
+        /// <param name="path">the path to the object</param>
+        /// <param name="context">the operation context</param>
+        /// <cmis>1.0</cmis>
         ICmisObject GetObjectByPath(string path, IOperationContext context);
+
+        /// <summary>
+        /// Gets a CMIS object from the session cache. If the object is not in the cache or the cache is 
+        /// turned off per default operation context, it will load the object
+        /// from the repository and puts it into the cache.
+        /// <para>
+        /// This method might return a stale object if the object has been found in the cache and has
+        /// been changed in or removed from the repository.
+        /// Use <see cref="PortCMIS.Client.ICmisObject.Refresh()"/> and <see cref="PortCMIS.Client.ICmisObject.RefreshIfOld(long)"/>
+        /// to update the object if necessary.
+        /// </para>
+        /// </summary>
+        /// <param name="parentPath">the path of the parent folder</param>
+        /// <param name="name">name of the object</param>
+        /// <cmis>1.0</cmis>
         ICmisObject GetObjectByPath(string parentPath, string name);
+
+        /// <summary>
+        /// Gets a CMIS object from the session cache. If the object is not in the cache or the cache is 
+        /// turned off or the given operation context has caching turned off, it will load the object
+        /// from the repository and puts it into the cache.
+        /// <para>
+        /// This method might return a stale object if the object has been found in the cache and has
+        /// been changed in or removed from the repository.
+        /// Use <see cref="PortCMIS.Client.ICmisObject.Refresh()"/> and <see cref="PortCMIS.Client.ICmisObject.RefreshIfOld(long)"/>
+        /// to update the object if necessary.
+        /// </para>
+        /// </summary>
+        /// <param name="parentPath">the path of the parent folder</param>
+        /// <param name="name">name of the object</param>
+        /// <param name="context">the operation context</param>
+        /// <cmis>1.0</cmis>
         ICmisObject GetObjectByPath(string parentPath, string name, IOperationContext context);
 
         /// <summary>
@@ -311,9 +358,37 @@ namespace PortCMIS.Client
         /// <param name="objectId">the document ID of an arbitrary version in the version series</param>
         /// <cmis>1.0</cmis>
         IDocument GetLatestDocumentVersion(string objectId);
+
+        /// <summary>
+        /// Gets the latest version in a version series with the given operation context.
+        /// </summary>
+        /// <param name="objectId">the document ID of an arbitrary version in the version series</param>
+        /// <param name="context">the operation context</param>
+        /// <cmis>1.0</cmis>
         IDocument GetLatestDocumentVersion(string objectId, IOperationContext context);
+
+        /// <summary>
+        /// Gets the latest version in a version series.
+        /// </summary>
+        /// <param name="objectId">the document ID of an arbitrary version in the version series</param>
+        /// <cmis>1.0</cmis>
         IDocument GetLatestDocumentVersion(IObjectId objectId);
+
+        /// <summary>
+        /// Gets the latest version in a version series with the given operation context.
+        /// </summary>
+        /// <param name="objectId">the document ID of an arbitrary version in the version series</param>
+        /// <param name="context">the operation context</param>
+        /// <cmis>1.0</cmis>
         IDocument GetLatestDocumentVersion(IObjectId objectId, IOperationContext context);
+
+        /// <summary>
+        /// Gets the latest version in a version series with the given operation context.
+        /// </summary>
+        /// <param name="objectId">the document ID of an arbitrary version in the version series</param>
+        /// <param name="major">defines if the latest major or the latest minor version should be returned</param>
+        /// <param name="context">the operation context</param>
+        /// <cmis>1.0</cmis>
         IDocument GetLatestDocumentVersion(IObjectId objectId, bool major, IOperationContext context);
 
         /// <summary>
@@ -339,6 +414,14 @@ namespace PortCMIS.Client
         /// <cmis>1.0</cmis>
         IItemEnumerable<IQueryResult> Query(string statement, bool searchAllVersions);
         IItemEnumerable<ICmisObject> QueryObjects(string typeId, string where, bool searchAllVersions, IOperationContext context);
+
+        /// <summary>
+        /// Creates a query statement.
+        /// </summary>
+        /// <param name="statement">the CMIS QL statement</param>
+        /// <returns>the query statement object</returns>
+        /// <seealso cref="PortCMIS.Client.IQueryStatement"/>
+        /// <cmis>1.0</cmis>
         IQueryStatement CreateQueryStatement(string statement);
 
         /// <summary>
@@ -351,6 +434,10 @@ namespace PortCMIS.Client
         /// <cmis>1.0</cmis>
         IItemEnumerable<IQueryResult> Query(string statement, bool searchAllVersions, IOperationContext context);
 
+        /// <summary>
+        /// Gets the latest change log token from the repository.
+        /// </summary>
+        /// <returns>the latest change log token</returns>
         string GetLatestChangeLogToken();
         IChangeEvents GetContentChanges(string changeLogToken, bool includeProperties, long maxNumItems);
         IChangeEvents GetContentChanges(string changeLogToken, bool includeProperties, long maxNumItems, IOperationContext context);
@@ -429,9 +516,41 @@ namespace PortCMIS.Client
         IContentStream GetContentStream(IObjectId docId, string streamId, long? offset, long? length);
 
         // permissions
+
+        /// <summary>
+        /// Gets the ACL of an object.
+        /// </summary>
+        /// <param name="objectId">the object ID</param>
+        /// <param name="onlyBasicPermissions">a flag indicating whether only basic permissions are requested</param>
+        /// <returns>the ACL</returns>
+        /// <cmis>1.0</cmis>
         IAcl GetAcl(IObjectId objectId, bool onlyBasicPermissions);
+
+        /// <summary>
+        /// Applies an ACL.
+        /// </summary>
+        /// <param name="objectId">the object ID</param>
+        /// <param name="addAces">the ACEs to be added</param>
+        /// <param name="removeAces">the ACSs to be removed</param>
+        /// <param name="aclPropagation">the ACL propagation flag</param>
+        /// <returns>the new ACL of the object</returns>
+        /// <cmis>1.0</cmis>
         IAcl ApplyAcl(IObjectId objectId, IList<IAce> addAces, IList<IAce> removeAces, AclPropagation? aclPropagation);
+
+        /// <summary>
+        /// Applies policies.
+        /// </summary>
+        /// <param name="objectId">the object ID</param>
+        /// <param name="policyIds">the policy IDs</param>
+        /// <cmis>1.0</cmis>
         void ApplyPolicy(IObjectId objectId, params IObjectId[] policyIds);
+
+        /// <summary>
+        /// Removes policies.
+        /// </summary>
+        /// <param name="objectId">the object ID</param>
+        /// <param name="policyIds">the policy IDs</param>
+        /// <cmis>1.0</cmis>
         void RemovePolicy(IObjectId objectId, params IObjectId[] policyIds);
     }
 
@@ -1034,13 +1153,34 @@ namespace PortCMIS.Client
         IList<ISecondaryType> SecondaryTypes { get; }
     }
 
+    /// <summary>
+    /// Extension level.
+    /// </summary>
     public enum ExtensionLevel
     {
+        /// <summary>
+        /// Object extensions.
+        /// </summary>
         Object,
+        /// <summary>
+        /// Properties extensions.
+        /// </summary>
         Properties,
+        /// <summary>
+        /// Allowable Actions extensions.
+        /// </summary>
         AllowableActions,
+        /// <summary>
+        /// ACL extensions.
+        /// </summary>
         Acl,
+        /// <summary>
+        /// Policies extensions.
+        /// </summary>
         Policies,
+        /// <summary>
+        /// Change Event extensions.
+        /// </summary>
         ChangeEvent
     }
 
@@ -1279,7 +1419,7 @@ namespace PortCMIS.Client
 
         /// <value>
         /// The content stream hashes or <c>null</c> if the document has no content or the repository hasn't provided content hashes (CMIS property <c>cmis:contentStreamHash</c>).
-        /// </summary>
+        /// </value>
         IList<IContentStreamHash> ContentStreamHashes { get; }
     }
 

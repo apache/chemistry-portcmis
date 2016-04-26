@@ -17,6 +17,11 @@
 * under the License.
 */
 
+/*
+ * This JSON parser implementation is based on
+ * JSON.simple <http://code.google.com/p/json-simple/>.
+ */
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -27,10 +32,7 @@ using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
-/// <summary>
-/// This JSON parser implementation is based on
-/// JSON.simple <http://code.google.com/p/json-simple/>.
-/// </summary>
+
 namespace PortCMIS.Binding.Browser.Json
 {
     /// <summary>
