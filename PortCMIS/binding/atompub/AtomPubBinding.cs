@@ -250,7 +250,7 @@ namespace PortCMIS.Binding.AtomPub
         }
 
         /// <summary>
-        /// Gets a link from the cache if it is there or loads it into the cache if
+        /// Gets a link from the cache if it is there or Loads it into the cache if
         /// it is not there.
         /// </summary>
         public string LoadLink(string repositoryId, string id, string rel, string type)
@@ -267,7 +267,7 @@ namespace PortCMIS.Binding.AtomPub
         }
 
         /// <summary>
-        /// Gets the content link from the cache if it is there or loads it into the
+        /// Gets the content link from the cache if it is there or Loads it into the
         /// cache if it is not there.
         /// </summary>
 
@@ -277,7 +277,7 @@ namespace PortCMIS.Binding.AtomPub
         }
 
         /// <summary>
-        /// Gets a rendition content link from the cache if it is there or loads it
+        /// Gets a rendition content link from the cache if it is there or Loads it
         /// into the cache if it is not there.
         /// </summary>
 
@@ -377,10 +377,10 @@ namespace PortCMIS.Binding.AtomPub
         }
 
         /// <summary>
-        /// Gets a link from the cache if it is there or loads it into the cache if
+        /// Gets a link from the cache if it is there or Loads it into the cache if
         /// it is not there.
         /// </summary>
-        protected string loadTypeLink(string repositoryId, string typeId, string rel, string type)
+        protected string LoadTypeLink(string repositoryId, string typeId, string rel, string type)
         {
             string link = GetTypeLink(repositoryId, typeId, rel, type);
             if (link == null)
@@ -441,10 +441,10 @@ namespace PortCMIS.Binding.AtomPub
         }
 
         /// <summary>
-        /// Gets a collection from the cache if it is there or loads it into the
+        /// Gets a collection from the cache if it is there or Loads it into the
         /// cache if it is not there.
         /// </summary>
-        protected string loadCollection(string repositoryId, string collection)
+        protected string LoadCollection(string repositoryId, string collection)
         {
             string link = GetCollection(repositoryId, collection);
             if (link == null)
@@ -474,7 +474,7 @@ namespace PortCMIS.Binding.AtomPub
         }
 
         /// <summary>
-        /// Gets a repository link from the cache if it is there or loads it into the
+        /// Gets a repository link from the cache if it is there or Loads it into the
         /// cache if it is not there.
         /// </summary>
         protected string LoadRepositoryLink(string repositoryId, string rel)
@@ -515,7 +515,7 @@ namespace PortCMIS.Binding.AtomPub
         }
 
         /// <summary>
-        /// Gets a template link from the cache if it is there or loads it into the
+        /// Gets a template link from the cache if it is there or Loads it into the
         /// cache if it is not there.
         /// </summary>
         protected string LoadTemplateLink(string repositoryId, string type, Dictionary<string, object> parameters)
@@ -651,7 +651,7 @@ namespace PortCMIS.Binding.AtomPub
 
         protected bool isStr(string name, AtomElement element)
         {
-            return Matches(name, element) && (element.Object is String);
+            return Matches(name, element) && (element.Object is string);
         }
 
         protected bool isInt(string name, AtomElement element)
@@ -667,7 +667,7 @@ namespace PortCMIS.Binding.AtomPub
         /// <summary>
         /// Creates a CMIS object with properties and policy IDs.
         /// </summary>
-        protected ObjectData CreateObject(IProperties properties, string changeToken, List<string> policies)
+        protected ObjectData CreateObject(IProperties properties, string changeToken, IList<string> policies)
         {
             ObjectData obj = new ObjectData();
 
@@ -829,7 +829,7 @@ namespace PortCMIS.Binding.AtomPub
         /// Performs a PUT on an URL, checks the response code and returns the
         /// result.
         /// </summary>
-        protected IResponse Put(UrlBuilder url, Dictionary<string, string> headers, HttpContent content)
+        protected IResponse Put(UrlBuilder url, IDictionary<string, string> headers, HttpContent content)
         {
             // make the call
             IResponse resp = Session.GetHttpInvoker().InvokePUT(url, headers, content, session);
@@ -1190,9 +1190,8 @@ namespace PortCMIS.Binding.AtomPub
         /// <summary>
         /// Updates the ACL of an object.
         /// </summary>
-        protected AtomAcl UpdateAcl(string repositoryId, string objectId, IAcl acl, AclPropagation aclPropagation)
+        protected AtomAcl UpdateAcl(string repositoryId, string objectId, IAcl acl, AclPropagation? aclPropagation)
         {
-
             // find the link
             string link = LoadLink(repositoryId, objectId, BindingConstants.RelAcl, BindingConstants.MediaTypeAcl);
 
@@ -1220,7 +1219,6 @@ namespace PortCMIS.Binding.AtomPub
             // parse new entry
             return Parse<AtomAcl>(resp.Stream);
         }
-
     }
 
     internal class RepositoryService : AbstractAtomPubService, IRepositoryService
@@ -1270,11 +1268,11 @@ namespace PortCMIS.Binding.AtomPub
             string link = null;
             if (typeId == null)
             {
-                link = loadCollection(repositoryId, BindingConstants.CollectionTypes);
+                link = LoadCollection(repositoryId, BindingConstants.CollectionTypes);
             }
             else
             {
-                link = loadTypeLink(repositoryId, typeId, BindingConstants.RelDown, BindingConstants.MediaTypeChildren);
+                link = LoadTypeLink(repositoryId, typeId, BindingConstants.RelDown, BindingConstants.MediaTypeChildren);
             }
 
             if (link == null)
@@ -1360,7 +1358,7 @@ namespace PortCMIS.Binding.AtomPub
             }
             else
             {
-                link = loadTypeLink(repositoryId, typeId, BindingConstants.RelDown, BindingConstants.MediaTypeDecendants);
+                link = LoadTypeLink(repositoryId, typeId, BindingConstants.RelDown, BindingConstants.MediaTypeDecendants);
             }
 
             if (link == null)
@@ -1450,7 +1448,7 @@ namespace PortCMIS.Binding.AtomPub
             }
 
             // find the link
-            string link = loadTypeLink(repositoryId, parentId, BindingConstants.RelDown, BindingConstants.MediaTypeChildren);
+            string link = LoadTypeLink(repositoryId, parentId, BindingConstants.RelDown, BindingConstants.MediaTypeChildren);
 
             if (link == null)
             {
@@ -1692,33 +1690,378 @@ namespace PortCMIS.Binding.AtomPub
             bool? includeAllowableActions, IncludeRelationships? includeRelationships, string renditionFilter,
             bool? includePathSegment, IExtensionsData extension)
         {
-            return null;
+            IList<IObjectInFolderContainer> result = new List<IObjectInFolderContainer>();
+
+            // find the link
+            string link = LoadLink(repositoryId, folderId, BindingConstants.RelDown, BindingConstants.MediaTypeDecendants);
+
+            if (link == null)
+            {
+                ThrowLinkException(repositoryId, folderId, BindingConstants.RelDown, BindingConstants.MediaTypeEntry);
+            }
+
+            UrlBuilder url = new UrlBuilder(link);
+            url.AddParameter(BindingConstants.ParamDepth, depth);
+            url.AddParameter(BindingConstants.ParamFilter, filter);
+            url.AddParameter(BindingConstants.ParamAllowableActions, includeAllowableActions);
+            url.AddParameter(BindingConstants.ParamRelationships, includeRelationships);
+            url.AddParameter(BindingConstants.ParamRenditionfilter, renditionFilter);
+            url.AddParameter(BindingConstants.ParamPathSegment, includePathSegment);
+
+            // read and parse
+            IResponse resp = Read(url);
+            AtomFeed feed = Parse<AtomFeed>(resp.Stream);
+
+            // process tree
+            AddDescendantsLevel(repositoryId, feed, result);
+
+            return result;
         }
 
         public IList<IObjectInFolderContainer> GetFolderTree(string repositoryId, string folderId, BigInteger? depth, string filter,
             bool? includeAllowableActions, IncludeRelationships? includeRelationships, string renditionFilter,
             bool? includePathSegment, IExtensionsData extension)
         {
-            return null;
+            IList<IObjectInFolderContainer> result = new List<IObjectInFolderContainer>();
+
+            // find the link
+            string link = LoadLink(repositoryId, folderId, BindingConstants.RelFolderTree, BindingConstants.MediaTypeDecendants);
+
+            if (link == null)
+            {
+                ThrowLinkException(repositoryId, folderId, BindingConstants.RelFolderTree, BindingConstants.MediaTypeEntry);
+            }
+
+            UrlBuilder url = new UrlBuilder(link);
+            url.AddParameter(BindingConstants.ParamDepth, depth);
+            url.AddParameter(BindingConstants.ParamFilter, filter);
+            url.AddParameter(BindingConstants.ParamAllowableActions, includeAllowableActions);
+            url.AddParameter(BindingConstants.ParamRelationships, includeRelationships);
+            url.AddParameter(BindingConstants.ParamRenditionfilter, renditionFilter);
+            url.AddParameter(BindingConstants.ParamPathSegment, includePathSegment);
+
+            // read and parse
+            IResponse resp = Read(url);
+            AtomFeed feed = Parse<AtomFeed>(resp.Stream);
+
+            // process tree
+            AddDescendantsLevel(repositoryId, feed, result);
+
+            return result;
+        }
+
+        /// <summary>
+        /// Adds descendants level recursively.
+        /// </summary>
+        private void AddDescendantsLevel(string repositoryId, AtomFeed feed, IList<IObjectInFolderContainer> containerList)
+        {
+            if (feed == null || feed.Entries.Count == 0)
+            {
+                return;
+            }
+
+            // walk through the feed
+            foreach (AtomEntry entry in feed.Entries)
+            {
+                ObjectInFolderData objectInFolder = null;
+                string pathSegment = null;
+                IList<IObjectInFolderContainer> childContainerList = new List<IObjectInFolderContainer>();
+
+                LockLinks();
+                try
+                {
+                    // clean up cache
+                    RemoveLinks(repositoryId, entry.Id);
+
+                    // walk through the entry
+                    foreach (AtomElement element in entry.Elements)
+                    {
+                        if (element.Object is AtomLink)
+                        {
+                            AddLink(repositoryId, entry.Id, (AtomLink)element.Object);
+                        }
+                        else if (element.Object is IObjectData)
+                        {
+                            objectInFolder = new ObjectInFolderData() { Object = (IObjectData)element.Object };
+                        }
+                        else if (isStr(NAME_PATH_SEGMENT, element))
+                        {
+                            pathSegment = (string)element.Object;
+                        }
+                        else if (element.Object is AtomFeed)
+                        {
+                            AddDescendantsLevel(repositoryId, (AtomFeed)element.Object, childContainerList);
+                        }
+                    }
+                }
+                finally
+                {
+                    UnlockLinks();
+                }
+
+                if (objectInFolder != null)
+                {
+                    objectInFolder.PathSegment = pathSegment;
+                    ObjectInFolderContainer childContainer = new ObjectInFolderContainer() { Object = objectInFolder };
+                    childContainer.Children = childContainerList;
+                    containerList.Add(childContainer);
+                }
+            }
         }
 
         public IList<IObjectParentData> GetObjectParents(string repositoryId, string objectId, string filter,
             bool? includeAllowableActions, IncludeRelationships? includeRelationships, string renditionFilter,
             bool? includeRelativePathSegment, IExtensionsData extension)
         {
-            return null;
+            IList<IObjectParentData> result = new List<IObjectParentData>();
+
+            // find the link
+            string link = LoadLink(repositoryId, objectId, BindingConstants.RelUp, BindingConstants.MediaTypeFeed);
+
+            if (link == null)
+            {
+                // root and unfiled objects have no UP link
+                return result;
+            }
+
+            UrlBuilder url = new UrlBuilder(link);
+            url.AddParameter(BindingConstants.ParamFilter, filter);
+            url.AddParameter(BindingConstants.ParamAllowableActions, includeAllowableActions);
+            url.AddParameter(BindingConstants.ParamRelationships, includeRelationships);
+            url.AddParameter(BindingConstants.ParamRenditionfilter, renditionFilter);
+            url.AddParameter(BindingConstants.ParamRelativePathSegment, includeRelativePathSegment);
+
+            // read and parse
+            IResponse resp = Read(url);
+
+            AtomBase atomBase = Parse<AtomBase>(resp.Stream);
+
+            if (atomBase is AtomFeed)
+            {
+                // it's a feed
+                AtomFeed feed = (AtomFeed)atomBase;
+
+                // walk through the feed
+                foreach (AtomEntry entry in feed.Entries)
+                {
+                    IObjectParentData objectParent = ProcessParentEntry(entry, repositoryId);
+
+                    if (objectParent != null)
+                    {
+                        result.Add(objectParent);
+                    }
+                }
+            }
+            else if (atomBase is AtomEntry)
+            {
+                // it's an entry
+                AtomEntry entry = (AtomEntry)atomBase;
+
+                IObjectParentData objectParent = ProcessParentEntry(entry, repositoryId);
+
+                if (objectParent != null)
+                {
+                    result.Add(objectParent);
+                }
+            }
+
+            return result;
+        }
+
+        private ObjectParentData ProcessParentEntry(AtomEntry entry, string repositoryId)
+        {
+            ObjectParentData result = null;
+            string relativePathSegment = null;
+
+            LockLinks();
+            try
+            {
+                // clean up cache
+                RemoveLinks(repositoryId, entry.Id);
+
+                // walk through the entry
+                foreach (AtomElement element in entry.Elements)
+                {
+                    if (element.Object is AtomLink)
+                    {
+                        AddLink(repositoryId, entry.Id, (AtomLink)element.Object);
+                    }
+                    else if (element.Object is ObjectData)
+                    {
+                        result = new ObjectParentData() { Object = (ObjectData)element.Object };
+                    }
+                    else if (isStr(NAME_RELATIVE_PATH_SEGMENT, element))
+                    {
+                        relativePathSegment = (string)element.Object;
+                    }
+                }
+            }
+            finally
+            {
+                UnlockLinks();
+            }
+
+            if (result != null)
+            {
+                result.RelativePathSegment = relativePathSegment;
+            }
+
+            return result;
         }
 
         public IObjectData GetFolderParent(string repositoryId, string folderId, string filter, ExtensionsData extension)
         {
-            return null;
+            IObjectData result = null;
+
+            // find the link
+            string link = LoadLink(repositoryId, folderId, BindingConstants.RelUp, BindingConstants.MediaTypeEntry);
+
+            if (link == null)
+            {
+                ThrowLinkException(repositoryId, folderId, BindingConstants.RelUp, BindingConstants.MediaTypeEntry);
+            }
+
+            UrlBuilder url = new UrlBuilder(link);
+            url.AddParameter(BindingConstants.ParamFilter, filter);
+
+            // read
+            IResponse resp = Read(url);
+
+            AtomBase atomBase = Parse<AtomBase>(resp.Stream);
+
+            // get the entry
+            AtomEntry entry = null;
+            if (atomBase is AtomFeed)
+            {
+                AtomFeed feed = (AtomFeed)atomBase;
+                if (feed.Entries.Count == 0)
+                {
+                    throw new CmisRuntimeException("Parent feed is empty!");
+                }
+                entry = feed.Entries[0];
+            }
+            else if (atomBase is AtomEntry)
+            {
+                entry = (AtomEntry)atomBase;
+            }
+            else
+            {
+                throw new CmisRuntimeException("Unexpected document!");
+            }
+
+            LockLinks();
+            try
+            {
+                // clean up cache
+                RemoveLinks(repositoryId, entry.Id);
+
+                // walk through the entry
+                foreach (AtomElement element in entry.Elements)
+                {
+                    if (element.Object is AtomLink)
+                    {
+                        AddLink(repositoryId, entry.Id, (AtomLink)element.Object);
+                    }
+                    else if (element.Object is IObjectData)
+                    {
+                        result = (IObjectData)element.Object;
+                    }
+                }
+            }
+            finally
+            {
+                UnlockLinks();
+            }
+
+            return result;
         }
 
         public IObjectList GetCheckedOutDocs(string repositoryId, string folderId, string filter, string orderBy,
             bool? includeAllowableActions, IncludeRelationships? includeRelationships, string renditionFilter,
             BigInteger? maxItems, BigInteger? skipCount, IExtensionsData extension)
         {
-            return null;
+            ObjectList result = new ObjectList();
+
+            // find the link
+            string link = LoadCollection(repositoryId, BindingConstants.CollectionCheckedout);
+
+            if (link == null)
+            {
+                throw new CmisObjectNotFoundException("Unknown repository or checkedout collection not supported!");
+            }
+
+            UrlBuilder url = new UrlBuilder(link);
+            url.AddParameter(BindingConstants.ParamFolderId, folderId);
+            url.AddParameter(BindingConstants.ParamFilter, filter);
+            url.AddParameter(BindingConstants.ParamOrderBy, orderBy);
+            url.AddParameter(BindingConstants.ParamAllowableActions, includeAllowableActions);
+            url.AddParameter(BindingConstants.ParamRelationships, includeRelationships);
+            url.AddParameter(BindingConstants.ParamRenditionfilter, renditionFilter);
+            url.AddParameter(BindingConstants.ParamMaxItems, maxItems);
+            url.AddParameter(BindingConstants.ParamSkipCount, skipCount);
+
+            // read and parse
+            IResponse resp = Read(url);
+            AtomFeed feed = Parse<AtomFeed>(resp.Stream);
+
+            // handle top level
+            foreach (AtomElement element in feed.Elements)
+            {
+                if (element.Object is AtomLink)
+                {
+                    if (isNextLink(element))
+                    {
+                        result.HasMoreItems = true;
+                    }
+                }
+                else if (isInt(NAME_NUM_ITEMS, element))
+                {
+                    result.NumItems = (BigInteger)element.Object;
+                }
+            }
+
+            // get the documents
+            if (feed.Entries.Count > 0)
+            {
+                result.Objects = new List<IObjectData>(feed.Entries.Count);
+
+                foreach (AtomEntry entry in feed.Entries)
+                {
+                    IObjectData child = null;
+
+                    LockLinks();
+                    try
+                    {
+                        // clean up cache
+                        RemoveLinks(repositoryId, entry.Id);
+
+                        // walk through the entry
+                        foreach (AtomElement element in entry.Elements)
+                        {
+                            if (element.Object is AtomLink)
+                            {
+                                AddLink(repositoryId, entry.Id, (AtomLink)element.Object);
+                            }
+                            else if (element.Object is IObjectData)
+                            {
+                                child = (IObjectData)element.Object;
+                            }
+                        }
+                    }
+                    finally
+                    {
+                        UnlockLinks();
+                    }
+
+                    if (child != null)
+                    {
+                        result.Objects.Add(child);
+                    }
+                }
+            }
+
+            return result;
+
         }
     }
 
@@ -1732,7 +2075,52 @@ namespace PortCMIS.Binding.AtomPub
         public string CreateDocument(string repositoryId, IProperties properties, string folderId, IContentStream contentStream,
             VersioningState? versioningState, IList<string> policies, IAcl addAces, IAcl removeAces, IExtensionsData extension)
         {
-            return null;
+            CheckCreateProperties(properties);
+
+            // find the link
+            string link = null;
+
+            if (folderId == null)
+            {
+                // Creation of unfiled objects via AtomPub is not defined in the
+                // CMIS 1.0 specification. This implementation follow the CMIS
+                // 1.1 draft and POSTs the document to the Unfiled collection.
+                link = LoadCollection(repositoryId, BindingConstants.CollectionUnfiled);
+
+                if (link == null)
+                {
+                    throw new CmisObjectNotFoundException("Unknown repository or unfiling not supported!");
+                }
+            }
+            else
+            {
+                link = LoadLink(repositoryId, folderId, BindingConstants.RelDown, BindingConstants.MediaTypeChildren);
+
+                if (link == null)
+                {
+                    ThrowLinkException(repositoryId, folderId, BindingConstants.RelDown, BindingConstants.MediaTypeChildren);
+                }
+            }
+
+            UrlBuilder url = new UrlBuilder(link);
+            url.AddParameter(BindingConstants.ParamVersioningState, versioningState);
+
+            // set up writer
+            AtomEntryWriter entryWriter = new AtomEntryWriter(CreateObject(properties, null, policies), GetCmisVersion(repositoryId), contentStream);
+
+            // post the new document object
+            IResponse resp = Post(url, new AtomPubHttpContent(BindingConstants.MediaTypeEntry, (stream) =>
+            {
+                entryWriter.Write(stream);
+            }));
+
+            // parse the response
+            AtomEntry entry = Parse<AtomEntry>(resp.Stream);
+
+            // handle ACL modifications
+            HandleAclModifications(repositoryId, entry, addAces, removeAces);
+
+            return entry.Id;
         }
 
         public string CreateDocumentFromSource(string repositoryId, string sourceId, IProperties properties, string folderId,
@@ -1744,30 +2132,234 @@ namespace PortCMIS.Binding.AtomPub
         public string CreateFolder(string repositoryId, IProperties properties, string folderId, IList<string> policies,
             IAcl addAces, IAcl removeAces, IExtensionsData extension)
         {
-            return null;
+            CheckCreateProperties(properties);
+
+            // find the link
+            string link = LoadLink(repositoryId, folderId, BindingConstants.RelDown, BindingConstants.MediaTypeChildren);
+
+            if (link == null)
+            {
+                ThrowLinkException(repositoryId, folderId, BindingConstants.RelDown, BindingConstants.MediaTypeChildren);
+            }
+
+            UrlBuilder url = new UrlBuilder(link);
+
+            // set up writer
+            AtomEntryWriter entryWriter = new AtomEntryWriter(CreateObject(properties, null, policies), GetCmisVersion(repositoryId));
+
+            // post the new folder object
+            IResponse resp = Post(url, new AtomPubHttpContent(BindingConstants.MediaTypeEntry, (stream) =>
+            {
+                entryWriter.Write(stream);
+            }));
+
+            // Parse the response
+            AtomEntry entry = Parse<AtomEntry>(resp.Stream);
+
+            // handle ACL modifications
+            HandleAclModifications(repositoryId, entry, addAces, removeAces);
+
+            return entry.Id;
         }
 
         public string CreateRelationship(string repositoryId, IProperties properties, IList<string> policies, IAcl addAces,
             IAcl removeAces, IExtensionsData extension)
         {
-            return null;
+            CheckCreateProperties(properties);
+
+            // find source id
+            IPropertyData sourceIdProperty = properties[PropertyIds.SourceId];
+            if (sourceIdProperty == null)
+            {
+                throw new CmisInvalidArgumentException("Source Id is not set!");
+            }
+
+            string sourceId = sourceIdProperty.FirstValue as string;
+            if (sourceId == null)
+            {
+                throw new CmisInvalidArgumentException("Source Id is not set!");
+            }
+
+            // find the link
+            string link = LoadLink(repositoryId, sourceId, BindingConstants.RelRelationships, BindingConstants.MediaTypeFeed);
+
+            if (link == null)
+            {
+                ThrowLinkException(repositoryId, sourceId, BindingConstants.RelRelationships, BindingConstants.MediaTypeFeed);
+            }
+
+            UrlBuilder url = new UrlBuilder(link);
+
+            // set up writer
+            AtomEntryWriter entryWriter = new AtomEntryWriter(CreateObject(properties, null, policies), GetCmisVersion(repositoryId));
+
+            // post the new relationship object
+            IResponse resp = Post(url, new AtomPubHttpContent(BindingConstants.MediaTypeEntry, (stream) =>
+            {
+                entryWriter.Write(stream);
+            }));
+
+            // Parse the response
+            AtomEntry entry = Parse<AtomEntry>(resp.Stream);
+
+            // handle ACL modifications
+            HandleAclModifications(repositoryId, entry, addAces, removeAces);
+
+            return entry.Id;
         }
 
         public string CreatePolicy(string repositoryId, IProperties properties, string folderId, IList<string> policies,
             IAcl addAces, IAcl removeAces, IExtensionsData extension)
         {
-            return null;
+            CheckCreateProperties(properties);
+
+            // find the link
+            string link = null;
+
+            if (folderId == null)
+            {
+                // Creation of unfiled objects via AtomPub is not defined in the
+                // CMIS 1.0 specification. This implementation follow the CMIS
+                // 1.1 draft and POSTs the policy to the Unfiled collection.
+                link = LoadCollection(repositoryId, BindingConstants.CollectionUnfiled);
+
+                if (link == null)
+                {
+                    throw new CmisObjectNotFoundException("Unknown repository or unfiling not supported!");
+                }
+            }
+            else
+            {
+                link = LoadLink(repositoryId, folderId, BindingConstants.RelDown, BindingConstants.MediaTypeChildren);
+
+                if (link == null)
+                {
+                    ThrowLinkException(repositoryId, folderId, BindingConstants.RelDown, BindingConstants.MediaTypeChildren);
+                }
+            }
+
+            UrlBuilder url = new UrlBuilder(link);
+
+            // set up writer
+            AtomEntryWriter entryWriter = new AtomEntryWriter(CreateObject(properties, null, policies), GetCmisVersion(repositoryId));
+
+            // post the new policy object
+            IResponse resp = Post(url, new AtomPubHttpContent(BindingConstants.MediaTypeEntry, (stream) =>
+            {
+                entryWriter.Write(stream);
+            }));
+
+            // parse the response
+            AtomEntry entry = Parse<AtomEntry>(resp.Stream);
+
+            // handle ACL modifications
+            HandleAclModifications(repositoryId, entry, addAces, removeAces);
+
+            return entry.Id;
         }
 
         public string CreateItem(string repositoryId, IProperties properties, string folderId, IList<string> policies,
             IAcl addAces, IAcl removeAces, IExtensionsData extension)
         {
-            return null;
+            CheckCreateProperties(properties);
+
+            // find the link
+            string link = null;
+
+            if (folderId == null)
+            {
+                link = LoadCollection(repositoryId, BindingConstants.CollectionUnfiled);
+
+                if (link == null)
+                {
+                    throw new CmisObjectNotFoundException("Unknown repository or unfiling not supported!");
+                }
+            }
+            else
+            {
+                link = LoadLink(repositoryId, folderId, BindingConstants.RelDown, BindingConstants.MediaTypeChildren);
+
+                if (link == null)
+                {
+                    ThrowLinkException(repositoryId, folderId, BindingConstants.RelDown, BindingConstants.MediaTypeChildren);
+                }
+            }
+
+            UrlBuilder url = new UrlBuilder(link);
+
+            // set up writer
+            AtomEntryWriter entryWriter = new AtomEntryWriter(CreateObject(properties, null, policies), GetCmisVersion(repositoryId));
+
+            // post the new item object
+            IResponse resp = Post(url, new AtomPubHttpContent(BindingConstants.MediaTypeEntry, (stream) =>
+            {
+                entryWriter.Write(stream);
+            }));
+
+            // parse the response
+            AtomEntry entry = Parse<AtomEntry>(resp.Stream);
+
+            // handle ACL modifications
+            HandleAclModifications(repositoryId, entry, addAces, removeAces);
+
+            return entry.Id;
+        }
+
+        private void CheckCreateProperties(IProperties properties)
+        {
+            if (properties == null)
+            {
+                throw new CmisInvalidArgumentException("Properties must be set!");
+            }
+
+            if (properties[PropertyIds.ObjectTypeId] == null)
+            {
+                throw new CmisInvalidArgumentException("Property " + PropertyIds.ObjectTypeId + " must be set!");
+            }
+
+            if (properties[PropertyIds.ObjectId] != null)
+            {
+                throw new CmisInvalidArgumentException("Property " + PropertyIds.ObjectId + " must not be set!");
+            }
+        }
+
+        private void HandleAclModifications(string repositoryId, AtomEntry entry, IAcl addAces, IAcl removeAces)
+        {
+            if (!IsAclMergeRequired(addAces, removeAces))
+            {
+                return;
+            }
+
+            IAcl originalAces = GetAclInternal(repositoryId, entry.Id, false, null);
+
+            if (originalAces != null)
+            {
+                // merge and update ACL
+                IAcl newACL = MergeAcls(originalAces, addAces, removeAces);
+                if (newACL != null)
+                {
+                    UpdateAcl(repositoryId, entry.Id, newACL, null);
+                }
+            }
         }
 
         public IAllowableActions GetAllowableActions(string repositoryId, string objectId, IExtensionsData extension)
         {
-            return null;
+            // find the link
+            string link = LoadLink(repositoryId, objectId, BindingConstants.RelAllowableActions, BindingConstants.MediaTypeAllowableAction);
+
+            if (link == null)
+            {
+                ThrowLinkException(repositoryId, objectId, BindingConstants.RelAllowableActions, BindingConstants.MediaTypeAllowableAction);
+            }
+
+            UrlBuilder url = new UrlBuilder(link);
+
+            // read and parse
+            IResponse resp = Read(url);
+            AtomAllowableActions allowableActions = Parse<AtomAllowableActions>(resp.Stream);
+
+            return allowableActions.AllowableActions;
         }
 
         public IProperties GetProperties(string repositoryId, string objectId, string filter, IExtensionsData extension)
@@ -1781,7 +2373,16 @@ namespace PortCMIS.Binding.AtomPub
         public IList<IRenditionData> GetRenditions(string repositoryId, string objectId, string renditionFilter,
             BigInteger? maxItems, BigInteger? skipCount, IExtensionsData extension)
         {
-            return null;
+            IObjectData objectData = GetObjectInternal(repositoryId, IdentifierType.ID, objectId, ReturnVersion.This,
+                PropertyIds.ObjectId, false, IncludeRelationships.None, renditionFilter, false, false, extension);
+
+            IList<IRenditionData> result = objectData.Renditions;
+            if (result == null)
+            {
+                result = new List<IRenditionData>();
+            }
+
+            return result;
         }
 
         public IObjectData GetObject(string repositoryId, string objectId, string filter, bool? includeAllowableActions,
@@ -1803,54 +2404,496 @@ namespace PortCMIS.Binding.AtomPub
         public IContentStream GetContentStream(string repositoryId, string objectId, string streamId, BigInteger? offset, BigInteger? length,
             IExtensionsData extension)
         {
-            return null;
+            // find the link
+            string link = null;
+            if (streamId != null)
+            {
+                // use the alternate link per spec
+                link = LoadLink(repositoryId, objectId, BindingConstants.RelAlternate, streamId);
+                if (link != null)
+                {
+                    streamId = null; // we have a full URL now
+                }
+            }
+            if (link == null)
+            {
+                link = LoadLink(repositoryId, objectId, AtomPubParser.LinkRelContent, null);
+            }
+
+            if (link == null)
+            {
+                throw new CmisConstraintException("No content stream");
+            }
+
+            UrlBuilder url = new UrlBuilder(link);
+            // using the content URL and adding a streamId param is not
+            // spec-compliant
+            url.AddParameter(BindingConstants.ParamStreamId, streamId);
+
+            // get the content
+            IResponse resp = Session.GetHttpInvoker().InvokeGET(url, Session, (long?)offset, (long?)length);
+
+            // check response code
+            if (resp.StatusCode != 200 && resp.StatusCode != 206)
+            {
+                throw ConvertStatusCode(resp.StatusCode, resp.Message, resp.ErrorContent, null);
+            }
+
+            ContentStream result;
+            if (resp.StatusCode == 206)
+            {
+                result = new PartialContentStream();
+            }
+            else
+            {
+                result = new ContentStream();
+            }
+
+            result.Length = resp.ContentLength;
+            result.MimeType = resp.ContentType;
+            result.Stream = resp.Stream;
+
+            return result;
         }
 
         public void UpdateProperties(string repositoryId, ref string objectId, ref string changeToken, IProperties properties,
             IExtensionsData extension)
         {
+            // we need an object id
+            if (objectId == null || objectId.Length == 0)
+            {
+                throw new CmisInvalidArgumentException("Object ID must be set!");
+            }
 
+            // find the link
+            string link = LoadLink(repositoryId, objectId, BindingConstants.RelSelf, BindingConstants.MediaTypeEntry);
+
+            if (link == null)
+            {
+                ThrowLinkException(repositoryId, objectId, BindingConstants.RelSelf, BindingConstants.MediaTypeEntry);
+            }
+
+            UrlBuilder url = new UrlBuilder(link);
+            if (changeToken != null)
+            {
+                if (Session.GetValue(SessionParameter.OmitChangeTokens, false))
+                {
+                    changeToken = null;
+                }
+                else
+                {
+                    // not required by the CMIS specification -> keep for backwards
+                    // compatibility with older OpenCMIS servers
+                    url.AddParameter(BindingConstants.ParamChangeToken, changeToken);
+                }
+            }
+
+            // set up writer
+            AtomEntryWriter entryWriter = new AtomEntryWriter(CreateObject(properties, changeToken, null), GetCmisVersion(repositoryId));
+
+            // update
+            IResponse resp = Put(url, new AtomPubHttpContent(BindingConstants.MediaTypeEntry, (stream) =>
+                {
+                    entryWriter.Write(stream);
+                }));
+
+            // parse new entry
+            AtomEntry entry = Parse<AtomEntry>(resp.Stream);
+
+            // we expect a CMIS entry
+            if (entry.Id == null)
+            {
+                throw new CmisConnectionException("Received Atom entry is not a CMIS entry!");
+            }
+
+            // set object id
+            objectId = entry.Id;
+
+            changeToken = null; // just in case
+
+            LockLinks();
+            try
+            {
+                // clean up cache
+                RemoveLinks(repositoryId, entry.Id);
+
+                // walk through the entry
+                foreach (AtomElement element in entry.Elements)
+                {
+                    if (element.Object is AtomLink)
+                    {
+                        AddLink(repositoryId, entry.Id, (AtomLink)element.Object);
+                    }
+                    else if (element.Object is IObjectData)
+                    {
+                        // extract new change toke
+                        IObjectData objectData = (IObjectData)element.Object;
+
+                        if (objectData.Properties != null)
+                        {
+                            IPropertyData changeTokenStr = objectData.Properties[PropertyIds.ChangeToken];
+                            if (changeTokenStr != null)
+                            {
+                                changeToken = changeTokenStr.FirstValue as string;
+                            }
+                        }
+                    }
+                }
+            }
+            finally
+            {
+                UnlockLinks();
+            }
         }
 
         public IList<IBulkUpdateObjectIdAndChangeToken> BulkUpdateProperties(string repositoryId,
                 IList<IBulkUpdateObjectIdAndChangeToken> objectIdAndChangeToken, IProperties properties,
                 IList<string> addSecondaryTypeIds, IList<string> removeSecondaryTypeIds, IExtensionsData extension)
         {
-            return null;
+            // find link
+            string link = LoadCollection(repositoryId, BindingConstants.CollectionBulkUpdate);
+
+            if (link == null)
+            {
+                throw new CmisObjectNotFoundException("Unknown repository or bulk update properties is not supported!");
+            }
+
+            // set up writer
+            BulkUpdate bulkUpdate = new BulkUpdate();
+            bulkUpdate.ObjectIdAndChangeToken = objectIdAndChangeToken;
+            bulkUpdate.Properties = properties;
+            bulkUpdate.AddSecondaryTypeIds = addSecondaryTypeIds;
+            bulkUpdate.RemoveSecondaryTypeIds = removeSecondaryTypeIds;
+
+            AtomEntryWriter entryWriter = new AtomEntryWriter(bulkUpdate);
+
+            // post update
+            IResponse resp = Post(new UrlBuilder(link), new AtomPubHttpContent(BindingConstants.MediaTypeEntry, (stream) =>
+                {
+                    entryWriter.Write(stream);
+                }));
+
+            AtomFeed feed = Parse<AtomFeed>(resp.Stream);
+            List<IBulkUpdateObjectIdAndChangeToken> result = new List<IBulkUpdateObjectIdAndChangeToken>(feed.Entries.Count);
+
+            // get the results
+            if (feed.Entries.Count > 0)
+            {
+
+                foreach (AtomEntry entry in feed.Entries)
+                {
+                    // walk through the entry
+                    // we are not interested in the links this time because they
+                    // could belong to a new document version
+                    foreach (AtomElement element in entry.Elements)
+                    {
+                        if (element.Object is IObjectData)
+                        {
+                            IObjectData objectData = (IObjectData)element.Object;
+                            string id = objectData.Id;
+                            if (id != null)
+                            {
+                                string changeToken = null;
+                                IPropertyData changeTokenStr = objectData.Properties[PropertyIds.ChangeToken];
+                                if (changeTokenStr != null)
+                                {
+                                    changeToken = changeTokenStr.FirstValue as string;
+                                }
+
+                                result.Add(new BulkUpdateObjectIdAndChangeToken() { Id = id, ChangeToken = changeToken });
+                            }
+                        }
+                    }
+                }
+            }
+
+            return result;
         }
 
         public void MoveObject(string repositoryId, ref string objectId, string targetFolderId, string sourceFolderId,
             IExtensionsData extension)
         {
+            if (objectId == null || objectId.Length == 0)
+            {
+                throw new CmisInvalidArgumentException("Object ID must be set!");
+            }
 
+            if (targetFolderId == null || targetFolderId.Length == 0 || sourceFolderId == null || sourceFolderId.Length == 0)
+            {
+                throw new CmisInvalidArgumentException("Source and target folder must be set!");
+            }
+
+            // find the link
+            string link = LoadLink(repositoryId, targetFolderId, BindingConstants.RelDown, BindingConstants.MediaTypeChildren);
+
+            if (link == null)
+            {
+                ThrowLinkException(repositoryId, targetFolderId, BindingConstants.RelDown, BindingConstants.MediaTypeChildren);
+            }
+
+            UrlBuilder url = new UrlBuilder(link);
+            url.AddParameter(BindingConstants.ParamSourceFolderId, sourceFolderId);
+
+            // workaround for SharePoint 2010 - see CMIS-839
+            bool objectIdOnMove = Session.GetValue(SessionParameter.IncludeObjectIdUrlParamOnMove, false);
+            if (objectIdOnMove)
+            {
+                url.AddParameter("objectId", objectId);
+                url.AddParameter("targetFolderId", targetFolderId);
+            }
+
+            // set up object and writer
+            AtomEntryWriter entryWriter = new AtomEntryWriter(createIdObject(objectId), GetCmisVersion(repositoryId));
+
+            // post move request
+            IResponse resp = Post(url, new AtomPubHttpContent(BindingConstants.MediaTypeEntry, (stream) =>
+            {
+                entryWriter.Write(stream);
+            }));
+
+
+            // workaround for SharePoint 2010 - see CMIS-839
+            if (objectIdOnMove)
+            {
+                // SharePoint doesn't return a new object ID
+                // we assume that the object ID hasn't changed
+                return;
+            }
+
+            // parse the response
+            AtomEntry entry = Parse<AtomEntry>(resp.Stream);
+
+            objectId = entry.Id;
         }
 
         public void DeleteObject(string repositoryId, string objectId, bool? allVersions, IExtensionsData extension)
         {
+            // find the link
+            string link = LoadLink(repositoryId, objectId, BindingConstants.RelSelf, BindingConstants.MediaTypeEntry);
 
+            if (link == null)
+            {
+                ThrowLinkException(repositoryId, objectId, BindingConstants.RelSelf, BindingConstants.MediaTypeEntry);
+            }
+
+            UrlBuilder url = new UrlBuilder(link);
+            url.AddParameter(BindingConstants.ParamAllVersions, allVersions);
+
+            Delete(url);
         }
 
         public IFailedToDeleteData DeleteTree(string repositoryId, string folderId, bool? allVersions, UnfileObject? unfileObjects,
             bool? continueOnFailure, ExtensionsData extension)
         {
-            return null;
+            // find the down links
+            string link = LoadLink(repositoryId, folderId, BindingConstants.RelDown, null);
+            string childrenLink = null;
+
+            if (link != null)
+            {
+                // found only a children link, but no descendants link
+                // -> try folder tree link
+                childrenLink = link;
+                link = null;
+            }
+            else
+            {
+                // found no or two down links
+                // -> get only the descendants link
+                link = LoadLink(repositoryId, folderId, BindingConstants.RelDown, BindingConstants.MediaTypeDecendants);
+            }
+
+            if (link == null)
+            {
+                link = LoadLink(repositoryId, folderId, BindingConstants.RelFolderTree, BindingConstants.MediaTypeDecendants);
+            }
+
+            if (link == null)
+            {
+                link = LoadLink(repositoryId, folderId, BindingConstants.RelFolderTree, BindingConstants.MediaTypeFeed);
+            }
+
+            if (link == null)
+            {
+                link = childrenLink;
+            }
+
+            if (link == null)
+            {
+                ThrowLinkException(repositoryId, folderId, BindingConstants.RelDown, BindingConstants.MediaTypeDecendants);
+            }
+
+            UrlBuilder url = new UrlBuilder(link);
+            url.AddParameter(BindingConstants.ParamAllVersions, allVersions);
+            url.AddParameter(BindingConstants.ParamUnfileObjects, unfileObjects);
+            url.AddParameter(BindingConstants.ParamContinueOnFailure, continueOnFailure);
+
+            // make the call
+            IResponse resp = Session.GetHttpInvoker().InvokeDELETE(url, Session);
+
+            // check response code
+            if (resp.StatusCode == 200 || resp.StatusCode == 202 || resp.StatusCode == 204)
+            {
+                return new FailedToDeleteData();
+            }
+
+            // If the server returned an internal server error, get the remaining
+            // children of the folder. We only retrieve the first level, since
+            // getDescendants() is not supported by all repositories.
+            if (resp.StatusCode == 500)
+            {
+                link = LoadLink(repositoryId, folderId, BindingConstants.RelDown, BindingConstants.MediaTypeChildren);
+
+                if (link != null)
+                {
+                    url = new UrlBuilder(link);
+                    // we only want the object ids
+                    url.AddParameter(BindingConstants.ParamFilter, "cmis:objectId");
+                    url.AddParameter(BindingConstants.ParamAllowableActions, false);
+                    url.AddParameter(BindingConstants.ParamRelationships, IncludeRelationships.None);
+                    url.AddParameter(BindingConstants.ParamRenditionfilter, "cmis:none");
+                    url.AddParameter(BindingConstants.ParamPathSegment, false);
+                    // 1000 children should be enough to indicate a problem
+                    url.AddParameter(BindingConstants.ParamMaxItems, 1000);
+                    url.AddParameter(BindingConstants.ParamSkipCount, 0);
+
+                    // read and parse
+                    resp = Read(url);
+                    AtomFeed feed = Parse<AtomFeed>(resp.Stream);
+
+                    // prepare result
+                    FailedToDeleteData result = new FailedToDeleteData();
+                    IList<string> ids = new List<string>();
+                    result.Ids = ids;
+
+                    // get the children ids
+                    foreach (AtomEntry entry in feed.Entries)
+                    {
+                        ids.Add(entry.Id);
+                    }
+
+                    return result;
+                }
+            }
+
+            throw ConvertStatusCode(resp.StatusCode, resp.Message, resp.ErrorContent, null);
         }
 
         public void SetContentStream(string repositoryId, ref string objectId, bool? overwriteFlag, ref string changeToken,
             IContentStream contentStream, IExtensionsData extension)
         {
-
+            SetOrAppendContent(repositoryId, ref objectId, overwriteFlag, ref changeToken, contentStream, true, false, extension);
         }
 
         public void DeleteContentStream(string repositoryId, ref string objectId, ref string changeToken, IExtensionsData extension)
         {
+            // we need an object id
+            if (objectId == null)
+            {
+                throw new CmisInvalidArgumentException("Object ID must be set!");
+            }
 
+            // find the link
+            string link = LoadLink(repositoryId, objectId, BindingConstants.RelEditMedia, null);
+
+            if (link == null)
+            {
+                ThrowLinkException(repositoryId, objectId, BindingConstants.RelEditMedia, null);
+            }
+
+            UrlBuilder url = new UrlBuilder(link);
+            if (changeToken != null && !Session.GetValue(SessionParameter.OmitChangeTokens, false))
+            {
+                url.AddParameter(BindingConstants.ParamChangeToken, changeToken);
+            }
+
+            Delete(url);
+
+            objectId = null;
+            changeToken = null;
         }
 
         public void AppendContentStream(string repositoryId, ref string objectId, bool? isLastChunk, ref string changeToken,
             IContentStream contentStream, IExtensionsData extension)
         {
+            SetOrAppendContent(repositoryId, ref objectId, null, ref changeToken, contentStream, isLastChunk, true, extension);
+        }
 
+        /// <summary>
+        /// Sets or appends content.
+        /// </summary>
+        private void SetOrAppendContent(string repositoryId, ref string objectId, bool? overwriteFlag, ref string changeToken,
+            IContentStream contentStream, bool? isLastChunk, bool append, IExtensionsData extension)
+        {
+            // we need an object id
+            if (objectId == null)
+            {
+                throw new CmisInvalidArgumentException("Object ID must be set!");
+            }
+
+            // we need content
+            if (contentStream == null || contentStream.Stream == null || contentStream.MimeType == null)
+            {
+                throw new CmisInvalidArgumentException("Content must be set!");
+            }
+
+            // find the link
+            string link = LoadLink(repositoryId, objectId, BindingConstants.RelEditMedia, null);
+
+            if (link == null)
+            {
+                ThrowLinkException(repositoryId, objectId, BindingConstants.RelEditMedia, null);
+            }
+
+            UrlBuilder url = new UrlBuilder(link);
+            if (changeToken != null && !Session.GetValue(SessionParameter.OmitChangeTokens, false))
+            {
+                url.AddParameter(BindingConstants.ParamChangeToken, changeToken);
+            }
+
+            if (append)
+            {
+                url.AddParameter(BindingConstants.ParamAppend, true);
+                url.AddParameter(BindingConstants.ParamIsLastChunk, isLastChunk);
+            }
+            else
+            {
+                url.AddParameter(BindingConstants.ParamOverwriteFlag, overwriteFlag);
+            }
+
+            Stream content = contentStream.Stream;
+
+            // Content-Disposition header for the filename
+            IDictionary<string, string> headers = null;
+            if (contentStream.FileName != null)
+            {
+                headers = new Dictionary<string, string>();
+                headers.Add(MimeHelper.ContentDisposition,
+                    MimeHelper.EncodeContentDisposition(MimeHelper.DispositionAttachment, contentStream.FileName));
+            }
+
+            // send content
+
+            IResponse resp = Put(url, headers, new AtomPubHttpContent(BindingConstants.MediaTypeEntry, (stream) =>
+            {
+                content.CopyTo(stream);
+            }));
+
+            // check response code further
+            if (resp.StatusCode != 200 && resp.StatusCode != 201 && resp.StatusCode != 204)
+            {
+                throw ConvertStatusCode(resp.StatusCode, resp.Message, resp.ErrorContent, null);
+            }
+
+            if (resp.StatusCode == 201)
+            {
+                // unset the object ID if a new resource has been created
+                // (if the resource has been updated (200 and 204), the object ID
+                // hasn't changed)
+                objectId = null;
+            }
+
+            changeToken = null;
         }
     }
 
@@ -1909,7 +2952,83 @@ namespace PortCMIS.Binding.AtomPub
             bool? includeAllowableActions, IncludeRelationships? includeRelationships, string renditionFilter,
             BigInteger? maxItems, BigInteger? skipCount, IExtensionsData extension)
         {
-            return null;
+            ObjectList result = new ObjectList();
+
+            // find the link
+            string link = LoadCollection(repositoryId, BindingConstants.CollectionQuery);
+
+            if (link == null)
+            {
+                throw new CmisObjectNotFoundException("Unknown repository or query not supported!");
+            }
+
+            UrlBuilder url = new UrlBuilder(link);
+
+            // compile query request
+            QueryType query = new QueryType();
+            query.Statement = statement;
+            query.SearchAllVersions = searchAllVersions;
+            query.IncludeAllowableActions = includeAllowableActions;
+            query.IncludeRelationships = includeRelationships;
+            query.RenditionFilter = renditionFilter;
+            query.MaxItems = maxItems;
+            query.SkipCount = skipCount;
+
+            CmisVersion cmisVersion = GetCmisVersion(repositoryId);
+
+            // post the query and parse results
+            IResponse resp = Post(url, new AtomPubHttpContent(BindingConstants.MediaTypeQuery, (stream) =>
+            {
+                XmlWriter writer = XmlUtils.createWriter(stream);
+                XmlUtils.StartXmlDocument(writer);
+                XmlConverter.writeQuery(writer, cmisVersion, query);
+                XmlUtils.EndXmlDocument(writer);
+            }));
+
+            AtomFeed feed = Parse<AtomFeed>(resp.Stream);
+
+            // handle top level
+            foreach (AtomElement element in feed.Elements)
+            {
+                if (element.Object is AtomLink)
+                {
+                    if (isNextLink(element))
+                    {
+                        result.HasMoreItems = true;
+                    }
+                }
+                else if (isInt(NAME_NUM_ITEMS, element))
+                {
+                    result.NumItems = (BigInteger)element.Object;
+                }
+            }
+
+            // get the result set
+            if (feed.Entries.Count > 0)
+            {
+                result.Objects = new List<IObjectData>(feed.Entries.Count);
+
+                foreach (AtomEntry entry in feed.Entries)
+                {
+                    IObjectData hit = null;
+
+                    // walk through the entry
+                    foreach (AtomElement element in entry.Elements)
+                    {
+                        if (element.Object is IObjectData)
+                        {
+                            hit = (IObjectData)element.Object;
+                        }
+                    }
+
+                    if (hit != null)
+                    {
+                        result.Objects.Add(hit);
+                    }
+                }
+            }
+
+            return result;
         }
 
         public IObjectList GetContentChanges(string repositoryId, ref string changeLogToken, bool? includeProperties,

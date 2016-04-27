@@ -1182,7 +1182,7 @@ namespace PortCMIS.Binding.AtomPub
         /// <summary>
         /// Constructor for objects.
         /// </summary>
-        public AtomEntryWriter(ObjectData objectData, CmisVersion cmisVersion)
+        public AtomEntryWriter(IObjectData objectData, CmisVersion cmisVersion)
             : this(objectData, cmisVersion, null)
         {
         }
@@ -1190,7 +1190,7 @@ namespace PortCMIS.Binding.AtomPub
         /// <summary>
         /// Constructor for objects.
         /// </summary>
-        public AtomEntryWriter(ObjectData objectData, CmisVersion cmisVersion, ContentStream contentStream)
+        public AtomEntryWriter(IObjectData objectData, CmisVersion cmisVersion, IContentStream contentStream)
         {
             if (objectData == null || objectData.Properties == null)
             {
@@ -1386,7 +1386,10 @@ namespace PortCMIS.Binding.AtomPub
         public AtomPubHttpContent(string contentType, Action<Stream> writeAction)
             : base()
         {
-            this.Headers.ContentType = new MediaTypeHeaderValue(contentType) { CharSet = Encoding.UTF8.WebName };
+            MediaTypeHeaderValue contentTypeHeader = MediaTypeHeaderValue.Parse(contentType);
+            contentTypeHeader.CharSet = Encoding.UTF8.WebName;
+
+            this.Headers.ContentType = contentTypeHeader;
             this.writeAction = writeAction;
         }
 

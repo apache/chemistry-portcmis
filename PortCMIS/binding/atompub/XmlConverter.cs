@@ -919,31 +919,31 @@ namespace PortCMIS.Binding.AtomPub
                     case PropertyType.Id:
                     case PropertyType.Html:
                     case PropertyType.Uri:
-                        foreach (string value in (IList<string>)source.Values)
+                        foreach (string value in source.Values.Cast<string>())
                         {
                             XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_PROPERTY_VALUE, value);
                         }
                         break;
                     case PropertyType.Integer:
-                        foreach (BigInteger value in (IList<BigInteger>)source.Values)
+                        foreach (BigInteger value in source.Values.Cast<BigInteger>())
                         {
                             XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_PROPERTY_VALUE, value);
                         }
                         break;
                     case PropertyType.Boolean:
-                        foreach (bool value in (IList<bool>)source.Values)
+                        foreach (bool value in source.Values.Cast<bool>())
                         {
                             XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_PROPERTY_VALUE, value);
                         }
                         break;
                     case PropertyType.DateTime:
-                        foreach (DateTime value in (IList<DateTime>)source.Values)
+                        foreach (DateTime value in source.Values.Cast<DateTime>())
                         {
                             XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_PROPERTY_VALUE, value);
                         }
                         break;
                     case PropertyType.Decimal:
-                        foreach (decimal value in (IList<decimal>)source.Values)
+                        foreach (decimal value in source.Values.Cast<decimal>())
                         {
                             XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_PROPERTY_VALUE, value);
                         }
@@ -1107,7 +1107,7 @@ namespace PortCMIS.Binding.AtomPub
 
             if (bulkUpdate.Properties != null)
             {
-                Properties properties = bulkUpdate.Properties;
+                IProperties properties = bulkUpdate.Properties;
                 writer.WriteStartElement(XmlConstants.PREFIX_CMIS, XmlConstants.TAG_BULK_UPDATE_PROPERTIES, XmlConstants.NAMESPACE_CMIS);
 
                 if (properties.PropertyList != null)

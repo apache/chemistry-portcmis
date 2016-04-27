@@ -1103,12 +1103,12 @@ namespace PortCMIS.Data
     public class QueryType : ExtensionsData
     {
         public string Statement { get; set; }
-        public bool SearchAllVersions { get; set; }
-        public bool IncludeAllowableActions { get; set; }
-        public IncludeRelationships IncludeRelationships { get; set; }
+        public bool? SearchAllVersions { get; set; }
+        public bool? IncludeAllowableActions { get; set; }
+        public IncludeRelationships? IncludeRelationships { get; set; }
         public string RenditionFilter { get; set; }
-        public BigInteger MaxItems { get; set; }
-        public BigInteger SkipCount { get; set; }
+        public BigInteger? MaxItems { get; set; }
+        public BigInteger? SkipCount { get; set; }
     }
 
     public class BulkUpdateObjectIdAndChangeToken : ExtensionsData, IBulkUpdateObjectIdAndChangeToken
@@ -1126,7 +1126,7 @@ namespace PortCMIS.Data
     internal class BulkUpdate : ExtensionsData
     {
         public IList<IBulkUpdateObjectIdAndChangeToken> ObjectIdAndChangeToken { get; set; }
-        public Properties Properties { get; set; }
+        public IProperties Properties { get; set; }
         public IList<string> AddSecondaryTypeIds { get; set; }
         public IList<string> RemoveSecondaryTypeIds { get; set; }
     }
