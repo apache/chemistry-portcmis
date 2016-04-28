@@ -73,7 +73,7 @@ namespace PortCMIS.Binding.AtomPub
                         string uri = parser.NamespaceURI;
                         string local = parser.LocalName;
 
-                        if (uri == XmlConstants.NAMESPACE_ATOM)
+                        if (uri == XmlConstants.NamespaceAtom)
                         {
                             if (local == XmlConstants.TAG_FEED)
                             {
@@ -86,7 +86,7 @@ namespace PortCMIS.Binding.AtomPub
                                 break;
                             }
                         }
-                        else if (uri == XmlConstants.NAMESPACE_CMIS)
+                        else if (uri == XmlConstants.NamespaceCmis)
                         {
                             if (local == XmlConstants.TAG_ALLOWABLEACTIONS)
                             {
@@ -99,7 +99,7 @@ namespace PortCMIS.Binding.AtomPub
                                 break;
                             }
                         }
-                        else if (uri == XmlConstants.NAMESPACE_APP)
+                        else if (uri == XmlConstants.NamespaceApp)
                         {
                             if (local == XmlConstants.TAG_SERVICE)
                             {
@@ -154,7 +154,7 @@ namespace PortCMIS.Binding.AtomPub
                     string uri = parser.NamespaceURI;
                     string local = parser.LocalName;
 
-                    if (uri == XmlConstants.NAMESPACE_APP)
+                    if (uri == XmlConstants.NamespaceApp)
                     {
                         if (local == XmlConstants.TAG_WORKSPACE)
                         {
@@ -246,7 +246,7 @@ namespace PortCMIS.Binding.AtomPub
                     string uri = parser.NamespaceURI;
                     string local = parser.LocalName;
 
-                    if (uri == XmlConstants.NAMESPACE_ATOM)
+                    if (uri == XmlConstants.NamespaceAtom)
                     {
                         if (local == XmlConstants.TAG_LINK)
                         {
@@ -261,7 +261,7 @@ namespace PortCMIS.Binding.AtomPub
                             XmlUtils.Skip(parser);
                         }
                     }
-                    else if (uri == XmlConstants.NAMESPACE_RESTATOM)
+                    else if (uri == XmlConstants.NamespaceRestAtom)
                     {
                         if (local == XmlConstants.TAG_NUM_ITEMS)
                         {
@@ -272,7 +272,7 @@ namespace PortCMIS.Binding.AtomPub
                             XmlUtils.Skip(parser);
                         }
                     }
-                    else if (uri == XmlConstants.NAMESPACE_APACHE_CHEMISTRY)
+                    else if (uri == XmlConstants.NamespaceApacheChemistry)
                     {
                         result.AddElement(ParseText(parser));
                     }
@@ -373,7 +373,7 @@ namespace PortCMIS.Binding.AtomPub
             string uri = parser.NamespaceURI;
             string local = parser.LocalName;
 
-            if (uri == XmlConstants.NAMESPACE_RESTATOM)
+            if (uri == XmlConstants.NamespaceRestAtom)
             {
                 if (local == XmlConstants.TAG_OBJECT)
                 {
@@ -393,7 +393,7 @@ namespace PortCMIS.Binding.AtomPub
                     return ParseChildren(parser);
                 }
             }
-            else if (uri == XmlConstants.NAMESPACE_ATOM)
+            else if (uri == XmlConstants.NamespaceAtom)
             {
                 if (local == XmlConstants.TAG_LINK)
                 {
@@ -431,7 +431,7 @@ namespace PortCMIS.Binding.AtomPub
                     string tagUri = parser.NamespaceURI;
                     string tagLocal = parser.LocalName;
 
-                    if (tagUri == XmlConstants.NAMESPACE_ATOM)
+                    if (tagUri == XmlConstants.NamespaceAtom)
                     {
                         if (tagLocal == XmlConstants.TAG_FEED)
                         {
@@ -473,7 +473,7 @@ namespace PortCMIS.Binding.AtomPub
             string uri = parser.NamespaceURI;
             string local = parser.LocalName;
 
-            if (uri == XmlConstants.NAMESPACE_RESTATOM)
+            if (uri == XmlConstants.NamespaceRestAtom)
             {
                 if (local == XmlConstants.TAG_REPOSITORY_INFO)
                 {
@@ -484,14 +484,14 @@ namespace PortCMIS.Binding.AtomPub
                     return ParseTemplate(parser);
                 }
             }
-            else if (uri == XmlConstants.NAMESPACE_ATOM)
+            else if (uri == XmlConstants.NamespaceAtom)
             {
                 if (local == XmlConstants.TAG_LINK)
                 {
                     return ParseLink(parser);
                 }
             }
-            else if (uri == XmlConstants.NAMESPACE_APP)
+            else if (uri == XmlConstants.NamespaceApp)
             {
                 if (local == XmlConstants.TAG_COLLECTION)
                 {
@@ -526,7 +526,7 @@ namespace PortCMIS.Binding.AtomPub
                     string tagUri = parser.NamespaceURI;
                     string tagLocal = parser.LocalName;
 
-                    if (tagUri == XmlConstants.NAMESPACE_RESTATOM
+                    if (tagUri == XmlConstants.NamespaceRestAtom
                             && tagLocal == XmlConstants.TAG_COLLECTION_TYPE)
                     {
                         result["collectionType"] = XmlUtils.ReadText(parser, XmlConstraints.MaxStringLength);
@@ -573,7 +573,7 @@ namespace PortCMIS.Binding.AtomPub
                     string tagUri = parser.NamespaceURI;
                     string tagLocal = parser.LocalName;
 
-                    if (tagUri == XmlConstants.NAMESPACE_RESTATOM)
+                    if (tagUri == XmlConstants.NamespaceRestAtom)
                     {
                         if (tagLocal == XmlConstants.TAG_TEMPLATE_TEMPLATE)
                         {
@@ -1263,41 +1263,41 @@ namespace PortCMIS.Binding.AtomPub
             {
                 XmlUtils.StartXmlDocument(writer);
 
-                writer.WriteStartElement(XmlConstants.PREFIX_ATOM, "entry", XmlConstants.NAMESPACE_ATOM);
-                writer.WriteAttributeString("xmlns", XmlConstants.PREFIX_ATOM, null, XmlConstants.NAMESPACE_ATOM);
-                writer.WriteAttributeString("xmlns", XmlConstants.PREFIX_CMIS, null, XmlConstants.NAMESPACE_CMIS);
-                writer.WriteAttributeString("xmlns", XmlConstants.PREFIX_RESTATOM, null, XmlConstants.NAMESPACE_RESTATOM);
+                writer.WriteStartElement(XmlConstants.PrefixAtom, "entry", XmlConstants.NamespaceAtom);
+                writer.WriteAttributeString("xmlns", XmlConstants.PrefixAtom, null, XmlConstants.NamespaceAtom);
+                writer.WriteAttributeString("xmlns", XmlConstants.PrefixCmis, null, XmlConstants.NamespaceCmis);
+                writer.WriteAttributeString("xmlns", XmlConstants.PrefixRestAtom, null, XmlConstants.NamespaceRestAtom);
 
                 if (contentStream != null && contentStream.FileName != null)
                 {
-                    writer.WriteAttributeString("xmlns", XmlConstants.PREFIX_APACHE_CHEMISTY, null, XmlConstants.NAMESPACE_APACHE_CHEMISTRY);
+                    writer.WriteAttributeString("xmlns", XmlConstants.PrefixApacheChemistry, null, XmlConstants.NamespaceApacheChemistry);
                 }
 
                 // atom:id
-                XmlUtils.Write(writer, XmlConstants.PREFIX_ATOM, XmlConstants.NAMESPACE_ATOM, XmlConstants.TAG_ATOM_ID,
+                XmlUtils.Write(writer, XmlConstants.PrefixAtom, XmlConstants.NamespaceAtom, XmlConstants.TAG_ATOM_ID,
                         "urn:uuid:00000000-0000-0000-0000-00000000000");
 
                 // atom:title
-                XmlUtils.Write(writer, XmlConstants.PREFIX_ATOM, XmlConstants.NAMESPACE_ATOM, XmlConstants.TAG_ATOM_TITLE, GetTitle());
+                XmlUtils.Write(writer, XmlConstants.PrefixAtom, XmlConstants.NamespaceAtom, XmlConstants.TAG_ATOM_TITLE, GetTitle());
 
                 // atom:updated
-                XmlUtils.Write(writer, XmlConstants.PREFIX_ATOM, XmlConstants.NAMESPACE_ATOM, XmlConstants.TAG_ATOM_UPDATED, DateTime.UtcNow);
+                XmlUtils.Write(writer, XmlConstants.PrefixAtom, XmlConstants.NamespaceAtom, XmlConstants.TAG_ATOM_UPDATED, DateTime.UtcNow);
 
                 // content
                 if (stream != null)
                 {
-                    writer.WriteStartElement(XmlConstants.PREFIX_RESTATOM, XmlConstants.TAG_CONTENT, XmlConstants.NAMESPACE_RESTATOM);
+                    writer.WriteStartElement(XmlConstants.PrefixRestAtom, XmlConstants.TAG_CONTENT, XmlConstants.NamespaceRestAtom);
 
-                    XmlUtils.Write(writer, XmlConstants.PREFIX_RESTATOM, XmlConstants.NAMESPACE_RESTATOM,
+                    XmlUtils.Write(writer, XmlConstants.PrefixRestAtom, XmlConstants.NamespaceRestAtom,
                             XmlConstants.TAG_CONTENT_MEDIATYPE, contentStream.MimeType);
 
                     if (contentStream.FileName != null)
                     {
-                        XmlUtils.Write(writer, XmlConstants.PREFIX_APACHE_CHEMISTY, XmlConstants.NAMESPACE_APACHE_CHEMISTRY,
+                        XmlUtils.Write(writer, XmlConstants.PrefixApacheChemistry, XmlConstants.NamespaceApacheChemistry,
                                 XmlConstants.TAG_CONTENT_FILENAME, contentStream.FileName);
                     }
 
-                    writer.WriteStartElement(XmlConstants.PREFIX_RESTATOM, XmlConstants.TAG_CONTENT_BASE64, XmlConstants.NAMESPACE_RESTATOM);
+                    writer.WriteStartElement(XmlConstants.PrefixRestAtom, XmlConstants.TAG_CONTENT_BASE64, XmlConstants.NamespaceRestAtom);
                     WriteContent(writer);
                     writer.WriteEndElement();
 
@@ -1307,19 +1307,19 @@ namespace PortCMIS.Binding.AtomPub
                 // object
                 if (objectData != null)
                 {
-                    XmlConverter.WriteObject(writer, cmisVersion, XmlConstants.NAMESPACE_RESTATOM, objectData);
+                    XmlConverter.WriteObject(writer, cmisVersion, XmlConstants.NamespaceRestAtom, objectData);
                 }
 
                 // type
                 if (typeDef != null)
                 {
-                    XmlConverter.WriteTypeDefinition(writer, cmisVersion, XmlConstants.NAMESPACE_RESTATOM, typeDef);
+                    XmlConverter.WriteTypeDefinition(writer, cmisVersion, XmlConstants.NamespaceRestAtom, typeDef);
                 }
 
                 // bulk update
                 if (bulkUpdate != null)
                 {
-                    XmlConverter.WriteBulkUpdate(writer, XmlConstants.NAMESPACE_RESTATOM, bulkUpdate);
+                    XmlConverter.WriteBulkUpdate(writer, XmlConstants.NamespaceRestAtom, bulkUpdate);
                 }
 
                 // end entry

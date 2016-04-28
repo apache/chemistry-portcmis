@@ -81,12 +81,12 @@ namespace PortCMIS.Binding.AtomPub
 
         protected bool IsCmisNamespace(string ns)
         {
-            return XmlConstants.NAMESPACE_CMIS == ns;
+            return XmlConstants.NamespaceCmis == ns;
         }
 
         protected bool IsAtomNamespace(string ns)
         {
-            return XmlConstants.NAMESPACE_ATOM == ns;
+            return XmlConstants.NamespaceAtom == ns;
         }
 
         protected bool IsTag(string name, string tag)

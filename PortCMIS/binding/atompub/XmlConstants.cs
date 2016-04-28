@@ -28,20 +28,20 @@ namespace PortCMIS.Binding.AtomPub
     class XmlConstants
     {
         // namespaces
-        public const string NAMESPACE_CMIS = "http://docs.oasis-open.org/ns/cmis/core/200908/";
-        public const string NAMESPACE_ATOM = "http://www.w3.org/2005/Atom";
-        public const string NAMESPACE_APP = "http://www.w3.org/2007/app";
-        public const string NAMESPACE_RESTATOM = "http://docs.oasis-open.org/ns/cmis/restatom/200908/";
-        public const string NAMESPACE_XSI = "http://www.w3.org/2001/XMLSchema-instance";
-        public const string NAMESPACE_APACHE_CHEMISTRY = "http://chemistry.apache.org/";
+        public const string NamespaceCmis = "http://docs.oasis-open.org/ns/cmis/core/200908/";
+        public const string NamespaceAtom = "http://www.w3.org/2005/Atom";
+        public const string NamespaceApp = "http://www.w3.org/2007/app";
+        public const string NamespaceRestAtom = "http://docs.oasis-open.org/ns/cmis/restatom/200908/";
+        public const string NamespaceXsi = "http://www.w3.org/2001/XMLSchema-instance";
+        public const string NamespaceApacheChemistry = "http://chemistry.apache.org/";
 
         // prefixes
-        public const string PREFIX_XSI = "xsi";
-        public const string PREFIX_ATOM = "atom";
-        public const string PREFIX_APP = "app";
-        public const string PREFIX_CMIS = "cmis";
-        public const string PREFIX_RESTATOM = "cmisra";
-        public const string PREFIX_APACHE_CHEMISTY = "chemistry";
+        public const string PrefixXsi = "xsi";
+        public const string PrefixAtom = "atom";
+        public const string PrefixApp = "app";
+        public const string PrefixCmis = "cmis";
+        public const string PrefixRestAtom = "cmisra";
+        public const string PrefixApacheChemistry = "chemistry";
 
         // service doc
         public const string TAG_SERVICE = "service";

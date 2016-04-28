@@ -46,7 +46,14 @@ namespace PortCMIS.Binding.Browser
     /// </summary>
     public class RepositoryInfoBrowserBinding : RepositoryInfo
     {
+        /// <value>
+        /// The base repository URL for non-object related calls.
+        /// </value>
         public string RepositoryUrl { get; set; }
+
+        /// <value>
+        /// The base root URL for object related calls.
+        /// </value>
         public string RootUrl { get; set; }
     }
 

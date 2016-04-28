@@ -31,6 +31,9 @@ using System.Threading.Tasks;
 
 namespace PortCMIS.Binding.Http
 {
+    /// <summary>
+    /// Default HTTP invoker implementation for portable environments. 
+    /// </summary>
     public class DefaultHttpInvoker : IHttpInvoker
     {
         private const string InvokerHttpClient = "org.apache.chemistry.portcmis.invoker.httpclient";

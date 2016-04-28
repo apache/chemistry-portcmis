@@ -25,8 +25,17 @@ using System.Numerics;
 
 namespace PortCMIS.Binding.Services
 {
+    /// <summary>
+    /// Repository Service interface.
+    /// </summary>
     public interface IRepositoryService
     {
+        /// <summary>
+        /// Returns a list of CMIS repository information available from this CMIS service endpoint.
+        /// </summary>
+        /// <remarks>
+        /// In contrast to the CMIS specification this method returns repository infos not only repository IDs.
+        /// </remarks>
         IList<IRepositoryInfo> GetRepositoryInfos(IExtensionsData extension);
 
         IRepositoryInfo GetRepositoryInfo(string repositoryId, IExtensionsData extension);
@@ -46,6 +55,9 @@ namespace PortCMIS.Binding.Services
         void DeleteType(string repositoryId, string typeId, IExtensionsData extension);
     }
 
+    /// <summary>
+    /// Navigation Service interface.
+    /// </summary>
     public interface INavigationService
     {
         IObjectInFolderList GetChildren(string repositoryId, string folderId, string filter, string orderBy,
@@ -71,6 +83,9 @@ namespace PortCMIS.Binding.Services
             BigInteger? maxItems, BigInteger? skipCount, IExtensionsData extension);
     }
 
+    /// <summary>
+    /// Object Service interface.
+    /// </summary>
     public interface IObjectService
     {
         string CreateDocument(string repositoryId, IProperties properties, string folderId, IContentStream contentStream,
@@ -133,6 +148,9 @@ namespace PortCMIS.Binding.Services
             IContentStream contentStream, IExtensionsData extension);
     }
 
+    /// <summary>
+    /// Versioning Service interface.
+    /// </summary>
     public interface IVersioningService
     {
         void CheckOut(string repositoryId, ref string objectId, IExtensionsData extension, out bool? contentCopied);
@@ -154,6 +172,9 @@ namespace PortCMIS.Binding.Services
             bool? includeAllowableActions, IExtensionsData extension);
     }
 
+    /// <summary>
+    /// Relationship Service interface.
+    /// </summary>
     public interface IRelationshipService
     {
         IObjectList GetObjectRelationships(string repositoryId, string objectId, bool? includeSubRelationshipTypes,
@@ -161,6 +182,9 @@ namespace PortCMIS.Binding.Services
             BigInteger? maxItems, BigInteger? skipCount, IExtensionsData extension);
     }
 
+    /// <summary>
+    /// Discovery Service interface.
+    /// </summary>
     public interface IDiscoveryService
     {
         IObjectList Query(string repositoryId, string statement, bool? searchAllVersions,
@@ -171,6 +195,9 @@ namespace PortCMIS.Binding.Services
            string filter, bool? includePolicyIds, bool? includeAcl, BigInteger? maxItems, IExtensionsData extension);
     }
 
+    /// <summary>
+    /// MultiFiling Service interface.
+    /// </summary>
     public interface IMultiFilingService
     {
         void AddObjectToFolder(string repositoryId, string objectId, string folderId, bool? allVersions, IExtensionsData extension);
@@ -178,6 +205,9 @@ namespace PortCMIS.Binding.Services
         void RemoveObjectFromFolder(string repositoryId, string objectId, string folderId, IExtensionsData extension);
     }
 
+    /// <summary>
+    /// ACL Service interface.
+    /// </summary>
     public interface IAclService
     {
         IAcl GetAcl(string repositoryId, string objectId, bool? onlyBasicPermissions, IExtensionsData extension);
@@ -186,6 +216,9 @@ namespace PortCMIS.Binding.Services
             IExtensionsData extension);
     }
 
+    /// <summary>
+    /// Policy Service interface.
+    /// </summary>
     public interface IPolicyService
     {
         void ApplyPolicy(string repositoryId, string policyId, string objectId, IExtensionsData extension);

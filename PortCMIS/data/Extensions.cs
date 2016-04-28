@@ -25,6 +25,9 @@ using System.Threading.Tasks;
 
 namespace PortCMIS.Data.Extensions
 {
+    /// <summary>
+    /// An extension element.
+    /// </summary>
     public interface ICmisExtensionElement
     {
         /// <value>
@@ -53,6 +56,9 @@ namespace PortCMIS.Data.Extensions
         IList<ICmisExtensionElement> Children { get; }
     }
 
+    /// <summary>
+    /// Simple ICmisExtensionElement implementation.
+    /// </summary>
     public class CmisExtensionElement : ICmisExtensionElement
     {
         /// <inheritdoc/>
@@ -71,6 +77,9 @@ namespace PortCMIS.Data.Extensions
         public IList<ICmisExtensionElement> Children { get; set; }
     }
 
+    /// <summary>
+    /// Holder of a list of extensions.
+    /// </summary>
     public interface IExtensionsData
     {
         /// <value>
@@ -79,6 +88,9 @@ namespace PortCMIS.Data.Extensions
         IList<ICmisExtensionElement> Extensions { get; set; }
     }
 
+    /// <summary>
+    /// Simple IExtensionsData implementation.
+    /// </summary>
     public class ExtensionsData : IExtensionsData
     {
         /// <inheritdoc/>

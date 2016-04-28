@@ -200,28 +200,99 @@ namespace PortCMIS.Data
     /// </summary>
     public interface ITypeDefinition : IExtensionsData
     {
+        /// <value>
+        /// Gets the type ID.
+        /// </value>
         string Id { get; }
+
+        /// <value>
+        /// Gets the local name.
+        /// </value>
         string LocalName { get; }
+
+        /// <value>
+        /// Gets the local name space.
+        /// </value>
         string LocalNamespace { get; }
+
+        /// <value>
+        /// Gets the display name.
+        /// </value>
         string DisplayName { get; }
+
+        /// <value>
+        /// Gets the query name.
+        /// </value>
         string QueryName { get; }
+
+        /// <value>
+        /// Gets the description.
+        /// </value>
         string Description { get; }
+
+        /// <value>
+        /// Gets the ID of the base type.
+        /// </value>
         BaseTypeId BaseTypeId { get; }
+
+        /// <value>
+        /// Gets the ID of the parent type.
+        /// </value>
         string ParentTypeId { get; }
+
+        /// <value>
+        /// Gets whether objects of this type can be created or not.
+        /// </value>
         bool? IsCreatable { get; }
+
+        /// <value>
+        /// Gets whether objects of this type can be filed or not.
+        /// </value>
         bool? IsFileable { get; }
+
+        /// <value>
+        /// Gets whether objects of this type can be queried or not.
+        /// </value>
         bool? IsQueryable { get; }
+
+        /// <value>
+        /// Gets whether objects of this type are indexed or not.
+        /// </value>
         bool? IsFulltextIndexed { get; }
+
+        /// <value>
+        /// Gets whether objects of this type can be found in super type queries or not.
+        /// </value>
         bool? IsIncludedInSupertypeQuery { get; }
+
+        /// <value>
+        /// Gets whether polices can be applied to objects of this type or not.
+        /// </value>
         bool? IsControllablePolicy { get; }
+
+        /// <value>
+        /// Gets whether ACLs can be applied to objects of this type or not.
+        /// </value>
         bool? IsControllableAcl { get; }
+
+        /// <value>
+        /// Gets the property definition for the given property ID.
+        /// </value>
         IPropertyDefinition this[string propertyId] { get; }
+
+        /// <value>
+        /// Gets a list of all property definitions.
+        /// </value>
         IList<IPropertyDefinition> PropertyDefinitions { get; }
+
+        /// <value>
+        /// Gets the type mutability flags.
+        /// </value>
         ITypeMutability TypeMutability { get; }
     }
 
     /// <summary>
-    /// TypeMutability flags.
+    /// Type mutability flags.
     /// </summary>
     public interface ITypeMutability : IExtensionsData
     {
@@ -248,7 +319,7 @@ namespace PortCMIS.Data
     {
         /// <value>
         /// Defines whether the type is versionabel or not.
-        /// </summary>
+        /// </value>
         bool? IsVersionable { get; }
 
         /// <value>
@@ -335,12 +406,18 @@ namespace PortCMIS.Data
         IList<IChoice<T>> Choices { get; }
     }
 
+    /// <summary>
+    /// Property definition for a boolean property.
+    /// </summary>
     public interface IPropertyBooleanDefinition : IPropertyDefinition
     {
         IList<bool?> DefaultValue { get; }
         IList<IChoice<bool?>> Choices { get; }
     }
 
+    /// <summary>
+    /// Property definition for a date time property.
+    /// </summary>
     public interface IPropertyDateTimeDefinition : IPropertyDefinition
     {
         IList<DateTime?> DefaultValue { get; }
@@ -348,6 +425,9 @@ namespace PortCMIS.Data
         DateTimeResolution? DateTimeResolution { get; }
     }
 
+    /// <summary>
+    /// Property definition for a decimal property.
+    /// </summary>
     public interface IPropertyDecimalDefinition : IPropertyDefinition
     {
         IList<decimal?> DefaultValue { get; }
@@ -357,18 +437,27 @@ namespace PortCMIS.Data
         DecimalPrecision? Precision { get; }
     }
 
+    /// <summary>
+    /// Property definition for a HTML property.
+    /// </summary>
     public interface IPropertyHtmlDefinition : IPropertyDefinition
     {
         IList<string> DefaultValue { get; }
         IList<IChoice<string>> Choices { get; }
     }
 
+    /// <summary>
+    /// Property definition for an ID property.
+    /// </summary>
     public interface IPropertyIdDefinition : IPropertyDefinition
     {
         IList<string> DefaultValue { get; }
         IList<IChoice<string>> Choices { get; }
     }
 
+    /// <summary>
+    /// Property definition for a integer property.
+    /// </summary>
     public interface IPropertyIntegerDefinition : IPropertyDefinition
     {
         IList<BigInteger?> DefaultValue { get; }
@@ -377,6 +466,9 @@ namespace PortCMIS.Data
         BigInteger? MaxValue { get; }
     }
 
+    /// <summary>
+    /// Property definition for a string property.
+    /// </summary>
     public interface IPropertyStringDefinition : IPropertyDefinition
     {
         IList<string> DefaultValue { get; }
@@ -384,6 +476,9 @@ namespace PortCMIS.Data
         BigInteger? MaxLength { get; }
     }
 
+    /// <summary>
+    /// Property definition for a URI property.
+    /// </summary>
     public interface IPropertyUriDefinition : IPropertyDefinition
     {
         IList<string> DefaultValue { get; }

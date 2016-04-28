@@ -135,6 +135,9 @@ namespace PortCMIS.Client
         public int CacheSize { get { return 0; } }
     }
 
+    /// <summary>
+    /// Default object cache implementation.
+    /// </summary>
     public class CmisObjectCache : ICache
     {
         private int cacheSize;
@@ -147,6 +150,9 @@ namespace PortCMIS.Client
 
         private object cacheLock = new object();
 
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public CmisObjectCache() { }
 
         /// <inheritdoc/> 

@@ -426,45 +426,74 @@ namespace PortCMIS.Binding
         }
     }
 
+    /// <summary>
+    /// A factory that created low-level binding objects.
+    /// </summary>
     public class CmisBindingFactory
     {
-        // Default CMIS AtomPub binding SPI implementation
+        /// <summary>
+        /// Default CMIS AtomPub binding SPI implementation class name.
+        /// </summary>
         public const string BindingSpiAtomPub = "PortCMIS.Binding.AtomPub.CmisAtomPubSpi";
-        // Default CMIS Browser binding SPI implementation
+        /// <summary>
+        /// Default CMIS Browser binding SPI implementation class name.
+        /// </summary>
         public const string BindingSpiBrowser = "PortCMIS.Binding.Browser.CmisBrowserSpi";
 
+        /// <summary>
+        /// Standard authentication provider class name.
+        /// </summary>
         public const string StandardAuthenticationProviderClass = "PortCMIS.Binding.StandardAuthenticationProvider";
+
+        /// <summary>
+        /// Default HTTP invoker class name.
+        /// </summary>
         public const string DefaultHttpInvokerClass = "PortCMIS.Binding.Http.DefaultHttpInvoker";
 
         private IDictionary<string, string> defaults;
 
+        /// <summary>
+        /// This is a factory.
+        /// </summary>
         private CmisBindingFactory()
         {
             defaults = CreateNewDefaultParameters();
         }
 
+        /// <summary>
+        /// Creates a new instance of this factory.
+        /// </summary>
+        /// <returns>a factory object</returns>
         public static CmisBindingFactory NewInstance()
         {
             return new CmisBindingFactory();
         }
 
-        public IDictionary<string, string> GetDefaultSessionParameters()
+        /// <value>
+        /// Gets and sets default session parameters.
+        /// </value>
+        public IDictionary<string, string> DefaultSessionParameters
         {
-            return defaults;
+            get { return defaults; }
+            set
+            {
+                if (value == null)
+                {
+                    defaults = CreateNewDefaultParameters();
+                }
+                else
+                {
+                    defaults = value;
+                }
+            }
         }
 
-        public void SetDefaultSessionParameters(IDictionary<string, string> sessionParameters)
-        {
-            if (sessionParameters == null)
-            {
-                defaults = CreateNewDefaultParameters();
-            }
-            else
-            {
-                defaults = sessionParameters;
-            }
-        }
-
+        /// <summary>
+        /// Creates a binding object for custom binding implementations.
+        /// </summary>
+        /// <param name="sessionParameters">the session parameters</param>
+        /// <param name="authenticationProvider">an authentication provider instance or <c>null</c> to use the default implementation</param>
+        /// <returns>a low-level binding object</returns>
         public ICmisBinding CreateCmisBinding(IDictionary<string, string> sessionParameters, IAuthenticationProvider authenticationProvider)
         {
             CheckSessionParameters(sessionParameters, true);
@@ -473,6 +502,12 @@ namespace PortCMIS.Binding
             return new CmisBinding(sessionParameters, authenticationProvider);
         }
 
+        /// <summary>
+        /// Creates an Browser binding object.
+        /// </summary>
+        /// <param name="sessionParameters">the session parameters</param>
+        /// <param name="authenticationProvider">an authentication provider instance or <c>null</c> to use the default implementation</param>
+        /// <returns>a low-level binding object</returns>
         public ICmisBinding CreateCmisBrowserBinding(IDictionary<string, string> sessionParameters, IAuthenticationProvider authenticationProvider)
         {
             CheckSessionParameters(sessionParameters, false);
@@ -500,6 +535,12 @@ namespace PortCMIS.Binding
             return new CmisBinding(sessionParameters, authenticationProvider);
         }
 
+        /// <summary>
+        /// Creates an AtomPub binding object.
+        /// </summary>
+        /// <param name="sessionParameters">the session parameters</param>
+        /// <param name="authenticationProvider">an authentication provider instance or <c>null</c> to use the default implementation</param>
+        /// <returns>a low-level binding object</returns>
         public ICmisBinding CreateCmisAtomPubBinding(IDictionary<string, string> sessionParameters, IAuthenticationProvider authenticationProvider)
         {
             CheckSessionParameters(sessionParameters, false);
@@ -523,6 +564,15 @@ namespace PortCMIS.Binding
             return new CmisBinding(sessionParameters, authenticationProvider);
         }
 
+        /// <summary>
+        /// Creates a Web Services binding object.
+        /// </summary>
+        /// <remarks>
+        /// PortCMIS doesn't support the Web Services binding. It may be implemented in the future.
+        /// </remarks>
+        /// <param name="sessionParameters">the session parameters</param>
+        /// <param name="authenticationProvider">an authentication provider instance or <c>null</c> to use the default implementation</param>
+        /// <returns>a low-level binding object</returns>
         public ICmisBinding CreateCmisWebServicesBinding(IDictionary<string, string> sessionParameters, IAuthenticationProvider authenticationProvider)
         {
             throw new ArgumentException("The Web Services binding is not supported!");

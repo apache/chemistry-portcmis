@@ -27,16 +27,22 @@ using System.IO;
 
 namespace PortCMIS.Client.Impl
 {
+    /// <summary>
+    /// Default IObjectFactory implementation.
+    /// </summary>
     public class ObjectFactory : IObjectFactory
     {
         private ISession session;
 
+        /// <inheritdoc/>
         public virtual void Initialize(ISession session, IDictionary<string, string> parameters)
         {
             this.session = session;
         }
 
         // Acl and ACE
+
+        /// <inheritdoc/>
         public virtual IAcl ConvertAces(IList<IAce> aces)
         {
             if (aces == null) { return null; }
@@ -52,6 +58,7 @@ namespace PortCMIS.Client.Impl
             return result;
         }
 
+        /// <inheritdoc/>
         public virtual IAcl CreateAcl(IList<IAce> aces)
         {
             Acl acl = new Acl();
@@ -60,6 +67,7 @@ namespace PortCMIS.Client.Impl
             return acl;
         }
 
+        /// <inheritdoc/>
         public virtual IAce CreateAce(string principal, IList<string> permissions)
         {
             Ace ace = new Ace();
@@ -73,6 +81,8 @@ namespace PortCMIS.Client.Impl
         }
 
         // policies
+
+        /// <inheritdoc/>
         public virtual IList<string> ConvertPolicies(IList<IPolicy> policies)
         {
             if (policies == null) { return null; }
@@ -90,6 +100,8 @@ namespace PortCMIS.Client.Impl
         }
 
         // renditions
+
+        /// <inheritdoc/>
         public virtual IRendition ConvertRendition(string objectId, IRenditionData rendition)
         {
             if (rendition == null)
@@ -102,6 +114,8 @@ namespace PortCMIS.Client.Impl
         }
 
         // content stream
+
+        /// <inheritdoc/>
         public virtual IContentStream CreateContentStream(string filename, long length, string mimetype, Stream stream)
         {
             ContentStream result = new ContentStream();
@@ -114,6 +128,8 @@ namespace PortCMIS.Client.Impl
         }
 
         // types
+
+        /// <inheritdoc/>
         public virtual IObjectType ConvertTypeDefinition(ITypeDefinition typeDefinition)
         {
             switch (typeDefinition.BaseTypeId)
@@ -135,6 +151,7 @@ namespace PortCMIS.Client.Impl
             }
         }
 
+        /// <inheritdoc/>
         public virtual IObjectType GetTypeFromObjectData(IObjectData objectData)
         {
             if (objectData == null || objectData.Properties == null)
@@ -158,11 +175,14 @@ namespace PortCMIS.Client.Impl
         }
 
         // properties
+
+        /// <inheritdoc/>
         public virtual IProperty CreateProperty<T>(IPropertyDefinition type, IList<T> values)
         {
             return new Property(type, (IList<object>)values);
         }
 
+        /// <inheritdoc/>
         protected virtual IProperty ConvertProperty(IObjectType objectType, IList<ISecondaryType> secondaryTypes, IPropertyData pd)
         {
             IPropertyDefinition definition = objectType[pd.Id];
@@ -194,6 +214,7 @@ namespace PortCMIS.Client.Impl
             return CreateProperty(definition, pd.Values);
         }
 
+        /// <inheritdoc/>
         public virtual IDictionary<string, IProperty> ConvertProperties(IObjectType objectType, IList<ISecondaryType> secondaryTypes, IProperties properties)
         {
             if (objectType == null)
@@ -223,6 +244,7 @@ namespace PortCMIS.Client.Impl
             return result;
         }
 
+        /// <inheritdoc/>
         public virtual IProperties ConvertProperties(IDictionary<string, object> properties, IObjectType type, IList<ISecondaryType> secondaryTypes, HashSet<Updatability> updatabilityFilter)
         {
             // check input
@@ -378,6 +400,7 @@ namespace PortCMIS.Client.Impl
             return result;
         }
 
+        /// <inheritdoc/>
         public virtual IList<IPropertyData> ConvertQueryProperties(IProperties properties)
         {
             if ((properties == null) || (properties.PropertyList == null))
@@ -389,6 +412,8 @@ namespace PortCMIS.Client.Impl
         }
 
         // objects
+
+        /// <inheritdoc/>
         public virtual ICmisObject ConvertObject(IObjectData objectData, IOperationContext context)
         {
             if (objectData == null)
@@ -425,6 +450,7 @@ namespace PortCMIS.Client.Impl
             }
         }
 
+        /// <inheritdoc/>
         public virtual IQueryResult ConvertQueryResult(IObjectData objectData)
         {
             if (objectData == null)
@@ -435,6 +461,7 @@ namespace PortCMIS.Client.Impl
             return new QueryResult(session, objectData);
         }
 
+        /// <inheritdoc/>
         public virtual IChangeEvent ConvertChangeEvent(IObjectData objectData)
         {
             ChangeEvent result = new ChangeEvent();
@@ -480,6 +507,7 @@ namespace PortCMIS.Client.Impl
             return result;
         }
 
+        /// <inheritdoc/>
         public virtual IChangeEvents ConvertChangeEvents(string changeLogToken, IObjectList objectList)
         {
             if (objectList == null)

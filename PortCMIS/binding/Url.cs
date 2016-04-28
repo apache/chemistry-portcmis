@@ -25,15 +25,25 @@ using System.Text;
 
 namespace PortCMIS.Binding
 {
+    /// <summary>
+    /// This class assembles URLs.
+    /// </summary>
     public class UrlBuilder
     {
         private UriBuilder uri;
 
+        /// <value>
+        /// The current URL.
+        /// </value>
         public Uri Url
         {
             get { return uri.Uri; }
         }
 
+        /// <summary>
+        /// Creates a new instance with a given URL.
+        /// </summary>
+        /// <param name="url">the URL</param>
         public UrlBuilder(string url)
         {
             if (url == null)
@@ -44,6 +54,12 @@ namespace PortCMIS.Binding
             uri = new UriBuilder(url);
         }
 
+        /// <summary>
+        /// Adds a parameter.
+        /// </summary>
+        /// <param name="name">the parameter name</param>
+        /// <param name="value">the parameter value</param>
+        /// <returns>this UrlBuilder object</returns>
         public UrlBuilder AddParameter(string name, object value)
         {
             if (name == null || value == null)
@@ -65,11 +81,22 @@ namespace PortCMIS.Binding
             return this;
         }
 
+        /// <summary>
+        /// Adds to the URL path.
+        /// </summary>
+        /// <param name="path">the path</param>
+        /// <returns>this UrlBuilder object</returns>
         public UrlBuilder AddPath(string path)
         {
             return AddPathPart(path, false);
         }
 
+        /// <summary>
+        /// Adds to the URL path.
+        /// </summary>
+        /// <param name="part">the path part</param>
+        /// <param name="quoteSlash">indicator whether slashes should be quoted or not</param>
+        /// <returns>this UrlBuilder object</returns>
         protected UrlBuilder AddPathPart(string part, bool quoteSlash)
         {
             if (String.IsNullOrEmpty(part))
@@ -92,7 +119,7 @@ namespace PortCMIS.Binding
 
         private static readonly char[] RFC7232Reserved = ";?:@&=+$,[]".ToCharArray();
 
-        public string QuoteURIPathComponent(string s, bool quoteSlash)
+        private string QuoteURIPathComponent(string s, bool quoteSlash)
         {
             if (String.IsNullOrEmpty(s))
             {
@@ -114,6 +141,11 @@ namespace PortCMIS.Binding
             return result.ToString();
         }
 
+        /// <summary>
+        /// Normalizes a parameter value.
+        /// </summary>
+        /// <param name="value">the value</param>
+        /// <returns>the normalized value as string</returns>
         public static string NormalizeParameter(object value)
         {
             if (value == null)
@@ -136,6 +168,10 @@ namespace PortCMIS.Binding
             return value.ToString();
         }
 
+        /// <summary>
+        /// Returns the current URL.
+        /// </summary>
+        /// <returns>the current URL</returns>
         public override string ToString()
         {
             return Url.ToString();

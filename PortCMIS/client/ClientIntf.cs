@@ -886,12 +886,33 @@ namespace PortCMIS.Client
     public interface IObjectType : ITypeDefinition
     {
         /// <value>
-        /// The base type.
+        /// Gets the base type.
         /// </value>
         bool IsBaseType { get; }
+
+        /// <summary>
+        /// Returns the base type definition.
+        /// </summary>
+        /// <returns>the base type definition or <c>null</c> if it is a base type</returns>
         IObjectType GetBaseType();
+
+        /// <summary>
+        /// Returns the parent type definition.
+        /// </summary>
+        /// <returns>the parent type definition or <c>null</c> if it is a base type</returns>
         IObjectType GetParentType();
+
+        /// <summary>
+        /// Gets the list of types directly derived from this type.
+        /// </summary>
+        /// <returns>list of types which are directly derived from this type</returns>
         IItemEnumerable<IObjectType> GetChildren();
+
+        /// <summary>
+        /// Gets the list of all types somehow derived from this type.
+        /// </summary>
+        /// <param name="depth">the tree depth, must be greater than 0 or -1 for infinite depth</param>
+        /// <returns> a list of trees of types which are derived from this type (direct and via their parents)</returns>
         IList<ITree<IObjectType>> GetDescendants(int depth);
     }
 
@@ -901,12 +922,12 @@ namespace PortCMIS.Client
     public interface IDocumentType : IObjectType
     {
         /// <value>
-        /// The versionable flag.
+        /// Gets the versionable flag.
         /// </value>
         bool? IsVersionable { get; }
 
         /// <value>
-        /// Content stream allowed.
+        /// Gets the content stream allowed flag.
         /// </value>
         ContentStreamAllowed? ContentStreamAllowed { get; }
     }
@@ -918,6 +939,9 @@ namespace PortCMIS.Client
     {
     }
 
+    /// <summary>
+    /// Secondary type interface.
+    /// </summary>
     public interface ISecondaryType : IObjectType
     {
     }
@@ -927,7 +951,14 @@ namespace PortCMIS.Client
     /// </summary>
     public interface IRelationshipType : IObjectType
     {
+        /// <summary>
+        /// Gets the list of allowed source object types.
+        /// </summary>
         IList<IObjectType> GetAllowedSourceTypes { get; }
+
+        /// <summary>
+        /// Gets the list of allowed target object types.
+        /// </summary>
         IList<IObjectType> GetAllowedTargetTypes { get; }
     }
 
@@ -947,26 +978,81 @@ namespace PortCMIS.Client
 
     public interface IItemEnumerable<T> : IEnumerable<T>
     {
+        /// <summary>
+        /// Skips to position within the CMIS collection.
+        /// </summary>
+        /// <param name="position">the position</param>
+        /// <returns>IItemEnumerable whose starting point is the specified skip to position</returns>
         IItemEnumerable<T> SkipTo(BigInteger position);
+
+        /// <summary>
+        /// Gets an IItemEnumerable for the current sub collection within
+        /// the CMIS collection using default maximum number of items.
+        /// </summary>
+        /// <returns>IItemEnumerable for current page</returns>
         IItemEnumerable<T> GetPage();
+
+        /// <summary>
+        /// Gets an IItemEnumerable for the current sub collection within the CMIS collection.
+        /// </summary>
+        /// <param name="maxNumItems">maximum number of items the sub collection will contain</param>
+        /// <returns>IItemEnumerable for current page</returns>
         IItemEnumerable<T> GetPage(int maxNumItems);
+
+        /// <value>
+        /// Gets the number of items fetched for the current page.
+        /// </value>
         BigInteger PageNumItems { get; }
+
+        /// <value>
+        /// Gets whether the repository contains additional items beyond the page of items already fetched.
+        /// </value>
         bool HasMoreItems { get; }
+        
+        /// <value>
+        /// Gets the total number of items. If the repository knows the total number of items
+        /// in a result set, the repository SHOULD include the number here.
+        /// If the repository does not know the number of items in a result set,
+        /// this parameter SHOULD not be set. The value in the parameter MAY NOT be
+        /// accurate the next time the client retrieves the result set or the next page
+        /// in the result set.
+        /// </value>
         BigInteger TotalNumItems { get; }
     }
 
+    /// <summary>
+    /// Object ID interface.
+    /// </summary>
     public interface IObjectId
     {
         /// <value>
-        /// The object ID.
+        /// Gets the object ID.
         /// </value>
         string Id { get; }
     }
 
+    /// <summary>
+    /// Rendition interface.
+    /// </summary>
     public interface IRendition : IRenditionData
     {
+        /// <summary>
+        /// Returns the rendition document if the rendition is a stand-alone document.
+        /// </summary>
+        /// <returns>the rendition document or <c>null</c> if there is no rendition document</returns>
         IDocument GetRenditionDocument();
+
+        /// <summary>
+        /// * Returns the rendition document using the provided operation context if the rendition is a stand-alone document.
+        /// </summary>
+        /// <param name="context">the operation context</param>
+        /// <returns>the rendition document or <c>null</c> if there is no rendition document</returns>
         IDocument GetRenditionDocument(IOperationContext context);
+
+        /// <summary>
+        /// Returns the content stream of the rendition.
+        /// </summary>
+        /// <returns>the content stream of the rendition or <c>null</c> if the rendition has no content</returns>
         IContentStream GetContentStream();
     }
 
@@ -976,42 +1062,42 @@ namespace PortCMIS.Client
     public interface IProperty
     {
         /// <value>
-        /// The property ID.
+        /// Gets the property ID.
         /// </value>
         string Id { get; }
 
         /// <value>
-        /// The property local name.
+        /// Gets the property local name.
         /// </value>
         string LocalName { get; }
 
         /// <value>
-        /// Property display name.
+        /// Gets the property display name.
         /// </value>
         string DisplayName { get; }
 
         /// <value>
-        /// Property query name.
+        /// Gets the property query name.
         /// </value>
         string QueryName { get; }
 
         /// <value>
-        /// Gets if the property is a multi-value property.
+        /// Gets whether this property is a multi-value property or not.
         /// </value>
         bool IsMultiValued { get; }
 
         /// <value>
-        /// The property type.
+        /// Gets the property type.
         /// </value>
         PropertyType? PropertyType { get; }
 
         /// <value>
-        /// The property definition.
+        /// Gets the property definition.
         /// </value>
         IPropertyDefinition PropertyDefinition { get; }
 
         /// <value>
-        /// The property value.
+        /// Gets the property value.
         /// </value>
         /// <remarks>
         /// If the property is a single-value property the single value is returned.
@@ -1020,7 +1106,7 @@ namespace PortCMIS.Client
         object Value { get; }
 
         /// <value>
-        /// The value list of the property.
+        /// Gets the value list of the property.
         /// </value>
         /// <remarks>
         /// If the property is a single-value property a list with one or no items is returned.
@@ -1028,17 +1114,17 @@ namespace PortCMIS.Client
         IList<object> Values { get; }
 
         /// <value>
-        /// The first value of the value list or <c>null</c> if the list has no values.
+        /// Gets the first value of the value list or <c>null</c> if the list has no values.
         /// </value>
         object FirstValue { get; }
 
         /// <value>
-        /// A string representation of the first value of the value list.
+        /// Gets a string representation of the first value of the value list.
         /// </value>
         string ValueAsString { get; }
 
         /// <value>
-        /// A string representation of the value list.
+        ///Gets a string representation of the value list.
         /// </value>
         string ValuesAsString { get; }
     }
@@ -1103,52 +1189,52 @@ namespace PortCMIS.Client
         DateTime? GetPropertyAsDateTimeValue(string propertyId);
 
         /// <value>
-        /// The name of this CMIS object (CMIS property <c>cmis:name</c>).
+        /// Gets the name of this CMIS object (CMIS property <c>cmis:name</c>).
         /// </value>
         string Name { get; }
 
         /// <value>
-        /// The user who created this CMIS object (CMIS property <c>cmis:createdBy</c>).
+        /// Gets the user who created this CMIS object (CMIS property <c>cmis:createdBy</c>).
         /// </value>
         string CreatedBy { get; }
 
         /// <value>
-        /// The timestamp when this CMIS object has been created (CMIS property <c>cmis:creationDate</c>).
+        /// Gets the timestamp when this CMIS object has been created (CMIS property <c>cmis:creationDate</c>).
         /// </value>
         DateTime? CreationDate { get; }
 
         /// <value>
-        /// The user who modified this CMIS object (CMIS property <c>cmis:lastModifiedBy</c>).
+        /// Gets the user who modified this CMIS object (CMIS property <c>cmis:lastModifiedBy</c>).
         /// </value>
         string LastModifiedBy { get; }
 
         /// <value>
-        /// The timestamp when this CMIS object has been modified (CMIS property <c>cmis:lastModificationDate</c>).
+        /// Gets the timestamp when this CMIS object has been modified (CMIS property <c>cmis:lastModificationDate</c>).
         /// </value>
         DateTime? LastModificationDate { get; }
 
         /// <value>
-        /// The ID of the base type of this CMIS object (CMIS property <c>cmis:baseTypeId</c>).
+        /// Gets the ID of the base type of this CMIS object (CMIS property <c>cmis:baseTypeId</c>).
         /// </value>
         BaseTypeId BaseTypeId { get; }
 
         /// <value>
-        /// The base type of this CMIS object (object type identified by <c>cmis:baseTypeId</c>).
+        /// Gets the base type of this CMIS object (object type identified by <c>cmis:baseTypeId</c>).
         /// </value>
         IObjectType BaseType { get; }
 
         /// <value>
-        /// The type of this CMIS object (object type identified by <c>cmis:objectTypeId</c>).
+        /// Gets the type of this CMIS object (object type identified by <c>cmis:objectTypeId</c>).
         /// </value>
         IObjectType ObjectType { get; }
 
         /// <value>
-        /// The change token (CMIS property <c>cmis:changeToken</c>).
+        /// Gets the change token (CMIS property <c>cmis:changeToken</c>).
         /// </value>
         string ChangeToken { get; }
 
         /// <value>
-        /// The secondary types.
+        /// Gets the secondary types.
         /// </value>
         IList<ISecondaryType> SecondaryTypes { get; }
     }
@@ -1190,17 +1276,17 @@ namespace PortCMIS.Client
     public interface ICmisObject : IObjectId, ICmisObjectProperties
     {
         /// <value>
-        /// The allowable actions if they have been fetched for this object.
+        /// Gets the allowable actions if they have been fetched for this object.
         /// </value>
         IAllowableActions AllowableActions { get; }
 
         /// <value>
-        /// The relationships if they have been fetched for this object.
+        /// Gets the relationships if they have been fetched for this object.
         /// </value>
         IList<IRelationship> Relationships { get; }
 
         /// <value>
-        /// The ACL if it has been fetched for this object.
+        /// Gets the ACL if it has been fetched for this object.
         /// </value>
         IAcl Acl { get; }
 
@@ -1398,27 +1484,27 @@ namespace PortCMIS.Client
         string CheckinComment { get; }
 
         /// <value>
-        /// The content stream length or <c>null</c> if the document has no content (CMIS property <c>cmis:contentStreamLength</c>).
+        /// Gets the content stream length or <c>null</c> if the document has no content (CMIS property <c>cmis:contentStreamLength</c>).
         /// </value>
         long? ContentStreamLength { get; }
 
         /// <value>
-        /// The content stream MIME type or <c>null</c> if the document has no content (CMIS property <c>cmis:contentStreamMimeType</c>).
+        /// Gets the content stream MIME type or <c>null</c> if the document has no content (CMIS property <c>cmis:contentStreamMimeType</c>).
         /// </value>
         string ContentStreamMimeType { get; }
 
         /// <value>
-        /// The content stream filename or <c>null</c> if the document has no content (CMIS property <c>cmis:contentStreamFileName</c>).
+        /// Gets the content stream filename or <c>null</c> if the document has no content (CMIS property <c>cmis:contentStreamFileName</c>).
         /// </value>
         string ContentStreamFileName { get; }
 
         /// <value>
-        /// The content stream ID or <c>null</c> if the document has no content (CMIS property <c>cmis:contentStreamId</c>).
+        /// Gets the content stream ID or <c>null</c> if the document has no content (CMIS property <c>cmis:contentStreamId</c>).
         /// </value>
         string ContentStreamId { get; }
 
         /// <value>
-        /// The content stream hashes or <c>null</c> if the document has no content or the repository hasn't provided content hashes (CMIS property <c>cmis:contentStreamHash</c>).
+        /// Gets the content stream hashes or <c>null</c> if the document has no content or the repository hasn't provided content hashes (CMIS property <c>cmis:contentStreamHash</c>).
         /// </value>
         IList<IContentStreamHash> ContentStreamHashes { get; }
     }
@@ -1564,12 +1650,12 @@ namespace PortCMIS.Client
     public interface IFolderProperties
     {
         /// <value>
-        /// The parent ID.
+        /// Gets the parent ID.
         /// </value>
         string ParentId { get; }
 
         /// <value>
-        /// The list of allowable child object types.
+        /// Gets the list of allowable child object types.
         /// </value>
         IList<IObjectType> AllowedChildObjectTypes { get; }
     }
@@ -1594,6 +1680,14 @@ namespace PortCMIS.Client
         IItem CreateItem(IDictionary<string, object> properties, IList<IPolicy> policies, IList<IAce> addAces, IList<IAce> removeAces,
             IOperationContext context);
         IItem CreateItem(IDictionary<string, object> properties);
+
+        /// <summary>
+        /// Deletes this folder and all subfolders.
+        /// </summary>
+        /// <param name="allversions">a flag whether all versions or just the filed version of a document should be deleted</param>
+        /// <param name="unfile">defines the unfiling behavoir</param>
+        /// <param name="continueOnFailure">a flag whether the operation should continue if an error occurs or not</param>
+        /// <returns>a list of object IDs which failed to be deleted</returns>
         IList<string> DeleteTree(bool allversions, UnfileObject? unfile, bool continueOnFailure);
 
         /// <summary>
@@ -1662,16 +1756,26 @@ namespace PortCMIS.Client
         bool IsRootFolder { get; }
 
         /// <value>
-        /// The parent of this folder or <c>null</c> if this folder is the root folder.
+        /// Gets the parent of this folder or <c>null</c> if this folder is the root folder.
         /// </value>
         IFolder FolderParent { get; }
 
         /// <value>
-        /// The path of this folder.
+        /// Gets the path of this folder.
         /// </value>
         string Path { get; }
 
+        /// <summary>
+        /// Returns all checked out documents in this folder.
+        /// </summary>
+        /// <returns>the checked out documents</returns>
         IItemEnumerable<IDocument> GetCheckedOutDocs();
+
+        /// <summary>
+        /// Returns all checked out documents in this folder using the given operation context.
+        /// </summary>
+        /// <param name="context">the operation context</param>
+        /// <returns>the checked out documents</returns>
         IItemEnumerable<IDocument> GetCheckedOutDocs(IOperationContext context);
     }
 
@@ -1681,7 +1785,7 @@ namespace PortCMIS.Client
     public interface IPolicyProperties
     {
         /// <value>
-        /// The policy text of this CMIS policy (CMIS property <c>cmis:policyText</c>).
+        /// Gets the policy text of this CMIS policy (CMIS property <c>cmis:policyText</c>).
         /// </value>
         string PolicyText { get; }
     }
@@ -1699,12 +1803,12 @@ namespace PortCMIS.Client
     public interface IRelationshipProperties
     {
         /// <value>
-        /// The ID of the relationship source object.
+        /// Gets the ID of the relationship source object.
         /// </value>
         IObjectId SourceId { get; }
 
         /// <value>
-        /// The ID of the relationships target object.
+        /// Gets the ID of the relationships target object.
         /// </value>
         IObjectId TargetId { get; }
     }
@@ -1767,17 +1871,17 @@ namespace PortCMIS.Client
     public interface IContentStreamHash
     {
         /// <value>
-        /// The content stream hash property value.
+        /// Gets the content stream hash property value.
         /// </value>
         string PropertyValue { get; }
 
         /// <value>
-        /// The hash algorithm.
+        /// Gets the hash algorithm.
         /// </value>
         string Algorithm { get; }
 
         /// <value>
-        /// The hash value.
+        /// Gets the hash value.
         /// </value>
         string Hash { get; }
     }
@@ -1790,11 +1894,11 @@ namespace PortCMIS.Client
         /// <value>
         /// Gets the property.
         /// </value>
-        /// <param name="queryName">the propertys query name or alias</param>
+        /// <param name="queryName">the property's query name or alias</param>
         IPropertyData this[string queryName] { get; }
 
         /// <value>
-        /// List of all properties in this query result.
+        /// Gets the list of all properties in this query result.
         /// </value>
         IList<IPropertyData> Properties { get; }
 
@@ -1830,17 +1934,17 @@ namespace PortCMIS.Client
         IList<object> GetPropertyMultivalueById(string propertyId);
 
         /// <value>
-        /// The allowable actions if they were requested.
+        /// Gets the allowable actions if they were requested.
         /// </value>
         IAllowableActions AllowableActions { get; }
 
         /// <value>
-        /// The relationships if they were requested.
+        /// Gets the relationships if they were requested.
         /// </value>
         IList<IRelationship> Relationships { get; }
 
         /// <value>
-        /// The renditions if they were requested.
+        /// Gets the renditions if they were requested.
         /// </value>
         IList<IRendition> Renditions { get; }
     }
@@ -1851,22 +1955,22 @@ namespace PortCMIS.Client
     public interface IChangeEvent : IChangeEventInfo
     {
         /// <value>
-        /// The object ID.
+        /// Gets the object ID.
         /// </value>
         string ObjectId { get; }
 
         /// <value>
-        /// The object properties, if provided.
+        /// Gets the object properties, if provided.
         /// </value>
         IDictionary<string, IList<object>> Properties { get; }
 
         /// <value>
-        /// The policy IDs, if provided.
+        /// Gets the policy IDs, if provided.
         /// </value>
         IList<string> PolicyIds { get; }
 
         /// <value>
-        /// The ACL, if provided.
+        /// Gets the ACL, if provided.
         /// </value>
         IAcl Acl { get; }
     }
@@ -1877,22 +1981,22 @@ namespace PortCMIS.Client
     public interface IChangeEvents
     {
         /// <value>
-        /// The latest change log token.
+        /// Gets the latest change log token.
         /// </value>
         string LatestChangeLogToken { get; }
 
         /// <value>
-        /// The list of change events.
+        /// Gets the list of change events.
         /// </value>
         IList<IChangeEvent> ChangeEventList { get; }
 
         /// <value>
-        /// The hasMoreItems flag, if provided.
+        /// Gets the hasMoreItems flag, if provided.
         /// </value>
         bool? HasMoreItems { get; }
 
         /// <value>
-        /// The total number of change events, if provided.
+        /// Gets the total number of change events, if provided.
         /// </value>
         BigInteger? TotalNumItems { get; }
     }

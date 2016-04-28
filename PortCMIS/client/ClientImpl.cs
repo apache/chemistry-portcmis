@@ -271,6 +271,9 @@ namespace PortCMIS.Client.Impl
             }
         }
 
+        /// <summary>
+        /// Connects to the repository and fetches the repository info.
+        /// </summary>
         public void Connect()
         {
             lock (sessionLock)
@@ -351,6 +354,7 @@ namespace PortCMIS.Client.Impl
             }
         }
 
+        /// <inheritdoc/>
         public void Clear()
         {
             lock (sessionLock)

@@ -878,8 +878,8 @@ namespace PortCMIS.Binding.Browser.Json
 
         private static int ZzUnpackAttribute(string packed, int offset, int[] result)
         {
-            int i = 0; /* index in packed string */
-            int j = offset; /* index in unpacked array */
+            int i = 0; // index in packed string
+            int j = offset; // index in unpacked array
             int l = packed.Length;
             while (i < l)
             {
@@ -893,13 +893,13 @@ namespace PortCMIS.Binding.Browser.Json
             return j;
         }
 
-        /** the input device */
+        // the input device
         private TextReader zzReader;
 
-        /** the current state of the DFA */
+        // the current state of the DFA
         private int zzState;
 
-        /** the current lexical state */
+        // the current lexical state
         private int zzLexicalState = YyInitial;
 
         /// <summary>
@@ -908,13 +908,13 @@ namespace PortCMIS.Binding.Browser.Json
         /// </summary>
         private char[] zzBuffer = new char[ZzBufferSize];
 
-        /** the textposition at the last accepting state */
+        // the textposition at the last accepting state
         private int zzMarkedPos;
 
-        /** the current text position in the buffer */
+        // the current text position in the buffer
         private int zzCurrentPos;
 
-        /** startRead marks the beginning of the yytext() string in the buffer */
+        // startRead marks the beginning of the yytext() string in the buffer
         private int zzStartRead;
 
         /// <summary>
@@ -922,13 +922,13 @@ namespace PortCMIS.Binding.Browser.Json
         /// </summary>
         private int zzEndRead;
 
-        /** the number of characters up to the start of the matched text */
+        // the number of characters up to the start of the matched tex
         private int yychar;
 
-        /** zzAtEOF == true <=> the scanner is at the EOF */
+        // zzAtEOF == true &lt;=&gth; the scanner is at the EOF
         private bool zzAtEOF;
 
-        /* user code: */
+        // user code:
         private StringBuilder sb = new StringBuilder();
 
         public Yylex(TextReader input)
@@ -941,8 +941,8 @@ namespace PortCMIS.Binding.Browser.Json
         private static char[] ZzUnpackCMap(string packed)
         {
             char[] map = new char[0x10000];
-            int i = 0; /* index in packed string */
-            int j = 0; /* index in unpacked array */
+            int i = 0; // index in packed string
+            int j = 0; // index in unpacked array
             while (i < 90)
             {
                 int count = packed[i++];
@@ -958,12 +958,12 @@ namespace PortCMIS.Binding.Browser.Json
         private bool ZzRefill()
         {
 
-            /* first: make room (if you can) */
+            // first: make room (if you can)
             if (zzStartRead > 0)
             {
                 Array.Copy(zzBuffer, zzStartRead, zzBuffer, 0, zzEndRead - zzStartRead);
 
-                /* translate stored positions */
+                // translate stored positions
                 zzEndRead -= zzStartRead;
                 zzCurrentPos -= zzStartRead;
                 zzMarkedPos -= zzStartRead;

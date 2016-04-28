@@ -49,19 +49,19 @@ namespace PortCMIS.Binding.AtomPub
 
             writer.WriteStartElement(XmlConstants.TAG_REPOSITORY_INFO, ns);
 
-            XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_REPINFO_ID, source.Id);
-            XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_REPINFO_NAME, source.Name);
-            XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_REPINFO_DESCRIPTION, source.Description);
-            XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_REPINFO_VENDOR, source.VendorName);
-            XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_REPINFO_PRODUCT, source.ProductName);
-            XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_REPINFO_PRODUCT_VERSION, source.ProductVersion);
-            XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_REPINFO_ROOT_FOLDER_ID, source.RootFolderId);
-            XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_REPINFO_CHANGE_LOG_TOKEN, source.LatestChangeLogToken);
+            XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_REPINFO_ID, source.Id);
+            XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_REPINFO_NAME, source.Name);
+            XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_REPINFO_DESCRIPTION, source.Description);
+            XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_REPINFO_VENDOR, source.VendorName);
+            XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_REPINFO_PRODUCT, source.ProductName);
+            XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_REPINFO_PRODUCT_VERSION, source.ProductVersion);
+            XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_REPINFO_ROOT_FOLDER_ID, source.RootFolderId);
+            XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_REPINFO_CHANGE_LOG_TOKEN, source.LatestChangeLogToken);
             WriteRepositoryCapabilities(writer, cmisVersion, source.Capabilities);
             WriteAclCapabilities(writer, cmisVersion, source.AclCapabilities);
-            XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_REPINFO_CMIS_VERSION_SUPPORTED, source.CmisVersionSupported);
-            XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_REPINFO_THIN_CLIENT_URI, source.ThinClientUri);
-            XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_REPINFO_CHANGES_INCOMPLETE, source.ChangesIncomplete);
+            XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_REPINFO_CMIS_VERSION_SUPPORTED, source.CmisVersionSupported);
+            XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_REPINFO_THIN_CLIENT_URI, source.ThinClientUri);
+            XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_REPINFO_CHANGES_INCOMPLETE, source.ChangesIncomplete);
             if (source.ChangesOnType != null)
             {
                 foreach (BaseTypeId baseType in source.ChangesOnType)
@@ -72,11 +72,11 @@ namespace PortCMIS.Binding.AtomPub
                                 + "The Item base type has been removed from the list.");
                         continue;
                     }
-                    XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_REPINFO_CHANGES_ON_TYPE, baseType);
+                    XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_REPINFO_CHANGES_ON_TYPE, baseType);
                 }
             }
-            XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_REPINFO_PRINCIPAL_ID_ANONYMOUS, source.PrincipalIdAnonymous);
-            XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_REPINFO_PRINCIPAL_ID_ANYONE, source.PrincipalIdAnyone);
+            XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_REPINFO_PRINCIPAL_ID_ANONYMOUS, source.PrincipalIdAnonymous);
+            XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_REPINFO_PRINCIPAL_ID_ANYONE, source.PrincipalIdAnyone);
             if (cmisVersion != CmisVersion.Cmis_1_0 && source.ExtensionFeatures != null)
             {
                 foreach (ExtensionFeature feature in source.ExtensionFeatures)
@@ -96,39 +96,39 @@ namespace PortCMIS.Binding.AtomPub
                 return;
             }
 
-            writer.WriteStartElement(XmlConstants.PREFIX_CMIS, XmlConstants.TAG_REPINFO_CAPABILITIES, XmlConstants.NAMESPACE_CMIS);
+            writer.WriteStartElement(XmlConstants.PrefixCmis, XmlConstants.TAG_REPINFO_CAPABILITIES, XmlConstants.NamespaceCmis);
 
-            XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_CAP_ACL, source.AclCapability);
-            XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_CAP_ALL_VERSIONS_SEARCHABLE, source.IsAllVersionsSearchableSupported);
-            XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_CAP_CHANGES, source.ChangesCapability);
-            XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_CAP_CONTENT_STREAM_UPDATABILITY, source.ContentStreamUpdatesCapability);
-            XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_CAP_GET_DESCENDANTS, source.IsGetDescendantsSupported);
-            XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_CAP_GET_FOLDER_TREE, source.IsGetFolderTreeSupported);
+            XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_CAP_ACL, source.AclCapability);
+            XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_CAP_ALL_VERSIONS_SEARCHABLE, source.IsAllVersionsSearchableSupported);
+            XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_CAP_CHANGES, source.ChangesCapability);
+            XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_CAP_CONTENT_STREAM_UPDATABILITY, source.ContentStreamUpdatesCapability);
+            XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_CAP_GET_DESCENDANTS, source.IsGetDescendantsSupported);
+            XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_CAP_GET_FOLDER_TREE, source.IsGetFolderTreeSupported);
             if (cmisVersion != CmisVersion.Cmis_1_0)
             {
-                XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_CAP_ORDER_BY, source.OrderByCapability);
+                XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_CAP_ORDER_BY, source.OrderByCapability);
             }
-            XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_CAP_MULTIFILING, source.IsMultifilingSupported);
-            XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_CAP_PWC_SEARCHABLE, source.IsPwcSearchableSupported);
-            XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_CAP_PWC_UPDATABLE, source.IsPwcUpdatableSupported);
-            XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_CAP_QUERY, source.QueryCapability);
-            XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_CAP_RENDITIONS, source.RenditionsCapability);
-            XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_CAP_UNFILING, source.IsUnfilingSupported);
-            XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_CAP_VERSION_SPECIFIC_FILING, source.IsVersionSpecificFilingSupported);
-            XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_CAP_JOIN, source.JoinCapability);
+            XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_CAP_MULTIFILING, source.IsMultifilingSupported);
+            XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_CAP_PWC_SEARCHABLE, source.IsPwcSearchableSupported);
+            XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_CAP_PWC_UPDATABLE, source.IsPwcUpdatableSupported);
+            XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_CAP_QUERY, source.QueryCapability);
+            XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_CAP_RENDITIONS, source.RenditionsCapability);
+            XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_CAP_UNFILING, source.IsUnfilingSupported);
+            XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_CAP_VERSION_SPECIFIC_FILING, source.IsVersionSpecificFilingSupported);
+            XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_CAP_JOIN, source.JoinCapability);
             if (cmisVersion != CmisVersion.Cmis_1_0)
             {
                 if (source.CreatablePropertyTypes != null)
                 {
                     ICreatablePropertyTypes creatablePropertyTypes = source.CreatablePropertyTypes;
 
-                    writer.WriteStartElement(XmlConstants.PREFIX_CMIS, XmlConstants.TAG_CAP_CREATABLE_PROPERTY_TYPES, XmlConstants.NAMESPACE_CMIS);
+                    writer.WriteStartElement(XmlConstants.PrefixCmis, XmlConstants.TAG_CAP_CREATABLE_PROPERTY_TYPES, XmlConstants.NamespaceCmis);
 
                     if (creatablePropertyTypes.CanCreate != null)
                     {
                         foreach (PropertyType pt in creatablePropertyTypes.CanCreate)
                         {
-                            XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_CAP_CREATABLE_PROPERTY_TYPES_CANCREATE,
+                            XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_CAP_CREATABLE_PROPERTY_TYPES_CANCREATE,
                                     pt);
                         }
                     }
@@ -140,37 +140,37 @@ namespace PortCMIS.Binding.AtomPub
                 {
                     INewTypeSettableAttributes newTypeSettableAttributes = source.NewTypeSettableAttributes;
 
-                    writer.WriteStartElement(XmlConstants.PREFIX_CMIS, XmlConstants.TAG_CAP_NEW_TYPE_SETTABLE_ATTRIBUTES, XmlConstants.NAMESPACE_CMIS);
+                    writer.WriteStartElement(XmlConstants.PrefixCmis, XmlConstants.TAG_CAP_NEW_TYPE_SETTABLE_ATTRIBUTES, XmlConstants.NamespaceCmis);
 
-                    XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_CAP_NEW_TYPE_SETTABLE_ATTRIBUTES_ID,
+                    XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_CAP_NEW_TYPE_SETTABLE_ATTRIBUTES_ID,
                             newTypeSettableAttributes.CanSetId);
-                    XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_CAP_NEW_TYPE_SETTABLE_ATTRIBUTES_LOCALNAME,
+                    XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_CAP_NEW_TYPE_SETTABLE_ATTRIBUTES_LOCALNAME,
                             newTypeSettableAttributes.CanSetLocalName);
-                    XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS,
+                    XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis,
                             XmlConstants.TAG_CAP_NEW_TYPE_SETTABLE_ATTRIBUTES_LOCALNAMESPACE,
                             newTypeSettableAttributes.CanSetLocalNamespace);
-                    XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_CAP_NEW_TYPE_SETTABLE_ATTRIBUTES_DISPLAYNAME,
+                    XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_CAP_NEW_TYPE_SETTABLE_ATTRIBUTES_DISPLAYNAME,
                             newTypeSettableAttributes.CanSetDisplayName);
-                    XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_CAP_NEW_TYPE_SETTABLE_ATTRIBUTES_QUERYNAME,
+                    XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_CAP_NEW_TYPE_SETTABLE_ATTRIBUTES_QUERYNAME,
                             newTypeSettableAttributes.CanSetQueryName);
-                    XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_CAP_NEW_TYPE_SETTABLE_ATTRIBUTES_DESCRIPTION,
+                    XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_CAP_NEW_TYPE_SETTABLE_ATTRIBUTES_DESCRIPTION,
                             newTypeSettableAttributes.CanSetDescription);
-                    XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_CAP_NEW_TYPE_SETTABLE_ATTRIBUTES_CREATEABLE,
+                    XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_CAP_NEW_TYPE_SETTABLE_ATTRIBUTES_CREATEABLE,
                             newTypeSettableAttributes.CanSetCreatable);
-                    XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_CAP_NEW_TYPE_SETTABLE_ATTRIBUTES_FILEABLE,
+                    XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_CAP_NEW_TYPE_SETTABLE_ATTRIBUTES_FILEABLE,
                             newTypeSettableAttributes.CanSetFileable);
-                    XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_CAP_NEW_TYPE_SETTABLE_ATTRIBUTES_QUERYABLE,
+                    XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_CAP_NEW_TYPE_SETTABLE_ATTRIBUTES_QUERYABLE,
                             newTypeSettableAttributes.CanSetQueryable);
-                    XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS,
+                    XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis,
                             XmlConstants.TAG_CAP_NEW_TYPE_SETTABLE_ATTRIBUTES_FULLTEXTINDEXED,
                             newTypeSettableAttributes.CanSetFulltextIndexed);
-                    XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS,
+                    XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis,
                             XmlConstants.TAG_CAP_NEW_TYPE_SETTABLE_ATTRIBUTES_INCLUDEDINSUPERTYTPEQUERY,
                             newTypeSettableAttributes.CanSetIncludedInSupertypeQuery);
-                    XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS,
+                    XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis,
                             XmlConstants.TAG_CAP_NEW_TYPE_SETTABLE_ATTRIBUTES_CONTROLABLEPOLICY,
                             newTypeSettableAttributes.CanSetControllablePolicy);
-                    XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS,
+                    XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis,
                             XmlConstants.TAG_CAP_NEW_TYPE_SETTABLE_ATTRIBUTES_CONTROLABLEACL,
                             newTypeSettableAttributes.CanSetControllableAcl);
 
@@ -190,18 +190,18 @@ namespace PortCMIS.Binding.AtomPub
                 return;
             }
 
-            writer.WriteStartElement(XmlConstants.PREFIX_CMIS, XmlConstants.TAG_REPINFO_ACL_CAPABILITIES, XmlConstants.NAMESPACE_CMIS);
+            writer.WriteStartElement(XmlConstants.PrefixCmis, XmlConstants.TAG_REPINFO_ACL_CAPABILITIES, XmlConstants.NamespaceCmis);
 
-            XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_ACLCAP_SUPPORTED_PERMISSIONS, source.SupportedPermissions);
-            XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_ACLCAP_ACL_PROPAGATION, source.AclPropagation);
+            XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_ACLCAP_SUPPORTED_PERMISSIONS, source.SupportedPermissions);
+            XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_ACLCAP_ACL_PROPAGATION, source.AclPropagation);
             if (source.Permissions != null)
             {
                 foreach (IPermissionDefinition pd in source.Permissions)
                 {
-                    writer.WriteStartElement(XmlConstants.PREFIX_CMIS, XmlConstants.TAG_ACLCAP_PERMISSIONS, XmlConstants.NAMESPACE_CMIS);
+                    writer.WriteStartElement(XmlConstants.PrefixCmis, XmlConstants.TAG_ACLCAP_PERMISSIONS, XmlConstants.NamespaceCmis);
 
-                    XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_ACLCAP_PERMISSION_PERMISSION, pd.Id);
-                    XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_ACLCAP_PERMISSION_DESCRIPTION, pd.Description);
+                    XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_ACLCAP_PERMISSION_PERMISSION, pd.Id);
+                    XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_ACLCAP_PERMISSION_DESCRIPTION, pd.Description);
 
                     WriteExtensions(writer, pd);
                     writer.WriteEndElement();
@@ -211,14 +211,14 @@ namespace PortCMIS.Binding.AtomPub
             {
                 foreach (IPermissionMapping pm in source.PermissionMapping.Values)
                 {
-                    writer.WriteStartElement(XmlConstants.PREFIX_CMIS, XmlConstants.TAG_ACLCAP_PERMISSION_MAPPING, XmlConstants.NAMESPACE_CMIS);
+                    writer.WriteStartElement(XmlConstants.PrefixCmis, XmlConstants.TAG_ACLCAP_PERMISSION_MAPPING, XmlConstants.NamespaceCmis);
 
-                    XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_ACLCAP_MAPPING_KEY, pm.Key);
+                    XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_ACLCAP_MAPPING_KEY, pm.Key);
                     if (pm.Permissions != null)
                     {
                         foreach (String perm in pm.Permissions)
                         {
-                            XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_ACLCAP_MAPPING_PERMISSION, perm);
+                            XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_ACLCAP_MAPPING_PERMISSION, perm);
                         }
                     }
 
@@ -238,21 +238,21 @@ namespace PortCMIS.Binding.AtomPub
                 return;
             }
 
-            writer.WriteStartElement(XmlConstants.PREFIX_CMIS, XmlConstants.TAG_REPINFO_EXTENDED_FEATURES, XmlConstants.NAMESPACE_CMIS);
+            writer.WriteStartElement(XmlConstants.PrefixCmis, XmlConstants.TAG_REPINFO_EXTENDED_FEATURES, XmlConstants.NamespaceCmis);
 
-            XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_FEATURE_ID, source.Id);
-            XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_FEATURE_URL, source.Url);
-            XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_FEATURE_COMMON_NAME, source.CommonName);
-            XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_FEATURE_VERSION_LABEL, source.VersionLabel);
-            XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_FEATURE_DESCRIPTION, source.Description);
+            XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_FEATURE_ID, source.Id);
+            XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_FEATURE_URL, source.Url);
+            XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_FEATURE_COMMON_NAME, source.CommonName);
+            XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_FEATURE_VERSION_LABEL, source.VersionLabel);
+            XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_FEATURE_DESCRIPTION, source.Description);
             if (source.FeatureData != null)
             {
                 foreach (KeyValuePair<string, string> data in source.FeatureData)
                 {
-                    writer.WriteStartElement(XmlConstants.PREFIX_CMIS, XmlConstants.TAG_FEATURE_DATA, XmlConstants.NAMESPACE_CMIS);
+                    writer.WriteStartElement(XmlConstants.PrefixCmis, XmlConstants.TAG_FEATURE_DATA, XmlConstants.NamespaceCmis);
 
-                    XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_FEATURE_DATA_KEY, data.Key);
-                    XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_FEATURE_DATA_VALUE, data.Value);
+                    XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_FEATURE_DATA_KEY, data.Key);
+                    XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_FEATURE_DATA_VALUE, data.Value);
 
                     writer.WriteEndElement();
                 }
@@ -286,7 +286,7 @@ namespace PortCMIS.Binding.AtomPub
             }
 
             writer.WriteStartElement(XmlConstants.TAG_TYPE, ns);
-            writer.WriteAttributeString("xmlns", XmlConstants.PREFIX_XSI, null, XmlConstants.NAMESPACE_XSI);
+            writer.WriteAttributeString("xmlns", XmlConstants.PrefixXsi, null, XmlConstants.NamespaceXsi);
             string prefix = writer.LookupPrefix(ns);
             if (prefix != null)
             {
@@ -295,57 +295,57 @@ namespace PortCMIS.Binding.AtomPub
 
             if (source.BaseTypeId == BaseTypeId.CmisDocument)
             {
-                writer.WriteAttributeString(XmlConstants.PREFIX_XSI, "type", XmlConstants.NAMESPACE_XSI, XmlConstants.PREFIX_CMIS + ":" + XmlConstants.ATTR_DOCUMENT_TYPE);
+                writer.WriteAttributeString(XmlConstants.PrefixXsi, "type", XmlConstants.NamespaceXsi, XmlConstants.PrefixCmis + ":" + XmlConstants.ATTR_DOCUMENT_TYPE);
             }
             else if (source.BaseTypeId == BaseTypeId.CmisFolder)
             {
-                writer.WriteAttributeString(XmlConstants.PREFIX_XSI, "type", XmlConstants.NAMESPACE_XSI, XmlConstants.PREFIX_CMIS + ":" + XmlConstants.ATTR_FOLDER_TYPE);
+                writer.WriteAttributeString(XmlConstants.PrefixXsi, "type", XmlConstants.NamespaceXsi, XmlConstants.PrefixCmis + ":" + XmlConstants.ATTR_FOLDER_TYPE);
             }
             else if (source.BaseTypeId == BaseTypeId.CmisRelationship)
             {
-                writer.WriteAttributeString(XmlConstants.PREFIX_XSI, "type", XmlConstants.NAMESPACE_XSI, XmlConstants.PREFIX_CMIS + ":" + XmlConstants.ATTR_RELATIONSHIP_TYPE);
+                writer.WriteAttributeString(XmlConstants.PrefixXsi, "type", XmlConstants.NamespaceXsi, XmlConstants.PrefixCmis + ":" + XmlConstants.ATTR_RELATIONSHIP_TYPE);
             }
             else if (source.BaseTypeId == BaseTypeId.CmisPolicy)
             {
-                writer.WriteAttributeString(XmlConstants.PREFIX_XSI, "type", XmlConstants.NAMESPACE_XSI, XmlConstants.PREFIX_CMIS + ":" + XmlConstants.ATTR_POLICY_TYPE);
+                writer.WriteAttributeString(XmlConstants.PrefixXsi, "type", XmlConstants.NamespaceXsi, XmlConstants.PrefixCmis + ":" + XmlConstants.ATTR_POLICY_TYPE);
             }
             else if (source.BaseTypeId == BaseTypeId.CmisItem)
             {
-                writer.WriteAttributeString(XmlConstants.PREFIX_XSI, "type", XmlConstants.NAMESPACE_XSI, XmlConstants.PREFIX_CMIS + ":" + XmlConstants.ATTR_ITEM_TYPE);
+                writer.WriteAttributeString(XmlConstants.PrefixXsi, "type", XmlConstants.NamespaceXsi, XmlConstants.PrefixCmis + ":" + XmlConstants.ATTR_ITEM_TYPE);
             }
             else if (source.BaseTypeId == BaseTypeId.CmisSecondary)
             {
-                writer.WriteAttributeString(XmlConstants.PREFIX_XSI, "type", XmlConstants.NAMESPACE_XSI, XmlConstants.PREFIX_CMIS + ":" + XmlConstants.ATTR_SECONDARY_TYPE);
+                writer.WriteAttributeString(XmlConstants.PrefixXsi, "type", XmlConstants.NamespaceXsi, XmlConstants.PrefixCmis + ":" + XmlConstants.ATTR_SECONDARY_TYPE);
             }
             else
             {
                 throw new CmisRuntimeException("Type definition has no base type id!");
             }
 
-            XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_TYPE_ID, source.Id);
-            XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_TYPE_LOCALNAME, source.LocalName);
-            XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_TYPE_LOCALNAMESPACE, source.LocalNamespace);
-            XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_TYPE_DISPLAYNAME, source.DisplayName);
-            XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_TYPE_QUERYNAME, source.QueryName);
-            XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_TYPE_DESCRIPTION, source.Description);
-            XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_TYPE_BASE_ID, source.BaseTypeId);
-            XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_TYPE_PARENT_ID, source.ParentTypeId);
-            XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_TYPE_CREATABLE, source.IsCreatable);
-            XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_TYPE_FILEABLE, source.IsFileable);
-            XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_TYPE_QUERYABLE, source.IsQueryable);
-            XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_TYPE_FULLTEXT_INDEXED, source.IsFulltextIndexed);
-            XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_TYPE_INCLUDE_IN_SUPERTYPE_QUERY, source.IsIncludedInSupertypeQuery);
-            XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_TYPE_CONTROLABLE_POLICY, source.IsControllablePolicy);
-            XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_TYPE_CONTROLABLE_ACL, source.IsControllableAcl);
+            XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_TYPE_ID, source.Id);
+            XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_TYPE_LOCALNAME, source.LocalName);
+            XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_TYPE_LOCALNAMESPACE, source.LocalNamespace);
+            XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_TYPE_DISPLAYNAME, source.DisplayName);
+            XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_TYPE_QUERYNAME, source.QueryName);
+            XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_TYPE_DESCRIPTION, source.Description);
+            XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_TYPE_BASE_ID, source.BaseTypeId);
+            XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_TYPE_PARENT_ID, source.ParentTypeId);
+            XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_TYPE_CREATABLE, source.IsCreatable);
+            XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_TYPE_FILEABLE, source.IsFileable);
+            XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_TYPE_QUERYABLE, source.IsQueryable);
+            XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_TYPE_FULLTEXT_INDEXED, source.IsFulltextIndexed);
+            XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_TYPE_INCLUDE_IN_SUPERTYPE_QUERY, source.IsIncludedInSupertypeQuery);
+            XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_TYPE_CONTROLABLE_POLICY, source.IsControllablePolicy);
+            XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_TYPE_CONTROLABLE_ACL, source.IsControllableAcl);
             if (cmisVersion != CmisVersion.Cmis_1_0 && source.TypeMutability != null)
             {
                 ITypeMutability tm = source.TypeMutability;
 
-                writer.WriteStartElement(XmlConstants.PREFIX_CMIS, XmlConstants.TAG_TYPE_TYPE_MUTABILITY, XmlConstants.NAMESPACE_CMIS);
+                writer.WriteStartElement(XmlConstants.PrefixCmis, XmlConstants.TAG_TYPE_TYPE_MUTABILITY, XmlConstants.NamespaceCmis);
 
-                XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_TYPE_TYPE_MUTABILITY_CREATE, tm.CanCreate);
-                XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_TYPE_TYPE_MUTABILITY_UPDATE, tm.CanUpdate);
-                XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_TYPE_TYPE_MUTABILITY_DELETE, tm.CanDelete);
+                XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_TYPE_TYPE_MUTABILITY_CREATE, tm.CanCreate);
+                XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_TYPE_TYPE_MUTABILITY_UPDATE, tm.CanUpdate);
+                XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_TYPE_TYPE_MUTABILITY_DELETE, tm.CanDelete);
 
                 WriteExtensions(writer, tm);
                 writer.WriteEndElement();
@@ -361,8 +361,8 @@ namespace PortCMIS.Binding.AtomPub
             if (source is DocumentTypeDefinition)
             {
                 DocumentTypeDefinition docDef = (DocumentTypeDefinition)source;
-                XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_TYPE_VERSIONABLE, docDef.IsVersionable);
-                XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_TYPE_CONTENTSTREAM_ALLOWED, docDef.ContentStreamAllowed);
+                XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_TYPE_VERSIONABLE, docDef.IsVersionable);
+                XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_TYPE_CONTENTSTREAM_ALLOWED, docDef.ContentStreamAllowed);
             }
 
             if (source is RelationshipTypeDefinition)
@@ -374,7 +374,7 @@ namespace PortCMIS.Binding.AtomPub
                     {
                         if (id != null)
                         {
-                            XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_TYPE_ALLOWED_SOURCE_TYPES, id);
+                            XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_TYPE_ALLOWED_SOURCE_TYPES, id);
                         }
                     }
                 }
@@ -384,7 +384,7 @@ namespace PortCMIS.Binding.AtomPub
                     {
                         if (id != null)
                         {
-                            XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_TYPE_ALLOWED_TARGET_TYPES, id);
+                            XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_TYPE_ALLOWED_TARGET_TYPES, id);
                         }
                     }
                 }
@@ -409,47 +409,47 @@ namespace PortCMIS.Binding.AtomPub
             switch (source.PropertyType)
             {
                 case PropertyType.String:
-                    writer.WriteStartElement(XmlConstants.PREFIX_CMIS, XmlConstants.TAG_TYPE_PROP_DEF_STRING, XmlConstants.NAMESPACE_CMIS);
+                    writer.WriteStartElement(XmlConstants.PrefixCmis, XmlConstants.TAG_TYPE_PROP_DEF_STRING, XmlConstants.NamespaceCmis);
                     break;
                 case PropertyType.Id:
-                    writer.WriteStartElement(XmlConstants.PREFIX_CMIS, XmlConstants.TAG_TYPE_PROP_DEF_ID, XmlConstants.NAMESPACE_CMIS);
+                    writer.WriteStartElement(XmlConstants.PrefixCmis, XmlConstants.TAG_TYPE_PROP_DEF_ID, XmlConstants.NamespaceCmis);
                     break;
                 case PropertyType.Integer:
-                    writer.WriteStartElement(XmlConstants.PREFIX_CMIS, XmlConstants.TAG_TYPE_PROP_DEF_INTEGER, XmlConstants.NAMESPACE_CMIS);
+                    writer.WriteStartElement(XmlConstants.PrefixCmis, XmlConstants.TAG_TYPE_PROP_DEF_INTEGER, XmlConstants.NamespaceCmis);
                     break;
                 case PropertyType.Boolean:
-                    writer.WriteStartElement(XmlConstants.PREFIX_CMIS, XmlConstants.TAG_TYPE_PROP_DEF_BOOLEAN, XmlConstants.NAMESPACE_CMIS);
+                    writer.WriteStartElement(XmlConstants.PrefixCmis, XmlConstants.TAG_TYPE_PROP_DEF_BOOLEAN, XmlConstants.NamespaceCmis);
                     break;
                 case PropertyType.DateTime:
-                    writer.WriteStartElement(XmlConstants.PREFIX_CMIS, XmlConstants.TAG_TYPE_PROP_DEF_DATETIME, XmlConstants.NAMESPACE_CMIS);
+                    writer.WriteStartElement(XmlConstants.PrefixCmis, XmlConstants.TAG_TYPE_PROP_DEF_DATETIME, XmlConstants.NamespaceCmis);
                     break;
                 case PropertyType.Decimal:
-                    writer.WriteStartElement(XmlConstants.PREFIX_CMIS, XmlConstants.TAG_TYPE_PROP_DEF_DECIMAL, XmlConstants.NAMESPACE_CMIS);
+                    writer.WriteStartElement(XmlConstants.PrefixCmis, XmlConstants.TAG_TYPE_PROP_DEF_DECIMAL, XmlConstants.NamespaceCmis);
                     break;
                 case PropertyType.Html:
-                    writer.WriteStartElement(XmlConstants.PREFIX_CMIS, XmlConstants.TAG_TYPE_PROP_DEF_HTML, XmlConstants.NAMESPACE_CMIS);
+                    writer.WriteStartElement(XmlConstants.PrefixCmis, XmlConstants.TAG_TYPE_PROP_DEF_HTML, XmlConstants.NamespaceCmis);
                     break;
                 case PropertyType.Uri:
-                    writer.WriteStartElement(XmlConstants.PREFIX_CMIS, XmlConstants.TAG_TYPE_PROP_DEF_URI, XmlConstants.NAMESPACE_CMIS);
+                    writer.WriteStartElement(XmlConstants.PrefixCmis, XmlConstants.TAG_TYPE_PROP_DEF_URI, XmlConstants.NamespaceCmis);
                     break;
                 default:
                     throw new CmisRuntimeException("Property definition has no property type!");
             }
 
-            XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_PROPERTY_TYPE_ID, source.Id);
-            XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_PROPERTY_TYPE_LOCALNAME, source.LocalName);
-            XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_PROPERTY_TYPE_LOCALNAMESPACE, source.LocalNamespace);
-            XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_PROPERTY_TYPE_DISPLAYNAME, source.DisplayName);
-            XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_PROPERTY_TYPE_QUERYNAME, source.QueryName);
-            XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_PROPERTY_TYPE_DESCRIPTION, source.Description);
-            XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_PROPERTY_TYPE_PROPERTY_TYPE, source.PropertyType);
-            XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_PROPERTY_TYPE_CARDINALITY, source.Cardinality);
-            XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_PROPERTY_TYPE_UPDATABILITY, source.Updatability);
-            XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_PROPERTY_TYPE_INHERITED, source.IsInherited);
-            XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_PROPERTY_TYPE_REQUIRED, source.IsRequired);
-            XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_PROPERTY_TYPE_QUERYABLE, source.IsQueryable);
-            XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_PROPERTY_TYPE_ORDERABLE, source.IsOrderable);
-            XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_PROPERTY_TYPE_OPENCHOICE, source.IsOpenChoice);
+            XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_PROPERTY_TYPE_ID, source.Id);
+            XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_PROPERTY_TYPE_LOCALNAME, source.LocalName);
+            XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_PROPERTY_TYPE_LOCALNAMESPACE, source.LocalNamespace);
+            XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_PROPERTY_TYPE_DISPLAYNAME, source.DisplayName);
+            XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_PROPERTY_TYPE_QUERYNAME, source.QueryName);
+            XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_PROPERTY_TYPE_DESCRIPTION, source.Description);
+            XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_PROPERTY_TYPE_PROPERTY_TYPE, source.PropertyType);
+            XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_PROPERTY_TYPE_CARDINALITY, source.Cardinality);
+            XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_PROPERTY_TYPE_UPDATABILITY, source.Updatability);
+            XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_PROPERTY_TYPE_INHERITED, source.IsInherited);
+            XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_PROPERTY_TYPE_REQUIRED, source.IsRequired);
+            XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_PROPERTY_TYPE_QUERYABLE, source.IsQueryable);
+            XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_PROPERTY_TYPE_ORDERABLE, source.IsOrderable);
+            XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_PROPERTY_TYPE_OPENCHOICE, source.IsOpenChoice);
 
             if (source is IPropertyStringDefinition)
             {
@@ -462,7 +462,7 @@ namespace PortCMIS.Binding.AtomPub
                     WriteProperty(writer, prop, true);
                 }
 
-                XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_PROPERTY_TYPE_MAX_LENGTH, def.MaxLength);
+                XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_PROPERTY_TYPE_MAX_LENGTH, def.MaxLength);
 
                 if (def.Choices != null)
                 {
@@ -508,8 +508,8 @@ namespace PortCMIS.Binding.AtomPub
                     WriteProperty(writer, prop, true);
                 }
 
-                XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_PROPERTY_TYPE_MAX_VALUE, def.MaxValue);
-                XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_PROPERTY_TYPE_MIN_VALUE, def.MinValue);
+                XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_PROPERTY_TYPE_MAX_VALUE, def.MaxValue);
+                XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_PROPERTY_TYPE_MIN_VALUE, def.MinValue);
 
                 if (def.Choices != null)
                 {
@@ -555,7 +555,7 @@ namespace PortCMIS.Binding.AtomPub
                     WriteProperty(writer, prop, true);
                 }
 
-                XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_PROPERTY_TYPE_RESOLUTION, def.DateTimeResolution);
+                XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_PROPERTY_TYPE_RESOLUTION, def.DateTimeResolution);
 
                 if (def.Choices != null)
                 {
@@ -579,9 +579,9 @@ namespace PortCMIS.Binding.AtomPub
                     WriteProperty(writer, prop, true);
                 }
 
-                XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_PROPERTY_TYPE_MAX_VALUE, def.MaxValue);
-                XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_PROPERTY_TYPE_MIN_VALUE, def.MinValue);
-                XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_PROPERTY_TYPE_PRECISION, def.Precision);
+                XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_PROPERTY_TYPE_MAX_VALUE, def.MaxValue);
+                XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_PROPERTY_TYPE_MIN_VALUE, def.MinValue);
+                XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_PROPERTY_TYPE_PRECISION, def.Precision);
 
                 if (def.Choices != null)
                 {
@@ -650,7 +650,7 @@ namespace PortCMIS.Binding.AtomPub
                 return;
             }
 
-            writer.WriteStartElement(XmlConstants.PREFIX_CMIS, XmlConstants.TAG_PROPERTY_TYPE_CHOICE, XmlConstants.NAMESPACE_CMIS);
+            writer.WriteStartElement(XmlConstants.PrefixCmis, XmlConstants.TAG_PROPERTY_TYPE_CHOICE, XmlConstants.NamespaceCmis);
 
             if (source.DisplayName != null)
             {
@@ -667,31 +667,31 @@ namespace PortCMIS.Binding.AtomPub
                     case PropertyType.Uri:
                         foreach (string value in (IList<string>)source.Value)
                         {
-                            XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_PROPERTY_TYPE_CHOICE_VALUE, value);
+                            XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_PROPERTY_TYPE_CHOICE_VALUE, value);
                         }
                         break;
                     case PropertyType.Integer:
                         foreach (BigInteger value in (IList<BigInteger>)source.Value)
                         {
-                            XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_PROPERTY_TYPE_CHOICE_VALUE, value);
+                            XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_PROPERTY_TYPE_CHOICE_VALUE, value);
                         }
                         break;
                     case PropertyType.Boolean:
                         foreach (bool? value in (IList<bool?>)source.Value)
                         {
-                            XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_PROPERTY_TYPE_CHOICE_VALUE, value);
+                            XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_PROPERTY_TYPE_CHOICE_VALUE, value);
                         }
                         break;
                     case PropertyType.DateTime:
                         foreach (DateTime value in (IList<DateTime>)source.Value)
                         {
-                            XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_PROPERTY_TYPE_CHOICE_VALUE, value);
+                            XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_PROPERTY_TYPE_CHOICE_VALUE, value);
                         }
                         break;
                     case PropertyType.Decimal:
                         foreach (decimal? value in (IList<decimal?>)source.Value)
                         {
-                            XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_PROPERTY_TYPE_CHOICE_VALUE, value);
+                            XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_PROPERTY_TYPE_CHOICE_VALUE, value);
                         }
                         break;
                     default:
@@ -739,8 +739,8 @@ namespace PortCMIS.Binding.AtomPub
 
             if (root)
             {
-                writer.WriteStartElement(XmlConstants.PREFIX_CMIS, name, XmlConstants.NAMESPACE_CMIS);
-                writer.WriteAttributeString("xmlns", XmlConstants.PREFIX_CMIS, null, XmlConstants.NAMESPACE_CMIS);
+                writer.WriteStartElement(XmlConstants.PrefixCmis, name, XmlConstants.NamespaceCmis);
+                writer.WriteAttributeString("xmlns", XmlConstants.PrefixCmis, null, XmlConstants.NamespaceCmis);
             }
             else
             {
@@ -751,7 +751,7 @@ namespace PortCMIS.Binding.AtomPub
             {
                 IProperties properties = source.Properties;
 
-                writer.WriteStartElement(XmlConstants.PREFIX_CMIS, XmlConstants.TAG_OBJECT_PROPERTIES, XmlConstants.NAMESPACE_CMIS);
+                writer.WriteStartElement(XmlConstants.PrefixCmis, XmlConstants.TAG_OBJECT_PROPERTIES, XmlConstants.NamespaceCmis);
 
                 if (properties.PropertyList != null)
                 {
@@ -774,7 +774,7 @@ namespace PortCMIS.Binding.AtomPub
                 {
                     if (rel != null)
                     {
-                        WriteObject(writer, cmisVersion, false, XmlConstants.TAG_OBJECT_RELATIONSHIP, XmlConstants.NAMESPACE_CMIS, rel);
+                        WriteObject(writer, cmisVersion, false, XmlConstants.TAG_OBJECT_RELATIONSHIP, XmlConstants.NamespaceCmis, rel);
                     }
                 }
             }
@@ -782,10 +782,10 @@ namespace PortCMIS.Binding.AtomPub
             {
                 IChangeEventInfo info = source.ChangeEventInfo;
 
-                writer.WriteStartElement(XmlConstants.PREFIX_CMIS, XmlConstants.TAG_OBJECT_CHANGE_EVENT_INFO, XmlConstants.NAMESPACE_CMIS);
+                writer.WriteStartElement(XmlConstants.PrefixCmis, XmlConstants.TAG_OBJECT_CHANGE_EVENT_INFO, XmlConstants.NamespaceCmis);
 
-                XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_CHANGE_EVENT_TYPE, info.ChangeType);
-                XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_CHANGE_EVENT_TIME, info.ChangeTime);
+                XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_CHANGE_EVENT_TYPE, info.ChangeType);
+                XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_CHANGE_EVENT_TIME, info.ChangeTime);
 
                 WriteExtensions(writer, info);
                 writer.WriteEndElement();
@@ -794,12 +794,12 @@ namespace PortCMIS.Binding.AtomPub
             {
                 WriteAcl(writer, cmisVersion, false, source.Acl);
             }
-            XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_OBJECT_EXACT_ACL, source.IsExactAcl);
+            XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_OBJECT_EXACT_ACL, source.IsExactAcl);
             if (source.PolicyIds != null)
             {
                 IPolicyIdList pids = source.PolicyIds;
 
-                writer.WriteStartElement(XmlConstants.PREFIX_CMIS, XmlConstants.TAG_OBJECT_POLICY_IDS, XmlConstants.NAMESPACE_CMIS);
+                writer.WriteStartElement(XmlConstants.PrefixCmis, XmlConstants.TAG_OBJECT_POLICY_IDS, XmlConstants.NamespaceCmis);
 
                 if (pids.PolicyIds != null)
                 {
@@ -807,7 +807,7 @@ namespace PortCMIS.Binding.AtomPub
                     {
                         if (id != null)
                         {
-                            XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_POLICY_ID, id);
+                            XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_POLICY_ID, id);
                         }
                     }
                 }
@@ -821,16 +821,16 @@ namespace PortCMIS.Binding.AtomPub
                 {
                     if (rend != null)
                     {
-                        writer.WriteStartElement(XmlConstants.PREFIX_CMIS, XmlConstants.TAG_OBJECT_RENDITION, XmlConstants.NAMESPACE_CMIS);
+                        writer.WriteStartElement(XmlConstants.PrefixCmis, XmlConstants.TAG_OBJECT_RENDITION, XmlConstants.NamespaceCmis);
 
-                        XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_RENDITION_STREAM_ID, rend.StreamId);
-                        XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_RENDITION_MIMETYPE, rend.MimeType);
-                        XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_RENDITION_LENGTH, rend.Length);
-                        XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_RENDITION_KIND, rend.Kind);
-                        XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_RENDITION_TITLE, rend.Title);
-                        XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_RENDITION_HEIGHT, rend.Height);
-                        XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_RENDITION_WIDTH, rend.Width);
-                        XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_RENDITION_DOCUMENT_ID, rend.RenditionDocumentId);
+                        XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_RENDITION_STREAM_ID, rend.StreamId);
+                        XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_RENDITION_MIMETYPE, rend.MimeType);
+                        XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_RENDITION_LENGTH, rend.Length);
+                        XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_RENDITION_KIND, rend.Kind);
+                        XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_RENDITION_TITLE, rend.Title);
+                        XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_RENDITION_HEIGHT, rend.Height);
+                        XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_RENDITION_WIDTH, rend.Width);
+                        XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_RENDITION_DOCUMENT_ID, rend.RenditionDocumentId);
 
                         WriteExtensions(writer, rend);
                         writer.WriteEndElement();
@@ -851,41 +851,41 @@ namespace PortCMIS.Binding.AtomPub
 
             if (isDefaultValue)
             {
-                writer.WriteStartElement(XmlConstants.PREFIX_CMIS, XmlConstants.TAG_PROPERTY_TYPE_DEAULT_VALUE, XmlConstants.NAMESPACE_CMIS);
+                writer.WriteStartElement(XmlConstants.PrefixCmis, XmlConstants.TAG_PROPERTY_TYPE_DEAULT_VALUE, XmlConstants.NamespaceCmis);
             }
             else
             {
                 if (source.PropertyType == PropertyType.String)
                 {
-                    writer.WriteStartElement(XmlConstants.PREFIX_CMIS, XmlConstants.TAG_PROP_STRING, XmlConstants.NAMESPACE_CMIS);
+                    writer.WriteStartElement(XmlConstants.PrefixCmis, XmlConstants.TAG_PROP_STRING, XmlConstants.NamespaceCmis);
                 }
                 else if (source.PropertyType == PropertyType.Id)
                 {
-                    writer.WriteStartElement(XmlConstants.PREFIX_CMIS, XmlConstants.TAG_PROP_ID, XmlConstants.NAMESPACE_CMIS);
+                    writer.WriteStartElement(XmlConstants.PrefixCmis, XmlConstants.TAG_PROP_ID, XmlConstants.NamespaceCmis);
                 }
                 else if (source.PropertyType == PropertyType.Integer)
                 {
-                    writer.WriteStartElement(XmlConstants.PREFIX_CMIS, XmlConstants.TAG_PROP_INTEGER, XmlConstants.NAMESPACE_CMIS);
+                    writer.WriteStartElement(XmlConstants.PrefixCmis, XmlConstants.TAG_PROP_INTEGER, XmlConstants.NamespaceCmis);
                 }
                 else if (source.PropertyType == PropertyType.Boolean)
                 {
-                    writer.WriteStartElement(XmlConstants.PREFIX_CMIS, XmlConstants.TAG_PROP_BOOLEAN, XmlConstants.NAMESPACE_CMIS);
+                    writer.WriteStartElement(XmlConstants.PrefixCmis, XmlConstants.TAG_PROP_BOOLEAN, XmlConstants.NamespaceCmis);
                 }
                 else if (source.PropertyType == PropertyType.DateTime)
                 {
-                    writer.WriteStartElement(XmlConstants.PREFIX_CMIS, XmlConstants.TAG_PROP_DATETIME, XmlConstants.NAMESPACE_CMIS);
+                    writer.WriteStartElement(XmlConstants.PrefixCmis, XmlConstants.TAG_PROP_DATETIME, XmlConstants.NamespaceCmis);
                 }
                 else if (source.PropertyType == PropertyType.Decimal)
                 {
-                    writer.WriteStartElement(XmlConstants.PREFIX_CMIS, XmlConstants.TAG_PROP_DECIMAL, XmlConstants.NAMESPACE_CMIS);
+                    writer.WriteStartElement(XmlConstants.PrefixCmis, XmlConstants.TAG_PROP_DECIMAL, XmlConstants.NamespaceCmis);
                 }
                 else if (source.PropertyType == PropertyType.Html)
                 {
-                    writer.WriteStartElement(XmlConstants.PREFIX_CMIS, XmlConstants.TAG_PROP_HTML, XmlConstants.NAMESPACE_CMIS);
+                    writer.WriteStartElement(XmlConstants.PrefixCmis, XmlConstants.TAG_PROP_HTML, XmlConstants.NamespaceCmis);
                 }
                 else if (source.PropertyType == PropertyType.Uri)
                 {
-                    writer.WriteStartElement(XmlConstants.PREFIX_CMIS, XmlConstants.TAG_PROP_URI, XmlConstants.NAMESPACE_CMIS);
+                    writer.WriteStartElement(XmlConstants.PrefixCmis, XmlConstants.TAG_PROP_URI, XmlConstants.NamespaceCmis);
                 }
                 else
                 {
@@ -921,31 +921,31 @@ namespace PortCMIS.Binding.AtomPub
                     case PropertyType.Uri:
                         foreach (string value in source.Values.Cast<string>())
                         {
-                            XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_PROPERTY_VALUE, value);
+                            XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_PROPERTY_VALUE, value);
                         }
                         break;
                     case PropertyType.Integer:
                         foreach (BigInteger value in source.Values.Cast<BigInteger>())
                         {
-                            XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_PROPERTY_VALUE, value);
+                            XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_PROPERTY_VALUE, value);
                         }
                         break;
                     case PropertyType.Boolean:
                         foreach (bool value in source.Values.Cast<bool>())
                         {
-                            XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_PROPERTY_VALUE, value);
+                            XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_PROPERTY_VALUE, value);
                         }
                         break;
                     case PropertyType.DateTime:
                         foreach (DateTime value in source.Values.Cast<DateTime>())
                         {
-                            XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_PROPERTY_VALUE, value);
+                            XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_PROPERTY_VALUE, value);
                         }
                         break;
                     case PropertyType.Decimal:
                         foreach (decimal value in source.Values.Cast<decimal>())
                         {
-                            XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_PROPERTY_VALUE, value);
+                            XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_PROPERTY_VALUE, value);
                         }
                         break;
                 }
@@ -964,12 +964,12 @@ namespace PortCMIS.Binding.AtomPub
 
             if (root)
             {
-                writer.WriteStartElement(XmlConstants.PREFIX_CMIS, "allowableActions", XmlConstants.NAMESPACE_CMIS);
-                writer.WriteAttributeString("xmlns", XmlConstants.PREFIX_CMIS, null, XmlConstants.NAMESPACE_CMIS);
+                writer.WriteStartElement(XmlConstants.PrefixCmis, "allowableActions", XmlConstants.NamespaceCmis);
+                writer.WriteAttributeString("xmlns", XmlConstants.PrefixCmis, null, XmlConstants.NamespaceCmis);
             }
             else
             {
-                writer.WriteStartElement(XmlConstants.PREFIX_CMIS, XmlConstants.TAG_OBJECT_ALLOWABLE_ACTIONS, XmlConstants.NAMESPACE_CMIS);
+                writer.WriteStartElement(XmlConstants.PrefixCmis, XmlConstants.TAG_OBJECT_ALLOWABLE_ACTIONS, XmlConstants.NamespaceCmis);
             }
 
             if (source.Actions != null)
@@ -986,7 +986,7 @@ namespace PortCMIS.Binding.AtomPub
                                     + "The canCreateItem action has been removed from the Allowable Actions.");
                             continue;
                         }
-                        XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, action.GetCmisValue(), true);
+                        XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, action.GetCmisValue(), true);
                     }
                 }
             }
@@ -1004,12 +1004,12 @@ namespace PortCMIS.Binding.AtomPub
 
             if (root)
             {
-                writer.WriteStartElement(XmlConstants.PREFIX_CMIS, "acl", XmlConstants.NAMESPACE_CMIS);
-                writer.WriteAttributeString("xmlns", XmlConstants.PREFIX_CMIS, null, XmlConstants.NAMESPACE_CMIS);
+                writer.WriteStartElement(XmlConstants.PrefixCmis, "acl", XmlConstants.NamespaceCmis);
+                writer.WriteAttributeString("xmlns", XmlConstants.PrefixCmis, null, XmlConstants.NamespaceCmis);
             }
             else
             {
-                writer.WriteStartElement(XmlConstants.PREFIX_CMIS, XmlConstants.TAG_OBJECT_ACL, XmlConstants.NAMESPACE_CMIS);
+                writer.WriteStartElement(XmlConstants.PrefixCmis, XmlConstants.TAG_OBJECT_ACL, XmlConstants.NamespaceCmis);
             }
 
             if (source.Aces != null)
@@ -1018,15 +1018,15 @@ namespace PortCMIS.Binding.AtomPub
                 {
                     if (ace != null)
                     {
-                        writer.WriteStartElement(XmlConstants.PREFIX_CMIS, XmlConstants.TAG_ACL_PERMISSISONS, XmlConstants.NAMESPACE_CMIS);
+                        writer.WriteStartElement(XmlConstants.PrefixCmis, XmlConstants.TAG_ACL_PERMISSISONS, XmlConstants.NamespaceCmis);
 
                         if (ace.Principal != null)
                         {
                             IPrincipal principal = ace.Principal;
 
-                            writer.WriteStartElement(XmlConstants.PREFIX_CMIS, XmlConstants.TAG_ACE_PRINCIPAL, XmlConstants.NAMESPACE_CMIS);
+                            writer.WriteStartElement(XmlConstants.PrefixCmis, XmlConstants.TAG_ACE_PRINCIPAL, XmlConstants.NamespaceCmis);
 
-                            XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_ACE_PRINCIPAL_ID, principal.Id);
+                            XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_ACE_PRINCIPAL_ID, principal.Id);
 
                             WriteExtensions(writer, principal);
                             writer.WriteEndElement();
@@ -1035,10 +1035,10 @@ namespace PortCMIS.Binding.AtomPub
                         {
                             foreach (String perm in ace.Permissions)
                             {
-                                XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_ACE_PERMISSIONS, perm);
+                                XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_ACE_PERMISSIONS, perm);
                             }
                         }
-                        XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_ACE_IS_DIRECT, ace.IsDirect);
+                        XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_ACE_IS_DIRECT, ace.IsDirect);
 
                         WriteExtensions(writer, ace);
                         writer.WriteEndElement();
@@ -1061,16 +1061,16 @@ namespace PortCMIS.Binding.AtomPub
                 return;
             }
 
-            writer.WriteStartElement(XmlConstants.TAG_QUERY, XmlConstants.NAMESPACE_CMIS);
-            writer.WriteAttributeString("xmlns", XmlConstants.PREFIX_CMIS, null, XmlConstants.NAMESPACE_CMIS);
+            writer.WriteStartElement(XmlConstants.TAG_QUERY, XmlConstants.NamespaceCmis);
+            writer.WriteAttributeString("xmlns", XmlConstants.PrefixCmis, null, XmlConstants.NamespaceCmis);
 
-            XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_QUERY_STATEMENT, source.Statement);
-            XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_QUERY_SEARCHALLVERSIONS, source.SearchAllVersions);
-            XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_QUERY_INCLUDEALLOWABLEACTIONS, source.IncludeAllowableActions);
-            XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_QUERY_INCLUDERELATIONSHIPS, source.IncludeRelationships);
-            XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_QUERY_RENDITIONFILTER, source.RenditionFilter);
-            XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_QUERY_MAXITEMS, source.MaxItems);
-            XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_QUERY_SKIPCOUNT, source.SkipCount);
+            XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_QUERY_STATEMENT, source.Statement);
+            XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_QUERY_SEARCHALLVERSIONS, source.SearchAllVersions);
+            XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_QUERY_INCLUDEALLOWABLEACTIONS, source.IncludeAllowableActions);
+            XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_QUERY_INCLUDERELATIONSHIPS, source.IncludeRelationships);
+            XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_QUERY_RENDITIONFILTER, source.RenditionFilter);
+            XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_QUERY_MAXITEMS, source.MaxItems);
+            XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_QUERY_SKIPCOUNT, source.SkipCount);
 
             WriteExtensions(writer, source);
             writer.WriteEndElement();
@@ -1096,10 +1096,10 @@ namespace PortCMIS.Binding.AtomPub
                     continue;
                 }
 
-                writer.WriteStartElement(XmlConstants.PREFIX_CMIS, XmlConstants.TAG_BULK_UPDATE_ID_AND_TOKEN, XmlConstants.NAMESPACE_CMIS);
+                writer.WriteStartElement(XmlConstants.PrefixCmis, XmlConstants.TAG_BULK_UPDATE_ID_AND_TOKEN, XmlConstants.NamespaceCmis);
 
-                XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_IDANDTOKEN_ID, idAndToken.Id);
-                XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_IDANDTOKEN_CHANGETOKEN, idAndToken.ChangeToken);
+                XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_IDANDTOKEN_ID, idAndToken.Id);
+                XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_IDANDTOKEN_CHANGETOKEN, idAndToken.ChangeToken);
 
                 WriteExtensions(writer, idAndToken);
                 writer.WriteEndElement();
@@ -1108,7 +1108,7 @@ namespace PortCMIS.Binding.AtomPub
             if (bulkUpdate.Properties != null)
             {
                 IProperties properties = bulkUpdate.Properties;
-                writer.WriteStartElement(XmlConstants.PREFIX_CMIS, XmlConstants.TAG_BULK_UPDATE_PROPERTIES, XmlConstants.NAMESPACE_CMIS);
+                writer.WriteStartElement(XmlConstants.PrefixCmis, XmlConstants.TAG_BULK_UPDATE_PROPERTIES, XmlConstants.NamespaceCmis);
 
                 if (properties.PropertyList != null)
                 {
@@ -1126,7 +1126,7 @@ namespace PortCMIS.Binding.AtomPub
             {
                 foreach (string id in bulkUpdate.AddSecondaryTypeIds)
                 {
-                    XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_BULK_UPDATE_ADD_SECONDARY_TYPES, id);
+                    XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_BULK_UPDATE_ADD_SECONDARY_TYPES, id);
                 }
             }
 
@@ -1134,7 +1134,7 @@ namespace PortCMIS.Binding.AtomPub
             {
                 foreach (string id in bulkUpdate.RemoveSecondaryTypeIds)
                 {
-                    XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_BULK_UPDATE_REMOVE_SECONDARY_TYPES, id);
+                    XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_BULK_UPDATE_REMOVE_SECONDARY_TYPES, id);
                 }
             }
 
@@ -1849,7 +1849,7 @@ namespace PortCMIS.Binding.AtomPub
             {
                 AbstractTypeDefinition result = null;
 
-                string typeAttr = parser.GetAttribute("type", XmlConstants.NAMESPACE_XSI);
+                string typeAttr = parser.GetAttribute("type", XmlConstants.NamespaceXsi);
                 if (typeAttr != null)
                 {
                     if (typeAttr.EndsWith(XmlConstants.ATTR_DOCUMENT_TYPE))
