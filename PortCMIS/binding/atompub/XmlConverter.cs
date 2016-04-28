@@ -40,7 +40,7 @@ namespace PortCMIS.Binding.AtomPub
         // --- writers ---
         // ---------------
 
-        public static void writeRepositoryInfo(XmlWriter writer, CmisVersion cmisVersion, string ns, IRepositoryInfo source)
+        public static void WriteRepositoryInfo(XmlWriter writer, CmisVersion cmisVersion, string ns, IRepositoryInfo source)
         {
             if (source == null)
             {
@@ -57,8 +57,8 @@ namespace PortCMIS.Binding.AtomPub
             XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_REPINFO_PRODUCT_VERSION, source.ProductVersion);
             XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_REPINFO_ROOT_FOLDER_ID, source.RootFolderId);
             XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_REPINFO_CHANGE_LOG_TOKEN, source.LatestChangeLogToken);
-            writeRepositoryCapabilities(writer, cmisVersion, source.Capabilities);
-            writeAclCapabilities(writer, cmisVersion, source.AclCapabilities);
+            WriteRepositoryCapabilities(writer, cmisVersion, source.Capabilities);
+            WriteAclCapabilities(writer, cmisVersion, source.AclCapabilities);
             XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_REPINFO_CMIS_VERSION_SUPPORTED, source.CmisVersionSupported);
             XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_REPINFO_THIN_CLIENT_URI, source.ThinClientUri);
             XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_REPINFO_CHANGES_INCOMPLETE, source.ChangesIncomplete);
@@ -81,15 +81,15 @@ namespace PortCMIS.Binding.AtomPub
             {
                 foreach (ExtensionFeature feature in source.ExtensionFeatures)
                 {
-                    writeExtendedFeatures(writer, cmisVersion, feature);
+                    WriteExtendedFeatures(writer, cmisVersion, feature);
                 }
             }
 
-            writeExtensions(writer, source);
+            WriteExtensions(writer, source);
             writer.WriteEndElement();
         }
 
-        public static void writeRepositoryCapabilities(XmlWriter writer, CmisVersion cmisVersion, IRepositoryCapabilities source)
+        public static void WriteRepositoryCapabilities(XmlWriter writer, CmisVersion cmisVersion, IRepositoryCapabilities source)
         {
             if (source == null)
             {
@@ -133,7 +133,7 @@ namespace PortCMIS.Binding.AtomPub
                         }
                     }
 
-                    writeExtensions(writer, creatablePropertyTypes);
+                    WriteExtensions(writer, creatablePropertyTypes);
                     writer.WriteEndElement();
                 }
                 if (source.NewTypeSettableAttributes != null)
@@ -174,16 +174,16 @@ namespace PortCMIS.Binding.AtomPub
                             XmlConstants.TAG_CAP_NEW_TYPE_SETTABLE_ATTRIBUTES_CONTROLABLEACL,
                             newTypeSettableAttributes.CanSetControllableAcl);
 
-                    writeExtensions(writer, newTypeSettableAttributes);
+                    WriteExtensions(writer, newTypeSettableAttributes);
                     writer.WriteEndElement();
                 }
             }
 
-            writeExtensions(writer, source);
+            WriteExtensions(writer, source);
             writer.WriteEndElement();
         }
 
-        public static void writeAclCapabilities(XmlWriter writer, CmisVersion cmisVersion, IAclCapabilities source)
+        public static void WriteAclCapabilities(XmlWriter writer, CmisVersion cmisVersion, IAclCapabilities source)
         {
             if (source == null)
             {
@@ -203,7 +203,7 @@ namespace PortCMIS.Binding.AtomPub
                     XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_ACLCAP_PERMISSION_PERMISSION, pd.Id);
                     XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_ACLCAP_PERMISSION_DESCRIPTION, pd.Description);
 
-                    writeExtensions(writer, pd);
+                    WriteExtensions(writer, pd);
                     writer.WriteEndElement();
                 }
             }
@@ -222,16 +222,16 @@ namespace PortCMIS.Binding.AtomPub
                         }
                     }
 
-                    writeExtensions(writer, pm);
+                    WriteExtensions(writer, pm);
                     writer.WriteEndElement();
                 }
             }
 
-            writeExtensions(writer, source);
+            WriteExtensions(writer, source);
             writer.WriteEndElement();
         }
 
-        public static void writeExtendedFeatures(XmlWriter writer, CmisVersion cmisVersion, ExtensionFeature source)
+        public static void WriteExtendedFeatures(XmlWriter writer, CmisVersion cmisVersion, ExtensionFeature source)
         {
             if (source == null)
             {
@@ -258,7 +258,7 @@ namespace PortCMIS.Binding.AtomPub
                 }
             }
 
-            writeExtensions(writer, source);
+            WriteExtensions(writer, source);
             writer.WriteEndElement();
         }
 
@@ -266,7 +266,7 @@ namespace PortCMIS.Binding.AtomPub
         // --- definition writers ---
         // --------------------------
 
-        public static void writeTypeDefinition(XmlWriter writer, CmisVersion cmisVersion, string ns, ITypeDefinition source)
+        public static void WriteTypeDefinition(XmlWriter writer, CmisVersion cmisVersion, string ns, ITypeDefinition source)
         {
             if (source == null)
             {
@@ -347,14 +347,14 @@ namespace PortCMIS.Binding.AtomPub
                 XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_TYPE_TYPE_MUTABILITY_UPDATE, tm.CanUpdate);
                 XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_TYPE_TYPE_MUTABILITY_DELETE, tm.CanDelete);
 
-                writeExtensions(writer, tm);
+                WriteExtensions(writer, tm);
                 writer.WriteEndElement();
             }
             if (source.PropertyDefinitions != null)
             {
                 foreach (IPropertyDefinition pd in source.PropertyDefinitions)
                 {
-                    writePropertyDefinition(writer, cmisVersion, pd);
+                    WritePropertyDefinition(writer, cmisVersion, pd);
                 }
             }
 
@@ -390,11 +390,11 @@ namespace PortCMIS.Binding.AtomPub
                 }
             }
 
-            writeExtensions(writer, source);
+            WriteExtensions(writer, source);
             writer.WriteEndElement();
         }
 
-        public static void writePropertyDefinition(XmlWriter writer, CmisVersion cmisVersion, IPropertyDefinition source)
+        public static void WritePropertyDefinition(XmlWriter writer, CmisVersion cmisVersion, IPropertyDefinition source)
         {
             if (source == null)
             {
@@ -459,7 +459,7 @@ namespace PortCMIS.Binding.AtomPub
                 {
                     PropertyData prop = new PropertyData(PropertyType.String);
                     prop.AddValue(def.DefaultValue);
-                    writeProperty(writer, prop, true);
+                    WriteProperty(writer, prop, true);
                 }
 
                 XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_PROPERTY_TYPE_MAX_LENGTH, def.MaxLength);
@@ -470,7 +470,7 @@ namespace PortCMIS.Binding.AtomPub
                     {
                         if (c != null)
                         {
-                            writeChoice<string>(writer, source.PropertyType, c);
+                            WriteChoice<string>(writer, source.PropertyType, c);
                         }
                     }
                 }
@@ -483,7 +483,7 @@ namespace PortCMIS.Binding.AtomPub
                 {
                     PropertyData prop = new PropertyData(PropertyType.Id);
                     prop.AddValue(def.DefaultValue);
-                    writeProperty(writer, prop, true);
+                    WriteProperty(writer, prop, true);
                 }
 
                 if (def.Choices != null)
@@ -492,7 +492,7 @@ namespace PortCMIS.Binding.AtomPub
                     {
                         if (c != null)
                         {
-                            writeChoice<string>(writer, source.PropertyType, c);
+                            WriteChoice<string>(writer, source.PropertyType, c);
                         }
                     }
                 }
@@ -505,7 +505,7 @@ namespace PortCMIS.Binding.AtomPub
                 {
                     PropertyData prop = new PropertyData(PropertyType.Integer);
                     prop.AddValue(def.DefaultValue);
-                    writeProperty(writer, prop, true);
+                    WriteProperty(writer, prop, true);
                 }
 
                 XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_PROPERTY_TYPE_MAX_VALUE, def.MaxValue);
@@ -517,7 +517,7 @@ namespace PortCMIS.Binding.AtomPub
                     {
                         if (c != null)
                         {
-                            writeChoice<BigInteger>(writer, source.PropertyType, c);
+                            WriteChoice<BigInteger>(writer, source.PropertyType, c);
                         }
                     }
                 }
@@ -530,7 +530,7 @@ namespace PortCMIS.Binding.AtomPub
                 {
                     PropertyData prop = new PropertyData(PropertyType.Boolean);
                     prop.AddValue(def.DefaultValue);
-                    writeProperty(writer, prop, true);
+                    WriteProperty(writer, prop, true);
                 }
 
                 if (def.Choices != null)
@@ -539,7 +539,7 @@ namespace PortCMIS.Binding.AtomPub
                     {
                         if (c != null)
                         {
-                            writeChoice<bool>(writer, source.PropertyType, c);
+                            WriteChoice<bool>(writer, source.PropertyType, c);
                         }
                     }
                 }
@@ -552,7 +552,7 @@ namespace PortCMIS.Binding.AtomPub
                 {
                     PropertyData prop = new PropertyData(PropertyType.DateTime);
                     prop.AddValue(def.DefaultValue);
-                    writeProperty(writer, prop, true);
+                    WriteProperty(writer, prop, true);
                 }
 
                 XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_PROPERTY_TYPE_RESOLUTION, def.DateTimeResolution);
@@ -563,7 +563,7 @@ namespace PortCMIS.Binding.AtomPub
                     {
                         if (c != null)
                         {
-                            writeChoice<DateTime>(writer, source.PropertyType, c);
+                            WriteChoice<DateTime>(writer, source.PropertyType, c);
                         }
                     }
                 }
@@ -576,7 +576,7 @@ namespace PortCMIS.Binding.AtomPub
                 {
                     PropertyData prop = new PropertyData(PropertyType.Decimal);
                     prop.AddValue(def.DefaultValue);
-                    writeProperty(writer, prop, true);
+                    WriteProperty(writer, prop, true);
                 }
 
                 XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_PROPERTY_TYPE_MAX_VALUE, def.MaxValue);
@@ -589,7 +589,7 @@ namespace PortCMIS.Binding.AtomPub
                     {
                         if (c != null)
                         {
-                            writeChoice<decimal?>(writer, source.PropertyType, c);
+                            WriteChoice<decimal?>(writer, source.PropertyType, c);
                         }
                     }
                 }
@@ -602,7 +602,7 @@ namespace PortCMIS.Binding.AtomPub
                 {
                     PropertyData prop = new PropertyData(PropertyType.Html);
                     prop.AddValue(def.DefaultValue);
-                    writeProperty(writer, prop, true);
+                    WriteProperty(writer, prop, true);
                 }
 
                 if (def.Choices != null)
@@ -611,7 +611,7 @@ namespace PortCMIS.Binding.AtomPub
                     {
                         if (c != null)
                         {
-                            writeChoice<string>(writer, source.PropertyType, c);
+                            WriteChoice<string>(writer, source.PropertyType, c);
                         }
                     }
                 }
@@ -624,7 +624,7 @@ namespace PortCMIS.Binding.AtomPub
                 {
                     PropertyData prop = new PropertyData(PropertyType.Uri);
                     prop.AddValue(def.DefaultValue);
-                    writeProperty(writer, prop, true);
+                    WriteProperty(writer, prop, true);
                 }
 
                 if (def.Choices != null)
@@ -633,17 +633,17 @@ namespace PortCMIS.Binding.AtomPub
                     {
                         if (c != null)
                         {
-                            writeChoice<string>(writer, source.PropertyType, c);
+                            WriteChoice<string>(writer, source.PropertyType, c);
                         }
                     }
                 }
             }
 
-            writeExtensions(writer, source);
+            WriteExtensions(writer, source);
             writer.WriteEndElement();
         }
 
-        public static void writeChoice<T>(XmlWriter writer, PropertyType propType, IChoice<T> source)
+        public static void WriteChoice<T>(XmlWriter writer, PropertyType propType, IChoice<T> source)
         {
             if (source == null)
             {
@@ -705,7 +705,7 @@ namespace PortCMIS.Binding.AtomPub
                 {
                     if (c != null)
                     {
-                        writeChoice<T>(writer, propType, c);
+                        WriteChoice<T>(writer, propType, c);
                     }
                 }
             }
@@ -717,12 +717,12 @@ namespace PortCMIS.Binding.AtomPub
         // --- object writers ---
         // -----------------------
 
-        public static void writeObject(XmlWriter writer, CmisVersion cmisVersion, string ns, IObjectData source)
+        public static void WriteObject(XmlWriter writer, CmisVersion cmisVersion, string ns, IObjectData source)
         {
-            writeObject(writer, cmisVersion, false, XmlConstants.TAG_OBJECT, ns, source);
+            WriteObject(writer, cmisVersion, false, XmlConstants.TAG_OBJECT, ns, source);
         }
 
-        public static void writeObject(XmlWriter writer, CmisVersion cmisVersion, bool root, string name, string ns, IObjectData source)
+        public static void WriteObject(XmlWriter writer, CmisVersion cmisVersion, bool root, string name, string ns, IObjectData source)
         {
             if (source == null)
             {
@@ -757,16 +757,16 @@ namespace PortCMIS.Binding.AtomPub
                 {
                     foreach (PropertyData property in properties.PropertyList)
                     {
-                        writeProperty(writer, property, false);
+                        WriteProperty(writer, property, false);
                     }
                 }
 
-                writeExtensions(writer, properties);
+                WriteExtensions(writer, properties);
                 writer.WriteEndElement();
             }
             if (source.AllowableActions != null)
             {
-                writeAllowableActions(writer, cmisVersion, false, source.AllowableActions);
+                WriteAllowableActions(writer, cmisVersion, false, source.AllowableActions);
             }
             if (source.Relationships != null)
             {
@@ -774,7 +774,7 @@ namespace PortCMIS.Binding.AtomPub
                 {
                     if (rel != null)
                     {
-                        writeObject(writer, cmisVersion, false, XmlConstants.TAG_OBJECT_RELATIONSHIP, XmlConstants.NAMESPACE_CMIS, rel);
+                        WriteObject(writer, cmisVersion, false, XmlConstants.TAG_OBJECT_RELATIONSHIP, XmlConstants.NAMESPACE_CMIS, rel);
                     }
                 }
             }
@@ -787,12 +787,12 @@ namespace PortCMIS.Binding.AtomPub
                 XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_CHANGE_EVENT_TYPE, info.ChangeType);
                 XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_CHANGE_EVENT_TIME, info.ChangeTime);
 
-                writeExtensions(writer, info);
+                WriteExtensions(writer, info);
                 writer.WriteEndElement();
             }
             if (source.Acl != null)
             {
-                writeAcl(writer, cmisVersion, false, source.Acl);
+                WriteAcl(writer, cmisVersion, false, source.Acl);
             }
             XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_OBJECT_EXACT_ACL, source.IsExactAcl);
             if (source.PolicyIds != null)
@@ -812,7 +812,7 @@ namespace PortCMIS.Binding.AtomPub
                     }
                 }
 
-                writeExtensions(writer, pids);
+                WriteExtensions(writer, pids);
                 writer.WriteEndElement();
             }
             if (source.Renditions != null)
@@ -832,17 +832,17 @@ namespace PortCMIS.Binding.AtomPub
                         XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_RENDITION_WIDTH, rend.Width);
                         XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_RENDITION_DOCUMENT_ID, rend.RenditionDocumentId);
 
-                        writeExtensions(writer, rend);
+                        WriteExtensions(writer, rend);
                         writer.WriteEndElement();
                     }
                 }
             }
 
-            writeExtensions(writer, source);
+            WriteExtensions(writer, source);
             writer.WriteEndElement();
         }
 
-        public static void writeProperty(XmlWriter writer, IPropertyData source, bool isDefaultValue)
+        public static void WriteProperty(XmlWriter writer, IPropertyData source, bool isDefaultValue)
         {
             if (source == null)
             {
@@ -951,11 +951,11 @@ namespace PortCMIS.Binding.AtomPub
                 }
             }
 
-            writeExtensions(writer, source);
+            WriteExtensions(writer, source);
             writer.WriteEndElement();
         }
 
-        public static void writeAllowableActions(XmlWriter writer, CmisVersion cmisVersion, bool root, IAllowableActions source)
+        public static void WriteAllowableActions(XmlWriter writer, CmisVersion cmisVersion, bool root, IAllowableActions source)
         {
             if (source == null)
             {
@@ -991,11 +991,11 @@ namespace PortCMIS.Binding.AtomPub
                 }
             }
 
-            writeExtensions(writer, source);
+            WriteExtensions(writer, source);
             writer.WriteEndElement();
         }
 
-        public static void writeAcl(XmlWriter writer, CmisVersion cmisVersion, bool root, IAcl source)
+        public static void WriteAcl(XmlWriter writer, CmisVersion cmisVersion, bool root, IAcl source)
         {
             if (source == null)
             {
@@ -1028,7 +1028,7 @@ namespace PortCMIS.Binding.AtomPub
 
                             XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_ACE_PRINCIPAL_ID, principal.Id);
 
-                            writeExtensions(writer, principal);
+                            WriteExtensions(writer, principal);
                             writer.WriteEndElement();
                         }
                         if (ace.Permissions != null)
@@ -1040,13 +1040,13 @@ namespace PortCMIS.Binding.AtomPub
                         }
                         XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_ACE_IS_DIRECT, ace.IsDirect);
 
-                        writeExtensions(writer, ace);
+                        WriteExtensions(writer, ace);
                         writer.WriteEndElement();
                     }
                 }
             }
 
-            writeExtensions(writer, source);
+            WriteExtensions(writer, source);
             writer.WriteEndElement();
         }
 
@@ -1054,7 +1054,7 @@ namespace PortCMIS.Binding.AtomPub
         // --- query ---
         // -------------
 
-        public static void writeQuery(XmlWriter writer, CmisVersion cmisVersion, QueryType source)
+        public static void WriteQuery(XmlWriter writer, CmisVersion cmisVersion, QueryType source)
         {
             if (source == null)
             {
@@ -1072,7 +1072,7 @@ namespace PortCMIS.Binding.AtomPub
             XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_QUERY_MAXITEMS, source.MaxItems);
             XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_QUERY_SKIPCOUNT, source.SkipCount);
 
-            writeExtensions(writer, source);
+            WriteExtensions(writer, source);
             writer.WriteEndElement();
         }
 
@@ -1080,7 +1080,7 @@ namespace PortCMIS.Binding.AtomPub
         // --- bulk update ---
         // -------------------
 
-        public static void writeBulkUpdate(XmlWriter writer, String ns, BulkUpdate bulkUpdate)
+        public static void WriteBulkUpdate(XmlWriter writer, String ns, BulkUpdate bulkUpdate)
         {
             if (bulkUpdate == null || bulkUpdate.ObjectIdAndChangeToken == null)
             {
@@ -1101,7 +1101,7 @@ namespace PortCMIS.Binding.AtomPub
                 XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_IDANDTOKEN_ID, idAndToken.Id);
                 XmlUtils.Write(writer, XmlConstants.PREFIX_CMIS, XmlConstants.NAMESPACE_CMIS, XmlConstants.TAG_IDANDTOKEN_CHANGETOKEN, idAndToken.ChangeToken);
 
-                writeExtensions(writer, idAndToken);
+                WriteExtensions(writer, idAndToken);
                 writer.WriteEndElement();
             }
 
@@ -1114,11 +1114,11 @@ namespace PortCMIS.Binding.AtomPub
                 {
                     foreach (PropertyData property in properties.PropertyList)
                     {
-                        writeProperty(writer, property, false);
+                        WriteProperty(writer, property, false);
                     }
                 }
 
-                writeExtensions(writer, properties);
+                WriteExtensions(writer, properties);
                 writer.WriteEndElement();
             }
 
@@ -1145,7 +1145,7 @@ namespace PortCMIS.Binding.AtomPub
         // --- extension writers ---
         // -------------------------
 
-        public static void writeExtensions(XmlWriter writer, IExtensionsData source)
+        public static void WriteExtensions(XmlWriter writer, IExtensionsData source)
         {
             if (source == null)
             {
@@ -1163,12 +1163,12 @@ namespace PortCMIS.Binding.AtomPub
                         continue;
                     }
 
-                    writeExtensionElement(writer, element, ns);
+                    WriteExtensionElement(writer, element, ns);
                 }
             }
         }
 
-        private static void writeExtensionElement(XmlWriter writer, ICmisExtensionElement source, IList<string> ns)
+        private static void WriteExtensionElement(XmlWriter writer, ICmisExtensionElement source, IList<string> ns)
         {
             if (source == null || source.Name == null)
             {
@@ -1226,7 +1226,7 @@ namespace PortCMIS.Binding.AtomPub
                 {
                     foreach (ICmisExtensionElement child in source.Children)
                     {
-                        writeExtensionElement(writer, child, ns);
+                        WriteExtensionElement(writer, child, ns);
                     }
                 }
             }
@@ -1243,37 +1243,37 @@ namespace PortCMIS.Binding.AtomPub
         // --- parsers ---
         // ---------------
 
-        public static RepositoryInfo convertRepositoryInfo(XmlReader parser)
+        public static RepositoryInfo ConvertRepositoryInfo(XmlReader parser)
         {
             return REPOSITORY_INFO_PARSER.Walk(parser);
         }
 
-        public static ITypeDefinition convertTypeDefinition(XmlReader parser)
+        public static ITypeDefinition ConvertTypeDefinition(XmlReader parser)
         {
             return TYPE_DEF_PARSER.Walk(parser);
         }
 
-        public static IObjectData convertObject(XmlReader parser)
+        public static IObjectData ConvertObject(XmlReader parser)
         {
             return OBJECT_PARSER.Walk(parser);
         }
 
-        public static QueryType convertQuery(XmlReader parser)
+        public static QueryType ConvertQuery(XmlReader parser)
         {
             return QUERY_PARSER.Walk(parser);
         }
 
-        public static IAllowableActions convertAllowableActions(XmlReader parser)
+        public static IAllowableActions ConvertAllowableActions(XmlReader parser)
         {
             return ALLOWABLE_ACTIONS_PARSER.Walk(parser);
         }
 
-        public static IAcl convertAcl(XmlReader parser)
+        public static IAcl ConvertAcl(XmlReader parser)
         {
             return ACL_PARSER.Walk(parser);
         }
 
-        public static BulkUpdate convertBulkUpdate(XmlReader parser)
+        public static BulkUpdate ConvertBulkUpdate(XmlReader parser)
         {
             return BULK_UPDATE_PARSER.Walk(parser);
         }

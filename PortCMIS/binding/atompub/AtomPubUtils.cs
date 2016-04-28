@@ -354,7 +354,7 @@ namespace PortCMIS.Binding.AtomPub
         /// </summary>
         private static AtomAllowableActions ParseAllowableActions(XmlReader parser)
         {
-            return new AtomAllowableActions() { AllowableActions = XmlConverter.convertAllowableActions(parser) };
+            return new AtomAllowableActions() { AllowableActions = XmlConverter.ConvertAllowableActions(parser) };
         }
 
         /// <summary>
@@ -362,7 +362,7 @@ namespace PortCMIS.Binding.AtomPub
         /// </summary>
         private static AtomAcl ParseACL(XmlReader parser)
         {
-            return new AtomAcl() { Acl = XmlConverter.convertAcl(parser) };
+            return new AtomAcl() { Acl = XmlConverter.ConvertAcl(parser) };
         }
 
         /// <summary>
@@ -377,7 +377,7 @@ namespace PortCMIS.Binding.AtomPub
             {
                 if (local == XmlConstants.TAG_OBJECT)
                 {
-                    return new AtomElement(uri, local, XmlConverter.convertObject(parser));
+                    return new AtomElement(uri, local, XmlConverter.ConvertObject(parser));
                 }
                 else if (local == XmlConstants.TAG_PATH_SEGMENT
                         || local == XmlConstants.TAG_RELATIVE_PATH_SEGMENT)
@@ -386,7 +386,7 @@ namespace PortCMIS.Binding.AtomPub
                 }
                 else if (local == XmlConstants.TAG_TYPE)
                 {
-                    return new AtomElement(uri, local, XmlConverter.convertTypeDefinition(parser));
+                    return new AtomElement(uri, local, XmlConverter.ConvertTypeDefinition(parser));
                 }
                 else if (local == XmlConstants.TAG_CHILDREN)
                 {
@@ -477,7 +477,7 @@ namespace PortCMIS.Binding.AtomPub
             {
                 if (local == XmlConstants.TAG_REPOSITORY_INFO)
                 {
-                    return new AtomElement(uri, local, XmlConverter.convertRepositoryInfo(parser));
+                    return new AtomElement(uri, local, XmlConverter.ConvertRepositoryInfo(parser));
                 }
                 else if (local == XmlConstants.TAG_URI_TEMPLATE)
                 {
@@ -925,7 +925,7 @@ namespace PortCMIS.Binding.AtomPub
             else if (BindingConstants.RelAlternate == rel)
             {
                 // use streamId instead of type as discriminating parameter
-                string streamId = extractStreamId(link);
+                string streamId = ExtractStreamId(link);
                 if (streamId != null)
                 {
                     linkCache.Put(new string[] { link, repositoryId, id, rel }, streamId);
@@ -937,7 +937,7 @@ namespace PortCMIS.Binding.AtomPub
         /// Tries to extract a streamId from an alternate link.
         /// this is not strictly in the spec
         /// </summary>
-        protected string extractStreamId(string link)
+        protected string ExtractStreamId(string link)
         {
             int i = link.LastIndexOf('?');
             if (i > 0)
@@ -1259,7 +1259,7 @@ namespace PortCMIS.Binding.AtomPub
         /// </summary>
         public void Write(Stream outStream)
         {
-            using (XmlWriter writer = XmlUtils.createWriter(outStream))
+            using (XmlWriter writer = XmlUtils.CreateWriter(outStream))
             {
                 XmlUtils.StartXmlDocument(writer);
 
@@ -1307,19 +1307,19 @@ namespace PortCMIS.Binding.AtomPub
                 // object
                 if (objectData != null)
                 {
-                    XmlConverter.writeObject(writer, cmisVersion, XmlConstants.NAMESPACE_RESTATOM, objectData);
+                    XmlConverter.WriteObject(writer, cmisVersion, XmlConstants.NAMESPACE_RESTATOM, objectData);
                 }
 
                 // type
                 if (typeDef != null)
                 {
-                    XmlConverter.writeTypeDefinition(writer, cmisVersion, XmlConstants.NAMESPACE_RESTATOM, typeDef);
+                    XmlConverter.WriteTypeDefinition(writer, cmisVersion, XmlConstants.NAMESPACE_RESTATOM, typeDef);
                 }
 
                 // bulk update
                 if (bulkUpdate != null)
                 {
-                    XmlConverter.writeBulkUpdate(writer, XmlConstants.NAMESPACE_RESTATOM, bulkUpdate);
+                    XmlConverter.WriteBulkUpdate(writer, XmlConstants.NAMESPACE_RESTATOM, bulkUpdate);
                 }
 
                 // end entry

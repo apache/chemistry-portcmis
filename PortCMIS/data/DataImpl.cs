@@ -914,6 +914,7 @@ namespace PortCMIS.Data
                 }
             }
         }
+
         /// <inheritdoc/>
         public object FirstValue { get { return values == null || Values.Count < 1 ? null : values[0]; } }
 

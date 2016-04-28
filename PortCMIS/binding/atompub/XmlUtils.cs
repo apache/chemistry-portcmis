@@ -41,7 +41,7 @@ namespace PortCMIS.Binding.AtomPub
         /// <summary>
         /// Creates a new XML writer.
         /// </summary>
-        public static XmlWriter createWriter(Stream stream)
+        public static XmlWriter CreateWriter(Stream stream)
         {
             XmlWriterSettings settings = new XmlWriterSettings();
             settings.Encoding = Encoding.UTF8;
@@ -101,7 +101,7 @@ namespace PortCMIS.Binding.AtomPub
                 return;
             }
 
-            Write(writer, prefix, ns, tag, ((BigInteger)value).ToString("#", CultureInfo.InvariantCulture));
+            Write(writer, prefix, ns, tag, ((BigInteger)value).ToString("0", CultureInfo.InvariantCulture));
         }
 
         /// <summary>

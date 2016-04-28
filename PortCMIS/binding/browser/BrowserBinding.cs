@@ -1931,7 +1931,7 @@ namespace PortCMIS.Binding.Browser
             objectId = (newObj == null ? null : newObj.Id);
         }
 
-        public IObjectData GetObjectOfLatestVersion(string repositoryId, string objectId, string versionSeriesId, bool major,
+        public IObjectData GetObjectOfLatestVersion(string repositoryId, string objectId, string versionSeriesId, bool? major,
             string filter, bool? includeAllowableActions, IncludeRelationships? includeRelationships,
             string renditionFilter, bool? includePolicyIds, bool? includeAcl, IExtensionsData extension)
         {
@@ -1943,7 +1943,7 @@ namespace PortCMIS.Binding.Browser
             url.AddParameter(BindingConstants.ParamRenditionfilter, renditionFilter);
             url.AddParameter(BindingConstants.ParamPolicyIds, includePolicyIds);
             url.AddParameter(BindingConstants.ParamAcl, includeAcl);
-            url.AddParameter(BindingConstants.ParamReturnVersion, (!major ? ReturnVersion.Latest : ReturnVersion.LatestMajor));
+            url.AddParameter(BindingConstants.ParamReturnVersion, (major == true ? ReturnVersion.LatestMajor : ReturnVersion.Latest));
             url.AddParameter(BindingConstants.ParamSuccinct, SuccinctParameter);
             url.AddParameter(BindingConstants.ParamDateTimeFormat, DateTimeFormatParameter);
 
@@ -1957,13 +1957,13 @@ namespace PortCMIS.Binding.Browser
             return JsonConverter.ConvertObject(json, typeCache);
         }
 
-        public IProperties GetPropertiesOfLatestVersion(string repositoryId, string objectId, string versionSeriesId, bool major,
+        public IProperties GetPropertiesOfLatestVersion(string repositoryId, string objectId, string versionSeriesId, bool? major,
             string filter, IExtensionsData extension)
         {
             // build URL
             UrlBuilder url = GetObjectUrl(repositoryId, objectId, BindingConstants.SelectorProperties);
             url.AddParameter(BindingConstants.ParamFilter, filter);
-            url.AddParameter(BindingConstants.ParamReturnVersion, (!major ? ReturnVersion.Latest : ReturnVersion.LatestMajor));
+            url.AddParameter(BindingConstants.ParamReturnVersion, (major == true ? ReturnVersion.LatestMajor : ReturnVersion.Latest));
             url.AddParameter(BindingConstants.ParamSuccinct, SuccinctParameter);
             url.AddParameter(BindingConstants.ParamDateTimeFormat, DateTimeFormatParameter);
 

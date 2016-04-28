@@ -143,11 +143,11 @@ namespace PortCMIS.Binding.Services
             IContentStream contentStream, string checkinComment, IList<string> policies, IAcl addAces, IAcl removeAces,
             IExtensionsData extension);
 
-        IObjectData GetObjectOfLatestVersion(string repositoryId, string objectId, string versionSeriesId, bool major,
+        IObjectData GetObjectOfLatestVersion(string repositoryId, string objectId, string versionSeriesId, bool? major,
             string filter, bool? includeAllowableActions, IncludeRelationships? includeRelationships,
             string renditionFilter, bool? includePolicyIds, bool? includeAcl, IExtensionsData extension);
 
-        IProperties GetPropertiesOfLatestVersion(string repositoryId, string objectId, string versionSeriesId, bool major,
+        IProperties GetPropertiesOfLatestVersion(string repositoryId, string objectId, string versionSeriesId, bool? major,
             string filter, IExtensionsData extension);
 
         IList<IObjectData> GetAllVersions(string repositoryId, string objectId, string versionSeriesId, string filter,

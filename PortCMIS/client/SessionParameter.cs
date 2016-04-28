@@ -133,6 +133,10 @@ namespace PortCMIS.Client
 
         /// <summary>Defines if the document name should be added to the properties on check in if no properties are updated ("true" or "false")
         /// (Workaround for SharePoint 2010 and SharePoint 2013)</summary>
-        public const string OmitChangeTokens = "org.apache.chemistry.opencmis.portcmis.omitChangeTokens";
+        public const string OmitChangeTokens = "org.apache.chemistry.portcmis.workaround.omitChangeTokens";
+
+        /// <summary>Defines if the document name should be added to the properties on check in if no properties are updated
+        /// (Workaround for SharePoint 2010 and SharePoint 2013)</summary>
+        public const string AddNameOnCheckIn = "org.apache.chemistry.portcmis.workaround.addNameOnCheckIn";
     }
 }
