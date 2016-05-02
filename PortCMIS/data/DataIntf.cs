@@ -361,20 +361,56 @@ namespace PortCMIS.Data
     /// </summary>
     public interface IRelationshipTypeDefinition : ITypeDefinition
     {
+        /// <value>
+        /// Gets the list of allowed source types.
+        /// If the list is empty all types are allowed.
+        /// </value>
         IList<string> AllowedSourceTypeIds { get; }
+
+        /// <value>
+        /// Gets the list of allowed target types.
+        /// If the list is empty all types are allowed.
+        /// </value>
         IList<string> AllowedTargetTypeIds { get; }
     }
 
+    /// <summary>
+    /// List of type definitions.
+    /// </summary>
+    /// <remarks>
+    /// The list may be incomplete if paging was used to fetch the list.
+    /// </remarks>
     public interface ITypeDefinitionList : IExtensionsData
     {
+        /// <value>
+        /// Gets the (partial) list of type definitions.
+        /// </value>
         IList<ITypeDefinition> List { get; }
+
+        /// <value>
+        /// Gets whether there are more type definitions; <c>null</c> if unknown.
+        /// </value>
         bool? HasMoreItems { get; }
+
+        /// <value>
+        /// Gets the total number of type definitions; <c>null</c> if unknown.
+        /// </value>
         BigInteger? NumItems { get; }
     }
 
+    /// <summary>
+    /// Type Definition Container for trees of type definitions.
+    /// </summary>
     public interface ITypeDefinitionContainer : IExtensionsData
     {
+        /// <summary>
+        /// Gets the type definition.
+        /// </summary>
         ITypeDefinition TypeDefinition { get; }
+
+        /// <summary>
+        /// Gets the children of this type definition, if requested.
+        /// </summary>
         IList<ITypeDefinitionContainer> Children { get; }
     }
 
@@ -383,26 +419,96 @@ namespace PortCMIS.Data
     /// </summary>
     public interface IPropertyDefinition : IExtensionsData
     {
+        /// <value>
+        /// Gets the property ID.
+        /// </value>
         string Id { get; }
+
+        /// <value>
+        /// Gets the local name.
+        /// </value>
         string LocalName { get; }
+
+        /// <value>
+        /// Gets the local namespace.
+        /// </value>
         string LocalNamespace { get; }
+
+        /// <value>
+        /// Gets the display name.
+        /// </value>
         string DisplayName { get; }
+
+        /// <value>
+        /// Gets the query name.
+        /// </value>
         string QueryName { get; }
+
+        /// <value>
+        /// Gets the description.
+        /// </value>
         string Description { get; }
+
+        /// <value>
+        /// Get the property type.
+        /// </value>
         PropertyType PropertyType { get; }
+
+        /// <value>
+        /// Gets the cardinality.
+        /// </value>
         Cardinality? Cardinality { get; }
+
+        /// <value>
+        /// Gets the updatability.
+        /// </value>
         Updatability? Updatability { get; }
+
+        /// <value>
+        /// Gets whether the property has been inherited from a super type or not.
+        /// </value>
         bool? IsInherited { get; }
+
+        /// <value>
+        /// Gets whether a value for this property required or not.
+        /// </value>
         bool? IsRequired { get; }
+
+        /// <value>
+        /// Gets whether this property is queryable or not.
+        /// </value>
         bool? IsQueryable { get; }
+
+        /// <value>
+        /// Gets whether this property is orderable or not.
+        /// </value>
         bool? IsOrderable { get; }
+
+        /// <value>
+        /// Gets whether this property is an open choice property or not.
+        /// </value>
         bool? IsOpenChoice { get; }
     }
 
+    /// <summary>
+    /// A choice value.
+    /// </summary>
+    /// <typeparam name="T">type of the choice</typeparam>
     public interface IChoice<T>
     {
+        /// <value>
+        /// Gets the display name.
+        /// </value>
         string DisplayName { get; }
+
+        /// <value>
+        /// Gets the value.
+        /// </value>
         IList<T> Value { get; }
+
+        /// <value>
+        /// Gets the children of this choice.
+        /// </value>
         IList<IChoice<T>> Choices { get; }
     }
 
@@ -411,7 +517,14 @@ namespace PortCMIS.Data
     /// </summary>
     public interface IPropertyBooleanDefinition : IPropertyDefinition
     {
+        /// <value>
+        /// Gets the default value.
+        /// </value>
         IList<bool?> DefaultValue { get; }
+
+        /// <value>
+        /// Gets the choices of this property.
+        /// </value>
         IList<IChoice<bool?>> Choices { get; }
     }
 
@@ -420,8 +533,19 @@ namespace PortCMIS.Data
     /// </summary>
     public interface IPropertyDateTimeDefinition : IPropertyDefinition
     {
+        /// <value>
+        /// Gets the default value.
+        /// </value>
         IList<DateTime?> DefaultValue { get; }
+
+        /// <value>
+        /// Gets the choices of this property.
+        /// </value>
         IList<IChoice<DateTime?>> Choices { get; }
+
+        /// <value>
+        /// Gets the supported resolution.
+        /// </value>
         DateTimeResolution? DateTimeResolution { get; }
     }
 
@@ -430,10 +554,29 @@ namespace PortCMIS.Data
     /// </summary>
     public interface IPropertyDecimalDefinition : IPropertyDefinition
     {
+        /// <value>
+        /// Gets the default value.
+        /// </value>
         IList<decimal?> DefaultValue { get; }
+
+        /// <value>
+        /// Gets the choices of this property.
+        /// </value>
         IList<IChoice<decimal?>> Choices { get; }
+
+        /// <summary>
+        /// Gets the min value for this property.
+        /// </summary>
         decimal? MinValue { get; }
+
+        /// <summary>
+        /// Gets the max value for this property.
+        /// </summary>
         decimal? MaxValue { get; }
+
+        /// <summary>
+        /// Gets the supported precision.
+        /// </summary>
         DecimalPrecision? Precision { get; }
     }
 
@@ -442,7 +585,14 @@ namespace PortCMIS.Data
     /// </summary>
     public interface IPropertyHtmlDefinition : IPropertyDefinition
     {
+        /// <value>
+        /// Gets the default value.
+        /// </value>
         IList<string> DefaultValue { get; }
+
+        /// <value>
+        /// Gets the choices of this property.
+        /// </value>
         IList<IChoice<string>> Choices { get; }
     }
 
@@ -451,7 +601,14 @@ namespace PortCMIS.Data
     /// </summary>
     public interface IPropertyIdDefinition : IPropertyDefinition
     {
+        /// <value>
+        /// Gets the default value.
+        /// </value>
         IList<string> DefaultValue { get; }
+
+        /// <value>
+        /// Gets the choices of this property.
+        /// </value>
         IList<IChoice<string>> Choices { get; }
     }
 
@@ -460,9 +617,24 @@ namespace PortCMIS.Data
     /// </summary>
     public interface IPropertyIntegerDefinition : IPropertyDefinition
     {
+        /// <value>
+        /// Gets the default value.
+        /// </value>
         IList<BigInteger?> DefaultValue { get; }
+
+        /// <value>
+        /// Gets the choices of this property.
+        /// </value>
         IList<IChoice<BigInteger?>> Choices { get; }
+
+        /// <summary>
+        /// Gets the min value for this property.
+        /// </summary>
         BigInteger? MinValue { get; }
+
+        /// <summary>
+        /// Gets the max value for this property.
+        /// </summary>
         BigInteger? MaxValue { get; }
     }
 
@@ -471,8 +643,19 @@ namespace PortCMIS.Data
     /// </summary>
     public interface IPropertyStringDefinition : IPropertyDefinition
     {
+        /// <value>
+        /// Gets the default value.
+        /// </value>
         IList<string> DefaultValue { get; }
+
+        /// <value>
+        /// Gets the choices of this property.
+        /// </value>
         IList<IChoice<string>> Choices { get; }
+
+        /// <value>
+        /// Gets the max length of the string.
+        /// </value>
         BigInteger? MaxLength { get; }
     }
 
@@ -481,24 +664,76 @@ namespace PortCMIS.Data
     /// </summary>
     public interface IPropertyUriDefinition : IPropertyDefinition
     {
+        /// <value>
+        /// Gets the default value.
+        /// </value>
         IList<string> DefaultValue { get; }
+
+        /// <value>
+        /// Gets the choices of this property.
+        /// </value>
         IList<IChoice<string>> Choices { get; }
     }
 
+    /// <summary>
+    /// Object data.
+    /// </summary>
     public interface IObjectData : IExtensionsData
     {
+        /// <value>
+        /// Gets the ID of this object.
+        /// </value>
         string Id { get; }
+
+        /// <value>
+        /// Gets the base type ID of this object.
+        /// </value>
         BaseTypeId? BaseTypeId { get; }
+
+        /// <value>
+        /// Gets the properties of this object.
+        /// </value>
         IProperties Properties { get; }
+
+        /// <value>
+        /// Gets the allowable actions of this object.
+        /// </value>
         IAllowableActions AllowableActions { get; }
+
+        /// <value>
+        /// Gets the relationships of this object.
+        /// </value>
         IList<IObjectData> Relationships { get; }
+
+        /// <value>
+        /// Gets the change events of this object.
+        /// </value>
         IChangeEventInfo ChangeEventInfo { get; }
+
+        /// <value>
+        /// Gets the ACL of this object.
+        /// </value>
         IAcl Acl { get; }
+
+        /// <value>
+        /// Gets whether the ACL is exact or not.
+        /// </value>
         bool? IsExactAcl { get; }
+
+        /// <value>
+        /// Gets the policy IDs of this object.
+        /// </value>
         IPolicyIdList PolicyIds { get; }
+
+        /// <value>
+        /// Gets the renditions of this object.
+        /// </value>
         IList<IRenditionData> Renditions { get; }
     }
 
+    /// <summary>
+    /// Object List.
+    /// </summary>
     public interface IObjectList : IExtensionsData
     {
         IList<IObjectData> Objects { get; }
@@ -531,20 +766,62 @@ namespace PortCMIS.Data
         string RelativePathSegment { get; }
     }
 
+    /// <summary>
+    /// Collection of property data.
+    /// </summary>
     public interface IProperties : IExtensionsData
     {
+        /// <value>
+        /// Gets a property by property ID.
+        /// </value>
+        /// <param name="propertyId">the property ID</param>
+        /// <returns>the property or <c>null</c> if the property doesn't exist</returns>
         IPropertyData this[string propertyId] { get; }
+
+        /// <value>
+        /// Gets the list of properties.
+        /// </value>
         IList<IPropertyData> PropertyList { get; }
     }
 
+    /// <summary>
+    /// Property Data.
+    /// </summary>
     public interface IPropertyData : IExtensionsData
     {
+        /// <value>
+        /// Gets the property ID.
+        /// </value>
         string Id { get; }
+
+        /// <value>
+        /// Gets the local name.
+        /// </value>
         string LocalName { get; }
+
+        /// <value>
+        /// Gets the display name.
+        /// </value>
         string DisplayName { get; }
+
+        /// <value>
+        /// Gets the query name.
+        /// </value>
         string QueryName { get; }
+
+        /// <value>
+        /// Gets the property type.
+        /// </value>
         PropertyType PropertyType { get; }
+
+        /// <value>
+        /// Gets the property values.
+        /// </value>
         IList<object> Values { get; }
+
+        /// <value>
+        /// Gets the first property value.
+        /// </value>
         object FirstValue { get; }
     }
 
@@ -553,7 +830,9 @@ namespace PortCMIS.Data
     /// </summary>
     public interface IPrincipal : IExtensionsData
     {
-        /// <value>The principal ID</value>
+        /// <value>
+        /// Gets the principal ID.
+        /// </value>
         string Id { get; }
     }
 
@@ -562,16 +841,24 @@ namespace PortCMIS.Data
     /// </summary>
     public interface IAce : IExtensionsData
     {
-        /// <value>The principal</value>
+        /// <value>
+        /// Gets the principal
+        /// </value>
         IPrincipal Principal { get; }
 
-        /// <value>The principal ID</value>
+        /// <value>
+        /// Gets the principal ID
+        /// </value>
         string PrincipalId { get; }
 
-        /// <value>The list of permissions</value>
+        /// <value>
+        /// Gets the list of permissions
+        /// </value>
         IList<string> Permissions { get; }
 
-        /// <value>Indicates whether the ACE is a direct ACE or not</value>
+        /// <value>
+        /// Gets whether the ACE is a direct ACE or not
+        /// </value>
         bool IsDirect { get; }
     }
 
@@ -580,10 +867,14 @@ namespace PortCMIS.Data
     /// </summary>
     public interface IAcl : IExtensionsData
     {
-        /// <value>The list of ACEs</value>
+        /// <value>
+        /// Gets the list of ACEs.
+        /// </value>
         IList<IAce> Aces { get; }
 
-        /// <value>Indicates whether the ACL is exact or not</value>
+        /// <value>
+        /// Gets whether the ACL is exact or not.
+        /// </value>
         bool? IsExact { get; }
     }
 
@@ -592,16 +883,24 @@ namespace PortCMIS.Data
     /// </summary>
     public interface IContentStream : IExtensionsData
     {
-        /// <value>The stream length, if known</value>
+        /// <value>
+        /// Gets the stream length, if known.
+        /// </value>
         BigInteger? Length { get; }
 
-        /// <value>The MIME type, if known</value>
+        /// <value>
+        /// Gets the MIME type, if known.
+        /// </value>
         string MimeType { get; }
 
-        /// <value>The file name, if known</value>
+        /// <value>
+        /// Gets the file name, if known.
+        /// </value>
         string FileName { get; }
 
-        /// <value>The stream</value>
+        /// <value>
+        /// Gets the stream.
+        /// </value>
         Stream Stream { get; }
     }
 
@@ -612,43 +911,119 @@ namespace PortCMIS.Data
     {
     }
 
+    /// <summary>
+    /// Allowable Actions.
+    /// </summary>
     public interface IAllowableActions : IExtensionsData
     {
+        /// <value>
+        /// Gets the set of Allowable Actions.
+        /// </value>
         ISet<PortCMIS.Enums.Action> Actions { get; }
     }
 
+    /// <summary>
+    /// Rendition Data.
+    /// </summary>
     public interface IRenditionData : IExtensionsData
     {
+        /// <value>
+        /// Gets the stream ID.
+        /// </value>
         string StreamId { get; }
+
+        /// <value>
+        /// Gets the MIME type.
+        /// </value>
         string MimeType { get; }
+
+        /// <value>
+        /// Gets the stream length, if known.
+        /// </value>
         BigInteger? Length { get; }
+
+        /// <value>
+        /// Gets the kind.
+        /// </value>
         string Kind { get; }
+
+        /// <value>
+        /// Gets the title.
+        /// </value>
         string Title { get; }
+
+        /// <value>
+        /// Gets the height, if the rendition is an image.
+        /// </value>
         BigInteger? Height { get; }
+
+        /// <value>
+        /// Gets the width, if the rendition is an image.
+        /// </value>
         BigInteger? Width { get; }
+
+        /// <value>
+        /// Gets the rendition document ID, if the rendition is a standalone document.
+        /// </value>
         string RenditionDocumentId { get; }
     }
 
+    /// <summary>
+    /// Change event.
+    /// </summary>
     public interface IChangeEventInfo : IExtensionsData
     {
+        /// <value>
+        /// Gets the type of the change.
+        /// </value>
         ChangeType? ChangeType { get; }
+
+        /// <value>
+        /// Gets the date and time of the change.
+        /// </value>
         DateTime? ChangeTime { get; }
     }
 
+    /// <summary>
+    /// Policy ID List.
+    /// </summary>
     public interface IPolicyIdList : IExtensionsData
     {
+        /// <value>
+        /// Gets the IDs of policies.
+        /// </value>
         IList<string> PolicyIds { get; }
     }
 
+    /// <summary>
+    /// Failed to Delete data.
+    /// </summary>
     public interface IFailedToDeleteData : IExtensionsData
     {
+        /// <value>
+        /// Gets the IDs of objects that couldn't be deleted.
+        /// </value>
         IList<string> Ids { get; }
     }
 
+    /// <summary>
+    /// Bulk Update data.
+    /// </summary>
     public interface IBulkUpdateObjectIdAndChangeToken : IExtensionsData
     {
+        /// <value>
+        /// Gets the original object ID.
+        /// </value>
         string Id { get; }
+
+        /// <value>
+        /// Gets the new object ID, if available.
+        /// </value>
         string NewId { get; }
+
+        /// <value>
+        /// Gets the change token.
+        /// </value>
         string ChangeToken { get; }
     }
 }

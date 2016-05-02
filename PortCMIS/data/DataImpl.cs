@@ -270,6 +270,9 @@ namespace PortCMIS.Data
         public IList<string> Permissions { get; set; }
     }
 
+    /// <summary>
+    /// Extension Feature implementation.
+    /// </summary>
     public class ExtensionFeature : ExtensionsData, IExtensionFeature
     {
         /// <inheritdoc/>
@@ -480,6 +483,9 @@ namespace PortCMIS.Data
         public IList<string> AllowedTargetTypeIds { get; set; }
     }
 
+    /// <summary>
+    /// Type Definition List implementation.
+    /// </summary>
     public class TypeDefinitionList : ExtensionsData, ITypeDefinitionList
     {
         /// <inheritdoc/>
@@ -492,6 +498,9 @@ namespace PortCMIS.Data
         public BigInteger? NumItems { get; set; }
     }
 
+    /// <summary>
+    /// Type Definition Container implementation.
+    /// </summary>
     public class TypeDefinitionContainer : ExtensionsData, ITypeDefinitionContainer
     {
         /// <inheritdoc/>
@@ -654,6 +663,9 @@ namespace PortCMIS.Data
         public IList<IChoice<string>> Choices { get; set; }
     }
 
+    /// <summary>
+    /// Object Data implementation.
+    /// </summary>
     public class ObjectData : ExtensionsData, IObjectData
     {
         /// <inheritdoc/>
@@ -716,6 +728,9 @@ namespace PortCMIS.Data
         }
     }
 
+    /// <summary>
+    /// Object List implementation.
+    /// </summary>
     public class ObjectList : ExtensionsData, IObjectList
     {
         /// <inheritdoc/>
@@ -728,6 +743,9 @@ namespace PortCMIS.Data
         public BigInteger? NumItems { get; set; }
     }
 
+    /// <summary>
+    /// Object In Folder Data implementation.
+    /// </summary>
     public class ObjectInFolderData : ExtensionsData, IObjectInFolderData
     {
         /// <inheritdoc/>
@@ -737,6 +755,9 @@ namespace PortCMIS.Data
         public string PathSegment { get; set; }
     }
 
+    /// <summary>
+    /// Object In Folder List implementation.
+    /// </summary>
     public class ObjectInFolderList : ExtensionsData, IObjectInFolderList
     {
         /// <inheritdoc/>
@@ -749,6 +770,9 @@ namespace PortCMIS.Data
         public BigInteger? NumItems { get; set; }
     }
 
+    /// <summary>
+    /// Object In Folder Container implementation.
+    /// </summary>
     public class ObjectInFolderContainer : ExtensionsData, IObjectInFolderContainer
     {
         /// <inheritdoc/>
@@ -758,6 +782,9 @@ namespace PortCMIS.Data
         public IList<IObjectInFolderContainer> Children { get; set; }
     }
 
+    /// <summary>
+    /// Object Parent Data implementation.
+    /// </summary>
     public class ObjectParentData : ExtensionsData, IObjectParentData
     {
         /// <inheritdoc/>
@@ -767,6 +794,9 @@ namespace PortCMIS.Data
         public string RelativePathSegment { get; set; }
     }
 
+    /// <summary>
+    /// Properties implementation.
+    /// </summary>
     public class Properties : ExtensionsData, IProperties
     {
         private List<IPropertyData> propertyList = new List<IPropertyData>();
@@ -783,8 +813,15 @@ namespace PortCMIS.Data
             }
         }
 
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public Properties() { }
 
+        /// <summary>
+        /// Copy constructor.
+        /// </summary>
+        /// <param name="properties">source properties object</param>
         public Properties(IProperties properties)
         {
             if (properties == null)
@@ -805,6 +842,10 @@ namespace PortCMIS.Data
             }
         }
 
+        /// <summary>
+        /// Adds a collection of properties.
+        /// </summary>
+        /// <param name="properties">the collection of properties to add</param>
         protected void AddProperties(ICollection<IPropertyData> properties)
         {
             if (properties != null)
@@ -816,19 +857,24 @@ namespace PortCMIS.Data
             }
         }
 
+        /// <summary>
+        /// Adds a property.
+        /// </summary>
+        /// <param name="property">the property to add.</param>
         public void AddProperty(IPropertyData property)
         {
-            if (property == null)
+            if (property == null || property.Id == null)
             {
                 return;
             }
             propertyList.Add(property);
-            if (property.Id != null)
-            {
-                propertyDict[property.Id] = property;
-            }
+            propertyDict[property.Id] = property;
         }
 
+        /// <summary>
+        /// Replaces a property.
+        /// </summary>
+        /// <param name="property">the property to replace</param>
         public void ReplaceProperty(IPropertyData property)
         {
             if (property == null || property.Id == null)
@@ -842,6 +888,10 @@ namespace PortCMIS.Data
             propertyDict[property.Id] = property;
         }
 
+        /// <summary>
+        /// Removes a property.
+        /// </summary>
+        /// <param name="id">the ID of the property that should be removed</param>
         public void RemoveProperty(string id)
         {
             if (id == null)
@@ -858,6 +908,7 @@ namespace PortCMIS.Data
             propertyDict.Remove(id);
         }
 
+        /// <inheritdoc/>
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
@@ -872,13 +923,22 @@ namespace PortCMIS.Data
         }
     }
 
+    /// <summary>
+    /// Property Data implementation.
+    /// </summary>
     public class PropertyData : ExtensionsData, IPropertyData
     {
         private IList<object> values;
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="propertyType">The property type of this property</param>
         public PropertyData(PropertyType propertyType)
         {
             PropertyType = propertyType;
         }
+
         /// <inheritdoc/>
         public string Id { get; set; }
 
@@ -918,6 +978,10 @@ namespace PortCMIS.Data
         /// <inheritdoc/>
         public object FirstValue { get { return values == null || Values.Count < 1 ? null : values[0]; } }
 
+        /// <summary>
+        /// Adds a value to this property.
+        /// </summary>
+        /// <param name="value">the value</param>
         public void AddValue(object value)
         {
             object newValue = CheckValue(value);
@@ -928,6 +992,11 @@ namespace PortCMIS.Data
             Values.Add(newValue);
         }
 
+        /// <summary>
+        /// Checks if the given value matches the property type and converts the value if necessary.
+        /// </summary>
+        /// <param name="value">the value</param>
+        /// <returns>the converted value</returns>
         public object CheckValue(object value)
         {
             switch (PropertyType)
@@ -992,18 +1061,25 @@ namespace PortCMIS.Data
             }
         }
 
+        /// <inheritdoc/>
         public override string ToString()
         {
             return Id + ": " + values;
         }
     }
 
+    /// <summary>
+    /// Principal implementation.
+    /// </summary>
     public class Principal : ExtensionsData, IPrincipal
     {
         /// <inheritdoc/>
         public string Id { get; set; }
     }
 
+    /// <summary>
+    /// ACE implementation.
+    /// </summary>
     public class Ace : ExtensionsData, IAce
     {
         /// <inheritdoc/>
@@ -1019,6 +1095,9 @@ namespace PortCMIS.Data
         public bool IsDirect { get; set; }
     }
 
+    /// <summary>
+    /// ACL implementation.
+    /// </summary>
     public class Acl : ExtensionsData, IAcl
     {
         /// <inheritdoc/>
@@ -1028,6 +1107,9 @@ namespace PortCMIS.Data
         public bool? IsExact { get; set; }
     }
 
+    /// <summary>
+    /// Simple Content Stream implementation.
+    /// </summary>
     public class ContentStream : ExtensionsData, IContentStream
     {
         /// <inheritdoc/>
@@ -1042,17 +1124,25 @@ namespace PortCMIS.Data
         /// <inheritdoc/>
         public Stream Stream { get; set; }
     }
-
+    /// <summary>
+    /// Simple Content Stream implementation that indicates a partial stream.
+    /// </summary>
     public class PartialContentStream : ContentStream, IPartialContentStream
     {
     }
 
+    /// <summary>
+    /// Allowable Actions implementation.
+    /// </summary>
     public class AllowableActions : ExtensionsData, IAllowableActions
     {
         /// <inheritdoc/>
         public ISet<PortCMIS.Enums.Action> Actions { get; set; }
     }
 
+    /// <summary>
+    /// Rendition Data implementation.
+    /// </summary>
     public class RenditionData : ExtensionsData, IRenditionData
     {
         /// <inheritdoc/>
@@ -1080,6 +1170,9 @@ namespace PortCMIS.Data
         public string RenditionDocumentId { get; set; }
     }
 
+    /// <summary>
+    /// Chang Event Info implementation.
+    /// </summary>
     public class ChangeEventInfo : ExtensionsData, IChangeEventInfo
     {
         /// <inheritdoc/>
@@ -1089,19 +1182,25 @@ namespace PortCMIS.Data
         public DateTime? ChangeTime { get; set; }
     }
 
+    /// <summary>
+    /// Policy ID List implementation.
+    /// </summary>
     public class PolicyIdList : ExtensionsData, IPolicyIdList
     {
         /// <inheritdoc/>
         public IList<string> PolicyIds { get; set; }
     }
 
-    internal class FailedToDeleteData : ExtensionsData, IFailedToDeleteData
+    /// <summary>
+    /// Failed To Delete implementation.
+    /// </summary>
+    public class FailedToDeleteData : ExtensionsData, IFailedToDeleteData
     {
         /// <inheritdoc/>
         public IList<string> Ids { get; set; }
     }
 
-    public class QueryType : ExtensionsData
+    internal class QueryType : ExtensionsData
     {
         public string Statement { get; set; }
         public bool? SearchAllVersions { get; set; }
@@ -1112,6 +1211,9 @@ namespace PortCMIS.Data
         public BigInteger? SkipCount { get; set; }
     }
 
+    /// <summary>
+    /// Bulk Update data implementation.
+    /// </summary>
     public class BulkUpdateObjectIdAndChangeToken : ExtensionsData, IBulkUpdateObjectIdAndChangeToken
     {
         /// <inheritdoc/>

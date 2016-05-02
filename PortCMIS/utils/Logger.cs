@@ -29,15 +29,40 @@ namespace PortCMIS.Utils
     public class Logger
     {
 
+        /// <summary>
+        /// The log levels
+        /// </summary>
         public enum LogLevel
         {
-            Error, Warn, Info, Debug, Trace
+            /// <summary>
+            /// Log level Error
+            /// </summary>
+            Error,
+            /// <summary>
+            /// Log level Warn
+            /// </summary>
+            Warn,
+            /// <summary>
+            /// Log level Info
+            /// </summary>
+            Info,
+            /// <summary>
+            /// Log level Debug
+            /// </summary>
+            Debug,
+            /// <summary>
+            /// Log level Trace
+            /// </summary>
+            Trace
         }
 
-        /// <value>the log level</value>
+        /// <value>Gets or sets the log level</value>
         public static LogLevel Level { get; set; }
+        /// <value>Gets or sets whether the log messages should go to System.Diagnostics.Debug</value>
         public static bool ToDebug { get; set; }
+        /// <value>Gets or sets whether the log messages should go to a writer</value>
         public static bool ToWriter { get; set; }
+        /// <value>Sets the log writer</value>
         public static TextWriter Writer { private get; set; }
 
         /// <value>Is the error log level enabled?</value>
@@ -136,7 +161,7 @@ namespace PortCMIS.Utils
             {
                 if (IsTraceEnabled)
                 {
-                    Write("Trace", message, e);
+                    Write("TRACE", message, e);
                 }
             }
         }

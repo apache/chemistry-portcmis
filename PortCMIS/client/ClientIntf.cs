@@ -890,17 +890,15 @@ namespace PortCMIS.Client
         /// </value>
         bool IsBaseType { get; }
 
-        /// <summary>
-        /// Returns the base type definition.
-        /// </summary>
-        /// <returns>the base type definition or <c>null</c> if it is a base type</returns>
-        IObjectType GetBaseType();
+        /// <value>
+        /// Gets the base type definition.
+        /// </value>
+        IObjectType BaseType { get; }
 
-        /// <summary>
+        /// <value>
         /// Returns the parent type definition.
-        /// </summary>
-        /// <returns>the parent type definition or <c>null</c> if it is a base type</returns>
-        IObjectType GetParentType();
+        /// </value>
+        IObjectType ParentType { get; }
 
         /// <summary>
         /// Gets the list of types directly derived from this type.

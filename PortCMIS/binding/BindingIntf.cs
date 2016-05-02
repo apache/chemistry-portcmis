@@ -252,7 +252,9 @@ namespace PortCMIS.Binding
     /// </summary>
     public interface IAuthenticationProvider
     {
-        /// <value>Binding session instance</value>
+        /// <value>
+        /// Gets the binding session instance
+        /// </value>
         IBindingSession Session { get; set; }
     }
 
@@ -285,22 +287,32 @@ namespace PortCMIS.Binding
     /// </summary>
     public abstract class AbstractAuthenticationProvider : IPortableAuthenticationProvider
     {
-        /// <value>Binding session instance</value>
+        /// <inheritdoc/>
         public IBindingSession Session { get; set; }
 
-        /// <value>HTTP cookie container</value>
+        /// <value>
+        /// Gets the HTTP cookie container.
+        /// </value>
         public CookieContainer CookieContainer { get; private set; }
 
-        /// <value>User</value>
+        /// <value>
+        /// Gets the user name.
+        /// </value>
         public string User { get { return Session.GetValue(SessionParameter.User) as string; } }
 
-        /// <value>Password</value>
+        /// <value>
+        /// Gets the Password.
+        /// </value>
         public string Password { get { return Session.GetValue(SessionParameter.Password) as string; } }
 
-        /// <value>Proxy user</value>
+        /// <value>
+        /// Gets the proxy user.
+        /// </value>
         public string ProxyUser { get { return Session.GetValue(SessionParameter.ProxyUser) as string; } }
 
-        /// <value>Proxy password</value>
+        /// <value>
+        /// Gets the proxy password
+        /// </value>
         public string ProxyPassword { get { return Session.GetValue(SessionParameter.ProxyPassword) as string; } }
 
         /// <inheritdoc/>
@@ -329,25 +341,37 @@ namespace PortCMIS.Binding
     /// </summary>
     public class StandardAuthenticationProvider : AbstractAuthenticationProvider
     {
-        /// <value>OAuth bearer token</value>
+        /// <value>
+        /// Gets the OAuth bearer token.
+        /// </value>
         public string BearerToken { get { return Session.GetValue(SessionParameter.OAuthBearerToken) as string; } }
 
-        /// <value>CSRF header</value>
+        /// <value>
+        /// Gets the CSRF header.
+        /// r</value>
         public string CsrfHeader { get { return Session.GetValue(SessionParameter.CsrfHeader) as string; } }
 
-        /// <value>Authentication header</value>
+        /// <value>
+        /// Gets the authentication header.
+        /// </value>
         protected AuthenticationHeaderValue AuthenticationHeader { get; set; }
 
-        /// <value>proxy authentication header</value>
+        /// <value>
+        /// Gets the proxy authentication header.
+        /// </value>
         protected AuthenticationHeaderValue ProxyAuthenticationHeader { get; set; }
 
         private object tokenLock = new object();
         private string token = "fetch";
 
-        /// <value>CSRF header name</value>
+        /// <value>
+        /// Gets the CSRF header name.
+        /// </value>
         protected string CsrfHeaderName { get; set; }
 
-        /// <value>CSRF header token</value>
+        /// <value>
+        /// Gets the CSRF header token.
+        /// </value>
         protected string CsrfToken
         {
             get { lock (tokenLock) { return token; } }

@@ -409,12 +409,12 @@ namespace PortCMIS.Enums
     public enum DecimalPrecision
     {
         /// <summary>
-        /// 32 bit precision.
+        /// 32 bit precision. ("single" as specified in IEEE-754-1985).
         /// </summary>
         [CmisValue("32")]
         Bits32,
         /// <summary>
-        /// 64 bit precision.
+        /// 64 bit precision. ("double" as specified in IEEE-754-1985).
         /// </summary>
         [CmisValue("64")]
         Bits64
@@ -589,64 +589,154 @@ namespace PortCMIS.Enums
     /// </summary>
     public enum Action
     {
+        /// <summary>
+        /// User can delete this object.
+        /// </summary>
         [CmisValue("canDeleteObject")]
         CanDeleteObject,
+        /// <summary>
+        /// Use can update properties of this object.
+        /// </summary>
         [CmisValue("canUpdateProperties")]
         CanUpdateProperties,
+        /// <summary>
+        /// User can get the folder tree of this folder.
+        /// </summary>
         [CmisValue("canGetFolderTree")]
         CanGetFolderTree,
+        /// <summary>
+        /// User can get the properties of this object.
+        /// </summary>
         [CmisValue("canGetProperties")]
         CanGetProperties,
+        /// <summary>
+        /// User can get the relationships of this object.
+        /// </summary>
         [CmisValue("canGetObjectRelationships")]
         CanGetObjectRelationships,
+        /// <summary>
+        /// User can get the parents of this object.
+        /// </summary>
         [CmisValue("canGetObjectParents")]
         CanGetObjectParents,
+        /// <summary>
+        /// User can get the parent of this folder.
+        /// </summary>
         [CmisValue("canGetFolderParent")]
         CanGetFolderParent,
+        /// <summary>
+        /// User can get the descendants of this folder.
+        /// </summary>
         [CmisValue("canGetDescendants")]
         CanGetDescendants,
+        /// <summary>
+        /// User can move this object.
+        /// </summary>
         [CmisValue("canMoveObject")]
         CanMoveObject,
+        /// <summary>
+        /// User can delete the content stream of this document.
+        /// </summary>
         [CmisValue("canDeleteContentStream")]
         CanDeleteContentStream,
+        /// <summary>
+        /// User can checkout this document.
+        /// </summary>
         [CmisValue("canCheckOut")]
         CanCheckOut,
+        /// <summary>
+        /// User can cancel the check out of this PWC.
+        /// </summary>
         [CmisValue("canCancelCheckOut")]
         CanCancelCheckOut,
+        /// <summary>
+        /// User can check in this PWC.
+        /// </summary>
         [CmisValue("canCheckIn")]
         CanCheckIn,
+        /// <summary>
+        /// User can set a content stream of this document.
+        /// </summary>
         [CmisValue("canSetContentStream")]
         CanSetContentStream,
+        /// <summary>
+        /// User can get the versions of this document.
+        /// </summary>
         [CmisValue("canGetAllVersions")]
         CanGetAllVersions,
+        /// <summary>
+        /// User can add thi object to a folder.
+        /// </summary>
         [CmisValue("canAddObjectToFolder")]
         CanAddObjectToFolder,
+        /// <summary>
+        /// User can remove this object form a folder.
+        /// </summary>
         [CmisValue("canRemoveObjectFromFolder")]
         CanRemoveObjectFromFolder,
+        /// <summary>
+        /// User can get the content stream of this document.
+        /// </summary>
         [CmisValue("canGetContentStream")]
         CanGetContentStream,
+        /// <summary>
+        /// User can apply policies to this object.
+        /// </summary>
         [CmisValue("canApplyPolicy")]
         CanApplyPolicy,
+        /// <summary>
+        /// User can get the policies applied to this object.
+        /// </summary>
         [CmisValue("canGetAppliedPolicies")]
         CanGetAppliedPolicies,
+        /// <summary>
+        /// User can remove policies from this object.
+        /// </summary>
         [CmisValue("canRemovePolicy")]
         CanRemovePolicy,
+        /// <summary>
+        /// User can get the children of this object.
+        /// </summary>
         [CmisValue("canGetChildren")]
         CanGetChildren,
+        /// <summary>
+        /// User can create documents in this folder.
+        /// </summary>
         [CmisValue("canCreateDocument")]
         CanCreateDocument,
+        /// <summary>
+        /// User can create folders in this folder.
+        /// </summary>
         [CmisValue("canCreateFolder")]
         CanCreateFolder,
+        /// <summary>
+        /// USer can create relationships from and to this object.
+        /// </summary>
         [CmisValue("canCreateRelationship")]
         CanCreateRelationship,
+        /// <summary>
+        /// User can create items in this folder.
+        /// </summary>
         [CmisValue("canCreateItem")]
         CanCreateItem,
+        /// <summary>
+        /// User can delete this folder and all descendants.
+        /// </summary>
         [CmisValue("canDeleteTree")]
         CanDeleteTree,
+        /// <summary>
+        /// User can get the renditions of this object.
+        /// </summary>
         [CmisValue("canGetRenditions")]
         CanGetRenditions,
+        /// <summary>
+        /// User can get the ACL of this object.
+        /// </summary>
         [CmisValue("canGetAcl")]
         CanGetAcl,
+        /// <summary>
+        /// User can apply an ACL to this object.
+        /// </summary>
         [CmisValue("canApplyAcl")]
         CanApplyAcl
     }

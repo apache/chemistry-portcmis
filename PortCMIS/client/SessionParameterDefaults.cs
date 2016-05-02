@@ -25,6 +25,9 @@ using System.Threading.Tasks;
 
 namespace PortCMIS.Client
 {
+    /// <summary>
+    /// Default values for some session parameters.
+    /// </summary>
     public static class SessionParameterDefaults
     {
         /// <summary>Default repository cache size</summary>

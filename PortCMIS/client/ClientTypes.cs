@@ -44,24 +44,30 @@ namespace PortCMIS.Client.Impl
 
         public bool IsBaseType { get { return objectType.ParentTypeId == null || objectType.ParentTypeId.Length == 0; } }
 
-        public IObjectType GetBaseType()
+        public IObjectType BaseType
         {
-            if (IsBaseType) { return null; }
-            if (baseType != null) { return baseType; }
+            get
+            {
+                if (IsBaseType) { return null; }
+                if (baseType != null) { return baseType; }
 
-            baseType = session.GetTypeDefinition(objectType.BaseTypeId.GetCmisValue());
+                baseType = session.GetTypeDefinition(objectType.BaseTypeId.GetCmisValue());
 
-            return baseType;
+                return baseType;
+            }
         }
 
-        public IObjectType GetParentType()
+        public IObjectType ParentType
         {
-            if (parentType != null) { return parentType; }
-            if (objectType.ParentTypeId == null) { return null; }
+            get
+            {
+                if (parentType != null) { return parentType; }
+                if (objectType.ParentTypeId == null) { return null; }
 
-            parentType = session.GetTypeDefinition(objectType.ParentTypeId);
+                parentType = session.GetTypeDefinition(objectType.ParentTypeId);
 
-            return parentType;
+                return parentType;
+            }
         }
 
         public IItemEnumerable<IObjectType> GetChildren()
@@ -82,6 +88,11 @@ namespace PortCMIS.Client.Impl
     {
         private ObjectTypeHelper helper;
 
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="session">the related session object</param>
+        /// <param name="typeDefinition">the low-level type definition</param>
         public DocumentType(ISession session, IDocumentTypeDefinition typeDefinition)
         {
             Initialize(typeDefinition);
@@ -90,14 +101,19 @@ namespace PortCMIS.Client.Impl
             helper = new ObjectTypeHelper(session, this);
         }
 
-        public virtual IObjectType GetBaseType() { return helper.GetBaseType(); }
+        /// <inheritdoc/>
+        public virtual IObjectType BaseType { get { return helper.BaseType; } }
 
+        /// <inheritdoc/>
+        public virtual IObjectType ParentType { get { return helper.ParentType; } }
+
+        /// <inheritdoc/>
         public virtual IItemEnumerable<IObjectType> GetChildren() { return helper.GetChildren(); }
 
+        /// <inheritdoc/>
         public virtual IList<ITree<IObjectType>> GetDescendants(int depth) { return helper.GetDescendants(depth); }
 
-        public virtual IObjectType GetParentType() { return helper.GetParentType(); }
-
+        /// <inheritdoc/>
         public virtual bool IsBaseType { get { return helper.IsBaseType; } }
     }
 
@@ -108,20 +124,30 @@ namespace PortCMIS.Client.Impl
     {
         private ObjectTypeHelper helper;
 
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="session">the related session object</param>
+        /// <param name="typeDefinition">the low-level type definition</param>
         public FolderType(ISession session, IFolderTypeDefinition typeDefinition)
         {
             Initialize(typeDefinition);
             helper = new ObjectTypeHelper(session, this);
         }
 
-        public virtual IObjectType GetBaseType() { return helper.GetBaseType(); }
+        /// <inheritdoc/>
+        public virtual IObjectType BaseType { get { return helper.BaseType; } }
 
+        /// <inheritdoc/>
+        public virtual IObjectType ParentType { get { return helper.ParentType; } }
+
+        /// <inheritdoc/>
         public virtual IItemEnumerable<IObjectType> GetChildren() { return helper.GetChildren(); }
 
+        /// <inheritdoc/>
         public virtual IList<ITree<IObjectType>> GetDescendants(int depth) { return helper.GetDescendants(depth); }
 
-        public virtual IObjectType GetParentType() { return helper.GetParentType(); }
-
+        /// <inheritdoc/>
         public virtual bool IsBaseType { get { return helper.IsBaseType; } }
     }
 
@@ -134,22 +160,33 @@ namespace PortCMIS.Client.Impl
         private IList<IObjectType> allowedSourceTypes;
         private IList<IObjectType> allowedTargetTypes;
 
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="session">the related session object</param>
+        /// <param name="typeDefinition">the low-level type definition</param>
         public RelationshipType(ISession session, IRelationshipTypeDefinition typeDefinition)
         {
             Initialize(typeDefinition);
             helper = new ObjectTypeHelper(session, this);
         }
 
-        public virtual IObjectType GetBaseType() { return helper.GetBaseType(); }
+        /// <inheritdoc/>
+        public virtual IObjectType BaseType { get { return helper.BaseType; } }
 
+        /// <inheritdoc/>
+        public virtual IObjectType ParentType { get { return helper.ParentType; } }
+
+        /// <inheritdoc/>
         public virtual IItemEnumerable<IObjectType> GetChildren() { return helper.GetChildren(); }
 
+        /// <inheritdoc/>
         public virtual IList<ITree<IObjectType>> GetDescendants(int depth) { return helper.GetDescendants(depth); }
 
-        public virtual IObjectType GetParentType() { return helper.GetParentType(); }
-
+        /// <inheritdoc/>
         public virtual bool IsBaseType { get { return helper.IsBaseType; } }
 
+        /// <inheritdoc/>
         public virtual IList<IObjectType> GetAllowedSourceTypes
         {
             get
@@ -171,6 +208,7 @@ namespace PortCMIS.Client.Impl
             }
         }
 
+        /// <inheritdoc/>
         public virtual IList<IObjectType> GetAllowedTargetTypes
         {
             get
@@ -200,20 +238,30 @@ namespace PortCMIS.Client.Impl
     {
         private ObjectTypeHelper helper;
 
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="session">the related session object</param>
+        /// <param name="typeDefinition">the low-level type definition</param>
         public PolicyType(ISession session, IPolicyTypeDefinition typeDefinition)
         {
             Initialize(typeDefinition);
             helper = new ObjectTypeHelper(session, this);
         }
 
-        public virtual IObjectType GetBaseType() { return helper.GetBaseType(); }
+        /// <inheritdoc/>
+        public virtual IObjectType BaseType { get { return helper.BaseType; } }
 
+        /// <inheritdoc/>
+        public virtual IObjectType ParentType { get { return helper.ParentType; } }
+
+        /// <inheritdoc/>
         public virtual IItemEnumerable<IObjectType> GetChildren() { return helper.GetChildren(); }
 
+        /// <inheritdoc/>
         public virtual IList<ITree<IObjectType>> GetDescendants(int depth) { return helper.GetDescendants(depth); }
 
-        public virtual IObjectType GetParentType() { return helper.GetParentType(); }
-
+        /// <inheritdoc/>
         public virtual bool IsBaseType { get { return helper.IsBaseType; } }
     }
 
@@ -224,20 +272,30 @@ namespace PortCMIS.Client.Impl
     {
         private ObjectTypeHelper helper;
 
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="session">the related session object</param>
+        /// <param name="typeDefinition">the low-level type definition</param>
         public ItemType(ISession session, IItemTypeDefinition typeDefinition)
         {
             Initialize(typeDefinition);
             helper = new ObjectTypeHelper(session, this);
         }
 
-        public virtual IObjectType GetBaseType() { return helper.GetBaseType(); }
+        /// <inheritdoc/>
+        public virtual IObjectType BaseType { get { return helper.BaseType; } }
 
+        /// <inheritdoc/>
+        public virtual IObjectType ParentType { get { return helper.ParentType; } }
+
+        /// <inheritdoc/>
         public virtual IItemEnumerable<IObjectType> GetChildren() { return helper.GetChildren(); }
 
+        /// <inheritdoc/>
         public virtual IList<ITree<IObjectType>> GetDescendants(int depth) { return helper.GetDescendants(depth); }
 
-        public virtual IObjectType GetParentType() { return helper.GetParentType(); }
-
+        /// <inheritdoc/>
         public virtual bool IsBaseType { get { return helper.IsBaseType; } }
     }
 
@@ -248,20 +306,30 @@ namespace PortCMIS.Client.Impl
     {
         private ObjectTypeHelper helper;
 
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="session">the related session object</param>
+        /// <param name="typeDefinition">the low-level type definition</param>
         public SecondaryType(ISession session, ISecondaryTypeDefinition typeDefinition)
         {
             Initialize(typeDefinition);
             helper = new ObjectTypeHelper(session, this);
         }
 
-        public virtual IObjectType GetBaseType() { return helper.GetBaseType(); }
+        /// <inheritdoc/>
+        public virtual IObjectType BaseType { get { return helper.BaseType; } }
 
+        /// <inheritdoc/>
+        public virtual IObjectType ParentType { get { return helper.ParentType; } }
+
+        /// <inheritdoc/>
         public virtual IItemEnumerable<IObjectType> GetChildren() { return helper.GetChildren(); }
 
+        /// <inheritdoc/>
         public virtual IList<ITree<IObjectType>> GetDescendants(int depth) { return helper.GetDescendants(depth); }
 
-        public virtual IObjectType GetParentType() { return helper.GetParentType(); }
-
+        /// <inheritdoc/>
         public virtual bool IsBaseType { get { return helper.IsBaseType; } }
     }
 }
