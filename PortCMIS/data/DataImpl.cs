@@ -27,11 +27,21 @@ using System.Text;
 
 namespace PortCMIS.Data
 {
+    /// <summary>
+    /// Repository Info implementation.
+    /// </summary>
     public class RepositoryInfo : ExtensionsData, IRepositoryInfo
     {
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public RepositoryInfo()
         {
         }
+
+        /// <summary>
+        /// Copy Constructor.
+        /// </summary>
         public RepositoryInfo(IRepositoryInfo source)
         {
             Id = source.Id;
@@ -129,12 +139,16 @@ namespace PortCMIS.Data
         /// <inheritdoc/>
         public IList<IExtensionFeature> ExtensionFeatures { get; set; }
 
+        /// <inheritdoc/>
         public override string ToString()
         {
             return "RepositoryInfo: " + Id;
         }
     }
 
+    /// <summary>
+    /// Repository Capabilities implementation.
+    /// </summary>
     internal class RepositoryCapabilities : ExtensionsData, IRepositoryCapabilities
     {
         /// <inheritdoc/>

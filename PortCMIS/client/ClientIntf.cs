@@ -554,38 +554,110 @@ namespace PortCMIS.Client
         void RemovePolicy(IObjectId objectId, params IObjectId[] policyIds);
     }
 
+    /// <summary>
+    /// Object Factory implementations convert low-level objects to high-level objects.
+    /// </summary>
     public interface IObjectFactory
     {
+        /// <summary>
+        /// Initializes the factory.
+        /// </summary>
+        /// <param name="session">the session</param>
+        /// <param name="parameters">some parameters</param>
         void Initialize(ISession session, IDictionary<string, string> parameters);
 
         // Acl and ACE
+
+        /// <summary>
+        /// Converts ACEs into an ACL.
+        /// </summary>
         IAcl ConvertAces(IList<IAce> aces);
+
+        /// <summary>
+        /// Creates an ACL from the given ACEs.
+        /// </summary>
         IAcl CreateAcl(IList<IAce> aces);
+
+        /// <summary>
+        /// Converts ACEs into an ACL.
+        /// </summary>
         IAce CreateAce(string principal, IList<string> permissions);
 
         // policies
+
+        /// <summary>
+        /// Converts policies.
+        /// </summary>
         IList<string> ConvertPolicies(IList<IPolicy> policies);
 
         // renditions
+
+        /// <summary>
+        /// Converts renditions.
+        /// </summary>
         IRendition ConvertRendition(string objectId, IRenditionData rendition);
 
         // content stream
+
+        /// <summary>
+        /// Creates a new Content Stream object.
+        /// </summary>
         IContentStream CreateContentStream(string filename, long length, string mimetype, Stream stream);
 
         // types
+
+        /// <summary>
+        /// Converts a type definition.
+        /// </summary>
         IObjectType ConvertTypeDefinition(ITypeDefinition typeDefinition);
+
+        /// <summary>
+        /// Gets the type from a low-level object.
+        /// </summary>
         IObjectType GetTypeFromObjectData(IObjectData objectData);
 
         // properties
+
+        /// <summary>
+        /// Creates a property object.
+        /// </summary>
         IProperty CreateProperty<T>(IPropertyDefinition type, IList<T> values);
+
+        /// <summary>
+        /// Converts properties.
+        /// </summary>
         IDictionary<string, IProperty> ConvertProperties(IObjectType objectType, IList<ISecondaryType> secondaryTypes, IProperties properties);
+
+        /// <summary>
+        /// Converts properties.
+        /// </summary>
         IProperties ConvertProperties(IDictionary<string, object> properties, IObjectType type, IList<ISecondaryType> secondaryTypes, HashSet<Updatability> updatabilityFilter);
+
+        /// <summary>
+        /// Converts properties from a query result.
+        /// </summary>
         IList<IPropertyData> ConvertQueryProperties(IProperties properties);
 
         // objects
+
+        /// <summary>
+        /// Converts a low-level object into a hig-level object.
+        /// </summary>
         ICmisObject ConvertObject(IObjectData objectData, IOperationContext context);
+
+        /// <summary>
+        /// Converts a query result.
+        /// </summary>
         IQueryResult ConvertQueryResult(IObjectData objectData);
+
+        /// <summary>
+        /// Converts a change event.
+        /// </summary>
         IChangeEvent ConvertChangeEvent(IObjectData objectData);
+
+        /// <summary>
+        /// Converts a collection of change events.
+        /// </summary>
         IChangeEvents ConvertChangeEvents(string changeLogToken, IObjectList objectList);
     }
 
@@ -1006,7 +1078,7 @@ namespace PortCMIS.Client
         /// Gets whether the repository contains additional items beyond the page of items already fetched.
         /// </value>
         bool HasMoreItems { get; }
-        
+
         /// <value>
         /// Gets the total number of items. If the repository knows the total number of items
         /// in a result set, the repository SHOULD include the number here.
@@ -1287,6 +1359,14 @@ namespace PortCMIS.Client
         /// Gets the ACL if it has been fetched for this object.
         /// </value>
         IAcl Acl { get; }
+
+        /// <summary>
+        /// Deletes this object.
+        /// </summary>
+        /// <remarks>
+        /// If this object is a document, the whole version series is deleted.
+        /// </remarks>
+        void Delete();
 
         /// <summary>
         /// Deletes this object.

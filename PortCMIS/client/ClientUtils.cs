@@ -351,6 +351,8 @@ namespace PortCMIS.Client.Impl
     public class ObjectId : IObjectId
     {
         private string id;
+
+        /// <inheritdoc/>
         public string Id
         {
             get { return id; }
@@ -365,6 +367,10 @@ namespace PortCMIS.Client.Impl
             }
         }
 
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="id">the object ID as a string</param>
         public ObjectId(string id)
         {
             Id = id;
@@ -376,7 +382,10 @@ namespace PortCMIS.Client.Impl
     /// </summary>
     public class Tree<T> : ITree<T>
     {
+        /// <inheritdoc/>
         public T Item { get; set; }
+
+        /// <inheritdoc/>
         public IList<ITree<T>> Children { get; set; }
     }
 
@@ -465,23 +474,34 @@ namespace PortCMIS.Client.Impl
             this.pageFetcher = pageFetcher;
         }
 
+        /// <inheritdoc/>
         T IEnumerator<T>.Current { get { return Current; } }
+
+        /// <inheritdoc/>
         object IEnumerator.Current { get { return Current; } }
+
+        /// <inheritdoc/>
         public T Current { get { return current; } }
 
+        /// <summary>
+        /// Reset is not supported.
+        /// </summary>
         public void Reset()
         {
             throw new NotSupportedException();
         }
 
+        /// <inheritdoc/>
         public abstract bool MoveNext();
 
+        /// <inheritdoc/>
         public void Dispose()
         {
             Dispose(true);
             GC.SuppressFinalize(this);
         }
 
+        /// <inheritdoc/>
         protected virtual void Dispose(bool disposing)
         {
         }

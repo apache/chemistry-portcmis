@@ -80,7 +80,7 @@ namespace PortCMIS.Client.Impl
         /// <param name="authenticationProvider">Authentication provider.</param>
         /// <param name="cache">Client object cache.</param>
         /// <returns>a list of all available repositories</returns>
-        /// <seealso cref="PortCMIS.SessionParameter"/>
+        /// <seealso cref="PortCMIS.Client.SessionParameter"/>
         public IList<IRepository> GetRepositories(IDictionary<string, string> parameters, IObjectFactory objectFactory, IAuthenticationProvider authenticationProvider, ICache cache)
         {
             ICmisBinding binding = CmisBindingHelper.CreateBinding(parameters);
@@ -179,6 +179,15 @@ namespace PortCMIS.Client.Impl
         private IAuthenticationProvider authenticationProvider;
         private ICache cache;
 
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="info">the low-level repository info object</param>
+        /// <param name="parameters">the session parameters</param>
+        /// <param name="sessionFactory">the session factory</param>
+        /// <param name="objectFactory">the object factory (may be <c>null</c>)</param>
+        /// <param name="authenticationProvider">the authentication provider (may be <c>null</c>)</param>
+        /// <param name="cache">the cache (may be <c>null</c>)</param>
         public Repository(IRepositoryInfo info, IDictionary<string, string> parameters, SessionFactory sessionFactory, IObjectFactory objectFactory, IAuthenticationProvider authenticationProvider, ICache cache)
             : base(info)
         {

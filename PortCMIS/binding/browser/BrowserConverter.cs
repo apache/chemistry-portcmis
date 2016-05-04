@@ -2100,7 +2100,7 @@ namespace PortCMIS.Binding.Browser
                         Ace ace = new Ace();
 
                         bool? isDirect = GetBoolean(entry, BrowserConstants.JsonAceIsDirect);
-                        ace.IsDirect = (isDirect != null ? (bool) isDirect : true);
+                        ace.IsDirect = (isDirect != null ? (bool)isDirect : true);
 
                         JsonArray jsonPermissions = GetJsonArray(entry, BrowserConstants.JsonAcePermissions);
                         if (jsonPermissions != null)
@@ -2314,9 +2314,15 @@ namespace PortCMIS.Binding.Browser
             }
 
             ITypeDefinition typeDef = null;
-            if (json[PropertyIds.ObjectTypeId] is string)
+            // TODO: try....
+
+            object objectTypeId;
+            if (json.TryGetValue(PropertyIds.ObjectTypeId, out objectTypeId))
             {
-                typeDef = typeCache.GetTypeDefinition((string)json[PropertyIds.ObjectTypeId]);
+                if (objectTypeId is string)
+                {
+                    typeDef = typeCache.GetTypeDefinition((string)objectTypeId);
+                }
             }
 
             JsonArray secTypeIds = GetJsonArray(json, PropertyIds.SecondaryObjectTypeIds);

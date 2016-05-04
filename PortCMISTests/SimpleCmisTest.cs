@@ -11,6 +11,7 @@ using PortCMIS.Enums;
 using System.Text;
 using PortCMIS.Utils;
 using PortCMISTests.Framework;
+using System.Linq;
 
 namespace PortCMISTests
 {
@@ -97,7 +98,7 @@ namespace PortCMISTests
             try
             {
                 ICmisObject obj = Session.GetObjectByPath("/porttest");
-                obj.Delete(true);
+                obj.Delete();
             }
             catch (CmisConstraintException)
             {
@@ -156,6 +157,33 @@ namespace PortCMISTests
 
             Assert.AreEqual(newDoc.Name, newDoc2.Name);
             Assert.AreEqual(contentBytes.Length, newDoc2.ContentStreamLength);
+
+            // delete document
+            newDoc.Delete();
+
+            try
+            {
+                Session.GetObject(newDoc);
+                Assert.Fail("Document still exists.");
+            }
+            catch (CmisObjectNotFoundException)
+            {
+                // expected
+            }
+
+            // delete folder
+
+            newFolder.Delete();
+
+            try
+            {
+                Session.GetObject(newFolder);
+                Assert.Fail("Folder still exists.");
+            }
+            catch (CmisObjectNotFoundException)
+            {
+                // expected
+            }
         }
 
         [TestMethod]
@@ -233,6 +261,70 @@ namespace PortCMISTests
             }
 
             Assert.IsTrue(count > 0);
+
+            IOperationContext oc = Session.CreateOperationContext();
+            oc.FilterString = "cmis:objectId,cmis:name";
+
+            IFolder rootFolder = Session.GetRootFolder(oc);
+            bool found = false;
+
+            foreach (ICmisObject obj in Session.QueryObjects("cmis:folder", null, false, oc))
+            {
+                Assert.IsNotNull(obj.Id);
+                Assert.IsNotNull(obj.Name);
+
+                if (obj.Id == rootFolder.Id)
+                {
+                    found = true;
+                }
+            }
+
+            Assert.IsTrue(found);
+        }
+
+        [TestMethod]
+        public void TestMove()
+        {
+            // create folder 1
+            IDictionary<string, object> folder1prop = new Dictionary<string, object>();
+            folder1prop[PropertyIds.Name] = "movefolder1";
+            folder1prop[PropertyIds.ObjectTypeId] = "cmis:folder";
+
+            IObjectId folder1 = Session.CreateFolder(folder1prop, Session.GetRootFolder());
+
+            // create folder2
+            IDictionary<string, object> folder2prop = new Dictionary<string, object>();
+            folder2prop[PropertyIds.Name] = "movefolder2";
+            folder2prop[PropertyIds.ObjectTypeId] = "cmis:folder";
+
+            IObjectId folder2 = Session.CreateFolder(folder2prop, Session.GetRootFolder());
+
+            // create item
+            IDictionary<string, object> itemProp = new Dictionary<string, object>();
+            itemProp[PropertyIds.Name] = "movee";
+            itemProp[PropertyIds.ObjectTypeId] = "cmis:item";
+
+            IObjectId item = Session.CreateItem(itemProp, folder1);
+
+            // move
+            IItem itemObj = Session.GetObject(item) as IItem;
+            itemObj.Move(folder1, folder2);
+
+            itemObj.Refresh();
+
+            // test
+            Assert.AreEqual(folder2.Id, itemObj.Parents[0].Id);
+
+            int folderSize1 = Enumerable.Count<ICmisObject>((Session.GetObject(folder1) as IFolder).GetChildren());
+            Assert.AreEqual(0, folderSize1);
+
+            int folderSize2 = Enumerable.Count<ICmisObject>((Session.GetObject(folder2) as IFolder).GetChildren());
+            Assert.AreEqual(1, folderSize2);
+
+            // clean up
+            Session.Delete(item);
+            Session.Delete(folder1);
+            Session.Delete(folder2);
         }
     }
 }

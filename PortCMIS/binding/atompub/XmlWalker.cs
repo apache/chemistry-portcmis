@@ -105,7 +105,7 @@ namespace PortCMIS.Binding.AtomPub
 
             if (extensions.Count + 1 > XmlConstraints.MaxExtensionsWidth)
             {
-                throw new CmisInvalidArgumentException("Too many extensions!");
+                throw new CmisInvalidArgumentException("Too many extensions! (More than " + XmlConstraints.MaxExtensionsWidth + " extensions.)");
             }
 
             extensions.Add(HandleExtensionLevel(parser, 0));
@@ -145,7 +145,7 @@ namespace PortCMIS.Binding.AtomPub
                     {
                         if (sb.Length + s.Length > XmlConstraints.MaxStringLength)
                         {
-                            throw new CmisInvalidArgumentException("String limit exceeded!");
+                            throw new CmisInvalidArgumentException("String limit exceeded! (String is longer than " + XmlConstraints.MaxStringLength + " characters.)");
                         }
                         sb.Append(s);
                     }
@@ -154,7 +154,7 @@ namespace PortCMIS.Binding.AtomPub
                 {
                     if (level + 1 > XmlConstraints.MaxExtensionsDepth)
                     {
-                        throw new CmisInvalidArgumentException("Extensions tree too deep!");
+                        throw new CmisInvalidArgumentException("Extensions tree too deep! (More than " + XmlConstraints.MaxExtensionsDepth + " levels.)");
                     }
 
                     if (children == null)
@@ -164,7 +164,7 @@ namespace PortCMIS.Binding.AtomPub
 
                     if (children.Count + 1 > XmlConstraints.MaxExtensionsWidth)
                     {
-                        throw new CmisInvalidArgumentException("Extensions tree too wide!");
+                        throw new CmisInvalidArgumentException("Extensions tree too wide! (More than " + XmlConstraints.MaxExtensionsWidth + " extensions on one level.)");
                     }
 
                     children.Add(HandleExtensionLevel(parser, level + 1));
@@ -288,7 +288,7 @@ namespace PortCMIS.Binding.AtomPub
     {
         public const int MaxStringLength = 100 * 1024;
 
-        public const int MaxExtensionsWidth = 500;
-        public const int MaxExtensionsDepth = 20;
+        public const int MaxExtensionsWidth = 1000;
+        public const int MaxExtensionsDepth = 100;
     }
 }

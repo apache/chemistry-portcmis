@@ -35,11 +35,24 @@ namespace PortCMIS.Client.Impl
     /// </summary>
     public abstract class AbstractCmisObject : ICmisObject
     {
+        /// <value>
+        /// Gets the current session.
+        /// </value>
         protected ISession Session { get; private set; }
+
+        /// <value>
+        /// Gets the current repository ID.
+        /// </value>
         protected string RepositoryId { get { return Session.RepositoryInfo.Id; } }
+
+        /// <value>
+        /// Gets the current binding.
+        /// </value>
         protected ICmisBinding Binding { get { return Session.Binding; } }
 
         private IObjectType objectType;
+
+        /// <inheritdoc/>
         public virtual IObjectType ObjectType
         {
             get
@@ -51,6 +64,7 @@ namespace PortCMIS.Client.Impl
             }
         }
 
+        /// <inheritdoc/>
         public virtual IList<ISecondaryType> SecondaryTypes
         {
             get
@@ -62,6 +76,7 @@ namespace PortCMIS.Client.Impl
             }
         }
 
+        /// <inheritdoc/>
         protected virtual string ObjectId
         {
             get
@@ -76,6 +91,9 @@ namespace PortCMIS.Client.Impl
             }
         }
 
+        /// <summary>
+        /// Gets the operation context that was used to fetch this object.
+        /// </summary>
         protected virtual IOperationContext CreationContext { get; private set; }
 
         private IDictionary<string, IProperty> properties;
@@ -86,8 +104,19 @@ namespace PortCMIS.Client.Impl
         private IList<IRelationship> relationships;
         private IDictionary<ExtensionLevel, IList<ICmisExtensionElement>> extensions;
         private IList<ISecondaryType> secondaryTypes;
+
+        /// <summary>
+        /// An object used for locking.
+        /// </summary>
         protected object objectLock = new object();
 
+        /// <summary>
+        /// Initializes the object.
+        /// </summary>
+        /// <param name="session">the current session</param>
+        /// <param name="objectType">the object type</param>
+        /// <param name="objectData">the low-level object data</param>
+        /// <param name="context">the operation context that was used to fetch this object</param>
         protected void Initialize(ISession session, IObjectType objectType, IObjectData objectData, IOperationContext context)
         {
             if (session == null)
@@ -241,6 +270,11 @@ namespace PortCMIS.Client.Impl
             }
         }
 
+        /// <summary>
+        /// Returns the query name of a property.
+        /// </summary>
+        /// <param name="propertyId">the property ID</param>
+        /// <returns>the query name or <c>null</c> if the property doesn't exist or the property has no query name</returns>
         protected virtual string GetPropertyQueryName(string propertyId)
         {
             lock (objectLock)
@@ -256,6 +290,12 @@ namespace PortCMIS.Client.Impl
         }
 
         // --- object ---
+
+        /// <inheritdoc/>
+        public virtual void Delete()
+        {
+            Delete(true);
+        }
 
         /// <inheritdoc/>
         public virtual void Delete(bool allVersions)
@@ -1728,6 +1768,9 @@ namespace PortCMIS.Client.Impl
         }
     }
 
+    /// <summary>
+    /// Property implementation.
+    /// </summary>
     public class Property : IProperty
     {
         public Property(IPropertyDefinition propertyDefinition, IList<object> values)
@@ -1822,6 +1865,9 @@ namespace PortCMIS.Client.Impl
         }
     }
 
+    /// <summary>
+    /// Rendition implementation.
+    /// </summary>
     public class Rendition : RenditionData, IRendition
     {
         private ISession session;
@@ -1872,6 +1918,9 @@ namespace PortCMIS.Client.Impl
         }
     }
 
+    /// <summary>
+    /// Content Stream Hash implementation.
+    /// </summary>
     public class ContentStreamHash : IContentStreamHash
     {
         /// <inheritdoc/>
@@ -1921,6 +1970,9 @@ namespace PortCMIS.Client.Impl
         }
     }
 
+    /// <summary>
+    /// Query Result implementation.
+    /// </summary>
     public class QueryResult : IQueryResult
     {
         private IDictionary<string, IPropertyData> propertiesById;
@@ -2087,6 +2139,9 @@ namespace PortCMIS.Client.Impl
         public IList<IRendition> Renditions { get; protected set; }
     }
 
+    /// <summary>
+    /// Change Event implementation.
+    /// </summary>
     public class ChangeEvent : ChangeEventInfo, IChangeEvent
     {
         /// <inheritdoc/>
@@ -2102,6 +2157,9 @@ namespace PortCMIS.Client.Impl
         public virtual IAcl Acl { get; set; }
     }
 
+    /// <summary>
+    /// Change Events implementation.
+    /// </summary>
     public class ChangeEvents : IChangeEvents
     {
         /// <inheritdoc/>
