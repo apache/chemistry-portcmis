@@ -262,8 +262,7 @@ namespace PortCMISTests
 
             Assert.IsTrue(count > 0);
 
-            IOperationContext oc = Session.CreateOperationContext();
-            oc.FilterString = "cmis:objectId,cmis:name";
+            IOperationContext oc = OperationContextUtils.CreateMinimumOperationContext(PropertyIds.ObjectTypeId, PropertyIds.Name);
 
             IFolder rootFolder = Session.GetRootFolder(oc);
             bool found = false;

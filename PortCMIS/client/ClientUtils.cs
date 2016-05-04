@@ -31,21 +31,31 @@ namespace PortCMIS.Client.Impl
     /// </summary>
     public class OperationContext : IOperationContext
     {
+        /// <summary>
+        /// Property selector for all properties ('*').
+        /// </summary>
         public const string PropertiesStar = "*";
+
+        /// <summary>
+        /// Rendition constant for 'no rendition' ('cmis:none').
+        /// </summary>
         public const string RenditionNone = "cmis:none";
 
-        private HashSet<string> filter;
+        private ISet<string> filter;
         private bool includeAllowableActions;
         private bool includeAcls;
         private IncludeRelationships? includeRelationships;
         private bool includePolicies;
-        private HashSet<string> renditionFilter;
+        private ISet<string> renditionFilter;
         private bool includePathSegments;
         private string orderBy;
         private bool cacheEnabled;
         private string cacheKey;
         private int maxItemsPerPage;
 
+        /// <summary>
+        /// Constructor with default values.
+        /// </summary>
         public OperationContext()
         {
             filter = null;
@@ -62,6 +72,9 @@ namespace PortCMIS.Client.Impl
             GenerateCacheKey();
         }
 
+        /// <summary>
+        /// Copy constructor.
+        /// </summary>
         public OperationContext(IOperationContext source)
         {
             filter = (source.Filter == null ? null : new HashSet<string>(source.Filter));
@@ -78,9 +91,12 @@ namespace PortCMIS.Client.Impl
             GenerateCacheKey();
         }
 
-        public OperationContext(HashSet<string> filter, bool includeAcls, bool includeAllowableActions,
-            bool includePolicies, IncludeRelationships includeRelationships, HashSet<string> renditionFilter,
-            bool includePathSegments, String orderBy, bool cacheEnabled, int maxItemsPerPage)
+        /// <summary>
+        /// Constructor with given values.
+        /// </summary>
+        public OperationContext(ISet<string> filter, bool includeAcls, bool includeAllowableActions,
+            bool includePolicies, IncludeRelationships includeRelationships, ISet<string> renditionFilter,
+            bool includePathSegments, string orderBy, bool cacheEnabled, int maxItemsPerPage)
         {
             this.filter = filter;
             this.includeAcls = includeAcls;
@@ -97,7 +113,7 @@ namespace PortCMIS.Client.Impl
         }
 
         /// <inheritdoc/>
-        public HashSet<string> Filter
+        public virtual ISet<string> Filter
         {
             get { return filter == null ? null : new HashSet<string>(filter); }
             set
@@ -138,7 +154,7 @@ namespace PortCMIS.Client.Impl
         }
 
         /// <inheritdoc/>
-        public string FilterString
+        public virtual string FilterString
         {
             get
             {
@@ -184,35 +200,35 @@ namespace PortCMIS.Client.Impl
         }
 
         /// <inheritdoc/>
-        public bool IncludeAllowableActions
+        public virtual bool IncludeAllowableActions
         {
             get { return includeAllowableActions; }
             set { includeAllowableActions = value; GenerateCacheKey(); }
         }
 
         /// <inheritdoc/>
-        public bool IncludeAcls
+        public virtual bool IncludeAcls
         {
             get { return includeAcls; }
             set { includeAcls = value; GenerateCacheKey(); }
         }
 
         /// <inheritdoc/>
-        public IncludeRelationships? IncludeRelationships
+        public virtual IncludeRelationships? IncludeRelationships
         {
             get { return includeRelationships; }
             set { includeRelationships = value; GenerateCacheKey(); }
         }
 
         /// <inheritdoc/>
-        public bool IncludePolicies
+        public virtual bool IncludePolicies
         {
             get { return includePolicies; }
             set { includePolicies = value; GenerateCacheKey(); }
         }
 
         /// <inheritdoc/>
-        public HashSet<string> RenditionFilter
+        public virtual ISet<string> RenditionFilter
         {
             get { return renditionFilter == null ? null : new HashSet<string>(renditionFilter); }
             set
@@ -251,7 +267,7 @@ namespace PortCMIS.Client.Impl
         }
 
         /// <inheritdoc/>
-        public string RenditionFilterString
+        public virtual string RenditionFilterString
         {
             get
             {
@@ -287,40 +303,43 @@ namespace PortCMIS.Client.Impl
         }
 
         /// <inheritdoc/>
-        public bool IncludePathSegments
+        public virtual bool IncludePathSegments
         {
             get { return includePathSegments; }
             set { includePathSegments = value; GenerateCacheKey(); }
         }
 
         /// <inheritdoc/>
-        public string OrderBy
+        public virtual string OrderBy
         {
             get { return orderBy; }
             set { orderBy = value; GenerateCacheKey(); }
         }
 
         /// <inheritdoc/>
-        public bool CacheEnabled
+        public virtual bool CacheEnabled
         {
             get { return cacheEnabled; }
             set { cacheEnabled = value; GenerateCacheKey(); }
         }
 
         /// <inheritdoc/>
-        public string CacheKey
+        public virtual string CacheKey
         {
             get { return cacheKey; }
         }
 
         /// <inheritdoc/>
-        public int MaxItemsPerPage
+        public virtual int MaxItemsPerPage
         {
             get { return maxItemsPerPage; }
             set { maxItemsPerPage = value; }
         }
 
-        protected void GenerateCacheKey()
+        /// <summary>
+        /// Generates a cache key from the current state of the operation context.
+        /// </summary>
+        protected virtual void GenerateCacheKey()
         {
             if (!cacheEnabled)
             {
@@ -344,6 +363,181 @@ namespace PortCMIS.Client.Impl
             }
         }
     }
+
+    /// <summary>
+    /// Operation Context helpers.
+    /// </summary>
+    public class OperationContextUtils
+    {
+        private OperationContextUtils()
+        {
+        }
+
+        /// <summary>
+        /// Creates a new operation context object.
+        /// </summary>
+        public static IOperationContext CreateOperationContext()
+        {
+            return new OperationContext();
+        }
+
+        /// <summary>
+        /// Copies an operation context object.
+        /// </summary>
+        public static IOperationContext CopyOperationContext(OperationContext context)
+        {
+            return new OperationContext(context);
+        }
+
+        /// <summary>
+        /// Creates a new operation context object with the given parameters.
+        /// </summary>
+        /// <remarks>
+        /// Caching is enabled.
+        /// </remarks>
+        public static IOperationContext CreateOperationContext(HashSet<string> filter, bool includeAcls,
+                bool includeAllowableActions, bool includePolicies, IncludeRelationships includeRelationships,
+                HashSet<string> renditionFilter, bool includePathSegments, string orderBy, bool cacheEnabled,
+                int maxItemsPerPage)
+        {
+            return new OperationContext(filter, includeAcls, includeAllowableActions, includePolicies,
+                    includeRelationships, renditionFilter, includePathSegments, orderBy, cacheEnabled, maxItemsPerPage);
+        }
+
+        /// <summary>
+        /// Creates a new operation context object that only selects the bare minimum.
+        /// </summary>
+        /// <remarks>
+        /// Caching is enabled.
+        /// </remarks>
+        public static IOperationContext CreateMinimumOperationContext()
+        {
+            return CreateMinimumOperationContext((string[])null);
+        }
+
+        /// <summary>
+        /// Creates a new operation context object that only selects the bare minimum plus the provided properties.
+        /// </summary>
+        /// <remarks>
+        /// Caching is enabled.
+        /// </remarks>
+        public static IOperationContext CreateMinimumOperationContext(params string[] property)
+        {
+            ISet<string> filter = new HashSet<string>();
+            filter.Add(PropertyIds.ObjectId);
+            filter.Add(PropertyIds.ObjectTypeId);
+            filter.Add(PropertyIds.BaseTypeId);
+
+            if (property != null)
+            {
+                foreach (string prop in property)
+                {
+                    filter.Add(prop);
+                }
+            }
+
+            return new OperationContext(filter, false, false, false, IncludeRelationships.None,
+                new HashSet<string>() { OperationContext.RenditionNone }, false, null, true, 100);
+        }
+
+        /// <summary>
+        /// Creates a new operation context object that selects everything.
+        /// </summary>
+        /// <remarks>
+        /// Caching is enabled.
+        /// </remarks>
+        public static IOperationContext CreateMaximumOperationContext()
+        {
+            return new OperationContext(new HashSet<string>() { OperationContext.PropertiesStar }, true,
+                true, true, IncludeRelationships.Both, new HashSet<string>() { "*" }, false, null, true, 100);
+        }
+
+        /// <summary>
+        /// Returns an unmodifiable view of the specified operation context.
+        /// </summary>
+        public static IOperationContext CreateReadOnlyOperationContext(IOperationContext context)
+        {
+            return new ReadOnlyOperationContext(context);
+        }
+
+        internal class ReadOnlyOperationContext : OperationContext
+        {
+            public ReadOnlyOperationContext(IOperationContext originalContext) : base(originalContext) { }
+
+            public override ISet<string> Filter
+            {
+                get { return base.Filter == null ? null : new HashSet<string>(base.Filter); }
+                set { throw new Exception("Not supported!"); }
+            }
+
+            public override string FilterString
+            {
+                get { return base.FilterString; }
+                set { throw new Exception("Not supported!"); }
+            }
+
+            public override bool IncludeAllowableActions
+            {
+                get { return base.IncludeAllowableActions; }
+                set { throw new Exception("Not supported!"); }
+            }
+
+            public override bool IncludeAcls
+            {
+                get { return base.IncludeAcls; }
+                set { throw new Exception("Not supported!"); }
+            }
+
+            public override IncludeRelationships? IncludeRelationships
+            {
+                get { return base.IncludeRelationships; }
+                set { throw new Exception("Not supported!"); }
+            }
+
+            public override bool IncludePolicies
+            {
+                get { return base.IncludePolicies; }
+                set { throw new Exception("Not supported!"); }
+            }
+
+            public override ISet<string> RenditionFilter
+            {
+                get { return base.RenditionFilter == null ? null : new HashSet<string>(base.RenditionFilter); }
+                set { throw new Exception("Not supported!"); }
+            }
+
+            public override string RenditionFilterString
+            {
+                get { return base.RenditionFilterString; }
+                set { throw new Exception("Not supported!"); }
+            }
+
+            public override bool IncludePathSegments
+            {
+                get { return base.IncludePathSegments; }
+                set { throw new Exception("Not supported!"); }
+            }
+
+            public override string OrderBy
+            {
+                get { return base.OrderBy; }
+                set { throw new Exception("Not supported!"); }
+            }
+
+            public override bool CacheEnabled
+            {
+                get { return base.CacheEnabled; }
+                set { throw new Exception("Not supported!"); }
+            }
+
+            public override int MaxItemsPerPage
+            {
+                get { return base.MaxItemsPerPage; }
+                set { throw new Exception("Not supported!"); }
+            }
+        }
+    }
+
 
     /// <summary>
     /// Object ID implementation.

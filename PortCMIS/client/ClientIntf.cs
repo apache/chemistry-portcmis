@@ -672,7 +672,7 @@ namespace PortCMIS.Client
         /// <remarks>
         /// This is a set of query names.
         /// </remarks>
-        HashSet<string> Filter { get; set; }
+        ISet<string> Filter { get; set; }
 
         /// <value>
         /// Gets and sets the property filter.
@@ -708,7 +708,7 @@ namespace PortCMIS.Client
         /// <remarks>
         /// This is a set of rendition kinds or MIME types.
         /// </remarks>
-        HashSet<string> RenditionFilter { get; set; }
+        ISet<string> RenditionFilter { get; set; }
 
         /// <value>
         /// Gets and sets the rendition filter.
