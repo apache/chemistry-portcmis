@@ -19,6 +19,9 @@
 
 namespace PortCMIS
 {
+    /// <summary>
+    /// Keys for permission mappings.
+    /// </summary>
     public static class PermissionMappingKeys
     {
         public const string CanGetDescendentsFolder = "canGetDescendents.Folder";

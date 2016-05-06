@@ -111,26 +111,14 @@ namespace PortCMISTests
             }
 
             // create folder
-            IDictionary<string, object> props = new Dictionary<string, object>();
-            props[PropertyIds.Name] = "porttest";
-            props[PropertyIds.ObjectTypeId] = "cmis:folder";
-
             IFolder root = Session.GetRootFolder();
-            IFolder newFolder = root.CreateFolder(props);
+            IFolder newFolder = CreateFolder(root, "porttest");
+
             Assert.IsNotNull(newFolder);
 
             // create document
-            props = new Dictionary<string, object>();
-            props[PropertyIds.Name] = "test.txt";
-            props[PropertyIds.ObjectTypeId] = "cmis:document";
-
-            byte[] contentBytes = Encoding.UTF8.GetBytes("Hello World");
-
-            ContentStream content = new ContentStream();
-            content.MimeType = "text/plain";
-            content.Stream = new MemoryStream(contentBytes);
-
-            IDocument newDoc = newFolder.CreateDocument(props, content, VersioningState.None);
+            string contentString = "Hello World";
+            IDocument newDoc = CreateTextDocument(newFolder, "test.txt", contentString);
             Assert.IsNotNull(newDoc);
 
             // get content
@@ -138,16 +126,9 @@ namespace PortCMISTests
             Assert.IsNotNull(newContent);
             Assert.IsNotNull(newContent.Stream);
 
-            MemoryStream memStream = new MemoryStream();
-            newContent.Stream.CopyTo(memStream);
-            byte[] newContentBytes = memStream.ToArray();
+            Assert.AreEqual(contentString, ConvertStreamToString(newContent.Stream));
 
-            Assert.AreEqual(contentBytes.Length, newContentBytes.Length);
-            for (int i = 0; i < contentBytes.Length; i++)
-            {
-                Assert.AreEqual(contentBytes[i], newContentBytes[i]);
-            }
-
+            // fetch it again to get the updated content stream length property
             IOperationContext ctxt = Session.CreateOperationContext();
             ctxt.FilterString = "*";
             ICmisObject newObj = Session.GetObject(newDoc, ctxt);
@@ -156,7 +137,7 @@ namespace PortCMISTests
             IDocument newDoc2 = (IDocument)newObj;
 
             Assert.AreEqual(newDoc.Name, newDoc2.Name);
-            Assert.AreEqual(contentBytes.Length, newDoc2.ContentStreamLength);
+            Assert.AreEqual(Encoding.UTF8.GetBytes(contentString).Length, newDoc2.ContentStreamLength);
 
             // delete document
             newDoc.Delete();
@@ -200,12 +181,8 @@ namespace PortCMISTests
             try
             {
                 // create folder
-                IDictionary<string, object> props = new Dictionary<string, object>();
-                props[PropertyIds.Name] = name1;
-                props[PropertyIds.ObjectTypeId] = "cmis:folder";
-
                 IFolder root = Session.GetRootFolder();
-                newFolder = root.CreateFolder(props);
+                newFolder = CreateFolder(root, name1);
                 Assert.IsNotNull(newFolder);
 
                 IFolder newFolder2 = (IFolder)Session.GetObject(newFolder, oc);
@@ -235,6 +212,45 @@ namespace PortCMISTests
                 }
             }
         }
+
+        [TestMethod]
+        public void TestUpdateContent()
+        {
+            IDocument doc = null;
+            try
+            {
+                // create document
+                string contentString1 = "11111";
+                doc = CreateTextDocument(Session.GetRootFolder(), "test.txt", contentString1);
+                Assert.IsNotNull(doc);
+
+                // get content
+                IContentStream content1 = doc.GetContentStream();
+                Assert.IsNotNull(content1);
+                Assert.IsNotNull(content1.Stream);
+
+                Assert.AreEqual(contentString1, ConvertStreamToString(content1.Stream));
+
+                // update content
+                string contentString2 = "22222";
+                doc.SetContentStream(ContentStreamUtils.CreateTextContentStream("test2.txt", contentString2), true);
+
+                // get content again
+                IContentStream content2 = doc.GetContentStream();
+                Assert.IsNotNull(content2);
+                Assert.IsNotNull(content2.Stream);
+
+                Assert.AreEqual(contentString2, ConvertStreamToString(content2.Stream));
+            }
+            finally
+            {
+                if (doc != null)
+                {
+                    doc.Delete();
+                }
+            }
+        }
+
 
         [TestMethod]
         public void TestQuery()

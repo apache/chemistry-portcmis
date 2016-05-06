@@ -135,7 +135,7 @@ namespace PortCMIS.Client
         ICmisBinding Binding { get; }
 
         /// <value>
-        /// Gets the default operation context.
+        /// Gets and sets the default operation context.
         /// </value>
         IOperationContext DefaultContext { get; set; }
 

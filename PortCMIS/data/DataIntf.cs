@@ -32,166 +32,361 @@ namespace PortCMIS.Data
     public interface IRepositoryInfo : IExtensionsData
     {
         /// <value>
-        /// Repository ID.
+        /// Gets the repository ID.
         /// </value>
         string Id { get; }
 
         /// <value>
-        /// Repository Name.
+        /// Gets the repository Name.
         /// </value>
         string Name { get; }
 
         /// <value>
-        /// Repository description.
+        /// Gets the repository description.
         /// </value>
         string Description { get; }
 
         /// <value>
-        /// Repository vendor.
+        /// Gets the repository vendor.
         /// </value>
         string VendorName { get; }
 
         /// <value>
-        /// Repository product name.
+        /// Gets the repository product name.
         /// </value>
         string ProductName { get; }
 
         /// <value>
-        /// Repository product version.
+        /// Gets the repository product version.
         /// </value>
         string ProductVersion { get; }
 
         /// <value>
-        /// Root folder ID.
+        /// Gets the root folder ID.
         /// </value>
         string RootFolderId { get; }
 
         /// <value>
-        /// Repository capabilities.
+        /// Gets the repository capabilities.
         /// </value>
         IRepositoryCapabilities Capabilities { get; }
 
         /// <value>
-        /// Repository ACL capabilities.
+        /// Gets the repository ACL capabilities.
         /// </value>
         IAclCapabilities AclCapabilities { get; }
 
         /// <value>
-        /// Latest change log token.
+        /// Gets the latest change log token.
         /// </value>
         string LatestChangeLogToken { get; }
 
         /// <value>
-        /// CMIS version (string).
+        /// Gets the CMIS version as string.
         /// </value>
         string CmisVersionSupported { get; }
 
         /// <value>
-        /// CMIS version (enum).
+        /// Gets the CMIS version as enum.
         /// </value>
         CmisVersion CmisVersion { get; }
 
         /// <value>
-        /// Repository thin client URI.
+        /// Gets the repository thin client URI.
         /// </value>
         string ThinClientUri { get; }
 
         /// <value>
-        /// Changes incomplete flag.
+        /// Gets the changes incomplete flag.
         /// </value>
         bool? ChangesIncomplete { get; }
 
         /// <value>
-        /// List of changable base types.
+        /// Gets the list of changable base types.
         /// </value>
         IList<BaseTypeId?> ChangesOnType { get; }
 
         /// <value>
-        /// Principal ID of an anonymous user, if supported.
+        /// Gets the principal ID of an anonymous user, if supported.
         /// </value>
         string PrincipalIdAnonymous { get; }
 
         /// <value>
-        /// Principal ID of an unauthenticated user, if supported.
+        /// Gets the principal ID of an unauthenticated user, if supported.
         /// </value>
         string PrincipalIdAnyone { get; }
 
         /// <value>
-        /// List of extension features.
+        /// Gets the list of extension features.
         /// </value>
         IList<IExtensionFeature> ExtensionFeatures { get; }
     }
 
+    /// <summary>
+    /// Repository Capabilities.
+    /// </summary>
     public interface IRepositoryCapabilities : IExtensionsData
     {
+        /// <value>
+        /// Gets the content Stream Updates capability.
+        /// </value>
         CapabilityContentStreamUpdates? ContentStreamUpdatesCapability { get; }
+
+        /// <value>
+        /// Gets the change log capability.
+        /// </value>
         CapabilityChanges? ChangesCapability { get; }
+
+        /// <value>
+        /// Gets the rendition capability.
+        /// </value>
         CapabilityRenditions? RenditionsCapability { get; }
+
+        /// <value>
+        /// Gets whether getDescendants is supported or not.
+        /// </value>
         bool? IsGetDescendantsSupported { get; }
+
+        /// <value>
+        /// Gets whether getFolderTree is supported or not.
+        /// </value>
         bool? IsGetFolderTreeSupported { get; }
+
+        /// <value>
+        /// Gets the OREDER BY capability.
+        /// </value>
         CapabilityOrderBy? OrderByCapability { get; }
+
+        /// <value>
+        /// Gets whether multi-filing is supported or not.
+        /// </value>
         bool? IsMultifilingSupported { get; }
+
+        /// <value>
+        /// Gets whether unfiling is supported or not.
+        /// </value>
         bool? IsUnfilingSupported { get; }
+
+        /// <value>
+        /// Gets whether version specific filing is supported or not.
+        /// </value>
         bool? IsVersionSpecificFilingSupported { get; }
+
+        /// <value>
+        /// Gets whether the PWC is searchable or not.
+        /// </value>
         bool? IsPwcSearchableSupported { get; }
+
+        /// <value>
+        /// Gets whether PWC is updapatable or not.
+        /// </value>
         bool? IsPwcUpdatableSupported { get; }
+
+        /// <value>
+        /// Gets whether query for all versions is supported or not.
+        /// </value>
         bool? IsAllVersionsSearchableSupported { get; }
+
+        /// <value>
+        /// Gets the query capability.
+        /// </value>
         CapabilityQuery? QueryCapability { get; }
+
+        /// <value>
+        /// Gets the Join capability.
+        /// </value>
         CapabilityJoin? JoinCapability { get; }
+
+        /// <value>
+        /// Gets the ACL capability.
+        /// </value>
         CapabilityAcl? AclCapability { get; }
+
+        /// <value>
+        /// Gets which property types are supported for new types.
+        /// </value>
         ICreatablePropertyTypes CreatablePropertyTypes { get; }
+
+        /// <value>
+        /// Gets which attributes can be set on a new type.
+        /// </value>
         INewTypeSettableAttributes NewTypeSettableAttributes { get; }
     }
 
+    /// <summary>
+    /// Property Type that are supported for new types.
+    /// </summary>
     public interface ICreatablePropertyTypes : IExtensionsData
     {
+        /// <value>
+        /// Gets the set of property types that are supported for new types. 
+        /// </value>
         ISet<PropertyType> CanCreate { get; }
     }
 
+    /// <summary>
+    /// Attributes that can be set on new types.
+    /// </summary>
     public interface INewTypeSettableAttributes : IExtensionsData
     {
+        /// <value>
+        /// Gets whether the type ID can be set or not.
+        /// </value>
         bool? CanSetId { get; }
+
+        /// <value>
+        /// Gets whether the local name can be set or not.
+        /// </value>
         bool? CanSetLocalName { get; }
+
+        /// <value>
+        /// Gets whether the local namespace can be set or not.
+        /// </value>
         bool? CanSetLocalNamespace { get; }
+
+        /// <value>
+        /// Gets whether the display name can be set or not.
+        /// </value>
         bool? CanSetDisplayName { get; }
+
+        /// <value>
+        /// Gets whether the query name can be set or not.
+        /// </value>
         bool? CanSetQueryName { get; }
+
+        /// <value>
+        /// Gets whether the description can be set or not.
+        /// </value>
         bool? CanSetDescription { get; }
+
+        /// <value>
+        /// Gets whether the creatable flag can be set or not.
+        /// </value>
         bool? CanSetCreatable { get; }
+
+        /// <value>
+        /// Gets whether the filable flag can be set or not.
+        /// </value>
         bool? CanSetFileable { get; }
+
+        /// <value>
+        /// Gets whether the queryable flag can be set or not.
+        /// </value>
         bool? CanSetQueryable { get; }
+
+        /// <value>
+        /// Gets whether the fulltext flag can be set or not.
+        /// </value>
         bool? CanSetFulltextIndexed { get; }
+
+        /// <value>
+        /// Gets whether the IncludedInSupertype flag can be set or not.
+        /// </value>
         bool? CanSetIncludedInSupertypeQuery { get; }
+
+        /// <value>
+        /// Gets whether the policy control can be set or not.
+        /// </value>
         bool? CanSetControllablePolicy { get; }
+
+        /// <value>
+        /// Gets whether the ACL control can be set or not.
+        /// </value>
         bool? CanSetControllableAcl { get; }
     }
 
+    /// <summary>
+    /// ACL capabilities.
+    /// </summary>
     public interface IAclCapabilities : IExtensionsData
     {
+        /// <value>
+        /// Gets which permission set is supported.
+        /// </value>
         SupportedPermissions? SupportedPermissions { get; }
+
+        /// <value>
+        /// Gets which ACL propagation is supported.
+        /// </value>
         AclPropagation? AclPropagation { get; }
+
+        /// <value>
+        /// Gets permission definitions.
+        /// </value>
         IList<IPermissionDefinition> Permissions { get; }
+
+        /// <value>
+        /// Gets permission mapping.
+        /// </value>
         IDictionary<string, IPermissionMapping> PermissionMapping { get; }
     }
 
+    /// <summary>
+    /// Permission definition.
+    /// </summary>
     public interface IPermissionDefinition : IExtensionsData
     {
+        /// <value>
+        /// Gets the permission ID.
+        /// </value>
         string Id { get; }
+
+        /// <value>
+        /// Gets the description of the permission.
+        /// </value>
         string Description { get; }
     }
 
+    /// <summary>
+    /// Permission mapping.
+    /// </summary>
     public interface IPermissionMapping : IExtensionsData
     {
+        /// <value>
+        /// Gets the permission key.
+        /// </value>
+        /// <seealso cref="PortCMIS.PermissionMappingKeys"/>
         string Key { get; }
+
+        /// <value>
+        /// Gets the required permissions.
+        /// </value>
         IList<string> Permissions { get; }
     }
 
+    /// <summary>
+    /// Extension feature.
+    /// </summary>
     public interface IExtensionFeature : IExtensionsData
     {
+        /// <value>
+        /// Gets the ID of the feature.
+        /// </value>
         string Id { get; }
+
+        /// <value>
+        /// Gets the URL of the feature.
+        /// </value>
         string Url { get; }
+
+        /// <value>
+        /// Gets the name of the feature.
+        /// </value>
         string CommonName { get; }
+
+        /// <value>
+        /// Gets the version label of the feature.
+        /// </value>
         string VersionLabel { get; }
+
+        /// <value>
+        /// Gets the description of the feature.
+        /// </value>
         string Description { get; }
+
+        /// <value>
+        /// Gets a feature specific set of data.
+        /// </value>
         IDictionary<string, string> FeatureData { get; }
     }
 
@@ -736,33 +931,88 @@ namespace PortCMIS.Data
     /// </summary>
     public interface IObjectList : IExtensionsData
     {
+        /// <value>
+        /// Gets the list of objects.
+        /// </value>
         IList<IObjectData> Objects { get; }
+
+        /// <value>
+        /// Gets whether there are more objects, if known.
+        /// </value>
         bool? HasMoreItems { get; }
+
+        /// <value>
+        /// Gets total number of objects in the list, if known.
+        /// </value>
         BigInteger? NumItems { get; }
     }
 
+    /// <summary>
+    /// Object in a folder.
+    /// </summary>
     public interface IObjectInFolderData : IExtensionsData
     {
+        /// <value>
+        /// Gets the object.
+        /// </value>
         IObjectData Object { get; }
+
+        /// <value>
+        /// Get the path segment of the object in the folder.
+        /// </value>
         string PathSegment { get; }
     }
 
+    /// <summary>
+    /// List of objects in a folder.
+    /// </summary>
     public interface IObjectInFolderList : IExtensionsData
     {
+        /// <value>
+        /// Gets the list of objects.
+        /// </value>
         IList<IObjectInFolderData> Objects { get; }
+
+        /// <value>
+        /// Gets whether there are more objects, if known.
+        /// </value>
         bool? HasMoreItems { get; }
+
+        /// <value>
+        /// Gets total number of objects in the list, if known.
+        /// </value>
         BigInteger? NumItems { get; }
     }
 
+    /// <summary>
+    /// Tree node of objects in a folder.
+    /// </summary>
     public interface IObjectInFolderContainer : IExtensionsData
     {
+        /// <value>
+        /// Gets the object.
+        /// </value>
         IObjectInFolderData Object { get; }
+
+        /// <value>
+        /// Gets the children of the object, if any.
+        /// </value>
         IList<IObjectInFolderContainer> Children { get; }
     }
 
+    /// <summary>
+    /// Object parent.
+    /// </summary>
     public interface IObjectParentData : IExtensionsData
     {
+        /// <value>
+        /// Gets the parent object.
+        /// </value>
         IObjectData Object { get; }
+
+        /// <value>
+        /// Gets the relative path segment of the object in the parent folder.
+        /// </value>
         string RelativePathSegment { get; }
     }
 

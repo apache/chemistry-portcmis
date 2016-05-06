@@ -17,7 +17,7 @@
 * under the License.
 */
 
-using PortCMIS.binding;
+using PortCMIS.Binding;
 using PortCMIS.Binding.Http;
 using PortCMIS.Binding.Impl;
 using PortCMIS.Binding.Services;

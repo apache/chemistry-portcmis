@@ -17,10 +17,12 @@
 * under the License.
 */
 
+using PortCMIS.Data;
 using PortCMIS.Enums;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Numerics;
 using System.Text;
 
@@ -925,6 +927,139 @@ namespace PortCMIS.Client.Impl
             current = items[IncrementSkipOffset()];
 
             return true;
+        }
+    }
+
+    /// <summary>
+    /// Content Stream helpers.
+    /// </summary>
+    public class ContentStreamUtils
+    {
+        /// <summary>Octet Stream MIME type.</summary>
+        private const string OctetStream = "application/octet-stream";
+
+        private ContentStreamUtils()
+        {
+        }
+
+        /// <summary>
+        /// Creates a content stream object.
+        /// </summary>
+        /// <param name="filename">the filename</param>
+        /// <param name="length">the length</param>
+        /// <param name="mimetype">the MIME type</param>
+        /// <param name="stream">the stream</param>
+        /// <returns>the content stream</returns>
+        public static IContentStream CreateContentStream(string filename, BigInteger? length, string mimetype, Stream stream)
+        {
+            return new ContentStream()
+            {
+                FileName = CheckFilename(filename),
+                Length = length,
+                MimeType = CheckMimeType(mimetype),
+                Stream = stream
+            };
+        }
+
+        // --- byte arrays ---
+
+        /// <summary>
+        /// Creates a content stream object from a byte array.
+        /// </summary>
+        /// <param name="filename">the filename</param>
+        /// <param name="contentBytes">the byte array</param>
+        /// <param name="mimetype">the MIME type</param>
+        /// <returns>the content stream</returns>
+        public static IContentStream CreateByteArrayContentStream(string filename, byte[] contentBytes, string mimetype)
+        {
+            if (contentBytes == null)
+            {
+                return CreateContentStream(filename, null, mimetype, null);
+            }
+
+            return CreateByteArrayContentStream(filename, contentBytes, 0, contentBytes.Length, mimetype);
+        }
+
+        /// <summary>
+        /// Creates a content stream object from a byte array.
+        /// </summary>
+        /// <param name="filename">the filename</param>
+        /// <param name="contentBytes">the byte array</param>
+        /// <param name="index">the begin of the stream in the byte array</param>
+        /// <param name="count">the length of the stream</param>
+        /// <param name="mimetype">the MIME type</param>
+        /// <returns>the content stream</returns>
+        public static IContentStream CreateByteArrayContentStream(string filename, byte[] contentBytes, int index, int count, string mimetype)
+        {
+            if (contentBytes == null)
+            {
+                return CreateContentStream(filename, null, mimetype, null);
+            }
+
+            if (index < 0 || index > contentBytes.Length)
+            {
+                throw new ArgumentOutOfRangeException("index");
+            }
+            else if (count < 0 || (index + count) > contentBytes.Length || (index + count) < 0)
+            {
+                throw new ArgumentOutOfRangeException("count");
+            }
+
+            return CreateContentStream(filename, count, mimetype, new MemoryStream(contentBytes, index, count));
+        }
+
+        // --- strings ---
+
+        /// <summary>
+        /// Creates a content stream object from a string.
+        /// </summary>
+        /// <param name="filename">the filename</param>
+        /// <param name="content">the content</param>
+        /// <returns>the content stream</returns>
+        public static IContentStream CreateTextContentStream(string filename, string content)
+        {
+            return CreateTextContentStream(filename, content, "text/plain; charset=UTF-8");
+        }
+
+        /// <summary>
+        /// Creates a content stream object from a string.
+        /// </summary>
+        /// <param name="filename">the filename</param>
+        /// <param name="content">the content</param>
+        /// <param name="mimetype">the MIME type</param>
+        /// <returns>the content stream</returns>
+        public static IContentStream CreateTextContentStream(string filename, string content, string mimetype)
+        {
+            byte[] contentBytes = Encoding.UTF8.GetBytes(content);
+            return CreateByteArrayContentStream(filename, contentBytes, CheckMimeType(mimetype));
+        }
+
+        // ---
+
+        private static string CheckFilename(string filename)
+        {
+            if (filename == null || filename.Length == 0)
+            {
+                return "content";
+            }
+
+            return filename;
+        }
+
+        private static string CheckMimeType(string mimetype)
+        {
+            if (mimetype == null)
+            {
+                return OctetStream;
+            }
+
+            string result = mimetype.Trim();
+            if (result.Length < 3)
+            {
+                return OctetStream;
+            }
+
+            return result;
         }
     }
 

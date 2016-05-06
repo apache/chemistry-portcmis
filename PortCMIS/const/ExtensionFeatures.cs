@@ -54,5 +54,18 @@ namespace PortCMIS.Const
             VersionLabel = "1.0",
             Description = "Adds the property cmis:contentStreamHash, which represents the hash of the document content."
         };
+
+        /// <summary>
+        /// Latest Accessible State extension.
+        /// </summary>
+        public readonly static IExtensionFeature LatestAccessibleState = new ExtensionFeature()
+        {
+            Id = "http://docs.oasis-open.org/ns/cmis/extension/latestAccessibleState/1.1",
+            Url = "https://www.oasis-open.org/committees/tc_home.php?wg_abbrev=cmis",
+            CommonName = "Latest Accessible State",
+            VersionLabel = "1.1",
+            Description = "This extension provides for an identifier of each cmis:document that retrieves "
+                    + "the latest accessible state of the document whether the document is versioned or not."
+        };
     }
 }

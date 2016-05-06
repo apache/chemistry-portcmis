@@ -389,7 +389,11 @@ namespace PortCMIS.Data
         /// <inheritdoc/>
         public ITypeMutability TypeMutability { get; set; }
 
-        public void Initialize(ITypeDefinition typeDefinition)
+        /// <summary>
+        /// Initializes the type definition object.
+        /// </summary>
+        /// <param name="typeDefinition">the type definition</param>
+        protected void Initialize(ITypeDefinition typeDefinition)
         {
             Id = typeDefinition.Id;
             LocalName = typeDefinition.LocalName;
@@ -414,6 +418,11 @@ namespace PortCMIS.Data
                 }
             }
         }
+
+        /// <summary>
+        /// Adds a property type definition.
+        /// </summary>
+        /// <param name="propertyDefinition">the property type definition</param>
         public void AddPropertyDefinition(IPropertyDefinition propertyDefinition)
         {
             if (propertyDefinition == null || propertyDefinition.Id == null)
@@ -424,6 +433,7 @@ namespace PortCMIS.Data
             propertyDefintionDict[propertyDefinition.Id] = propertyDefinition;
         }
 
+        /// <inheritdoc/>
         public override string ToString()
         {
             return "TypeDefinition: " + BaseTypeId + " (" + Id + ")";
@@ -572,6 +582,9 @@ namespace PortCMIS.Data
         public bool? IsOpenChoice { get; set; }
     }
 
+    /// <summary>
+    /// Choice implementation.
+    /// </summary>
     public class Choice<T> : IChoice<T>
     {
         /// <inheritdoc/>
@@ -584,6 +597,9 @@ namespace PortCMIS.Data
         public IList<IChoice<T>> Choices { get; set; }
     }
 
+    /// <summary>
+    /// Boolean property definition implementation.
+    /// </summary>
     public class PropertyBooleanDefinition : PropertyDefinition, IPropertyBooleanDefinition
     {
         /// <inheritdoc/>
@@ -593,6 +609,9 @@ namespace PortCMIS.Data
         public IList<IChoice<bool?>> Choices { get; set; }
     }
 
+    /// <summary>
+    /// DataTime property definition implementation.
+    /// </summary>
     public class PropertyDateTimeDefinition : PropertyDefinition, IPropertyDateTimeDefinition
     {
         /// <inheritdoc/>
@@ -605,6 +624,9 @@ namespace PortCMIS.Data
         public DateTimeResolution? DateTimeResolution { get; set; }
     }
 
+    /// <summary>
+    /// Decimal property definition implementation.
+    /// </summary>
     public class PropertyDecimalDefinition : PropertyDefinition, IPropertyDecimalDefinition
     {
         /// <inheritdoc/>
@@ -623,6 +645,9 @@ namespace PortCMIS.Data
         public DecimalPrecision? Precision { get; set; }
     }
 
+    /// <summary>
+    /// HTML property definition implementation.
+    /// </summary>
     public class PropertyHtmlDefinition : PropertyDefinition, IPropertyHtmlDefinition
     {
         /// <inheritdoc/>
@@ -632,6 +657,9 @@ namespace PortCMIS.Data
         public IList<IChoice<string>> Choices { get; set; }
     }
 
+    /// <summary>
+    /// ID property definition implementation.
+    /// </summary>
     public class PropertyIdDefinition : PropertyDefinition, IPropertyIdDefinition
     {
         /// <inheritdoc/>
@@ -641,6 +669,9 @@ namespace PortCMIS.Data
         public IList<IChoice<string>> Choices { get; set; }
     }
 
+    /// <summary>
+    /// Integer property definition implementation.
+    /// </summary>
     public class PropertyIntegerDefinition : PropertyDefinition, IPropertyIntegerDefinition
     {
         /// <inheritdoc/>
@@ -656,6 +687,9 @@ namespace PortCMIS.Data
         public BigInteger? MaxValue { get; set; }
     }
 
+    /// <summary>
+    /// String property definition implementation.
+    /// </summary>
     public class PropertyStringDefinition : PropertyDefinition, IPropertyStringDefinition
     {
         /// <inheritdoc/>
@@ -668,6 +702,9 @@ namespace PortCMIS.Data
         public BigInteger? MaxLength { get; set; }
     }
 
+    /// <summary>
+    /// URI property definition implementation.
+    /// </summary>
     public class PropertyUriDefinition : PropertyDefinition, IPropertyUriDefinition
     {
         /// <inheritdoc/>

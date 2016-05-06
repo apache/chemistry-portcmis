@@ -847,6 +847,13 @@ namespace PortCMIS.Client.Impl
     /// </summary>
     public class Document : AbstractFileableCmisObject, IDocument
     {
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="session">the session object</param>
+        /// <param name="objectType">the object type</param>
+        /// <param name="objectData">the low-level data object</param>
+        /// <param name="context">the operation context used to fetch this object</param>
         public Document(ISession session, IObjectType objectType, IObjectData objectData, IOperationContext context)
         {
             Initialize(session, objectType, objectData, context);
@@ -1255,6 +1262,13 @@ namespace PortCMIS.Client.Impl
     /// </summary>
     public class Folder : AbstractFileableCmisObject, IFolder
     {
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="session">the session object</param>
+        /// <param name="objectType">the object type</param>
+        /// <param name="objectData">the low-level data object</param>
+        /// <param name="context">the operation context used to fetch this object</param>
         public Folder(ISession session, IObjectType objectType, IObjectData objectData, IOperationContext context)
         {
             Initialize(session, objectType, objectData, context);
@@ -1664,6 +1678,13 @@ namespace PortCMIS.Client.Impl
     /// </summary>
     public class Policy : AbstractFileableCmisObject, IPolicy
     {
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="session">the session object</param>
+        /// <param name="objectType">the object type</param>
+        /// <param name="objectData">the low-level data object</param>
+        /// <param name="context">the operation context used to fetch this object</param>
         public Policy(ISession session, IObjectType objectType, IObjectData objectData, IOperationContext context)
         {
             Initialize(session, objectType, objectData, context);
@@ -1678,7 +1699,13 @@ namespace PortCMIS.Client.Impl
     /// </summary>
     public class Relationship : AbstractCmisObject, IRelationship
     {
-
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="session">the session object</param>
+        /// <param name="objectType">the object type</param>
+        /// <param name="objectData">the low-level data object</param>
+        /// <param name="context">the operation context used to fetch this object</param>
         public Relationship(ISession session, IObjectType objectType, IObjectData objectData, IOperationContext context)
         {
             Initialize(session, objectType, objectData, context);
@@ -1762,6 +1789,13 @@ namespace PortCMIS.Client.Impl
     /// </summary>
     public class Item : AbstractFileableCmisObject, IItem
     {
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="session">the session object</param>
+        /// <param name="objectType">the object type</param>
+        /// <param name="objectData">the low-level data object</param>
+        /// <param name="context">the operation context used to fetch this object</param>
         public Item(ISession session, IObjectType objectType, IObjectData objectData, IOperationContext context)
         {
             Initialize(session, objectType, objectData, context);
@@ -1773,6 +1807,11 @@ namespace PortCMIS.Client.Impl
     /// </summary>
     public class Property : IProperty
     {
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="propertyDefinition">the property definition</param>
+        /// <param name="values">the property values</param>
         public Property(IPropertyDefinition propertyDefinition, IList<object> values)
         {
             PropertyDefinition = propertyDefinition;
@@ -1873,6 +1912,19 @@ namespace PortCMIS.Client.Impl
         private ISession session;
         private string objectId;
 
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="session">the session objec</param>
+        /// <param name="objectId">the object ID</param>
+        /// <param name="streamId">the stream ID</param>
+        /// <param name="mimeType">the MIME type</param>
+        /// <param name="length">the length in bytes, if known</param>
+        /// <param name="kind">the kind</param>
+        /// <param name="title">the title</param>
+        /// <param name="height">the thumbnail height</param>
+        /// <param name="width">the thumbnail width</param>
+        /// <param name="renditionDocumentId">the ID of the stand-alone rendition document, if it exists</param>
         public Rendition(ISession session, string objectId, string streamId, string mimeType, BigInteger? length, string kind,
             string title, BigInteger? height, BigInteger? width, string renditionDocumentId)
         {
@@ -1923,6 +1975,27 @@ namespace PortCMIS.Client.Impl
     /// </summary>
     public class ContentStreamHash : IContentStreamHash
     {
+        /// <summary>Algorithm MD5</summary>
+        public const string AlgorithmMD5 = "md5";
+
+        /// <summary>Algorithm sha-1</summary>
+        public const string AlgorithmSHA1 = "sha-1";
+
+        /// <summary>Algorithm sha-224</summary>
+        public const string AlgorithmSHA224 = "sha-224";
+
+        /// <summary>Algorithm sha-256</summary>
+        public const string AlgorithmSHA256 = "sha-256";
+
+        /// <summary>Algorithm sha-384</summary>
+        public const string AlgorithmSHA384 = "sha-384";
+
+        /// <summary>Algorithm sha-512</summary>
+        public const string AlgorithmSHA512 = "sha-512";
+
+        /// <summary>Algorithm sha-3</summary>
+        public const string AlgorithmSHA3 = "sha-3";
+
         /// <inheritdoc/>
         public string PropertyValue { get; protected set; }
 
@@ -1932,6 +2005,10 @@ namespace PortCMIS.Client.Impl
         /// <inheritdoc/>
         public string Hash { get; protected set; }
 
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="propertyValue">a property value</param>
         public ContentStreamHash(string propertyValue)
         {
             PropertyValue = propertyValue;
@@ -1952,6 +2029,11 @@ namespace PortCMIS.Client.Impl
             Hash = pv.Substring(algEnd + 1).Replace(" ", "").ToLowerInvariant();
         }
 
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="algorithm">the algorithm</param>
+        /// <param name="hashStr">the hash string</param>
         public ContentStreamHash(string algorithm, string hashStr)
         {
             if (algorithm == null || algorithm.Trim().Length == 0)

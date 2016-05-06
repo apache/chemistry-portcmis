@@ -223,21 +223,52 @@ namespace PortCMIS.Client.Impl
             CreateAndCheckoutUpdatability.Add(Updatability.WhenCheckedOut);
         }
 
+        /// <summary>
+        /// Initial default operation context.
+        /// </summary>
         protected static IOperationContext FallbackContext = new OperationContext(null, false, true, false, IncludeRelationships.None, null, true, null, true, 100);
 
+        /// <summary>
+        /// Session parameters
+        /// </summary>
         protected IDictionary<string, string> parameters;
         private object sessionLock = new object();
 
+        /// <value>
+        /// Gets the low-level binding.
+        /// </value>
         public ICmisBinding Binding { get; protected set; }
+
+        /// <value>
+        /// Gets the repository info.
+        /// </value>
         public IRepositoryInfo RepositoryInfo { get; protected set; }
+
+        /// <value>
+        /// Gets the repository ID.
+        /// </value>
         public string RepositoryId { get { return RepositoryInfo.Id; } }
 
         public IObjectFactory ObjectFactory { get; protected set; }
+
+        /// <summary>
+        /// Authentication provider.
+        /// </summary>
         protected IAuthenticationProvider AuthenticationProvider { get; set; }
+
+        /// <summary>
+        /// Object and path cache.
+        /// </summary>
         protected ICache Cache { get; set; }
+
+        /// <summary>
+        /// Indicating if the path cache should be used.
+        /// </summary>
         protected bool cachePathOmit;
 
         private IOperationContext context = FallbackContext;
+
+        /// <inheritdoc/>
         public IOperationContext DefaultContext
         {
             get
@@ -256,6 +287,13 @@ namespace PortCMIS.Client.Impl
             }
         }
 
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="parameters">the session parameters</param>
+        /// <param name="objectFactory">an object factory, if available</param>
+        /// <param name="authenticationProvider">an authentication provider, if available</param>
+        /// <param name="cache">a cache, if available</param>
         public Session(IDictionary<string, string> parameters, IObjectFactory objectFactory, IAuthenticationProvider authenticationProvider, ICache cache)
         {
             if (parameters == null)
@@ -299,6 +337,10 @@ namespace PortCMIS.Client.Impl
             }
         }
 
+        /// <summary>
+        /// Create the cache.
+        /// </summary>
+        /// <returns>the cache object</returns>
         protected ICache CreateCache()
         {
             try
@@ -331,6 +373,10 @@ namespace PortCMIS.Client.Impl
             }
         }
 
+        /// <summary>
+        /// Creates the object factory.
+        /// </summary>
+        /// <returns>the object factory</returns>
         protected IObjectFactory CreateObjectFactory()
         {
             try

@@ -19,6 +19,9 @@
 
 namespace PortCMIS
 {
+    /// <summary>
+    /// Binding type.
+    /// </summary>
     public static class BindingType
     {
         /// <summary>Binding type AtomPub</summary>

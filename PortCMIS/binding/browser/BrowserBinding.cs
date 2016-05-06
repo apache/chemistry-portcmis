@@ -17,7 +17,7 @@
 * under the License.
 */
 
-using PortCMIS.binding;
+using PortCMIS.Binding;
 using PortCMIS.Binding.Browser.Json;
 using PortCMIS.Binding.Http;
 using PortCMIS.Binding.Impl;
@@ -295,7 +295,7 @@ namespace PortCMIS.Binding.Browser
             if (Stream.Stream != null)
             {
                 StreamContent streamContent = new StreamContent(Stream.Stream);
-                streamContent.Headers.ContentType = new MediaTypeHeaderValue(Stream.MimeType ?? "application/octet-stream");
+                streamContent.Headers.ContentType = MediaTypeHeaderValue.Parse(Stream.MimeType ?? "application/octet-stream");
 
                 content.Add(streamContent, "content", Stream.FileName ?? "content");
             }
