@@ -765,15 +765,12 @@ namespace PortCMIS.Client
     /// <summary>
     /// Query Statement.
     /// </summary>
-    /// <remarks>
-    /// Sample code:
-    /// 
-    /// <c>
+    /// <example>
     /// DateTime cal = ...
-    /// Folder folder = ...
+    /// IFolder folder = ...
     /// 
     /// IQueryStatement qs = 
-    ///   session.createQueryStatement("SELECT ?, ? FROM ? WHERE ? > TIMESTAMP ? AND IN_FOLDER(?) OR ? IN (?)");
+    ///   Session.CreateQueryStatement("SELECT ?, ? FROM ? WHERE ? > TIMESTAMP ? AND IN_FOLDER(?) OR ? IN (?)");
     /// 
     /// qs.SetProperty(1, "cmis:document", "cmis:name");
     /// qs.SetProperty(2, "cmis:document", "cmis:objectId");
@@ -788,8 +785,7 @@ namespace PortCMIS.Client
     /// qs.SetString(8, "bob", "tom", "lisa"); 
     /// 
     /// string statement = qs.ToQueryString();
-    /// </c>
-    /// </remarks>
+    /// </example>
     public interface IQueryStatement
     {
         /// <summary>
@@ -811,6 +807,7 @@ namespace PortCMIS.Client
         /// Sets the designated parameter to the query name of the given property.
         /// </summary>
         /// <param name='parameterIndex'>the parameter index (one-based)</param>
+        /// <param name='typeId'>the type ID</param>
         /// <param name='propertyId'>the property ID</param>
         void SetProperty(int parameterIndex, string typeId, string propertyId);
 
@@ -851,9 +848,8 @@ namespace PortCMIS.Client
         void SetStringLike(int parameterIndex, string str);
 
         /// <summary>
-        /// Sets the designated parameter to the given string in a CMIS contains
-        /// statement.
-        /// </summary>S
+        /// Sets the designated parameter to the given string in a CMIS contains statement.
+        /// </summary>
         /// <remarks>
         /// Note that the CMIS specification requires two levels of escaping. The
         /// first level escapes ', ", \ characters to \', \" and \\. The characters
@@ -866,10 +862,60 @@ namespace PortCMIS.Client
         /// On the second level grammar ", ', - and \ are escaped with a \. See the
         /// spec for further details.
         /// <p>
-        /// Summary (input --> first level escaping --> second level escaping and
-        /// output):/// -->/// -->/// ? --> ? --> ? - --> - --> - \ --> \\ --> \\\\ (for
-        /// any other character following other than/// ? -) \* --> \* --> \\* \? -->
-        /// \? --> \\? \- --> \- --> \\- ' --> \' --> \\\' " --> \" --> \\\"
+        /// Summary:
+        /// <table summary="Escaping Summary">
+        /// <tr>
+        /// <th>input</th>
+        /// <th>first level escaping</th>
+        /// <th>second level escaping</th>
+        /// </tr>
+        /// <tr>
+        /// <td>*</td>
+        /// <td>*</td>
+        /// <td>*</td>
+        /// </tr>
+        /// <tr>
+        /// <td>?</td>
+        /// <td>?</td>
+        /// <td>?</td>
+        /// </tr>
+        /// <tr>
+        /// <td>-</td>
+        /// <td>-</td>
+        /// <td>-</td>
+        /// </tr>
+        /// <tr>
+        /// <td>\</td>
+        /// <td>\\</td>
+        /// <td>\\\\<br>
+        /// <em>(for any other character following other than///?-)</em></td>
+        /// </tr>
+        /// <tr>
+        /// <td>\*</td>
+        /// <td>\*</td>
+        /// <td>\\*</td>
+        /// </tr>
+        /// <tr>
+        /// <td>\?</td>
+        /// <td>\?</td>
+        /// <td>\\?</td>
+        /// </tr>
+        /// <tr>
+        /// <td>\-</td>
+        /// <td>\-</td>
+        /// <td>\\-+</td>
+        /// </tr>
+        /// <tr>
+        /// <td>'</td>
+        /// <td>\'</td>
+        /// <td>\\\'</td>
+        /// </tr>
+        /// <tr>
+        /// <td>"</td>
+        /// <td>\"</td>
+        /// <td>\\\"</td>
+        /// </tr>
+        /// </table>
         /// </remarks>
         /// <param name='parameterIndex'>the parameter index (one-based)</param>
         /// <param name='str'>the CONTAINS string</param>
@@ -1113,7 +1159,7 @@ namespace PortCMIS.Client
         IDocument GetRenditionDocument();
 
         /// <summary>
-        /// * Returns the rendition document using the provided operation context if the rendition is a stand-alone document.
+        /// Returns the rendition document using the provided operation context if the rendition is a stand-alone document.
         /// </summary>
         /// <param name="context">the operation context</param>
         /// <returns>the rendition document or <c>null</c> if there is no rendition document</returns>

@@ -127,7 +127,7 @@ namespace PortCMIS.Binding.Http
             {
                 foreach (KeyValuePair<string, string> header in headers)
                 {
-                    request.Headers.Add(header.Key, header.Value);
+                    request.Headers.TryAppendWithoutValidation(header.Key, header.Value);
                 }
             }
 
