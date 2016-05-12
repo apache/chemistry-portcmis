@@ -28,7 +28,6 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace PortCMIS.Binding
 {
@@ -253,7 +252,7 @@ namespace PortCMIS.Binding
     public interface IAuthenticationProvider
     {
         /// <value>
-        /// Gets the binding session instance
+        /// Gets the binding session instance.
         /// </value>
         IBindingSession Session { get; set; }
     }
@@ -283,7 +282,7 @@ namespace PortCMIS.Binding
     }
 
     /// <summary>
-    /// Base implementation of an authentication provider.
+    /// Base implementation of a portable authentication provider.
     /// </summary>
     public abstract class AbstractAuthenticationProvider : IPortableAuthenticationProvider
     {

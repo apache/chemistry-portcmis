@@ -26,6 +26,9 @@ using Windows.Web.Http.Headers;
 
 namespace PortCMIS.Binding
 {
+    /// <summary>
+    /// Authentication provider interface for the Windows HTTP client.
+    /// </summary>
     public interface IWindowsAuthenticationProvider : IAuthenticationProvider
     {
         void PrepareHttpClientFilter(HttpBaseProtocolFilter httpClientFilter);
@@ -33,6 +36,9 @@ namespace PortCMIS.Binding
         void HandleResponse(HttpResponseMessage httpResponseMessage);
     }
 
+    /// <summary>
+    /// Base implementation of a Windows authentication provider.
+    /// </summary>
     public abstract class AbstractWindowsAuthenticationProvider : IWindowsAuthenticationProvider
     {
         public IBindingSession Session { get; set; }
@@ -63,6 +69,9 @@ namespace PortCMIS.Binding
         }
     }
 
+    /// <summary>
+    /// Standard Authentication Provider for Windows.
+    /// </summary>
     public class StandardWindowsAuthenticationProvider : AbstractWindowsAuthenticationProvider
     {
         public string BearerToken { get { return Session.GetValue(SessionParameter.OAuthBearerToken) as string; } }

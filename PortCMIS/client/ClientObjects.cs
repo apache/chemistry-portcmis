@@ -2060,11 +2060,21 @@ namespace PortCMIS.Client.Impl
         private IDictionary<string, IPropertyData> propertiesById;
         private IDictionary<string, IPropertyData> propertiesByQueryName;
 
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="session">the current session</param>
+        /// <param name="objectData">the query hit</param>
         public QueryResult(ISession session, IObjectData objectData)
         {
             Initialize(session, objectData);
         }
 
+        /// <summary>
+        /// Initializes the query result object.
+        /// </summary>
+        /// <param name="session">the current session</param>
+        /// <param name="objectData">the query hit</param>
         protected void Initialize(ISession session, IObjectData objectData)
         {
             if (objectData != null)

@@ -23,13 +23,9 @@ using PortCMIS.Client;
 using PortCMIS.Client.Impl;
 using PortCMIS.Data;
 using PortCMIS.Enums;
-using PortCMIS.Exceptions;
-using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace PortCMISTests.Framework
 {

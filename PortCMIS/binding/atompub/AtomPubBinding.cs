@@ -1909,7 +1909,7 @@ namespace PortCMIS.Binding.AtomPub
             return result;
         }
 
-        public IObjectData GetFolderParent(string repositoryId, string folderId, string filter, ExtensionsData extension)
+        public IObjectData GetFolderParent(string repositoryId, string folderId, string filter, IExtensionsData extension)
         {
             IObjectData result = null;
 
@@ -2683,7 +2683,7 @@ namespace PortCMIS.Binding.AtomPub
         }
 
         public IFailedToDeleteData DeleteTree(string repositoryId, string folderId, bool? allVersions, UnfileObject? unfileObjects,
-            bool? continueOnFailure, ExtensionsData extension)
+            bool? continueOnFailure, IExtensionsData extension)
         {
             // find the down links
             string link = LoadLink(repositoryId, folderId, BindingConstants.RelDown, null);

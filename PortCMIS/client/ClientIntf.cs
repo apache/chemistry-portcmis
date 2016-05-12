@@ -24,10 +24,7 @@ using PortCMIS.Enums;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PortCMIS.Client
 {
@@ -108,16 +105,27 @@ namespace PortCMIS.Client
     /// </summary>
     /// <remarks>
     /// <para>
-    /// Not all operations might be supported by the connected repository. Either PortCMIS or the repository will 
-    /// throw an exception if an unsupported operation is called. 
-    /// The capabilities of the repository can be discovered by evaluating the repository info 
+    /// CMIS itself is stateless. PortCMIS uses the concept of a session to cache 
+    /// data across calls and to deal with user authentication. The session object is
+    /// also used as entry point to all CMIS operations and objects. Because a
+    /// session is only a client side concept, the session object needs not to be
+    /// closed or released when it's not needed anymore.
+    /// </para>
+    /// <para>
+    /// Not all operations provided by this API might be supported by the connected
+    /// repository. Either PortCMIS or the repository will throw an exception if an
+    /// unsupported operation is called. The capabilities of the repository can be
+    /// discovered by evaluating the repository info 
     /// (see <see cref="RepositoryInfo"/>).
     /// </para>
     /// <para>
-    /// Almost all methods might throw exceptions derived from <see cref="PortCMIS.Exceptions.CmisBaseException"/>!
+    /// Almost all methods might throw exceptions derived from <see cref="PortCMIS.Exceptions.CmisBaseException"/>.
+    /// See the CMIS specification for a list of all operations and their exceptions. Note that
+    /// some incompliant repositories might throw other exception than you expect.
     /// </para>
     /// <para>
-    /// (Please refer to the <a href="http://docs.oasis-open.org/cmis/CMIS/v1.0/os/">CMIS specification</a>
+    /// (Please refer to the <a href="http://docs.oasis-open.org/cmis/CMIS/v1.0/os/">CMIS 1.0 specification</a>
+    /// or the <a href="http://docs.oasis-open.org/cmis/CMIS/v1.0/os/">CMIS 1.1 specification</a>
     /// for details about the domain model, terms, concepts, base types, properties, IDs and query names, 
     /// query language, etc.)
     /// </para>
@@ -413,6 +421,16 @@ namespace PortCMIS.Client
         /// <returns>query results</returns>
         /// <cmis>1.0</cmis>
         IItemEnumerable<IQueryResult> Query(string statement, bool searchAllVersions);
+
+        /// <summary>
+        /// Performs a query that returns objects.
+        /// </summary>
+        /// <param name="typeId">a type ID</param>
+        /// <param name="where">WHERE part of the query, may be <c>null</c></param>
+        /// <param name="searchAllVersions">indicates whether all versions should searched or not</param>
+        /// <param name="context">the operation context</param>
+        /// <returns>query results</returns>
+        /// <cmis>1.0</cmis>
         IItemEnumerable<ICmisObject> QueryObjects(string typeId, string where, bool searchAllVersions, IOperationContext context);
 
         /// <summary>
@@ -438,33 +456,127 @@ namespace PortCMIS.Client
         /// Gets the latest change log token from the repository.
         /// </summary>
         /// <returns>the latest change log token</returns>
+        /// <cmis>1.0</cmis>
         string GetLatestChangeLogToken();
+
+        /// <summary>
+        /// Gets the change log.
+        /// </summary>
+        /// <param name="changeLogToken">the change log token, may be <c>null</c></param>
+        /// <param name="includeProperties">indicates whether properties should be included or</param>
+        /// <param name="maxNumItems">max number of changes</param>
+        /// <returns>the change events</returns>
+        /// <cmis>1.0</cmis>
         IChangeEvents GetContentChanges(string changeLogToken, bool includeProperties, long maxNumItems);
+
+        /// <summary>
+        /// Gets the change log.
+        /// </summary>
+        /// <param name="changeLogToken">the change log token, may be <c>null</c></param>
+        /// <param name="includeProperties">indicates whether properties should be included or</param>
+        /// <param name="maxNumItems">max number of changes</param>
+        /// <param name="context">the operation context</param>
+        /// <returns>the change events</returns>
+        /// <cmis>1.0</cmis>
         IChangeEvents GetContentChanges(string changeLogToken, bool includeProperties, long maxNumItems, IOperationContext context);
 
         // create
 
+        /// <summary>
+        /// Creates a new document.
+        /// </summary>
+        /// <returns>the object ID of the new document</returns>
+        /// <cmis>1.0</cmis>
         IObjectId CreateDocument(IDictionary<string, object> properties, IObjectId folderId, IContentStream contentStream,
                 VersioningState? versioningState, IList<IPolicy> policies, IList<IAce> addAces, IList<IAce> removeAces);
+
+        /// <summary>
+        /// Creates a new document.
+        /// </summary>
+        /// <returns>the object ID of the new document</returns>
         IObjectId CreateDocument(IDictionary<string, object> properties, IObjectId folderId, IContentStream contentStream,
                 VersioningState? versioningState);
+
+        /// <summary>
+        /// Creates a new document from a source document.
+        /// </summary>
+        /// <returns>the object ID of the new document</returns>
+        /// <cmis>1.0</cmis>
         IObjectId CreateDocumentFromSource(IObjectId source, IDictionary<string, object> properties, IObjectId folderId,
                 VersioningState? versioningState, IList<IPolicy> policies, IList<IAce> addAces, IList<IAce> removeAces);
+
+        /// <summary>
+        /// Creates a new document from a source document.
+        /// </summary>
+        /// <returns>the object ID of the new document</returns>
+        /// <cmis>1.0</cmis>
         IObjectId CreateDocumentFromSource(IObjectId source, IDictionary<string, object> properties, IObjectId folderId,
                 VersioningState? versioningState);
+
+        /// <summary>
+        /// Creates a new folder.
+        /// </summary>
+        /// <returns>the object ID of the new folder</returns>
+        /// <cmis>1.0</cmis>
         IObjectId CreateFolder(IDictionary<string, object> properties, IObjectId folderId, IList<IPolicy> policies, IList<IAce> addAces,
                 IList<IAce> removeAces);
+
+        /// <summary>
+        /// Creates a new folder.
+        /// </summary>
+        /// <returns>the object ID of the new folder</returns>
+        /// <cmis>1.0</cmis>
         IObjectId CreateFolder(IDictionary<string, object> properties, IObjectId folderId);
+
+        /// <summary>
+        /// Creates a new policy.
+        /// </summary>
+        /// <returns>the object ID of the new policy</returns>
+        /// <cmis>1.0</cmis>
         IObjectId CreatePolicy(IDictionary<string, object> properties, IObjectId folderId, IList<IPolicy> policies, IList<IAce> addAces,
                 IList<IAce> removeAces);
+
+        /// <summary>
+        /// Creates a new policy.
+        /// </summary>
+        /// <returns>the object ID of the new policy</returns>
+        /// <cmis>1.0</cmis>
         IObjectId CreatePolicy(IDictionary<string, object> properties, IObjectId folderId);
+
+        /// <summary>
+        /// Creates a new relationship.
+        /// </summary>
+        /// <returns>the object ID of the new relationship</returns>
+        /// <cmis>1.0</cmis>
         IObjectId CreateRelationship(IDictionary<string, object> properties, IList<IPolicy> policies, IList<IAce> addAces,
                 IList<IAce> removeAces);
+
+        /// <summary>
+        /// Creates a new relationship.
+        /// </summary>
+        /// <returns>the object ID of the new relationship</returns>
+        /// <cmis>1.0</cmis>
         IObjectId CreateRelationship(IDictionary<string, object> properties);
+
+        /// <summary>
+        /// Creates a new item.
+        /// </summary>
+        /// <returns>the object ID of the new item</returns>
+        /// <cmis>1.1</cmis>
         IObjectId CreateItem(IDictionary<string, object> properties, IObjectId folderId, IList<IPolicy> policies, IList<IAce> addAces,
             IList<IAce> removeAces);
+
+        /// <summary>
+        /// Creates a new item.
+        /// </summary>
+        /// <returns>the object ID of the new item</returns>
+        /// <cmis>1.1</cmis>
         IObjectId CreateItem(IDictionary<string, object> properties, IObjectId folderId);
 
+        /// <summary>
+        /// Fetches the relationships from or to an object from the repository.
+        /// </summary>
+        /// <cmis>1.0</cmis>
         IItemEnumerable<IRelationship> GetRelationships(IObjectId objectId, bool includeSubRelationshipTypes,
                 RelationshipDirection? relationshipDirection, IObjectType type, IOperationContext context);
 
@@ -748,6 +860,9 @@ namespace PortCMIS.Client
         int MaxItemsPerPage { get; set; }
     }
 
+    /// <summary>
+    /// A tree node.
+    /// </summary>
     public interface ITree<T>
     {
         /// <value>
@@ -766,6 +881,7 @@ namespace PortCMIS.Client
     /// Query Statement.
     /// </summary>
     /// <example>
+    /// <code>
     /// DateTime cal = ...
     /// IFolder folder = ...
     /// 
@@ -785,6 +901,7 @@ namespace PortCMIS.Client
     /// qs.SetString(8, "bob", "tom", "lisa"); 
     /// 
     /// string statement = qs.ToQueryString();
+    /// </code>
     /// </example>
     public interface IQueryStatement
     {
@@ -856,12 +973,13 @@ namespace PortCMIS.Client
         /// *, ? and - are interpreted as text search operators and are not escaped
         /// on first level. If *, ?, - shall be used as literals, they must be passed
         /// escaped with \*, \? and \- to this method.
-        /// <p>
+        /// <para>
         /// For all statements in a CONTAINS() clause it is required to isolate those
         /// from a query statement. Therefore a second level escaping is performed.
         /// On the second level grammar ", ', - and \ are escaped with a \. See the
         /// spec for further details.
-        /// <p>
+        /// </para>
+        /// <para>
         /// Summary:
         /// <table summary="Escaping Summary">
         /// <tr>
@@ -887,7 +1005,7 @@ namespace PortCMIS.Client
         /// <tr>
         /// <td>\</td>
         /// <td>\\</td>
-        /// <td>\\\\<br>
+        /// <td>\\\\<br/>
         /// <em>(for any other character following other than///?-)</em></td>
         /// </tr>
         /// <tr>
@@ -916,6 +1034,7 @@ namespace PortCMIS.Client
         /// <td>\\\"</td>
         /// </tr>
         /// </table>
+        /// </para>
         /// </remarks>
         /// <param name='parameterIndex'>the parameter index (one-based)</param>
         /// <param name='str'>the CONTAINS string</param>
@@ -939,21 +1058,21 @@ namespace PortCMIS.Client
         /// Sets the designated parameter to the given boolean.
         /// </summary>
         /// <param name='parameterIndex'>the parameter index (one-based)</param>
-        /// <param name='bool'>the boolean</param>
+        /// <param name='boolean'>the boolean</param>
         void SetBoolean(int parameterIndex, params bool[] boolean);
 
         /// <summary>
         /// Sets the designated parameter to the given DateTime value.
         /// </summary>
         /// <param name='parameterIndex'>the parameter index (one-based)</param>
-        /// <param name='cal'>the DateTime value as Calendar object</param>
+        /// <param name='dt'>the DateTime value as Calendar object</param>
         void SetDateTime(int parameterIndex, params DateTime[] dt);
 
         /// <summary>
         /// Sets the designated parameter to the given DateTime value.
         /// </summary>
         /// <param name='parameterIndex'>the parameter index (one-based)</param>
-        /// <param name='cal'>the DateTime value in milliseconds from midnight, January 1, 1970 UTC.</param>
+        /// <param name='ms'>the DateTime value in milliseconds from midnight, January 1, 1970 UTC.</param>
         void SetDateTime(int parameterIndex, params long[] ms);
 
         /// <summary>
@@ -961,7 +1080,7 @@ namespace PortCMIS.Client
         /// 'TIMESTAMP '.
         /// </summary>
         /// <param name='parameterIndex'>the parameter index (one-based)</param>
-        /// <param name='cal'>the DateTime value as Calendar object
+        /// <param name='dt'>the DateTime value as Calendar object</param>
         void SetDateTimeTimestamp(int parameterIndex, params DateTime[] dt);
 
         /// <summary>
@@ -969,7 +1088,7 @@ namespace PortCMIS.Client
         /// 'TIMESTAMP '.
         /// </summary>
         /// <param name='parameterIndex'>the parameter index (one-based)</param>
-        /// <param name='cal'>the DateTime value in milliseconds from midnight, January 1, 1970 UTC.</param>
+        /// <param name='ms'>the DateTime value in milliseconds from midnight, January 1, 1970 UTC.</param>
         void SetDateTimeTimestamp(int parameterIndex, params long[] ms);
 
         /// <summary>
@@ -1092,6 +1211,9 @@ namespace PortCMIS.Client
     {
     }
 
+    /// <summary>
+    /// Enumerable that allows to skip and page.
+    /// </summary>
     public interface IItemEnumerable<T> : IEnumerable<T>
     {
         /// <summary>
@@ -1750,7 +1872,19 @@ namespace PortCMIS.Client
         /// <returns>the object ID of the new created document</returns>
         IObjectId CheckIn(bool major, IDictionary<string, object> properties, IContentStream contentStream, string checkinComment);
 
+        /// <summary>
+        /// Fetches the latest major or minor version of this document.
+        /// </summary>
+        /// <param name="major">indicates if the latest major or the very last version should be returned</param>
+        /// <returns>the latest document object</returns>
         IDocument GetObjectOfLatestVersion(bool major);
+
+        /// <summary>
+        /// Fetches the latest major or minor version of this document with the given operation context.
+        /// </summary>
+        /// <param name="major">indicates if the latest major or the very last version should be returned</param>
+        /// <param name="context">the operation context</param>
+        /// <returns>the latest document object</returns>
         IDocument GetObjectOfLatestVersion(bool major, IOperationContext context);
 
         /// <summary>
@@ -1759,11 +1893,20 @@ namespace PortCMIS.Client
         IList<IDocument> GetAllVersions();
 
         /// <summary>
-        /// Gets a list of all versions in this version series using the given <see cref="PortCMIS.Client.IOperationContext"/>.
+        /// Gets a list of all versions in this version series using the given operation context.
         /// </summary>
         IList<IDocument> GetAllVersions(IOperationContext context);
 
+        /// <summary>
+        ///  Creates a copy of this document, including content.
+        /// </summary>
+        /// <returns>the new document object</returns>
         IDocument Copy(IObjectId targetFolderId);
+
+        /// <summary>
+        ///  Creates a copy of this document, including content.
+        /// </summary>
+        /// <returns>the new document object</returns>
         IDocument Copy(IObjectId targetFolderId, IDictionary<string, object> properties, VersioningState? versioningState,
             IList<IPolicy> policies, IList<IAce> addACEs, IList<IAce> removeACEs, IOperationContext context);
     }
@@ -1789,20 +1932,69 @@ namespace PortCMIS.Client
     /// </summary>
     public interface IFolder : IFileableCmisObject, IFolderProperties
     {
+        /// <summary>
+        /// Creates a new document in this folder.
+        /// </summary>
+        /// <returns>the new document object</returns>
         IDocument CreateDocument(IDictionary<string, object> properties, IContentStream contentStream, VersioningState? versioningState,
                 IList<IPolicy> policies, IList<IAce> addAces, IList<IAce> removeAces, IOperationContext context);
+
+        /// <summary>
+        /// Creates a new document in this folder.
+        /// </summary>
+        /// <returns>the new document object</returns>
         IDocument CreateDocument(IDictionary<string, object> properties, IContentStream contentStream, VersioningState? versioningState);
+
+        /// <summary>
+        /// Creates a new document from a source document in this folder.
+        /// </summary>
+        /// <returns>the new document object</returns>
         IDocument CreateDocumentFromSource(IObjectId source, IDictionary<string, object> properties, VersioningState? versioningState,
                 IList<IPolicy> policies, IList<IAce> addAces, IList<IAce> removeAces, IOperationContext context);
+
+        /// <summary>
+        /// Creates a new document from a source document in this folder.
+        /// </summary>
+        /// <returns>the new document object</returns>
         IDocument CreateDocumentFromSource(IObjectId source, IDictionary<string, object> properties, VersioningState? versioningState);
+
+        /// <summary>
+        /// Creates a new subfolder in this folder.
+        /// </summary>
+        /// <returns>the new folder object</returns>
         IFolder CreateFolder(IDictionary<string, object> properties, IList<IPolicy> policies, IList<IAce> addAces, IList<IAce> removeAces,
                 IOperationContext context);
+
+        /// <summary>
+        /// Creates a new subfolder in this folder.
+        /// </summary>
+        /// <returns>the new folder object</returns>
         IFolder CreateFolder(IDictionary<string, object> properties);
+
+        /// <summary>
+        /// Creates a new policy in this folder.
+        /// </summary>
+        /// <returns>the new policy object</returns>
         IPolicy CreatePolicy(IDictionary<string, object> properties, IList<IPolicy> policies, IList<IAce> addAces, IList<IAce> removeAces,
                 IOperationContext context);
+
+        /// <summary>
+        /// Creates a new policy in this folder.
+        /// </summary>
+        /// <returns>the new policy object</returns>
         IPolicy CreatePolicy(IDictionary<string, object> properties);
+
+        /// <summary>
+        /// Creates a new item in this folder.
+        /// </summary>
+        /// <returns>the new item object</returns>
         IItem CreateItem(IDictionary<string, object> properties, IList<IPolicy> policies, IList<IAce> addAces, IList<IAce> removeAces,
             IOperationContext context);
+
+        /// <summary>
+        /// Creates a new item in this folder.
+        /// </summary>
+        /// <returns>the new item object</returns>
         IItem CreateItem(IDictionary<string, object> properties);
 
         /// <summary>
@@ -2033,7 +2225,7 @@ namespace PortCMIS.Client
         /// <remarks>
         /// Since repositories are not obligated to add property IDs to their
         /// query result properties, this method might not always work as expected with
-        /// some repositories. Use <see cref="P:this[string]"/> instead.
+        /// some repositories. Use <see cref="this[string]"/> instead.
         /// </remarks>
         IPropertyData GetPropertyById(string propertyId);
 

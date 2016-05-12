@@ -26,7 +26,7 @@ using System.IO;
 using System.Numerics;
 using System.Text;
 
-namespace PortCMIS.Client.Impl
+namespace PortCMIS.Client
 {
     /// <summary>
     /// Operation context implementation.
@@ -70,8 +70,6 @@ namespace PortCMIS.Client.Impl
             orderBy = null;
             cacheEnabled = false;
             maxItemsPerPage = 100;
-
-            GenerateCacheKey();
         }
 
         /// <summary>
@@ -89,8 +87,6 @@ namespace PortCMIS.Client.Impl
             orderBy = source.OrderBy;
             cacheEnabled = source.CacheEnabled;
             maxItemsPerPage = source.MaxItemsPerPage;
-
-            GenerateCacheKey();
         }
 
         /// <summary>
@@ -110,8 +106,6 @@ namespace PortCMIS.Client.Impl
             this.orderBy = orderBy;
             this.cacheEnabled = cacheEnabled;
             this.maxItemsPerPage = maxItemsPerPage;
-
-            GenerateCacheKey();
         }
 
         /// <inheritdoc/>
@@ -328,7 +322,14 @@ namespace PortCMIS.Client.Impl
         /// <inheritdoc/>
         public virtual string CacheKey
         {
-            get { return cacheKey; }
+            get
+            {
+                if (cacheKey == null)
+                {
+                    GenerateCacheKey();
+                }
+                return cacheKey;
+            }
         }
 
         /// <inheritdoc/>
@@ -576,7 +577,7 @@ namespace PortCMIS.Client.Impl
     /// <summary>
     /// Tree implementation.
     /// </summary>
-    public class Tree<T> : ITree<T>
+    internal class Tree<T> : ITree<T>
     {
         /// <inheritdoc/>
         public T Item { get; set; }
@@ -588,9 +589,13 @@ namespace PortCMIS.Client.Impl
     /// <summary>
     /// Base class for IItemEnumerable's.
     /// </summary>
-    public abstract class AbstractEnumerable<T> : IItemEnumerable<T>
+    internal abstract class AbstractEnumerable<T> : IItemEnumerable<T>
     {
         private AbstractEnumerator<T> enumerator;
+
+        /// <value>
+        /// Gets the enumerator to creates one if it hasn't been set up, yet. 
+        /// </value>
         protected AbstractEnumerator<T> Enumerator
         {
             get
@@ -600,70 +605,106 @@ namespace PortCMIS.Client.Impl
             }
         }
 
+        /// <value>
+        /// Gets the delegate that fetches a page.
+        /// </value>
         protected PageFetcher<T> PageFetcher { get; set; }
+
+        /// <value>
+        /// Gets the skip count.
+        /// </value>
         protected BigInteger SkipCount { get; private set; }
 
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="pageFetcher">>the delegate that fetches a page</param>
         public AbstractEnumerable(PageFetcher<T> pageFetcher) :
             this(0, pageFetcher) { }
 
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="position">the skip count</param>
+        /// <param name="pageFetcher">>the delegate that fetches a page</param>
         protected AbstractEnumerable(BigInteger position, PageFetcher<T> pageFetcher)
         {
             this.PageFetcher = pageFetcher;
             this.SkipCount = position;
         }
 
+        /// <summary>
+        /// Creates an enumerator.
+        /// </summary>
         protected abstract AbstractEnumerator<T> CreateEnumerator();
 
+        /// <inheritdoc/>
         IEnumerator<T> IEnumerable<T>.GetEnumerator()
         {
             return GetEnumerator();
         }
 
+        /// <inheritdoc/>
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
         }
 
+        /// <inheritdoc/>
         public IEnumerator<T> GetEnumerator()
         {
             return Enumerator;
         }
 
+        /// <inheritdoc/>
         public IItemEnumerable<T> SkipTo(BigInteger position)
         {
             return new CollectionEnumerable<T>(position, PageFetcher);
         }
 
+        /// <inheritdoc/>
         public IItemEnumerable<T> GetPage()
         {
             return new CollectionPageEnumerable<T>(SkipCount, PageFetcher);
         }
 
+        /// <inheritdoc/>
         public IItemEnumerable<T> GetPage(int maxNumItems)
         {
             PageFetcher.MaxNumItems = maxNumItems;
             return new CollectionPageEnumerable<T>(SkipCount, PageFetcher);
         }
 
+        /// <inheritdoc/>
         public BigInteger PageNumItems { get { return Enumerator.PageNumItems; } }
 
+        /// <inheritdoc/>
         public bool HasMoreItems { get { return Enumerator.HasMoreItems; } }
 
+        /// <inheritdoc/>
         public BigInteger TotalNumItems { get { return Enumerator.TotalNumItems; } }
     }
 
     /// <summary>
     /// Abstract Enumerator implementation.
     /// </summary>
-    public abstract class AbstractEnumerator<T> : IEnumerator<T>
+    internal abstract class AbstractEnumerator<T> : IEnumerator<T>
     {
         private PageFetcher<T> pageFetcher;
         private PageFetcher<T>.Page<T> page = null;
         private BigInteger? totalNumItems = null;
         private bool? hasMoreItems = null;
 
+        /// <summary>
+        /// The current element.
+        /// </summary>
         protected T current;
 
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="skipCount">the skip count</param>
+        /// <param name="pageFetcher">the delegate that fetches a page</param>
         public AbstractEnumerator(BigInteger skipCount, PageFetcher<T> pageFetcher)
         {
             this.SkipCount = skipCount;
@@ -702,12 +743,24 @@ namespace PortCMIS.Client.Impl
         {
         }
 
+        /// <values>
+        /// Gets the skip count.
+        /// </values>
         public BigInteger SkipCount { get; protected set; }
 
+        /// <values>
+        /// Gets the skip offset.
+        /// </values>
         public int SkipOffset { get; protected set; }
 
+        /// <values>
+        /// Gets the current position.
+        /// </values>
         public BigInteger Position { get { return SkipCount + SkipOffset; } }
 
+        /// <values>
+        /// Gets the number of items of the current page.
+        /// </values>
         public BigInteger PageNumItems
         {
             get
@@ -725,6 +778,9 @@ namespace PortCMIS.Client.Impl
             }
         }
 
+        /// <values>
+        /// Gets the total number of items.
+        /// </values>
         public BigInteger TotalNumItems
         {
             get
@@ -742,6 +798,9 @@ namespace PortCMIS.Client.Impl
             }
         }
 
+        /// <values>
+        /// Gets whether there are more items or not.
+        /// </values>
         public bool HasMoreItems
         {
             get
@@ -762,11 +821,19 @@ namespace PortCMIS.Client.Impl
             }
         }
 
+        /// <summary>
+        /// Increments the skip offset.
+        /// </summary>
+        /// <returns>the new offset</returns>
         protected int IncrementSkipOffset()
         {
             return SkipOffset++;
         }
 
+        /// <summary>
+        /// Returns the current page.
+        /// </summary>
+        /// <returns></returns>
         protected PageFetcher<T>.Page<T> GetCurrentPage()
         {
             if (page == null)
@@ -776,6 +843,10 @@ namespace PortCMIS.Client.Impl
             return page;
         }
 
+        /// <summary>
+        /// Fetches the next page.
+        /// </summary>
+        /// <returns>the next page</returns>
         protected PageFetcher<T>.Page<T> IncrementPage()
         {
             SkipCount += SkipOffset;
@@ -790,27 +861,55 @@ namespace PortCMIS.Client.Impl
     /// <summary>
     /// Page fetcher.
     /// </summary>
-    public class PageFetcher<T>
+    internal class PageFetcher<T>
     {
+        /// <summary>
+        /// A delegate that fetches a page.
+        /// </summary>
+        /// <param name="maxNumItems">max number of items</param>
+        /// <param name="skipCount">the skip count</param>
+        /// <returns>a page</returns>
         public delegate Page<T> FetchPage(BigInteger maxNumItems, BigInteger skipCount);
 
         private FetchPage fetchPageDelegate;
 
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="maxNumItems">max number of items</param>
+        /// <param name="fetchPageDelegate">the delegate that fetches a page</param>
         public PageFetcher(BigInteger maxNumItems, FetchPage fetchPageDelegate)
         {
             MaxNumItems = maxNumItems;
             this.fetchPageDelegate = fetchPageDelegate;
         }
 
+        /// <value>
+        /// Gets the max number of items.
+        /// </value>
         public BigInteger MaxNumItems { get; set; }
 
+        /// <summary>
+        /// Fetches the next page.
+        /// </summary>
+        /// <param name="skipCount">the skip count</param>
+        /// <returns>the next page</returns>
         public Page<T> FetchNextPage(BigInteger skipCount)
         {
             return fetchPageDelegate(MaxNumItems, skipCount);
         }
 
+        /// <summary>
+        /// A page.
+        /// </summary>
         public class Page<P>
         {
+            /// <summary>
+            /// Constructor.
+            /// </summary>
+            /// <param name="items">list of items</param>
+            /// <param name="totalNumItems">total number of items, if known</param>
+            /// <param name="hasMoreItems">a flag whether there are more items, if known</param>
             public Page(IList<P> items, BigInteger? totalNumItems, bool? hasMoreItems)
             {
                 Items = items;
@@ -818,8 +917,19 @@ namespace PortCMIS.Client.Impl
                 HasMoreItems = hasMoreItems;
             }
 
+            /// <values>
+            /// Gets the items of the page.
+            /// </values>
             public IList<P> Items { get; private set; }
+
+            /// <values>
+            /// Gets the total number of items, if known.
+            /// </values>
             public BigInteger? TotalNumItems { get; private set; }
+
+            /// <values>
+            /// Gets whether there are more items or not, if known.
+            /// </values>
             public bool? HasMoreItems { get; private set; }
         }
     }
@@ -827,14 +937,24 @@ namespace PortCMIS.Client.Impl
     /// <summary>
     /// CMIS Collection Enumerable.
     /// </summary>
-    public class CollectionEnumerable<T> : AbstractEnumerable<T>
+    internal class CollectionEnumerable<T> : AbstractEnumerable<T>
     {
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="pageFetcher">the delegate that fetches a page</param>
         public CollectionEnumerable(PageFetcher<T> pageFetcher) :
             this(0, pageFetcher) { }
 
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="position">the position</param>
+        /// <param name="pageFetcher">the delegate that fetches a page</param>
         public CollectionEnumerable(BigInteger position, PageFetcher<T> pageFetcher) :
             base(position, pageFetcher) { }
 
+        /// <inheritdoc/>
         protected override AbstractEnumerator<T> CreateEnumerator()
         {
             return new CollectionEnumerator<T>(SkipCount, PageFetcher);
@@ -844,11 +964,20 @@ namespace PortCMIS.Client.Impl
     /// <summary>
     /// Enumerator for iterating over all items in a CMIS Collection.
     /// </summary>
-    public class CollectionEnumerator<T> : AbstractEnumerator<T>
+    internal class CollectionEnumerator<T> : AbstractEnumerator<T>
     {
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="skipCount">the skip count</param>
+        /// <param name="pageFetcher">the delegate that fetches a page</param>
         public CollectionEnumerator(BigInteger skipCount, PageFetcher<T> pageFetcher) :
             base(skipCount, pageFetcher) { }
 
+        /// <summary>
+        /// Move to the next items.
+        /// </summary>
+        /// <returns><c>true</c> if there is a next item, <c>false</c> otherwise</returns>
         public override bool MoveNext()
         {
             PageFetcher<T>.Page<T> page = GetCurrentPage();
@@ -888,14 +1017,24 @@ namespace PortCMIS.Client.Impl
     /// <summary>
     /// Enumerable for a CMIS Collection Page.
     /// </summary>
-    public class CollectionPageEnumerable<T> : AbstractEnumerable<T>
+    internal class CollectionPageEnumerable<T> : AbstractEnumerable<T>
     {
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="pageFetcher">the delegate that fetches a page</param>
         public CollectionPageEnumerable(PageFetcher<T> pageFetcher) :
             this(0, pageFetcher) { }
 
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="position">the position</param>
+        /// <param name="pageFetcher">the delegate that fetches a page</param>
         public CollectionPageEnumerable(BigInteger position, PageFetcher<T> pageFetcher) :
             base(position, pageFetcher) { }
 
+        /// <inheritdoc/>
         protected override AbstractEnumerator<T> CreateEnumerator()
         {
             return new CollectionPageEnumerator<T>(SkipCount, PageFetcher);
@@ -905,11 +1044,20 @@ namespace PortCMIS.Client.Impl
     /// <summary>
     /// Enumerator for iterating over a page of items in a CMIS Collection.
     /// </summary>
-    public class CollectionPageEnumerator<T> : AbstractEnumerator<T>
+    internal class CollectionPageEnumerator<T> : AbstractEnumerator<T>
     {
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="skipCount">the skip count</param>
+        /// <param name="pageFetcher">the delegate that fetches a page</param>
         public CollectionPageEnumerator(BigInteger skipCount, PageFetcher<T> pageFetcher) :
             base(skipCount, pageFetcher) { }
 
+        /// <summary>
+        /// Move to the next items.
+        /// </summary>
+        /// <returns><c>true</c> if there is a next item, <c>false</c> otherwise</returns>
         public override bool MoveNext()
         {
             PageFetcher<T>.Page<T> page = GetCurrentPage();

@@ -36,6 +36,9 @@ using Windows.Web.Http.Headers;
 
 namespace PortCMIS.Binding.Http
 {
+    /// <summary>
+    /// Windows HTTP invoker.
+    /// </summary>
     public class WindowsHttpInvoker : IHttpInvoker
     {
         private const string InvokerHttpClient = "org.apache.chemistry.portcmis.invoker.httpclient";
@@ -122,7 +125,10 @@ namespace PortCMIS.Binding.Http
             HttpRequestMessage request = new HttpRequestMessage(method, new Uri(url.ToString()));
 
             // set additional headers
-            request.Headers.UserAgent.Add(new HttpProductInfoHeaderValue("ApacheChemistryPortCMIS", "0.1"));
+
+            string userAgent = session.GetValue(SessionParameter.UserAgent) as string;
+            request.Headers.UserAgent.Add(HttpProductInfoHeaderValue.Parse(userAgent ?? ClientVersion.UserAgentName));
+
             if (headers != null)
             {
                 foreach (KeyValuePair<string, string> header in headers)

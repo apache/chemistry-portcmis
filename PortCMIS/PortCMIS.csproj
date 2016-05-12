@@ -58,6 +58,7 @@
     <Compile Include="binding\browser\BrowserConverter.cs" />
     <Compile Include="binding\browser\BrowserUtils.cs" />
     <Compile Include="binding\browser\json\Json.cs" />
+    <Compile Include="const\ClientVersion.cs" />
     <Compile Include="binding\DateTimeHelper.cs" />
     <Compile Include="binding\HttpPortable.cs" />
     <Compile Include="binding\Http.cs" />

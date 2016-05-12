@@ -249,6 +249,7 @@ namespace PortCMIS.Client.Impl
         /// </value>
         public string RepositoryId { get { return RepositoryInfo.Id; } }
 
+        /// <inheritdoc/>
         public IObjectFactory ObjectFactory { get; protected set; }
 
         /// <summary>
@@ -997,6 +998,7 @@ namespace PortCMIS.Client.Impl
 
         // create
 
+        /// <inheritdoc/>
         public IObjectId CreateDocument(IDictionary<string, object> properties, IObjectId folderId, IContentStream contentStream,
             VersioningState? versioningState, IList<IPolicy> policies, IList<IAce> addAces, IList<IAce> removeAces)
         {

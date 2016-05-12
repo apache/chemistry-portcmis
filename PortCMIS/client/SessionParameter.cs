@@ -87,6 +87,9 @@ namespace PortCMIS.Client
         /// <summary>CSRF HTTP header</summary>
         public const string CsrfHeader = "org.apache.chemistry.portcmis.binding.csrfheader";
 
+        /// <summary>User agent</summary>
+        public const string UserAgent = "org.apache.chemistry.portcmis.binding.useragent";
+
         // ---- binding caches ----
 
         /// <summary>Size of the repositories cache</summary>

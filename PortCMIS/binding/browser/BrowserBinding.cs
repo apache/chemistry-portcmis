@@ -1263,7 +1263,7 @@ namespace PortCMIS.Binding.Browser
             return JsonConverter.ConvertObjectParents(json, typeCache);
         }
 
-        public IObjectData GetFolderParent(string repositoryId, string folderId, string filter, ExtensionsData extension)
+        public IObjectData GetFolderParent(string repositoryId, string folderId, string filter, IExtensionsData extension)
         {
             // build URL
             UrlBuilder url = GetObjectUrl(repositoryId, folderId, BindingConstants.SelectorParent);
@@ -1722,7 +1722,7 @@ namespace PortCMIS.Binding.Browser
         }
 
         public IFailedToDeleteData DeleteTree(string repositoryId, string folderId, bool? allVersions, UnfileObject? unfileObjects,
-            bool? continueOnFailure, ExtensionsData extension)
+            bool? continueOnFailure, IExtensionsData extension)
         {
             // build URL
             UrlBuilder url = GetObjectUrl(repositoryId, folderId);

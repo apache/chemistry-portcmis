@@ -95,9 +95,14 @@
     <ApiFilter>
       <Filter entryType="Namespace" fullName="PortCMIS.Binding" isExposed="False" xmlns="">
         <Filter entryType="Class" fullName="PortCMIS.Binding.AbstractAuthenticationProvider" filterName="AbstractAuthenticationProvider" isExposed="True" />
+        <Filter entryType="Interface" fullName="PortCMIS.Binding.IPortableAuthenticationProvider" filterName="IPortableAuthenticationProvider" isExposed="True" />
         <Filter entryType="Interface" fullName="PortCMIS.Binding.IAuthenticationProvider" filterName="IAuthenticationProvider" isExposed="True" />
         <Filter entryType="Class" fullName="PortCMIS.Binding.StandardAuthenticationProvider" filterName="StandardAuthenticationProvider" isExposed="True" />
-      </Filter>
+        <Filter entryType="Interface" fullName="PortCMIS.Binding.IBindingSession" filterName="IBindingSession" isExposed="True" />
+        <Filter entryType="Interface" fullName="PortCMIS.Binding.ICmisBinding" filterName="ICmisBinding" isExposed="True" />
+		<Filter entryType="Class" fullName="PortCMIS.Binding.UrlBuilder" filterName="UrlBuilder" isExposed="True" />
+     </Filter>
+      <Filter entryType="Namespace" fullName="PortCMIS.Binding.Http" isExposed="True" xmlns="" />
       <Filter entryType="Namespace" fullName="PortCMIS.Binding.Browser" isExposed="False" xmlns="" />
       <Filter entryType="Namespace" fullName="PortCMIS.Binding.Browser.Json" isExposed="False" xmlns="" />
       <Filter entryType="Namespace" fullName="PortCMIS.Binding.Http" isExposed="False" xmlns="" />

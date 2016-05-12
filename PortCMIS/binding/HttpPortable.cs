@@ -135,7 +135,10 @@ namespace PortCMIS.Binding.Http
             HttpRequestMessage request = new HttpRequestMessage(method, url.ToString());
 
             // set additional headers
-            request.Headers.UserAgent.Add(new ProductInfoHeaderValue("ApacheChemistryPortCMIS", "0.1"));
+
+            string userAgent = session.GetValue(SessionParameter.UserAgent) as string;
+            request.Headers.UserAgent.Add(ProductInfoHeaderValue.Parse(userAgent ?? ClientVersion.UserAgentName));
+
             if (headers != null)
             {
                 foreach (KeyValuePair<string, string> header in headers)
