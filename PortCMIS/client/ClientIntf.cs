@@ -400,6 +400,43 @@ namespace PortCMIS.Client
         IDocument GetLatestDocumentVersion(IObjectId objectId, bool major, IOperationContext context);
 
         /// <summary>
+        ///  Checks if an object with given object ID exists in the repository and is visible for the current user.
+        /// </summary>
+        /// <remarks>If the object doesn't exist (anymore), it is removed from the cache.</remarks>
+        /// <param name="objectId">the object ID</param>
+        /// <returns><c>true</c> if the object exists in the repository, <c>false</c> otherwise</returns>
+        /// <cmis>1.0</cmis>
+        bool Exists(IObjectId objectId);
+
+        /// <summary>
+        ///  Checks if an object with given object ID exists in the repository and is visible for the current user.
+        /// </summary>
+        /// <remarks>If the object doesn't exist (anymore), it is removed from the cache.</remarks>
+        /// <param name="objectId">the object ID</param>
+        /// <returns><c>true</c> if the object exists in the repository, <c>false</c> otherwise</returns>
+        /// <cmis>1.0</cmis>
+        bool Exists(string objectId);
+
+        /// <summary>
+        ///  Checks if an object with given path exists in the repository and is visible for the current user.
+        /// </summary>
+        /// <remarks>If the object doesn't exist (anymore), it is removed from the cache.</remarks>
+        /// <param name="path">the path</param>
+        /// <returns><c>true</c> if the object exists in the repository, <c>false</c> otherwise</returns>
+        /// <cmis>1.0</cmis>
+        bool ExistsPath(string path);
+
+        /// <summary>
+        ///  Checks if an object with given path exists in the repository and is visible for the current user.
+        /// </summary>
+        /// <remarks>If the object doesn't exist (anymore), it is removed from the cache.</remarks>
+        /// <param name="parentPath">the path of the parent folder</param>
+        /// <param name="name">the (path segment) name of the object in the folder</param>
+        /// <returns><c>true</c> if the object exists in the repository, <c>false</c> otherwise</returns>
+        /// <cmis>1.0</cmis>
+        bool ExistsPath(string parentPath, string name);
+
+        /// <summary>
         ///  Removes the given object from the cache.
         /// </summary>
         /// <param name="objectId">the object ID</param>
@@ -1527,6 +1564,11 @@ namespace PortCMIS.Client
         /// Gets the ACL if it has been fetched for this object.
         /// </value>
         IAcl Acl { get; }
+
+        /// <summary>
+        /// Checks whether the given allowable action is set or not.
+        /// </summary>
+        bool HasAllowableAction(PortCMIS.Enums.Action action);
 
         /// <summary>
         /// Deletes this object.

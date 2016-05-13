@@ -642,10 +642,8 @@ namespace PortCMIS.Client.Impl
         /// <inheritdoc/>
         public ICmisObject GetObjectByPath(string path, IOperationContext context)
         {
-            if (path == null)
-            {
-                throw new ArgumentNullException("path");
-            }
+            CheckPath(path);
+
             if (context == null)
             {
                 throw new ArgumentNullException("context");
@@ -832,6 +830,89 @@ namespace PortCMIS.Client.Impl
             }
 
             return result as IDocument;
+        }
+
+        /// <inheritdoc/>
+        public bool Exists(IObjectId objectId)
+        {
+            if (objectId == null)
+            {
+                throw new ArgumentNullException("objectId");
+            }
+            return Exists(objectId.Id);
+        }
+
+        /// <inheritdoc/>
+        public bool Exists(string objectId)
+        {
+            if (objectId == null)
+            {
+                throw new ArgumentNullException(objectId);
+            }
+
+            try
+            {
+                Binding.GetObjectService().GetObject(RepositoryId, objectId, "cmis:objectId", false,
+                    IncludeRelationships.None, "cmis:none", false, false, null);
+                return true;
+            }
+            catch (CmisObjectNotFoundException)
+            {
+                RemoveObjectFromCache(objectId);
+                return false;
+            }
+        }
+
+        /// <inheritdoc/>
+        public bool ExistsPath(string path)
+        {
+            CheckPath(path);
+
+            try
+            {
+                IObjectData obj = Binding.GetObjectService().GetObjectByPath(RepositoryId, path, "cmis:objectId",
+                    false, IncludeRelationships.None, "cmis:none", false, false, null);
+
+                string cacheObjectId = Cache.GetObjectIdByPath(path);
+                if (cacheObjectId != obj.Id)
+                {
+                    Cache.RemovePath(path);
+                }
+
+                return true;
+            }
+            catch (CmisObjectNotFoundException)
+            {
+                Cache.RemovePath(path);
+                return false;
+            }
+        }
+
+        /// <inheritdoc/>
+        public bool ExistsPath(string parentPath, string name)
+        {
+            if (parentPath == null || parentPath.Length < 1)
+            {
+                throw new ArgumentException("Parent path must be set!", "parentPath");
+            }
+            if (parentPath[0] != '/')
+            {
+                throw new ArgumentException("Parent path must start with a '/'!", "parentPath");
+            }
+            if (name == null || name.Length < 1)
+            {
+                throw new ArgumentException("Name must be set!", "name");
+            }
+
+            StringBuilder path = new StringBuilder(parentPath.Length + name.Length + 2);
+            path.Append(parentPath);
+            if (!parentPath.EndsWith("/"))
+            {
+                path.Append('/');
+            }
+            path.Append(name);
+
+            return ExistsPath(path.ToString());
         }
 
         /// <inheritdoc/>
@@ -1350,6 +1431,21 @@ namespace PortCMIS.Client.Impl
             foreach (string id in ids)
             {
                 Binding.GetPolicyService().RemovePolicy(RepositoryId, id, objectId.Id, null);
+            }
+        }
+
+        /// <summary>
+        /// Checks if the given string is a valid path.
+        /// </summary>
+        protected void CheckPath(string path)
+        {
+            if (path == null || path.Length < 1)
+            {
+                throw new ArgumentException("Invalid path!");
+            }
+            if (path[0] != '/')
+            {
+                throw new ArgumentException("Path must start with a '/'!");
             }
         }
     }

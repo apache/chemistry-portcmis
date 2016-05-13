@@ -87,9 +87,9 @@ namespace PortCMISTests
             Assert.IsNotNull(root.AllowableActions);
             Assert.IsNotNull(root.AllowableActions.Actions);
             Assert.IsTrue(root.AllowableActions.Actions.Count > 0);
-            Assert.IsTrue(root.AllowableActions.Actions.Contains(PortCMIS.Enums.Action.CanGetProperties));
-            Assert.IsFalse(root.AllowableActions.Actions.Contains(PortCMIS.Enums.Action.CanGetFolderParent));
-            Assert.IsFalse(root.AllowableActions.Actions.Contains(PortCMIS.Enums.Action.CanMoveObject));
+            Assert.IsTrue(root.HasAllowableAction(PortCMIS.Enums.Action.CanGetProperties));
+            Assert.IsFalse(root.HasAllowableAction(PortCMIS.Enums.Action.CanGetFolderParent));
+            Assert.IsFalse(root.HasAllowableAction(PortCMIS.Enums.Action.CanMoveObject));
 
             foreach (ICmisObject child in root.GetChildren(oc))
             {
@@ -105,31 +105,31 @@ namespace PortCMISTests
                 Assert.IsNotNull(child.AllowableActions);
                 Assert.IsNotNull(child.AllowableActions.Actions);
                 Assert.IsTrue(child.AllowableActions.Actions.Count > 0);
-                Assert.IsTrue(child.AllowableActions.Actions.Contains(PortCMIS.Enums.Action.CanGetProperties));
+                Assert.IsTrue(child.HasAllowableAction(PortCMIS.Enums.Action.CanGetProperties));
             }
         }
 
         [TestMethod]
         public void TestCreate()
         {
-            try
+            string testFolderName = "porttest";
+
+            if (Session.ExistsPath("/", testFolderName))
             {
-                ICmisObject obj = Session.GetObjectByPath("/porttest");
-                obj.Delete();
-            }
-            catch (CmisConstraintException)
-            {
-                IFolder folder = Session.GetObjectByPath("/porttest") as IFolder;
-                folder.DeleteTree(true, UnfileObject.Delete, true);
-            }
-            catch (CmisObjectNotFoundException)
-            {
-                // ignore
+                ICmisObject obj = Session.GetObjectByPath("/", testFolderName, OperationContextUtils.CreateMinimumOperationContext());
+                if (obj is IFolder)
+                {
+                    ((IFolder)obj).DeleteTree(true, UnfileObject.Delete, true);
+                }
+                else
+                {
+                    obj.Delete();
+                }
             }
 
             // create folder
             IFolder root = Session.GetRootFolder();
-            IFolder newFolder = CreateFolder(root, "porttest");
+            IFolder newFolder = CreateFolder(root, testFolderName);
 
             Assert.IsNotNull(newFolder);
 
@@ -146,8 +146,7 @@ namespace PortCMISTests
             Assert.AreEqual(contentString, ConvertStreamToString(newContent.Stream));
 
             // fetch it again to get the updated content stream length property
-            IOperationContext ctxt = Session.CreateOperationContext();
-            ctxt.FilterString = "*";
+            IOperationContext ctxt = OperationContextUtils.CreateMaximumOperationContext();
             ICmisObject newObj = Session.GetObject(newDoc, ctxt);
 
             Assert.IsTrue(newObj is IDocument);
@@ -173,15 +172,7 @@ namespace PortCMISTests
 
             newFolder.Delete();
 
-            try
-            {
-                Session.GetObject(newFolder);
-                Assert.Fail("Folder still exists.");
-            }
-            catch (CmisObjectNotFoundException)
-            {
-                // expected
-            }
+            Assert.IsFalse(Session.Exists(newFolder));
         }
 
         [TestMethod]
@@ -226,6 +217,7 @@ namespace PortCMISTests
                 if (newFolder != null)
                 {
                     newFolder.DeleteTree(true, UnfileObject.Delete, true);
+                    Assert.IsFalse(Session.Exists(newFolder));
                 }
             }
         }
@@ -258,16 +250,95 @@ namespace PortCMISTests
                 Assert.IsNotNull(content2.Stream);
 
                 Assert.AreEqual(contentString2, ConvertStreamToString(content2.Stream));
+
+                // delete the content stream
+                doc.DeleteContentStream(true);
+                Assert.IsNull(doc.ContentStreamLength);
             }
             finally
             {
                 if (doc != null)
                 {
                     doc.Delete();
+                    Assert.IsFalse(Session.Exists(doc));
                 }
             }
         }
 
+        [TestMethod]
+        public void TestVersioning()
+        {
+            IOperationContext noCacheOC = OperationContextUtils.CreateMaximumOperationContext();
+            noCacheOC.CacheEnabled = false;
+
+            IFolder rootFolder = Session.GetRootFolder();
+            IDocument doc = null;
+
+            try
+            {
+                // create document
+                string name1 = "versioned1.txt";
+                IContentStream contentStream1 = ContentStreamUtils.CreateTextContentStream(name1, "v1");
+
+                IDictionary<string, object> props = new Dictionary<string, object>();
+                props[PropertyIds.Name] = name1;
+                props[PropertyIds.ObjectTypeId] = "VersionableType";
+
+                doc = rootFolder.CreateDocument(props, contentStream1, VersioningState.Major);
+
+                // create next version
+                string name2 = "versioned2.txt";
+                IContentStream contentStream2 = ContentStreamUtils.CreateTextContentStream(name2, "v2");
+
+                IObjectId pwcId = doc.CheckOut();
+                IDocument pwc = (IDocument)Session.GetObject(pwcId, noCacheOC);
+
+                pwc.Rename(name2);
+
+                IObjectId newVersId = pwc.CheckIn(true, null, contentStream2, "version 2");
+                IDocument newVers = (IDocument)Session.GetObject(newVersId, noCacheOC);
+
+                Assert.AreEqual(name2, newVers.Name);
+                Assert.AreEqual("v2", ConvertStreamToString(newVers.GetContentStream().Stream));
+
+                IDocument latestVersion = Session.GetLatestDocumentVersion(doc);
+                Assert.AreEqual(newVers.Id, latestVersion.Id);
+
+                // create next version
+                string name3 = "versioned3.txt";
+                IContentStream contentStream3 = ContentStreamUtils.CreateTextContentStream(name3, "v3");
+
+                pwcId = doc.CheckOut();
+                pwc = (IDocument)Session.GetObject(pwcId, noCacheOC);
+
+                pwc.Rename(name3);
+
+                newVersId = pwc.CheckIn(true, null, contentStream3, "version 3");
+                newVers = (IDocument)Session.GetObject(newVersId);
+
+                Assert.AreEqual(name3, newVers.Name);
+                Assert.AreEqual("v3", ConvertStreamToString(newVers.GetContentStream().Stream));
+
+                latestVersion = Session.GetLatestDocumentVersion(doc);
+                Assert.AreEqual(newVers.Id, latestVersion.Id);
+
+                // check version history
+
+                IList<IDocument> versions = doc.GetAllVersions();
+                Assert.AreEqual(3, versions.Count);
+
+                Assert.AreEqual(latestVersion.Id, versions[0].Id);
+                Assert.AreEqual(doc.Id, versions[2].Id);
+            }
+            finally
+            {
+                if (doc != null)
+                {
+                    doc.Delete();
+                    Assert.IsFalse(Session.Exists(doc));
+                }
+            }
+        }
 
         [TestMethod]
         public void TestQuery()
@@ -357,6 +428,94 @@ namespace PortCMISTests
             Session.Delete(item);
             Session.Delete(folder1);
             Session.Delete(folder2);
+
+            Assert.IsFalse(Session.Exists(item));
+            Assert.IsFalse(Session.Exists(folder1));
+            Assert.IsFalse(Session.Exists(folder2));
+        }
+
+        [TestMethod]
+        public void TestCopy()
+        {
+            IFolder rootFolder = Session.GetRootFolder();
+            IFolder folder1 = null;
+            IFolder folder2 = null;
+            IDocument doc1 = null;
+            IDocument doc2 = null;
+
+            string content = "I'm unique!";
+
+            try
+            {
+                folder1 = CreateFolder(rootFolder, "copy1");
+                folder2 = CreateFolder(rootFolder, "copy2");
+                doc1 = CreateTextDocument(folder1, "copydoc.xt", content);
+
+                doc2 = doc1.Copy(folder2);
+
+                Assert.IsNotNull(doc2);
+                Assert.AreEqual(doc1.Name, doc2.Name);
+                Assert.AreEqual(ConvertStreamToString(doc1.GetContentStream().Stream), ConvertStreamToString(doc2.GetContentStream().Stream));
+                Assert.AreEqual(folder2.Id, doc2.Parents[0].Id);
+            }
+            finally
+            {
+                if (folder1 != null)
+                {
+                    folder1.DeleteTree(true, UnfileObject.Delete, true);
+                    Assert.IsFalse(Session.Exists(folder1));
+                }
+                if (folder2 != null)
+                {
+                    folder2.DeleteTree(true, UnfileObject.Delete, true);
+                    Assert.IsFalse(Session.Exists(folder2));
+                }
+            }
+        }
+
+
+
+        [TestMethod]
+        public void TestAcl()
+        {
+            IDocument doc = null;
+
+            try
+            {
+                doc = CreateTextDocument(Session.GetRootFolder(), "acl.txt", "Hello Joe!");
+
+                Ace joeAce = new Ace()
+                {
+                    Principal = new Principal() { Id = "joe" },
+                    Permissions = new List<string> { "cmis:write" }
+                };
+
+                // apply ACL and test result
+                IAcl newAcl = doc.ApplyAcl(new List<IAce> { joeAce }, null, AclPropagation.RepositoryDetermined);
+                Assert.IsNotNull(newAcl);
+                Assert.IsNotNull(newAcl.Aces);
+                Assert.IsTrue(newAcl.Aces.Count > 0);
+
+                // retrieve ACL and test
+                IAcl acl2 = Session.GetAcl(doc, true);
+                Assert.IsNotNull(acl2);
+                Assert.IsNotNull(acl2.Aces);
+                Assert.IsTrue(acl2.Aces.Count > 0);
+
+                // fetch document and test
+                IDocument doc2 = (IDocument)Session.GetObject(doc, OperationContextUtils.CreateMaximumOperationContext());
+                Assert.IsNotNull(doc2.Acl);
+                Assert.IsNotNull(doc2.Acl.Aces);
+                Assert.IsTrue(doc2.Acl.Aces.Count > 0);
+            }
+            finally
+            {
+                if (doc != null)
+                {
+                    doc.Delete();
+                    Assert.IsFalse(Session.Exists(doc));
+                }
+            }
         }
     }
 }

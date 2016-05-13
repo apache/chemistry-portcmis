@@ -572,6 +572,59 @@ namespace PortCMIS.Client
         {
             Id = id;
         }
+
+        /// <inheritdoc/>
+        public override string ToString()
+        {
+            return Id;
+        }
+
+        /// <inheritdoc/>
+        public override int GetHashCode()
+        {
+            return Id.GetHashCode();
+        }
+
+        /// <inheritdoc/>
+        public override bool Equals(object obj)
+        {
+            return this.Equals(obj as ObjectId);
+        }
+
+        public bool Equals(ObjectId oid)
+        {
+            if (Object.ReferenceEquals(oid, null))
+            {
+                return false;
+            }
+
+            if (Object.ReferenceEquals(this, oid))
+            {
+                return true;
+            }
+
+            if (this.GetType() != oid.GetType())
+            {
+                return false;
+            }
+
+            return Id == oid.Id;
+        }
+
+        public static bool operator ==(ObjectId id1, ObjectId id2)
+        {
+            if (object.ReferenceEquals(id1, null))
+            {
+                return object.ReferenceEquals(id2, null);
+            }
+
+            return id1.Id == id2.Id;
+        }
+
+        public static bool operator !=(ObjectId id1, ObjectId id2)
+        {
+            return !(id1 == id2);
+        }
     }
 
     /// <summary>

@@ -25,6 +25,7 @@ using PortCMIS.Enums;
 using PortCMIS.Exceptions;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Numerics;
 using System.Text;
 
@@ -544,6 +545,18 @@ namespace PortCMIS.Client.Impl
             }
         }
 
+        /// <inheritdoc/>
+        public virtual bool HasAllowableAction(PortCMIS.Enums.Action action)
+        {
+            IAllowableActions currentAllowableActions = AllowableActions;
+            if (currentAllowableActions == null || currentAllowableActions.Actions == null)
+            {
+                throw new Exception("Allowable Actions are not available!");
+            }
+
+            return currentAllowableActions.Actions.Contains(action);
+        }
+
         // --- renditions ---
 
         /// <inheritdoc/>
@@ -694,6 +707,20 @@ namespace PortCMIS.Client.Impl
                 {
                     Refresh();
                 }
+            }
+        }
+
+        /// <inheritdoc/>
+        public override string ToString()
+        {
+            lock (objectLock)
+            {
+                if (objectType == null)
+                {
+                    return "<unknown>";
+                }
+
+                return objectType.BaseTypeId + " (" + objectType.Id + "): " + Id;
             }
         }
     }
@@ -930,8 +957,15 @@ namespace PortCMIS.Client.Impl
         public virtual IDocument Copy(IObjectId targetFolderId, IDictionary<string, object> properties, VersioningState? versioningState,
             IList<IPolicy> policies, IList<IAce> addAces, IList<IAce> removeAces, IOperationContext context)
         {
-
-            IObjectId newId = Session.CreateDocumentFromSource(this, properties, targetFolderId, versioningState, policies, addAces, removeAces);
+            IObjectId newId;
+            try
+            {
+                newId = Session.CreateDocumentFromSource(this, properties, targetFolderId, versioningState, policies, addAces, removeAces);
+            }
+            catch (CmisNotSupportedException nse)
+            {
+                newId = CopyViaClient(targetFolderId, properties, versioningState, policies, addAces, removeAces);
+            }
 
             // if no context is provided the object will not be fetched
             if (context == null || newId == null)
@@ -952,6 +986,61 @@ namespace PortCMIS.Client.Impl
         public virtual IDocument Copy(IObjectId targetFolderId)
         {
             return Copy(targetFolderId, null, null, null, null, null, Session.DefaultContext);
+        }
+
+
+        /// <summary>
+        /// Copies the document manually. The content is streamed from the repository and back.
+        /// </summary>
+        protected IObjectId CopyViaClient(IObjectId targetFolderId, IDictionary<string, object> properties,
+                VersioningState? versioningState, IList<IPolicy> policies, IList<IAce> addAces, IList<IAce> removeAces)
+        {
+            IDictionary<string, object> newProperties = new Dictionary<string, object>();
+
+            IOperationContext allPropsContext = Session.CreateOperationContext();
+            allPropsContext.FilterString = "*";
+            allPropsContext.IncludeAcls = false;
+            allPropsContext.IncludeAllowableActions = false;
+            allPropsContext.IncludePathSegments = false;
+            allPropsContext.IncludePolicies = false;
+            allPropsContext.IncludeRelationships = IncludeRelationships.None;
+            allPropsContext.RenditionFilterString = "cmis:none";
+
+            IDocument allPropsDoc = (IDocument)Session.GetObject(this, allPropsContext);
+
+            foreach (IProperty prop in allPropsDoc.Properties)
+            {
+                if (prop.PropertyDefinition.Updatability == Updatability.ReadWrite
+                    || prop.PropertyDefinition.Updatability == Updatability.OnCreate)
+                {
+                    newProperties.Add(prop.Id, prop.Value);
+                }
+            }
+
+            if (properties != null)
+            {
+                foreach (KeyValuePair<string, object> prop in properties)
+                {
+                    newProperties[prop.Key] = prop.Value;
+                }
+            }
+
+            IContentStream contentStream = allPropsDoc.GetContentStream();
+            try
+            {
+                return Session.CreateDocument(newProperties, targetFolderId, contentStream, versioningState, policies, addAces, removeAces);
+            }
+            finally
+            {
+                if (contentStream != null)
+                {
+                    Stream stream = contentStream.Stream;
+                    if (stream != null)
+                    {
+                        stream.Dispose();
+                    }
+                }
+            }
         }
 
         /// <inheritdoc/>
@@ -1901,6 +1990,12 @@ namespace PortCMIS.Client.Impl
             // for future formating
 
             return value.ToString();
+        }
+
+        /// <inheritdoc/>
+        public override string ToString()
+        {
+            return Id + ": " + ValuesAsString;
         }
     }
 

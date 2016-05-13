@@ -1144,6 +1144,12 @@ namespace PortCMIS.Data
 
         /// <inheritdoc/>
         public bool IsDirect { get; set; }
+
+        /// <inheritdoc/>
+        public override string ToString()
+        {
+            return PrincipalId + ": " + (Permissions == null ? "?" : String.Join(", ", Permissions));
+        }
     }
 
     /// <summary>
@@ -1156,6 +1162,12 @@ namespace PortCMIS.Data
 
         /// <inheritdoc/>
         public bool? IsExact { get; set; }
+
+        /// <inheritdoc/>
+        public override string ToString()
+        {
+            return "ACL: " + (Aces == null ? "empty" : String.Join(" | ", Aces));
+        }
     }
 
     /// <summary>
@@ -1174,6 +1186,14 @@ namespace PortCMIS.Data
 
         /// <inheritdoc/>
         public Stream Stream { get; set; }
+
+        /// <inheritdoc/>
+        public override string ToString()
+        {
+            return "Content Stream : " + FileName + " (" +MimeType +") " +
+                (Length == null ? "" : Length + " bytes" +
+                (Stream == null ? " no stream" : Stream.ToString()));
+        }
     }
     /// <summary>
     /// Simple Content Stream implementation that indicates a partial stream.

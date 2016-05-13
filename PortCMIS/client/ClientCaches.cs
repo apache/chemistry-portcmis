@@ -83,10 +83,23 @@ namespace PortCMIS.Client
         ICmisObject GetByPath(string path, string cacheKey);
 
         /// <summary>
+        /// Gets the object ID by path.
+        /// </summary>
+        /// <param name="path">the path</param>
+        /// <returns>the object ID</returns>
+        string GetObjectIdByPath(string path);
+
+        /// <summary>
         /// Removes an object from the cache.
         /// </summary>
         /// <param name="objectId">the object ID</param>
         void Remove(string objectId);
+
+        /// <summary>
+        /// Removes a path from the cache.
+        /// </summary>
+        /// <param name="path">the path</param>
+        void RemovePath(string path);
 
         /// <summary>
         /// Clears the cache.
@@ -126,7 +139,13 @@ namespace PortCMIS.Client
         public ICmisObject GetByPath(string path, string cacheKey) { return null; }
 
         /// <inheritdoc/> 
+        public string GetObjectIdByPath(string path) { return null; }
+
+        /// <inheritdoc/> 
         public void Remove(string objectId) { }
+
+        /// <inheritdoc/> 
+        public void RemovePath(string path) { }
 
         /// <inheritdoc/> 
         public void Clear() { }
@@ -343,6 +362,16 @@ namespace PortCMIS.Client
         }
 
         /// <inheritdoc/> 
+        public string GetObjectIdByPath(string path)
+        {
+            lock (cacheLock)
+            {
+                return pathToIdCache.Get(path);
+            }
+        }
+
+
+        /// <inheritdoc/> 
         public void Remove(string objectId)
         {
             if (objectId == null)
@@ -353,6 +382,20 @@ namespace PortCMIS.Client
             lock (cacheLock)
             {
                 objectCache.Remove(objectId);
+            }
+        }
+
+        /// <inheritdoc/> 
+        public void RemovePath(string path)
+        {
+            if (path == null)
+            {
+                return;
+            }
+
+            lock (cacheLock)
+            {
+                pathToIdCache.Remove(path);
             }
         }
 
