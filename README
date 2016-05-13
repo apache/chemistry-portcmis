@@ -6,10 +6,54 @@ client library for the .NET framework 4.5 or higher.
 
 See http://chemistry.apache.org/dotnet/portcmis.html for more information.
 
-This release is a bug fix release.
+This release is the initial release.
 If you find a problem, please let us know: https://issues.apache.org/jira/browse/CMIS
 
 
+Libraries
+---------
+
+PortCMIS consists of two libraries: PortCMIS and PortCMISWin.
+
+The PortCMIS library is a Portable Class Library and contains the main code.
+The PortCMISWin library adds support for Windows Runtime APIs, especially the
+Windows.Web.Http.HttpClient. Use it only if you need a specific feature that is
+not available with the System.Net.Http.HttpClient.
+
+
+Use this code to create a session with PortCMIS:
+
+    IDictionary<string, string> parameters = new Dictionary<string, string>() {
+        {SessionParameter.BindingType , BindingType.Browser},
+        {SessionParameter.BrowserUrl , "http://localhost:8080/inmemory/browser"},
+        {SessionParameter.RepositoryId , "A1"},
+        {SessionParameter.User , "user"},
+        {SessionParameter.Password , "password"}
+    };
+
+    ISessionFactory factory = SessionFactory.NewInstance();
+    ISession session = factory.CreateSession(parameters);
+
+
+Use this code to create a session with PortCMISWin:
+	
+	IDictionary<string, string> parameters = new Dictionary<string, string>() {
+        {SessionParameter.BindingType , BindingType.Browser},
+        {SessionParameter.BrowserUrl , "http://localhost:8080/inmemory/browser"},
+        {SessionParameter.RepositoryId , "A1"},
+        {SessionParameter.User , "user"},
+        {SessionParameter.Password , "password"}
+    };
+
+    ISessionFactory factory = WindowsSessionFactory.NewInstance();
+    ISession session = factory.CreateSession(parameters);
+
+
+Please note that the authentication provider interfaces are different for
+PortCMIS and PortCMISWin. Custom authentication provider implementations have
+to developed for either PortCMIS or PortCMISWin.
+	
+	
 Change log 
 ----------
 

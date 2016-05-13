@@ -591,6 +591,7 @@ namespace PortCMIS.Client
             return this.Equals(obj as ObjectId);
         }
 
+        /// <inheritdoc/>
         public bool Equals(ObjectId oid)
         {
             if (Object.ReferenceEquals(oid, null))
@@ -611,6 +612,7 @@ namespace PortCMIS.Client
             return Id == oid.Id;
         }
 
+        /// <inheritdoc/>
         public static bool operator ==(ObjectId id1, ObjectId id2)
         {
             if (object.ReferenceEquals(id1, null))
@@ -621,6 +623,7 @@ namespace PortCMIS.Client
             return id1.Id == id2.Id;
         }
 
+        /// <inheritdoc/>
         public static bool operator !=(ObjectId id1, ObjectId id2)
         {
             return !(id1 == id2);

@@ -962,7 +962,7 @@ namespace PortCMIS.Client.Impl
             {
                 newId = Session.CreateDocumentFromSource(this, properties, targetFolderId, versioningState, policies, addAces, removeAces);
             }
-            catch (CmisNotSupportedException nse)
+            catch (CmisNotSupportedException)
             {
                 newId = CopyViaClient(targetFolderId, properties, versioningState, policies, addAces, removeAces);
             }

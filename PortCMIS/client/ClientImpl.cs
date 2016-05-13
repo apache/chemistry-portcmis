@@ -509,6 +509,33 @@ namespace PortCMIS.Client.Impl
             return result;
         }
 
+        /// <inheritdoc/>
+        public IObjectType CreateType(ITypeDefinition type)
+        {
+            CheckCmisVersion();
+
+            ITypeDefinition newType = Binding.GetRepositoryService().CreateType(RepositoryId, type, null);
+            return ObjectFactory.ConvertTypeDefinition(newType);
+        }
+
+        /// <inheritdoc/>
+        public IObjectType UpdateType(ITypeDefinition type)
+        {
+            CheckCmisVersion();
+
+            ITypeDefinition updatedType = Binding.GetRepositoryService().UpdateType(RepositoryId, type, null);
+            return ObjectFactory.ConvertTypeDefinition(updatedType);
+        }
+
+        /// <inheritdoc/>
+        public void DeleteType(string typeId)
+        {
+            CheckCmisVersion();
+
+            Binding.GetRepositoryService().DeleteType(RepositoryId, typeId, null);
+        }
+
+
         // navigation
 
         /// <inheritdoc/>
@@ -1083,10 +1110,7 @@ namespace PortCMIS.Client.Impl
         public IObjectId CreateDocument(IDictionary<string, object> properties, IObjectId folderId, IContentStream contentStream,
             VersioningState? versioningState, IList<IPolicy> policies, IList<IAce> addAces, IList<IAce> removeAces)
         {
-            if (properties == null || properties.Count == 0)
-            {
-                throw new ArgumentException("Properties must not be empty!");
-            }
+            CheckProperties(properties);
 
             string newId = Binding.GetObjectService().CreateDocument(RepositoryId, ObjectFactory.ConvertProperties(properties, null, null,
                 (versioningState == VersioningState.CheckedOut ? CreateAndCheckoutUpdatability : CreateUpdatability)),
@@ -1157,10 +1181,7 @@ namespace PortCMIS.Client.Impl
             {
                 throw new ArgumentException("Folder ID must be set!");
             }
-            if (properties == null || properties.Count == 0)
-            {
-                throw new ArgumentException("Properties must not be empty!");
-            }
+            CheckProperties(properties);
 
             string newId = Binding.GetObjectService().CreateFolder(RepositoryId, ObjectFactory.ConvertProperties(properties, null, null, CreateUpdatability),
                 (folderId == null ? null : folderId.Id), ObjectFactory.ConvertPolicies(policies), ObjectFactory.ConvertAces(addAces),
@@ -1179,10 +1200,7 @@ namespace PortCMIS.Client.Impl
         public IObjectId CreatePolicy(IDictionary<string, object> properties, IObjectId folderId, IList<IPolicy> policies,
             IList<IAce> addAces, IList<IAce> removeAces)
         {
-            if (properties == null || properties.Count == 0)
-            {
-                throw new ArgumentException("Properties must not be empty!");
-            }
+            CheckProperties(properties);
 
             string newId = Binding.GetObjectService().CreatePolicy(RepositoryId, ObjectFactory.ConvertProperties(properties, null, null, CreateUpdatability),
                 (folderId == null ? null : folderId.Id), ObjectFactory.ConvertPolicies(policies), ObjectFactory.ConvertAces(addAces),
@@ -1201,10 +1219,7 @@ namespace PortCMIS.Client.Impl
         public IObjectId CreateItem(IDictionary<string, object> properties, IObjectId folderId, IList<IPolicy> policies, IList<IAce> addAces,
                 IList<IAce> removeAces)
         {
-            if (properties == null || properties.Count == 0)
-            {
-                throw new ArgumentException("Properties must not be empty!");
-            }
+            CheckProperties(properties);
 
             string newId = Binding.GetObjectService().CreateItem(RepositoryId, ObjectFactory.ConvertProperties(properties, null, null, CreateUpdatability),
                 (folderId == null ? null : folderId.Id), ObjectFactory.ConvertPolicies(policies), ObjectFactory.ConvertAces(addAces),
@@ -1223,10 +1238,7 @@ namespace PortCMIS.Client.Impl
         public IObjectId CreateRelationship(IDictionary<string, object> properties, IList<IPolicy> policies, IList<IAce> addAces,
                 IList<IAce> removeAces)
         {
-            if (properties == null || properties.Count == 0)
-            {
-                throw new ArgumentException("Properties must not be empty!");
-            }
+            CheckProperties(properties);
 
             string newId = Binding.GetObjectService().CreateRelationship(RepositoryId, ObjectFactory.ConvertProperties(properties, null, null, CreateUpdatability),
                 ObjectFactory.ConvertPolicies(policies), ObjectFactory.ConvertAces(addAces), ObjectFactory.ConvertAces(removeAces), null);
@@ -1280,6 +1292,66 @@ namespace PortCMIS.Client.Impl
             };
 
             return new CollectionEnumerable<IRelationship>(new PageFetcher<IRelationship>(DefaultContext.MaxItemsPerPage, fetchPageDelegate));
+        }
+
+        /// <inheritdoc/>
+        public IList<IBulkUpdateObjectIdAndChangeToken> BulkUpdateProperties(IList<ICmisObject> objects,
+            IDictionary<string, object> properties, IList<string> addSecondaryTypeIds, IList<string> removeSecondaryTypeIds)
+        {
+            CheckCmisVersion();
+            CheckProperties(properties);
+
+            IObjectType objectType = null;
+            IDictionary<string, ISecondaryType> secondaryTypes = new Dictionary<string, ISecondaryType>();
+
+            // gather secondary types
+            if (addSecondaryTypeIds != null)
+            {
+                foreach (string stid in addSecondaryTypeIds)
+                {
+                    IObjectType secondaryType = GetTypeDefinition(stid);
+
+                    if (!(secondaryType is ISecondaryType))
+                    {
+                        throw new ArgumentException("Secondary types contains a type that is not a secondary type: "
+                                + secondaryType.Id, "addSecondaryTypeIds");
+                    }
+
+                    secondaryTypes[secondaryType.Id] = (ISecondaryType)secondaryType;
+                }
+            }
+
+            // gather IDs and change tokens
+            IList<IBulkUpdateObjectIdAndChangeToken> objectIdsAndChangeTokens = new List<IBulkUpdateObjectIdAndChangeToken>();
+            foreach (ICmisObject obj in objects)
+            {
+                if (obj == null)
+                {
+                    continue;
+                }
+
+                objectIdsAndChangeTokens.Add(new BulkUpdateObjectIdAndChangeToken() { Id = obj.Id, ChangeToken = obj.ChangeToken });
+
+                if (objectType == null)
+                {
+                    objectType = obj.ObjectType;
+                }
+
+                if (obj.SecondaryTypes != null)
+                {
+                    foreach (ISecondaryType secondaryType in obj.SecondaryTypes)
+                    {
+                        secondaryTypes[secondaryType.Id] = secondaryType;
+                    }
+                }
+            }
+
+            ISet<Updatability> updatebility = new HashSet<Updatability>();
+            updatebility.Add(Updatability.ReadWrite);
+
+            return Binding.GetObjectService().BulkUpdateProperties(RepositoryId, objectIdsAndChangeTokens,
+                    ObjectFactory.ConvertProperties(properties, objectType, secondaryTypes.Values, updatebility),
+                    addSecondaryTypeIds, removeSecondaryTypeIds, null);
         }
 
         // delete
@@ -1446,6 +1518,28 @@ namespace PortCMIS.Client.Impl
             if (path[0] != '/')
             {
                 throw new ArgumentException("Path must start with a '/'!");
+            }
+        }
+
+        /// <summary>
+        /// Checks if the CMIS version of this repository is 1.1.
+        /// </summary>
+        protected void CheckCmisVersion()
+        {
+            if (RepositoryInfo.CmisVersion == CmisVersion.Cmis_1_0)
+            {
+                throw new CmisNotSupportedException("This method is not supported for CMIS 1.0 repositories.");
+            }
+        }
+
+        /// <summary>
+        /// Checks if properties are set.
+        /// </summary>
+        protected void CheckProperties(IDictionary<string, object> properties)
+        {
+            if (properties == null || properties.Count == 0)
+            {
+                throw new ArgumentException("Properties must not be empty!");
             }
         }
     }

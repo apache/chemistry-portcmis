@@ -183,7 +183,7 @@ namespace PortCMIS.Client.Impl
         }
 
         /// <inheritdoc/>
-        protected virtual IProperty ConvertProperty(IObjectType objectType, IList<ISecondaryType> secondaryTypes, IPropertyData pd)
+        protected virtual IProperty ConvertProperty(IObjectType objectType, ICollection<ISecondaryType> secondaryTypes, IPropertyData pd)
         {
             IPropertyDefinition definition = objectType[pd.Id];
             if (definition == null)
@@ -215,7 +215,7 @@ namespace PortCMIS.Client.Impl
         }
 
         /// <inheritdoc/>
-        public virtual IDictionary<string, IProperty> ConvertProperties(IObjectType objectType, IList<ISecondaryType> secondaryTypes, IProperties properties)
+        public virtual IDictionary<string, IProperty> ConvertProperties(IObjectType objectType, ICollection<ISecondaryType> secondaryTypes, IProperties properties)
         {
             if (objectType == null)
             {
@@ -245,7 +245,7 @@ namespace PortCMIS.Client.Impl
         }
 
         /// <inheritdoc/>
-        public virtual IProperties ConvertProperties(IDictionary<string, object> properties, IObjectType type, IList<ISecondaryType> secondaryTypes, HashSet<Updatability> updatabilityFilter)
+        public virtual IProperties ConvertProperties(IDictionary<string, object> properties, IObjectType type, ICollection<ISecondaryType> secondaryTypes, ISet<Updatability> updatabilityFilter)
         {
             // check input
             if (properties == null)
@@ -272,7 +272,7 @@ namespace PortCMIS.Client.Impl
             }
 
             // get secondary types
-            IList<ISecondaryType> allSecondaryTypes = null;
+            ICollection<ISecondaryType> allSecondaryTypes = null;
             object secondaryTypeIds;
             properties.TryGetValue(PropertyIds.SecondaryObjectTypeIds, out secondaryTypeIds);
             if (secondaryTypeIds is IList<string>)

@@ -21,6 +21,7 @@ rem under the License.
 echo Removing old DLLs
 rmdir /Q /S bin
 rmdir /Q /S obj
+rmdir /Q /S nupkg
 
 echo Building Debug DLL...
 msbuild PortCMISWin.csproj /ToolsVersion:4.0 /p:Configuration=Debug
@@ -28,7 +29,8 @@ msbuild PortCMISWin.csproj /ToolsVersion:4.0 /p:Configuration=Debug
 echo Building Release DLL...
 msbuild PortCMISWin.csproj /ToolsVersion:4.0 /p:Configuration=Release
 
-nuget pack
+mkdir nupkg
+nuget pack -o nupkg
 
 rem echo Building documentation...
 rem msbuild PortCMISWin.shfbproj /ToolsVersion:4.0 /p:Configuration=Release

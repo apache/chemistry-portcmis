@@ -203,6 +203,26 @@ namespace PortCMIS.Client
         /// <returns>the tree of types</returns>
         IList<ITree<IObjectType>> GetTypeDescendants(string typeId, int depth, bool includePropertyDefinitions);
 
+        /// <summary>
+        /// Creates a new object type.
+        /// </summary>
+        /// <param name="type">the type definition</param>
+        /// <returns>the newly created type</returns>
+        IObjectType CreateType(ITypeDefinition type);
+
+        /// <summary>
+        /// Updates an object type.
+        /// </summary>
+        /// <param name="type">the updated type definition</param>
+        /// <returns>the updated type</returns>
+        IObjectType UpdateType(ITypeDefinition type);
+
+        /// <summary>
+        /// Deletes a type.
+        /// </summary>
+        /// <param name="typeId">the type ID</param>
+        void DeleteType(string typeId);
+
         // navigation
 
         /// <summary>
@@ -618,6 +638,17 @@ namespace PortCMIS.Client
                 RelationshipDirection? relationshipDirection, IObjectType type, IOperationContext context);
 
         /// <summary>
+        /// Updates multiple objects in one request.
+        /// </summary>
+        /// <param name="objects">the objects</param>
+        /// <param name="properties">updated property values</param>
+        /// <param name="addSecondaryTypeIds">secondary types to add</param>
+        /// <param name="removeSecondaryTypeIds">secondary types to remove</param>
+        /// <returns></returns>
+        IList<IBulkUpdateObjectIdAndChangeToken> BulkUpdateProperties(IList<ICmisObject> objects,
+            IDictionary<string, object> properties, IList<string> addSecondaryTypeIds, IList<string> removeSecondaryTypeIds);
+
+        /// <summary>
         /// Deletes an object and, if it is a document, all versions in the version series.
         /// </summary>
         /// <param name="objectId">the ID of the object</param>
@@ -775,12 +806,12 @@ namespace PortCMIS.Client
         /// <summary>
         /// Converts properties.
         /// </summary>
-        IDictionary<string, IProperty> ConvertProperties(IObjectType objectType, IList<ISecondaryType> secondaryTypes, IProperties properties);
+        IDictionary<string, IProperty> ConvertProperties(IObjectType objectType, ICollection<ISecondaryType> secondaryTypes, IProperties properties);
 
         /// <summary>
         /// Converts properties.
         /// </summary>
-        IProperties ConvertProperties(IDictionary<string, object> properties, IObjectType type, IList<ISecondaryType> secondaryTypes, HashSet<Updatability> updatabilityFilter);
+        IProperties ConvertProperties(IDictionary<string, object> properties, IObjectType type, ICollection<ISecondaryType> secondaryTypes, ISet<Updatability> updatabilityFilter);
 
         /// <summary>
         /// Converts properties from a query result.
