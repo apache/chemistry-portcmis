@@ -176,6 +176,46 @@ namespace PortCMISTests
         }
 
         [TestMethod]
+        public void TestCreateBig()
+        {
+            int docSize = 50 * 1024 * 1024; // 50MiB
+
+            // get root folder
+            IFolder root = Session.GetRootFolder();
+            IDocument doc = null;
+
+            try
+            {
+                // create document
+                StringBuilder sb = new StringBuilder(docSize);
+                for (int i = 0; i < docSize; i++)
+                {
+                    sb.Append('x');
+                }
+
+                string contentString = sb.ToString();
+
+                doc = CreateTextDocument(root, "big.txt", contentString);
+                Assert.IsNotNull(doc);
+
+                // get content
+                IContentStream newContent = doc.GetContentStream();
+                Assert.IsNotNull(newContent);
+                Assert.IsNotNull(newContent.Stream);
+
+                Assert.AreEqual(contentString, ConvertStreamToString(newContent.Stream));
+            }
+            finally
+            {
+                if (doc != null)
+                {
+                    doc.Delete();
+                    Assert.IsFalse(Session.Exists(doc));
+                }
+            }
+        }
+
+        [TestMethod]
         public void TestUpdateProperties()
         {
             string name1 = "port-test-folder1";

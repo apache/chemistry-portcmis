@@ -992,7 +992,7 @@ namespace PortCMIS.Client.Impl
         /// <summary>
         /// Copies the document manually. The content is streamed from the repository and back.
         /// </summary>
-        protected IObjectId CopyViaClient(IObjectId targetFolderId, IDictionary<string, object> properties,
+        protected virtual IObjectId CopyViaClient(IObjectId targetFolderId, IDictionary<string, object> properties,
                 VersioningState? versioningState, IList<IPolicy> policies, IList<IAce> addAces, IList<IAce> removeAces)
         {
             IDictionary<string, object> newProperties = new Dictionary<string, object>();

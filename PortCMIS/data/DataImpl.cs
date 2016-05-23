@@ -1094,7 +1094,7 @@ namespace PortCMIS.Data
                     {
                         throw new ArgumentException("Property '" + Id + "' is a Decimal property!");
                     }
-                    return value;
+                    return (decimal)value;
                 case PropertyType.Uri:
                     if (!(value is string))
                     {
