@@ -1075,7 +1075,7 @@ namespace PortCMIS.Data
                     }
                     else
                     {
-                        return new BigInteger((long)value);
+                        return new BigInteger(Convert.ToInt64(value));
                     }
                 case PropertyType.Boolean:
                     if (!(value is bool))
@@ -1090,11 +1090,11 @@ namespace PortCMIS.Data
                     }
                     return value;
                 case PropertyType.Decimal:
-                    if (!(value is decimal || value is double || value is float))
+                    if (!(value is decimal || value is double || value is float || value is sbyte || value is byte || value is short || value is ushort || value is int || value is uint || value is long))
                     {
                         throw new ArgumentException("Property '" + Id + "' is a Decimal property!");
                     }
-                    return (decimal)value;
+                    return Convert.ToDecimal(value);
                 case PropertyType.Uri:
                     if (!(value is string))
                     {
@@ -1190,7 +1190,7 @@ namespace PortCMIS.Data
         /// <inheritdoc/>
         public override string ToString()
         {
-            return "Content Stream : " + FileName + " (" +MimeType +") " +
+            return "Content Stream : " + FileName + " (" + MimeType + ") " +
                 (Length == null ? "" : Length + " bytes" +
                 (Stream == null ? " no stream" : Stream.ToString()));
         }
