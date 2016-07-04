@@ -621,7 +621,8 @@ namespace PortCMIS.Binding.AtomPub
                 return null;
             }
 
-            return errorContent.Substring(begin + "<!--exception-->".Length, end);
+            int textStart = begin + "<!--exception-->".Length;
+            return errorContent.Substring(textStart, end - textStart);
         }
 
         protected string ExtractErrorMessage(string message, string errorContent)
@@ -639,7 +640,8 @@ namespace PortCMIS.Binding.AtomPub
                 return message;
             }
 
-            return errorContent.Substring(begin + "<!--message-->".Length, end);
+            int textStart = begin + "<!--message-->".Length;
+            return errorContent.Substring(textStart, end - textStart);
         }
 
         // ---- helpers ----
