@@ -75,6 +75,46 @@ namespace PortCMIS.Data.Extensions
 
         /// <inheritdoc/>
         public IList<ICmisExtensionElement> Children { get; set; }
+
+        /// <inheritdoc/>
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+
+            if (Namespace != null)
+            {
+                sb.Append("{" + Namespace + "}");
+            }
+
+            sb.Append(Name);
+            sb.Append(": ");
+
+            if (Value != null)
+            {
+                sb.Append(Value);
+            }
+            else if (Children != null)
+            {
+                sb.Append("[");
+                bool first = true;
+                foreach (ICmisExtensionElement ext in Children)
+                {
+                    if (first)
+                    {
+                        first = false;
+                    }
+                    else
+                    {
+                        sb.Append(", ");
+                    }
+
+                    sb.Append(ext.ToString());
+                }
+                sb.Append("]");
+            }
+
+            return sb.ToString();
+        }
     }
 
     /// <summary>

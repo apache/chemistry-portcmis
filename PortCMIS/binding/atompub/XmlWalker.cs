@@ -127,54 +127,62 @@ namespace PortCMIS.Binding.AtomPub
                 {
                     attributes.Add(parser.Name, parser.Value);
                 }
+
+                parser.MoveToElement();
             }
 
-            XmlUtils.Next(parser);
-
-            while (true)
+            if (!parser.IsEmptyElement)
             {
-                XmlNodeType nodeType = parser.NodeType;
-                if (nodeType == XmlNodeType.EndElement)
+                XmlUtils.Next(parser);
+
+                while (true)
                 {
-                    break;
-                }
-                else if (nodeType == XmlNodeType.Text)
-                {
-                    string s = parser.Value;
-                    if (s != null)
+                    XmlNodeType nodeType = parser.NodeType;
+                    if (nodeType == XmlNodeType.EndElement)
                     {
-                        if (sb.Length + s.Length > XmlConstraints.MaxStringLength)
+                        break;
+                    }
+                    else if (nodeType == XmlNodeType.Text || nodeType == XmlNodeType.CDATA)
+                    {
+                        char[] buffer = new char[8 * 1024];
+
+                        int len;
+                        while ((len = parser.ReadValueChunk(buffer, 0, buffer.Length)) > 0)
                         {
-                            throw new CmisInvalidArgumentException("String limit exceeded! (String is longer than " + XmlConstraints.MaxStringLength + " characters.)");
+                            if (sb.Length + len > XmlConstraints.MaxStringLength)
+                            {
+                                throw new CmisInvalidArgumentException("String limit exceeded! (String is longer than " + XmlConstraints.MaxStringLength + " characters.)");
+                            }
+
+                            sb.Append(buffer, 0, len);
                         }
-                        sb.Append(s);
                     }
-                }
-                else if (nodeType == XmlNodeType.Element)
-                {
-                    if (level + 1 > XmlConstraints.MaxExtensionsDepth)
+                    else if (nodeType == XmlNodeType.Element)
                     {
-                        throw new CmisInvalidArgumentException("Extensions tree too deep! (More than " + XmlConstraints.MaxExtensionsDepth + " levels.)");
+                        if (level + 1 > XmlConstraints.MaxExtensionsDepth)
+                        {
+                            throw new CmisInvalidArgumentException("Extensions tree too deep! (More than " + XmlConstraints.MaxExtensionsDepth + " levels.)");
+                        }
+
+                        if (children == null)
+                        {
+                            children = new List<ICmisExtensionElement>();
+                        }
+
+                        if (children.Count + 1 > XmlConstraints.MaxExtensionsWidth)
+                        {
+                            throw new CmisInvalidArgumentException("Extensions tree too wide! (More than " + XmlConstraints.MaxExtensionsWidth + " extensions on one level.)");
+                        }
+
+                        children.Add(HandleExtensionLevel(parser, level + 1));
+
+                        continue;
                     }
 
-                    if (children == null)
+                    if (!XmlUtils.Next(parser))
                     {
-                        children = new List<ICmisExtensionElement>();
+                        break;
                     }
-
-                    if (children.Count + 1 > XmlConstraints.MaxExtensionsWidth)
-                    {
-                        throw new CmisInvalidArgumentException("Extensions tree too wide! (More than " + XmlConstraints.MaxExtensionsWidth + " extensions on one level.)");
-                    }
-
-                    children.Add(HandleExtensionLevel(parser, level + 1));
-
-                    continue;
-                }
-
-                if (!XmlUtils.Next(parser))
-                {
-                    break;
                 }
             }
 
