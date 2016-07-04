@@ -340,6 +340,8 @@ namespace PortCMISTests
 
                 Assert.AreEqual(name2, newVers.Name);
                 Assert.AreEqual("v2", ConvertStreamToString(newVers.GetContentStream().Stream));
+                Assert.AreEqual(true, newVers.IsLatestVersion);
+                Assert.AreEqual(true, newVers.IsMajorVersion);
 
                 IDocument latestVersion = Session.GetLatestDocumentVersion(doc);
                 Assert.AreEqual(newVers.Id, latestVersion.Id);
@@ -348,7 +350,7 @@ namespace PortCMISTests
                 string name3 = "versioned3.txt";
                 IContentStream contentStream3 = ContentStreamUtils.CreateTextContentStream(name3, "v3");
 
-                pwcId = doc.CheckOut();
+                pwcId = newVers.CheckOut();
                 pwc = (IDocument)Session.GetObject(pwcId, noCacheOC);
 
                 pwc.Rename(name3);
@@ -358,17 +360,38 @@ namespace PortCMISTests
 
                 Assert.AreEqual(name3, newVers.Name);
                 Assert.AreEqual("v3", ConvertStreamToString(newVers.GetContentStream().Stream));
+                Assert.AreEqual(true, newVers.IsLatestVersion);
+                Assert.AreEqual(true, newVers.IsMajorVersion);
+
+                latestVersion = Session.GetLatestDocumentVersion(doc);
+                Assert.AreEqual(newVers.Id, latestVersion.Id);
+
+                // create next (minor) version
+                string name4 = "versioned4.txt";
+                IContentStream contentStream4 = ContentStreamUtils.CreateTextContentStream(name4, "v3.1");
+
+                pwcId = newVers.CheckOut();
+                pwc = (IDocument)Session.GetObject(pwcId, noCacheOC);
+
+                pwc.Rename(name4);
+
+                newVersId = pwc.CheckIn(false, null, contentStream4, "version 3.1");
+                newVers = (IDocument)Session.GetObject(newVersId);
+
+                Assert.AreEqual(name4, newVers.Name);
+                Assert.AreEqual("v3.1", ConvertStreamToString(newVers.GetContentStream().Stream));
+                Assert.AreEqual(true, newVers.IsLatestVersion);
+                Assert.AreEqual(false, newVers.IsMajorVersion);
 
                 latestVersion = Session.GetLatestDocumentVersion(doc);
                 Assert.AreEqual(newVers.Id, latestVersion.Id);
 
                 // check version history
-
                 IList<IDocument> versions = doc.GetAllVersions();
-                Assert.AreEqual(3, versions.Count);
+                Assert.AreEqual(4, versions.Count);
 
                 Assert.AreEqual(latestVersion.Id, versions[0].Id);
-                Assert.AreEqual(doc.Id, versions[2].Id);
+                Assert.AreEqual(doc.Id, versions[3].Id);
             }
             finally
             {
