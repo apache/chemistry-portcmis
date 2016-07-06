@@ -384,7 +384,17 @@ namespace PortCMIS.Binding
 
             if (User != null)
             {
-                httpClientHandler.Credentials = new NetworkCredential(User, Password);
+                httpClientHandler.PreAuthenticate = true;
+                string preemptiveFlag = Session.GetValue(SessionParameter.PreemptivAuthentication) as string;
+                if (preemptiveFlag != null && preemptiveFlag.ToLowerInvariant().Equals("true"))
+                {
+                    var userPassword = Encoding.UTF8.GetBytes(User + ":" + Password);
+                    AuthenticationHeader = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(userPassword));
+                }
+                else
+                {
+                    httpClientHandler.Credentials = new NetworkCredential(User, Password);
+                }
             }
             else
             {

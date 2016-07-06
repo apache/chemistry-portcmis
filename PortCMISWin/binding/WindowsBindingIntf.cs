@@ -18,8 +18,9 @@
 */
 
 using PortCMIS.Client;
+using System;
+using System.Text;
 using Windows.Security.Credentials;
-using Windows.Security.Cryptography;
 using Windows.Web.Http;
 using Windows.Web.Http.Filters;
 using Windows.Web.Http.Headers;
@@ -95,7 +96,17 @@ namespace PortCMIS.Binding
 
             if (User != null)
             {
-                httpClientFilter.ServerCredential = new PasswordCredential("cmis", User, Password);
+                string preemptiveFlag = Session.GetValue(SessionParameter.PreemptivAuthentication) as string;
+                if (preemptiveFlag != null && preemptiveFlag.ToLowerInvariant().Equals("true"))
+                {
+                    var userPassword = Encoding.UTF8.GetBytes(User + ":" + Password);
+                    AuthenticationHeader = new HttpCredentialsHeaderValue("Basic", Convert.ToBase64String(userPassword));
+                }
+                else
+                {
+                    httpClientFilter.ServerCredential = new PasswordCredential("cmis", User, Password);
+
+                }
             }
             else if (BearerToken != null)
             {
@@ -104,8 +115,8 @@ namespace PortCMIS.Binding
 
             if (ProxyUser != null)
             {
-                var userPassword = CryptographicBuffer.ConvertStringToBinary(ProxyUser + ":" + ProxyPassword, BinaryStringEncoding.Utf16LE);
-                ProxyAuthenticationHeader = new HttpCredentialsHeaderValue("Basic", CryptographicBuffer.EncodeToBase64String(userPassword));
+                var userPassword = Encoding.UTF8.GetBytes(ProxyUser + ":" + ProxyPassword);
+                ProxyAuthenticationHeader = new HttpCredentialsHeaderValue("Basic", Convert.ToBase64String(userPassword));
             }
 
             if (CsrfHeader != null)

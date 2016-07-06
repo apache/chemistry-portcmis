@@ -35,6 +35,9 @@ namespace PortCMIS.Client
         /// <summary>Password</summary>
         public const string Password = "org.apache.chemistry.portcmis.password";
 
+        /// <summary>Preemptive authentication ("true" or "false") (basic auth only)</summary>
+        public const string PreemptivAuthentication = "org.apache.chemistry.portcmis.binding.auth.http.preemptive";
+
         // ---- provider parameter ----
 
         /// <summary>Binding Type ("atompub" or "browser")</summary>
