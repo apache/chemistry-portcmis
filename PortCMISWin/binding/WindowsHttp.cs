@@ -127,7 +127,7 @@ namespace PortCMIS.Binding.Http
             // set additional headers
 
             string userAgent = session.GetValue(SessionParameter.UserAgent) as string;
-            request.Headers.UserAgent.Add(HttpProductInfoHeaderValue.Parse(userAgent ?? ClientVersion.UserAgentName));
+            request.Headers.UserAgent.Add(HttpProductInfoHeaderValue.Parse(userAgent ?? ClientVersion.UserAgent));
 
             if (headers != null)
             {

@@ -1,4 +1,4 @@
-Apache Chemistry PortCMIS 0.1
+Apache Chemistry PortCMIS 0.2
 =============================
 
 Apache Chemistry PortCMIS is a Content Management Interoperability Services (CMIS)
@@ -56,6 +56,11 @@ to developed for either PortCMIS or PortCMISWin.
 	
 Change log 
 ----------
+
+PortCMIS 0.2:
+
+Bug fix release
+
 
 PortCMIS 0.1:
 
