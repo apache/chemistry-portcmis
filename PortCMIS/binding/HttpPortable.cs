@@ -88,8 +88,17 @@ namespace PortCMIS.Binding.Http
                     httpClient = session.GetValue(InvokerHttpClient) as HttpClient;
                     if (httpClient == null)
                     {
+                        // create a HTTP client handler
+                        HttpClientHandler httpClientHandler = null;
 
-                        HttpClientHandler httpClientHandler = new HttpClientHandler();
+                        if (authProvider != null)
+                        {
+                            httpClientHandler = authProvider.CreateHttpClientHandler();
+                        }
+                        if (httpClientHandler == null)
+                        {
+                            httpClientHandler = new HttpClientHandler();
+                        }
 
                         // redirects
                         if (httpClientHandler.SupportsRedirectConfiguration)

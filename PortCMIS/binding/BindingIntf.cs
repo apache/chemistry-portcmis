@@ -263,6 +263,15 @@ namespace PortCMIS.Binding
     public interface IPortableAuthenticationProvider : IAuthenticationProvider
     {
         /// <summary>
+        /// Creates a HttpClientHandler object.
+        /// </summary>
+        /// <remarks>
+        /// If this method returns <c>null</c>, a default HttpClientHandler object will be created.
+        /// </remarks>
+        /// <returns>a new HttpClientHandler object</returns>
+        HttpClientHandler CreateHttpClientHandler();
+
+        /// <summary>
         /// Prepares the HTTP client handler before it is used.
         /// </summary>
         /// <param name="httpClientHandler">the HTTP client handler</param>
@@ -313,6 +322,12 @@ namespace PortCMIS.Binding
         /// Gets the proxy password
         /// </value>
         public string ProxyPassword { get { return Session.GetValue(SessionParameter.ProxyPassword) as string; } }
+
+        /// <inheritdoc/>
+        public virtual HttpClientHandler CreateHttpClientHandler()
+        {
+            return null;
+        }
 
         /// <inheritdoc/>
         public virtual void PrepareHttpClientHandler(HttpClientHandler httpClientHandler)

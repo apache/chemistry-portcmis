@@ -25,7 +25,7 @@ namespace PortCMIS
     public class ClientVersion
     {
         /// <summary>PortCMIS user agent name</summary>
-        public const string UserAgentName = "ApacheChemistryPortCMIS";
+        public const string UserAgentName = "Apache-Chemistry-PortCMIS";
 
         /// <summary>PortCMIS version</summary>
         public const string Version = "0.2";
