@@ -17,6 +17,7 @@
 * under the License.
 */
 
+using System;
 using System.IO;
 
 namespace PortCMIS.Binding
@@ -42,6 +43,10 @@ namespace PortCMIS.Binding
             {
                 // ignore
             }
+            catch (ObjectDisposedException)
+            {
+                // ignore
+            }
             finally
             {
                 reader.Dispose();
@@ -64,6 +69,10 @@ namespace PortCMIS.Binding
                 }
             }
             catch (IOException)
+            {
+                // ignore
+            }
+            catch (ObjectDisposedException)
             {
                 // ignore
             }
