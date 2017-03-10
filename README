@@ -4,9 +4,9 @@ Apache Chemistry PortCMIS 0.2
 Apache Chemistry PortCMIS is a Content Management Interoperability Services (CMIS)
 client library for the .NET framework 4.5 or higher.
 
-See http://chemistry.apache.org/dotnet/portcmis.html for more information.
+See https://chemistry.apache.org/dotnet/portcmis.html for more information.
+See https://chemistry.apache.org/docs/cmis-samples/ for code samples.
 
-This release is the initial release.
 If you find a problem, please let us know: https://issues.apache.org/jira/browse/CMIS
 
 

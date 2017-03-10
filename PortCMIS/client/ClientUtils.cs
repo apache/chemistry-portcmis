@@ -591,7 +591,10 @@ namespace PortCMIS.Client
             return this.Equals(obj as ObjectId);
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Determines whether the specified object ID is equal to the current object ID.
+        /// </summary>
+        /// <param name="oid">the object ID</param>
         public bool Equals(ObjectId oid)
         {
             if (Object.ReferenceEquals(oid, null))
@@ -612,7 +615,9 @@ namespace PortCMIS.Client
             return Id == oid.Id;
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Determines whether two specified object IDs have the same ID.
+        /// </summary>
         public static bool operator ==(ObjectId id1, ObjectId id2)
         {
             if (object.ReferenceEquals(id1, null))
@@ -623,7 +628,9 @@ namespace PortCMIS.Client
             return id1.Id == id2.Id;
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Determines whether two specified object IDs have different IDs.
+        /// </summary>
         public static bool operator !=(ObjectId id1, ObjectId id2)
         {
             return !(id1 == id2);

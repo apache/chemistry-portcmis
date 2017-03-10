@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>$id$</id>
-    <version>0.0.1.0</version>
+    <version>0.0.2.0</version>
     <title>PortCMIS for Store Apps</title>
     <authors>Apache Software Foundation</authors>
     <owners>Apache Software Foundation</owners>
@@ -10,7 +10,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>CMIS Client Library for .Net</description>
     <releaseNotes>Initial release.</releaseNotes>
-    <copyright>Copyright 2015</copyright>
+    <copyright>Copyright 2016-2017</copyright>
     <tags>CMIS</tags>
   </metadata>
 </package>

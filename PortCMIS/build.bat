@@ -32,5 +32,5 @@ msbuild PortCMIS.csproj /ToolsVersion:4.0 /p:Configuration=Release
 mkdir nupkg
 nuget pack -o nupkg
 
-rem echo Building documentation...
-rem msbuild PortCMIS.shfbproj /ToolsVersion:4.0 /p:Configuration=Release
+echo Building documentation...
+msbuild PortCMIS.shfbproj /ToolsVersion:4.0 /p:Configuration=Release
