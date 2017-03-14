@@ -59,12 +59,13 @@ Change log
 
 PortCMIS 0.2:
 
-Bug fix release
+- Bug fix release
+- See https://issues.apache.org/jira/secure/ReleaseNote.jspa?projectId=12310936&version=12337841
 
 
 PortCMIS 0.1:
 
-Initial release
+- Initial release
 
   
 Strong-Name signing

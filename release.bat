@@ -45,6 +45,10 @@ rmdir /S /Q release-bin
 mkdir release-bin
 rmdir /S /Q release-nupkg
 mkdir release-nupkg
+rmdir /S /Q dist-dev
+mkdir dist-dev
+rmdir /S /Q publish
+mkdir publish
 
 echo Copying readme, etc...
 copy LICENSE release-src
@@ -124,6 +128,47 @@ gpg --print-md SHA512 %PORTCMISZIPNUPKG% > %PORTCMISZIPNUPKG%.sha
 
 cd ..
 
-echo Creating RC tag
-rem svn copy https://svn.apache.org/repos/asf/chemistry/portcmis/trunk https://svn.apache.org/repos/asf/chemistry/portcmis/tags/chemistry-portcmis-%PORTCMISVERSION%-%PORTCMISRC%
-
+echo ========================================================================
+echo.
+echo Next steps:
+echo -----------
+echo.
+echo - Check artifacts!!!
+echo.
+echo - Create RC tag:
+echo   svn copy https://svn.apache.org/repos/asf/chemistry/portcmis/trunk https://svn.apache.org/repos/asf/chemistry/portcmis/tags/chemistry-portcmis-%PORTCMISVERSION%-%PORTCMISRC%
+echo.
+echo - Upload to dist/dev:
+echo   cd dist-dev
+echo   svn co https://dist.apache.org/repos/dist/dev/chemistry .
+echo   mkdir chemistry-portcmis-%PORTCMISVERSION%-%PORTCMISRC%
+echo   cd chemistry-portcmis-%PORTCMISVERSION%-%PORTCMISRC%
+echo   copy ..\..\artifacts\* .
+echo   svn add .
+echo   svn commit -m 'added PortCMIS %PORTCMISVERSION% artifacts'
+echo   cd ..\..
+echo.
+echo - Send vote mail and wait 72 hours
+echo.
+echo - Upload to dist/release:
+echo   cd publish
+echo   svn co https://dist.apache.org/repos/dist/release/chemistry/portcmis .
+echo   mkdir %PORTCMISVERSION%
+echo   cd %PORTCMISVERSION%
+echo   copy ..\..\artifacts\* .
+echo   svn add .
+echo   svn commit -m 'added PortCMIS %PORTCMISVERSION% release to dist'
+echo   cd ..\..
+echo.
+echo - Update website
+echo.
+echo - Close JIRA version and create a new one
+echo.
+echo - Rename tag:
+echo   svn mv https://svn.apache.org/repos/asf/chemistry/portcmis/tags/chemistry-portcmis-%PORTCMISVERSION%-%PORTCMISRC% https://svn.apache.org/repos/asf/chemistry/portcmis/tags/chemistry-portcmis-%PORTCMISVERSION% -m 'renamed tag after successful release'
+echo.
+echo - Update DOAP file
+echo.
+echo - Send mail to email to announce@apache.org (with GPG signature)
+echo.
+echo - Remove previous versions from https://dist.apache.org/repos/dist/release/chemistry/portcmis
