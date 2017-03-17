@@ -145,7 +145,7 @@ echo   mkdir chemistry-portcmis-%PORTCMISVERSION%-%PORTCMISRC%
 echo   cd chemistry-portcmis-%PORTCMISVERSION%-%PORTCMISRC%
 echo   copy ..\..\artifacts\* .
 echo   svn add .
-echo   svn commit -m 'added PortCMIS %PORTCMISVERSION% artifacts'
+echo   svn commit -m "added PortCMIS %PORTCMISVERSION% artifacts"
 echo   cd ..\..
 echo.
 echo - Send vote mail and wait 72 hours
@@ -157,7 +157,7 @@ echo   mkdir %PORTCMISVERSION%
 echo   cd %PORTCMISVERSION%
 echo   copy ..\..\artifacts\* .
 echo   svn add .
-echo   svn commit -m 'added PortCMIS %PORTCMISVERSION% release to dist'
+echo   svn commit -m "added PortCMIS %PORTCMISVERSION% release to dist"
 echo   cd ..\..
 echo.
 echo - Update website
