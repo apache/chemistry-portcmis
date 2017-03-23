@@ -85,7 +85,7 @@ namespace PortCMIS.Binding.Browser.Json
                 }
                 else
                 {
-                    writer.Write(((Single)value).ToString("#", CultureInfo.InvariantCulture));
+                    writer.Write(((Single)value).ToString("0", CultureInfo.InvariantCulture));
                 }
                 return;
             }
@@ -98,7 +98,7 @@ namespace PortCMIS.Binding.Browser.Json
 
             if (value is BigInteger)
             {
-                writer.Write(((BigInteger)value).ToString("#", CultureInfo.InvariantCulture));
+                writer.Write(((BigInteger)value).ToString("0", CultureInfo.InvariantCulture));
                 return;
             }
 
@@ -117,7 +117,7 @@ namespace PortCMIS.Binding.Browser.Json
             try
             {
                 long longValue = Convert.ToInt64(value);
-                writer.Write(longValue.ToString("#", CultureInfo.InvariantCulture));
+                writer.Write(longValue.ToString("0", CultureInfo.InvariantCulture));
             }
             catch (Exception)
             {

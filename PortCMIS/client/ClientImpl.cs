@@ -1635,7 +1635,7 @@ namespace PortCMIS.Client.Impl
                     throw new ArgumentException("Number is null!");
                 }
 
-                slb.Add(n.ToString("#", CultureInfo.InvariantCulture));
+                slb.Add(n.ToString("0", CultureInfo.InvariantCulture));
             }
 
             parametersDict[parameterIndex] = slb.ToString();

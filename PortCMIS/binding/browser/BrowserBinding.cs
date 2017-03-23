@@ -517,7 +517,7 @@ namespace PortCMIS.Binding.Browser
             }
             else if (value is BigInteger)
             {
-                return ((BigInteger)value).ToString("#", CultureInfo.InvariantCulture);
+                return ((BigInteger)value).ToString("0", CultureInfo.InvariantCulture);
             }
             else
             {
