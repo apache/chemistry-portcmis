@@ -1652,7 +1652,7 @@ namespace PortCMIS.Client.Impl
             StringListBuilder slb = new StringListBuilder(",");
             foreach (decimal n in num)
             {
-                slb.Add(n.ToString("#", CultureInfo.InvariantCulture));
+                slb.Add(n.ToString("g", CultureInfo.InvariantCulture));
             }
 
             parametersDict[parameterIndex] = slb.ToString();

@@ -500,6 +500,10 @@ namespace PortCMIS.Binding.Browser
             {
                 return null;
             }
+            else if (value is string)
+            {
+                return (string)value;
+            }
             else if (value is DateTime)
             {
                 if (DateTimeFormat == DateTimeFormat.Extended)
@@ -513,15 +517,48 @@ namespace PortCMIS.Binding.Browser
             }
             else if (value is decimal)
             {
-                return ((decimal)value).ToString("#", CultureInfo.InvariantCulture);
+                return ((decimal)value).ToString("g", CultureInfo.InvariantCulture);
             }
             else if (value is BigInteger)
             {
                 return ((BigInteger)value).ToString("0", CultureInfo.InvariantCulture);
             }
+            else if (value is Boolean)
+            {
+                return (Boolean)value ? "true" : "false";
+            }
+            else if (value is Double)
+            {
+                if (Double.IsInfinity((Double)value) || Double.IsNaN((Double)value))
+                {
+                    return "null";
+                }
+                else
+                {
+                    return ((Double)value).ToString("g", CultureInfo.InvariantCulture);
+                }
+            }
+            else if (value is Single)
+            {
+                if (Single.IsInfinity((Single)value) || Single.IsNaN((Single)value))
+                {
+                    return "null";
+                }
+                else
+                {
+                    return ((Single)value).ToString("g", CultureInfo.InvariantCulture);
+                }
+            }
             else
             {
-                return value.ToString();
+                try
+                {
+                    return Convert.ToInt64(value).ToString("0", CultureInfo.InvariantCulture);
+                }
+                catch (Exception)
+                {
+                    return value.ToString();
+                }
             }
         }
     }

@@ -64,6 +64,24 @@ namespace PortCMIS.Binding.Browser.Json
                 return;
             }
 
+            if (value is decimal)
+            {
+                writer.Write(((decimal)value).ToString("g", CultureInfo.InvariantCulture));
+                return;
+            }
+
+            if (value is BigInteger)
+            {
+                writer.Write(((BigInteger)value).ToString("0", CultureInfo.InvariantCulture));
+                return;
+            }
+
+            if (value is Boolean)
+            {
+                writer.Write((Boolean)value ? "true" : "false");
+                return;
+            }
+
             if (value is Double)
             {
                 if (Double.IsInfinity((Double)value) || Double.IsNaN((Double)value))
@@ -72,7 +90,7 @@ namespace PortCMIS.Binding.Browser.Json
                 }
                 else
                 {
-                    writer.Write(((Double)value).ToString("#", CultureInfo.InvariantCulture));
+                    writer.Write(((Double)value).ToString("g", CultureInfo.InvariantCulture));
                 }
                 return;
             }
@@ -85,26 +103,8 @@ namespace PortCMIS.Binding.Browser.Json
                 }
                 else
                 {
-                    writer.Write(((Single)value).ToString("0", CultureInfo.InvariantCulture));
+                    writer.Write(((Single)value).ToString("g", CultureInfo.InvariantCulture));
                 }
-                return;
-            }
-
-            if (value is decimal)
-            {
-                writer.Write(((decimal)value).ToString("#", CultureInfo.InvariantCulture));
-                return;
-            }
-
-            if (value is BigInteger)
-            {
-                writer.Write(((BigInteger)value).ToString("0", CultureInfo.InvariantCulture));
-                return;
-            }
-
-            if (value is Boolean)
-            {
-                writer.Write(value.ToString());
                 return;
             }
 
@@ -858,7 +858,7 @@ namespace PortCMIS.Binding.Browser.Json
         private const int ZzPushbackTooBig = 2;
 
         // error messages for the codes above
-        private static readonly string[] ZZ_ERROR_MSG = { 
+        private static readonly string[] ZZ_ERROR_MSG = {
                                               "Unknown internal scanner error",
                                               "Error: could not match input",
                                               "Error: pushback value was too large"
