@@ -144,5 +144,9 @@ namespace PortCMIS.Client
         /// <summary>Defines if the document name should be added to the properties on check in if no properties are updated
         /// (Workaround for SharePoint 2010 and SharePoint 2013)</summary>
         public const string AddNameOnCheckIn = "org.apache.chemistry.portcmis.workaround.addNameOnCheckIn";
+
+        /// <summary>Defines if getObjectOfLatestVersion should use the version series ID instead of the object ID
+        /// (Workaround for SharePoint 2010 and SharePoint 2013)</summary>
+        public const string LatestVersionWithVersionSeriesId = "org.apache.chemistry.portcmis.workaround.getLatestVersionWithVersionSeriesId";
     }
 }

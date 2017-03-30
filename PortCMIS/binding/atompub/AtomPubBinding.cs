@@ -3129,6 +3129,30 @@ namespace PortCMIS.Binding.AtomPub
         {
             ReturnVersion returnVersion = (major == true ? ReturnVersion.LatestMajor : ReturnVersion.Latest);
 
+            // workaround for SharePoint - use the version series ID instead of the object ID
+            if (Session.GetValue(SessionParameter.LatestVersionWithVersionSeriesId, false))
+            {
+                if (versionSeriesId != null)
+                {
+                    objectId = versionSeriesId;
+                }
+                else
+                {
+                    IObjectData obj = GetObjectInternal(repositoryId, IdentifierType.ID, objectId, null,
+                            PropertyIds.ObjectId + "," + PropertyIds.VersionSeriesId, false,
+                            IncludeRelationships.None, "cmis:none", false, false, extension);
+
+                    if (obj.Properties != null)
+                    {
+                        IPropertyData versionSeriesProp = obj.Properties[PropertyIds.VersionSeriesId];
+                        if (versionSeriesProp != null && versionSeriesProp.FirstValue is string)
+                        {
+                            objectId = (string)versionSeriesProp.FirstValue;
+                        }
+                    }
+                }
+            }
+
             return GetObjectInternal(repositoryId, IdentifierType.ID, objectId, returnVersion, filter,
                     includeAllowableActions, includeRelationships, renditionFilter, includePolicyIds, includeAcl, extension);
         }

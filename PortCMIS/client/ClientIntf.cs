@@ -1661,9 +1661,16 @@ namespace PortCMIS.Client
         void RemovePolicy(params IObjectId[] policyId);
 
         /// <summary>
-        /// Gets a list of policies applied to this object.
+        /// Returns the applied policies if they have been fetched for this object.
+        /// This method fetches the policy objects from the repository when this method is called for the first time. Policy objects that don't exist are ignored.
         /// </summary>
         IList<IPolicy> Policies { get; }
+
+        /// <summary>
+        /// Returns the applied policy IDs if they have been fetched for this object.
+        /// All applied policy IDs are returned, even IDs of policies that don't exist.
+        /// </summary>
+        IList<string> PolicyIds { get; }
 
         /// <summary>
         /// Adds and removes ACEs to this object.
@@ -1773,6 +1780,11 @@ namespace PortCMIS.Client
         bool? IsLatestMajorVersion { get; }
 
         /// <value>
+        /// Gets if this CMIS object is the PWC (CMIS property <c>cmis:isPrivateWorkingCopy</c>).
+        /// </value>
+        bool? IsPrivateWorkingCopy { get; }
+
+        /// <value>
         /// Gets the version label (CMIS property <c>cmis:versionLabel</c>).
         /// </value>
         string VersionLabel { get; }
@@ -1826,6 +1838,11 @@ namespace PortCMIS.Client
         /// Gets the content stream hashes or <c>null</c> if the document has no content or the repository hasn't provided content hashes (CMIS property <c>cmis:contentStreamHash</c>).
         /// </value>
         IList<IContentStreamHash> ContentStreamHashes { get; }
+
+        /// <value>
+        /// Gets the latest accessible state ID (CMIS property <c>cmis:latestAccessibleStateId</c>).
+        /// </value>
+        string LatestAccessibleStateId { get; }
     }
 
     /// <summary>
@@ -1833,6 +1850,22 @@ namespace PortCMIS.Client
     /// </summary>
     public interface IDocument : IFileableCmisObject, IDocumentProperties
     {
+        /// <summary>
+        /// Returns the object type as a document type.
+        /// </summary>
+        IDocumentType DocumentType { get; }
+
+        /// <summary>
+        /// Returns whether the document is versionable or not.
+        /// </summary>
+        bool IsVersionable { get; }
+
+        /// <summary>
+        /// Determines whether this document is the PWC in the version series or not.
+        /// </summary>
+        /// <returns> <c>true</c> if it is the PWC, <c>false</c> if it is not the PWC, or <c>null</c> if it can't be determined</returns>
+        bool? IsVersionSeriesPrivateWorkingCopy { get; }
+
         /// <summary>
         /// Deletes all versions of this document.
         /// </summary>
@@ -2005,6 +2038,11 @@ namespace PortCMIS.Client
     /// </summary>
     public interface IFolder : IFileableCmisObject, IFolderProperties
     {
+        /// <summary>
+        /// Returns the object type as a folder type.
+        /// </summary>
+        IFolderType FolderType { get; }
+
         /// <summary>
         /// Creates a new document in this folder.
         /// </summary>
@@ -2184,6 +2222,10 @@ namespace PortCMIS.Client
     /// </summary>
     public interface IPolicy : IFileableCmisObject, IPolicyProperties
     {
+        /// <summary>
+        /// Returns the object type as a policy type.
+        /// </summary>
+        IPolicyType PolicyType { get; }
     }
 
     /// <summary>
@@ -2207,6 +2249,11 @@ namespace PortCMIS.Client
     /// </summary>
     public interface IRelationship : ICmisObject, IRelationshipProperties
     {
+        /// <summary>
+        /// Returns the object type as a relationship type.
+        /// </summary>
+        IRelationshipType RelationshipType { get; }
+
         /// <summary>
         /// Gets the relationship source object.
         /// </summary>
@@ -2252,6 +2299,10 @@ namespace PortCMIS.Client
     /// </summary>
     public interface IItem : IFileableCmisObject, ItemProperties
     {
+        /// <summary>
+        /// Returns the object type as an item type.
+        /// </summary>
+        IItemType ItemType { get; }
     }
 
     /// <summary>

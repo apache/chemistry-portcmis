@@ -332,6 +332,7 @@ namespace PortCMISTests
 
                 IObjectId pwcId = doc.CheckOut();
                 IDocument pwc = (IDocument)Session.GetObject(pwcId, noCacheOC);
+                Assert.AreEqual(true, pwc.IsPrivateWorkingCopy);
 
                 pwc.Rename(name2);
 

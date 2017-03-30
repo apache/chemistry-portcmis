@@ -101,6 +101,7 @@ namespace PortCMIS.Client.Impl
         private IAllowableActions allowableActions;
         private IList<IRendition> renditions;
         private IAcl acl;
+        private IList<string> policyIds;
         private IList<IPolicy> policies;
         private IList<IRelationship> relationships;
         private IDictionary<ExtensionLevel, IList<ICmisExtensionElement>> extensions;
@@ -231,22 +232,22 @@ namespace PortCMIS.Client.Impl
                 }
 
                 // handle policies
+                policies = null;
                 if (objectData.PolicyIds != null && objectData.PolicyIds.PolicyIds != null)
                 {
-                    policies = new List<IPolicy>();
-                    foreach (string pid in objectData.PolicyIds.PolicyIds)
+                    if (objectData.PolicyIds.PolicyIds.Count == 0)
                     {
-                        IPolicy policy = Session.GetObject(Session.CreateObjectId(pid)) as IPolicy;
-                        if (policy != null)
-                        {
-                            policies.Add(policy);
-                        }
+                        policyIds = null;
+                    }
+                    else
+                    {
+                        policyIds = objectData.PolicyIds.PolicyIds;
                     }
                     extensions[ExtensionLevel.Policies] = objectData.PolicyIds.Extensions;
                 }
                 else
                 {
-                    policies = null;
+                    policyIds = null;
                 }
 
                 // handle relationships
@@ -644,10 +645,46 @@ namespace PortCMIS.Client.Impl
             {
                 lock (objectLock)
                 {
+                    if (policies != null || policyIds == null)
+                    {
+                        return policies;
+                    }
+
+                    policies = new List<IPolicy>();
+                    foreach (string pid in policyIds)
+                    {
+                        try
+                        {
+                            ICmisObject policy = Session.GetObject(pid);
+
+                            if (policy is IPolicy)
+                            {
+                                policies.Add((IPolicy)policy);
+                            }
+                        }
+                        catch (CmisObjectNotFoundException)
+                        {
+                            // ignore
+                        }
+                    }
+
                     return policies;
                 }
             }
         }
+
+        /// <inheritdoc/>
+        public virtual IList<string> PolicyIds
+        {
+            get
+            {
+                lock (objectLock)
+                {
+                    return policyIds;
+                }
+            }
+        }
+
 
         // --- relationships ---
 
@@ -886,6 +923,64 @@ namespace PortCMIS.Client.Impl
             Initialize(session, objectType, objectData, context);
         }
 
+        /// <inheritdoc/>
+        public virtual IDocumentType DocumentType
+        {
+            get
+            {
+                if (ObjectType is IDocumentType)
+                {
+                    return (IDocumentType)ObjectType;
+                }
+                else
+                {
+                    throw new InvalidCastException("Object type is not a document type.");
+                }
+            }
+        }
+
+        /// <inheritdoc/>
+        public virtual bool IsVersionable
+        {
+            get
+            {
+                return DocumentType.IsVersionable == true;
+            }
+        }
+
+        /// <inheritdoc/>
+        public virtual bool? IsVersionSeriesPrivateWorkingCopy
+        {
+            get
+            {
+                if (DocumentType.IsVersionable == false)
+                {
+                    return false;
+                }
+
+                if (IsVersionSeriesCheckedOut == false)
+                {
+                    return false;
+                }
+
+                bool? isPWC = IsPrivateWorkingCopy;
+                if (isPWC != null)
+                {
+                    return isPWC;
+                }
+
+                string vsCoId = VersionSeriesCheckedOutId;
+                if (vsCoId == null)
+                {
+                    // we don't know ...
+                    return null;
+                }
+
+                return vsCoId == Id;
+            }
+        }
+
+
         // properties
 
         /// <inheritdoc/>
@@ -899,6 +994,9 @@ namespace PortCMIS.Client.Impl
 
         /// <inheritdoc/>
         public virtual bool? IsLatestMajorVersion { get { return GetPropertyAsBoolValue(PropertyIds.IsLatestMajorVersion); } }
+
+        /// <inheritdoc/>
+        public virtual bool? IsPrivateWorkingCopy { get { return GetPropertyAsBoolValue(PropertyIds.IsPrivateWorkingCopy); } }
 
         /// <inheritdoc/>
         public virtual string VersionLabel { get { return GetPropertyAsStringValue(PropertyIds.VersionLabel); } }
@@ -929,6 +1027,9 @@ namespace PortCMIS.Client.Impl
 
         /// <inheritdoc/>
         public virtual string ContentStreamId { get { return GetPropertyAsStringValue(PropertyIds.ContentStreamId); } }
+
+        /// <inheritdoc/>
+        public virtual string LatestAccessibleStateId { get { return GetPropertyAsStringValue(PropertyIds.LatestAccessibleStateId); } }
 
         /// <inheritdoc/>
         public virtual IList<IContentStreamHash> ContentStreamHashes
@@ -1364,6 +1465,22 @@ namespace PortCMIS.Client.Impl
         }
 
         /// <inheritdoc/>
+        public virtual IFolderType FolderType
+        {
+            get
+            {
+                if (ObjectType is IFolderType)
+                {
+                    return (IFolderType)ObjectType;
+                }
+                else
+                {
+                    throw new InvalidCastException("Object type is not a folder type.");
+                }
+            }
+        }
+
+        /// <inheritdoc/>
         public virtual IDocument CreateDocument(IDictionary<string, object> properties, IContentStream contentStream, VersioningState? versioningState,
             IList<IPolicy> policies, IList<IAce> addAces, IList<IAce> removeAces, IOperationContext context)
         {
@@ -1518,7 +1635,7 @@ namespace PortCMIS.Client.Impl
             IObjectFactory of = Session.ObjectFactory;
             IOperationContext ctxt = new OperationContext(context);
 
-            PageFetcher<IDocument>.FetchPage fetchPageDelegate = delegate(BigInteger maxNumItems, BigInteger skipCount)
+            PageFetcher<IDocument>.FetchPage fetchPageDelegate = delegate (BigInteger maxNumItems, BigInteger skipCount)
             {
                 // get checked out documents for this folder
                 IObjectList checkedOutDocs = service.GetCheckedOutDocs(RepositoryId, objectId, ctxt.FilterString, ctxt.OrderBy, ctxt.IncludeAllowableActions,
@@ -1561,7 +1678,7 @@ namespace PortCMIS.Client.Impl
             IObjectFactory of = Session.ObjectFactory;
             IOperationContext ctxt = new OperationContext(context);
 
-            PageFetcher<ICmisObject>.FetchPage fetchPageDelegate = delegate(BigInteger maxNumItems, BigInteger skipCount)
+            PageFetcher<ICmisObject>.FetchPage fetchPageDelegate = delegate (BigInteger maxNumItems, BigInteger skipCount)
             {
                 // get the children
                 IObjectInFolderList children = service.GetChildren(RepositoryId, objectId, ctxt.FilterString, ctxt.OrderBy, ctxt.IncludeAllowableActions,
@@ -1780,6 +1897,22 @@ namespace PortCMIS.Client.Impl
         }
 
         /// <inheritdoc/>
+        public virtual IPolicyType PolicyType
+        {
+            get
+            {
+                if (ObjectType is IPolicyType)
+                {
+                    return (IPolicyType)ObjectType;
+                }
+                else
+                {
+                    throw new InvalidCastException("Object type is not a policy type.");
+                }
+            }
+        }
+
+        /// <inheritdoc/>
         public virtual string PolicyText { get { return GetPropertyAsStringValue(PropertyIds.PolicyText); } }
     }
 
@@ -1798,6 +1931,22 @@ namespace PortCMIS.Client.Impl
         public Relationship(ISession session, IObjectType objectType, IObjectData objectData, IOperationContext context)
         {
             Initialize(session, objectType, objectData, context);
+        }
+
+        /// <inheritdoc/>
+        public virtual IRelationshipType RelationshipType
+        {
+            get
+            {
+                if (ObjectType is IRelationshipType)
+                {
+                    return (IRelationshipType)ObjectType;
+                }
+                else
+                {
+                    throw new InvalidCastException("Object type is not a relationship type.");
+                }
+            }
         }
 
         /// <inheritdoc/>
@@ -1888,6 +2037,22 @@ namespace PortCMIS.Client.Impl
         public Item(ISession session, IObjectType objectType, IObjectData objectData, IOperationContext context)
         {
             Initialize(session, objectType, objectData, context);
+        }
+
+        /// <inheritdoc/>
+        public virtual IItemType ItemType
+        {
+            get
+            {
+                if (ObjectType is IItemType)
+                {
+                    return (IItemType)ObjectType;
+                }
+                else
+                {
+                    throw new InvalidCastException("Object type is not an item type.");
+                }
+            }
         }
     }
 
