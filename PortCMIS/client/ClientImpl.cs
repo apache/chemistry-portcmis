@@ -111,7 +111,7 @@ namespace PortCMIS.Client.Impl
         {
             if (parameters == null)
             {
-                throw new ArgumentNullException("parameters");
+                throw new ArgumentNullException(nameof(parameters));
             }
 
             if (!parameters.ContainsKey(SessionParameter.BindingType))
@@ -283,7 +283,7 @@ namespace PortCMIS.Client.Impl
             {
                 lock (sessionLock)
                 {
-                    context = (value == null ? FallbackContext : value);
+                    context = value ?? FallbackContext;
                 }
             }
         }
@@ -299,14 +299,14 @@ namespace PortCMIS.Client.Impl
         {
             if (parameters == null)
             {
-                throw new ArgumentNullException("parameters");
+                throw new ArgumentNullException(nameof(parameters));
             }
 
             this.parameters = parameters;
 
-            ObjectFactory = (objectFactory == null ? CreateObjectFactory() : objectFactory);
+            ObjectFactory = objectFactory ?? CreateObjectFactory();
             AuthenticationProvider = authenticationProvider;
-            Cache = (cache == null ? CreateCache() : cache);
+            Cache = cache ?? CreateCache();
 
             string cachePathOmitStr;
             if (parameters.TryGetValue(SessionParameter.CachePathOmit, out cachePathOmitStr))
@@ -457,7 +457,7 @@ namespace PortCMIS.Client.Impl
         {
             IRepositoryService service = Binding.GetRepositoryService();
 
-            PageFetcher<IObjectType>.FetchPage fetchPageDelegate = delegate(BigInteger maxNumItems, BigInteger skipCount)
+            PageFetcher<IObjectType>.FetchPage fetchPageDelegate = delegate (BigInteger maxNumItems, BigInteger skipCount)
             {
                 // fetch the data
                 ITypeDefinitionList tdl = service.GetTypeChildren(RepositoryId, typeId, includePropertyDefinitions, maxNumItems, skipCount, null);
@@ -499,9 +499,11 @@ namespace PortCMIS.Client.Impl
 
             foreach (ITypeDefinitionContainer container in descendantsList)
             {
-                Tree<IObjectType> tree = new Tree<IObjectType>();
-                tree.Item = ObjectFactory.ConvertTypeDefinition(container.TypeDefinition);
-                tree.Children = ConvertTypeDescendants(container.Children);
+                Tree<IObjectType> tree = new Tree<IObjectType>()
+                {
+                    Item = ObjectFactory.ConvertTypeDefinition(container.TypeDefinition),
+                    Children = ConvertTypeDescendants(container.Children)
+                };
 
                 result.Add(tree);
             }
@@ -568,7 +570,7 @@ namespace PortCMIS.Client.Impl
             INavigationService service = Binding.GetNavigationService();
             IOperationContext ctxt = new OperationContext(context);
 
-            PageFetcher<IDocument>.FetchPage fetchPageDelegate = delegate(BigInteger maxNumItems, BigInteger skipCount)
+            PageFetcher<IDocument>.FetchPage fetchPageDelegate = delegate (BigInteger maxNumItems, BigInteger skipCount)
             {
                 // get all checked out documents
                 IObjectList checkedOutDocs = service.GetCheckedOutDocs(RepositoryId, null, ctxt.FilterString, ctxt.OrderBy,
@@ -608,7 +610,7 @@ namespace PortCMIS.Client.Impl
         {
             if (objectId == null || objectId.Id == null)
             {
-                throw new ArgumentException("Object Id must be set!", "objectId");
+                throw new ArgumentException("Object Id must be set!", nameof(objectId));
             }
 
             return GetObject(objectId.Id, context);
@@ -625,11 +627,11 @@ namespace PortCMIS.Client.Impl
         {
             if (objectId == null)
             {
-                throw new ArgumentException("Object Id must be set!", "objectId");
+                throw new ArgumentException("Object Id must be set!", nameof(objectId));
             }
             if (context == null)
             {
-                throw new ArgumentException("Operation context must be set!", "context");
+                throw new ArgumentException("Operation context must be set!", nameof(context));
             }
 
             ICmisObject result = null;
@@ -673,7 +675,7 @@ namespace PortCMIS.Client.Impl
 
             if (context == null)
             {
-                throw new ArgumentNullException("context");
+                throw new ArgumentNullException(nameof(context));
             }
 
             ICmisObject result = null;
@@ -713,22 +715,22 @@ namespace PortCMIS.Client.Impl
         /// <inheritdoc/>
         public ICmisObject GetObjectByPath(string parentPath, string name, IOperationContext context)
         {
-            if (parentPath == null || parentPath.Length < 1)
+            if (string.IsNullOrEmpty(parentPath))
             {
-                throw new ArgumentException("Parent path must be set!", "parentPath");
+                throw new ArgumentException("Parent path must be set!", nameof(parentPath));
             }
             if (parentPath[0] != '/')
             {
-                throw new ArgumentException("Parent path must start with a '/'!", "parentPath");
+                throw new ArgumentException("Parent path must start with a '/'!", nameof(parentPath));
             }
-            if (name == null || name.Length < 1)
+            if (string.IsNullOrEmpty(name))
             {
-                throw new ArgumentException("Name must be set!", "name");
+                throw new ArgumentException("Name must be set!", nameof(name));
             }
 
             StringBuilder path = new StringBuilder();
             path.Append(parentPath);
-            if (!parentPath.EndsWith("/"))
+            if (!parentPath.EndsWith("/", StringComparison.Ordinal))
             {
                 path.Append('/');
             }
@@ -748,7 +750,7 @@ namespace PortCMIS.Client.Impl
         {
             if (objectId == null)
             {
-                throw new ArgumentNullException("objectId");
+                throw new ArgumentNullException(nameof(objectId));
             }
 
             return GetLatestDocumentVersion(CreateObjectId(objectId), false, context);
@@ -771,12 +773,12 @@ namespace PortCMIS.Client.Impl
         {
             if (objectId == null || objectId.Id == null)
             {
-                throw new ArgumentNullException("objectId");
+                throw new ArgumentNullException(nameof(objectId));
             }
 
             if (context == null)
             {
-                throw new ArgumentNullException("context");
+                throw new ArgumentNullException(nameof(context));
             }
 
             ICmisObject result = null;
@@ -864,7 +866,7 @@ namespace PortCMIS.Client.Impl
         {
             if (objectId == null)
             {
-                throw new ArgumentNullException("objectId");
+                throw new ArgumentNullException(nameof(objectId));
             }
             return Exists(objectId.Id);
         }
@@ -874,7 +876,7 @@ namespace PortCMIS.Client.Impl
         {
             if (objectId == null)
             {
-                throw new ArgumentNullException(objectId);
+                throw new ArgumentNullException(nameof(objectId));
             }
 
             try
@@ -918,22 +920,22 @@ namespace PortCMIS.Client.Impl
         /// <inheritdoc/>
         public bool ExistsPath(string parentPath, string name)
         {
-            if (parentPath == null || parentPath.Length < 1)
+            if (string.IsNullOrEmpty(parentPath))
             {
-                throw new ArgumentException("Parent path must be set!", "parentPath");
+                throw new ArgumentException("Parent path must be set!", nameof(parentPath));
             }
             if (parentPath[0] != '/')
             {
-                throw new ArgumentException("Parent path must start with a '/'!", "parentPath");
+                throw new ArgumentException("Parent path must start with a '/'!", nameof(parentPath));
             }
-            if (name == null || name.Length < 1)
+            if (string.IsNullOrEmpty(name))
             {
-                throw new ArgumentException("Name must be set!", "name");
+                throw new ArgumentException("Name must be set!", nameof(name));
             }
 
             StringBuilder path = new StringBuilder(parentPath.Length + name.Length + 2);
             path.Append(parentPath);
-            if (!parentPath.EndsWith("/"))
+            if (!parentPath.EndsWith("/", StringComparison.Ordinal))
             {
                 path.Append('/');
             }
@@ -973,7 +975,7 @@ namespace PortCMIS.Client.Impl
             IDiscoveryService service = Binding.GetDiscoveryService();
             IOperationContext ctxt = new OperationContext(context);
 
-            PageFetcher<IQueryResult>.FetchPage fetchPageDelegate = delegate(BigInteger maxNumItems, BigInteger skipCount)
+            PageFetcher<IQueryResult>.FetchPage fetchPageDelegate = delegate (BigInteger maxNumItems, BigInteger skipCount)
             {
                 // fetch the data
                 IObjectList resultList = service.Query(RepositoryId, statement, searchAllVersions, ctxt.IncludeAllowableActions,
@@ -1005,12 +1007,12 @@ namespace PortCMIS.Client.Impl
         {
             if (typeId == null || typeId.Trim().Length == 0)
             {
-                throw new ArgumentException("Type ID must be set!", "typeId");
+                throw new ArgumentException("Type ID must be set!", nameof(typeId));
             }
 
             if (context == null)
             {
-                throw new ArgumentException("Operation context must be set!", "context");
+                throw new ArgumentException("Operation context must be set!", nameof(context));
             }
 
             IDiscoveryService discoveryService = Binding.GetDiscoveryService();
@@ -1045,7 +1047,7 @@ namespace PortCMIS.Client.Impl
                 statement.Append(orderBy);
             }
 
-            PageFetcher<ICmisObject>.FetchPage fetchPageDelegate = delegate(BigInteger maxNumItems, BigInteger skipCount)
+            PageFetcher<ICmisObject>.FetchPage fetchPageDelegate = delegate (BigInteger maxNumItems, BigInteger skipCount)
             {
                 // fetch the data
                 IObjectList resultList = discoveryService.Query(RepositoryId, statement.ToString(),
@@ -1266,7 +1268,7 @@ namespace PortCMIS.Client.Impl
             IRelationshipService service = Binding.GetRelationshipService();
             IOperationContext ctxt = new OperationContext(context);
 
-            PageFetcher<IRelationship>.FetchPage fetchPageDelegate = delegate(BigInteger maxNumItems, BigInteger skipCount)
+            PageFetcher<IRelationship>.FetchPage fetchPageDelegate = delegate (BigInteger maxNumItems, BigInteger skipCount)
             {
                 // fetch the relationships
                 IObjectList relList = service.GetObjectRelationships(RepositoryId, id, includeSubRelationshipTypes, relationshipDirection,
@@ -1314,7 +1316,7 @@ namespace PortCMIS.Client.Impl
                     if (!(secondaryType is ISecondaryType))
                     {
                         throw new ArgumentException("Secondary types contains a type that is not a secondary type: "
-                                + secondaryType.Id, "addSecondaryTypeIds");
+                                + secondaryType.Id, nameof(addSecondaryTypeIds));
                     }
 
                     secondaryTypes[secondaryType.Id] = (ISecondaryType)secondaryType;
@@ -1367,7 +1369,7 @@ namespace PortCMIS.Client.Impl
         {
             if (objectId == null || objectId.Id == null)
             {
-                throw new ArgumentException("Invalid object ID!", "objectId");
+                throw new ArgumentException("Invalid object ID!", nameof(objectId));
             }
 
             Binding.GetObjectService().DeleteObject(RepositoryId, objectId.Id, allVersions, null);
@@ -1379,7 +1381,7 @@ namespace PortCMIS.Client.Impl
         {
             if (folderId == null || folderId.Id == null)
             {
-                throw new ArgumentException("Invalid object ID!", "folderId");
+                throw new ArgumentException("Invalid object ID!", nameof(folderId));
             }
 
             IFailedToDeleteData failed = Binding.GetObjectService().DeleteTree(RepositoryId, folderId.Id, allVersions, unfile, continueOnFailure, null);
@@ -1405,7 +1407,7 @@ namespace PortCMIS.Client.Impl
         {
             if (docId == null || docId.Id == null)
             {
-                throw new ArgumentException("Invalid document ID!", "objectId");
+                throw new ArgumentException("Invalid document ID!", nameof(docId));
             }
 
             // get the content stream
@@ -1430,7 +1432,7 @@ namespace PortCMIS.Client.Impl
         {
             if (objectId == null || objectId.Id == null)
             {
-                throw new ArgumentException("Invalid object ID!", "objectId");
+                throw new ArgumentException("Invalid object ID!", nameof(objectId));
             }
 
             return Binding.GetAclService().GetAcl(RepositoryId, objectId.Id, onlyBasicPermissions, null);
@@ -1441,7 +1443,7 @@ namespace PortCMIS.Client.Impl
         {
             if (objectId == null || objectId.Id == null)
             {
-                throw new ArgumentException("Invalid object ID!", "objectId");
+                throw new ArgumentException("Invalid object ID!", nameof(objectId));
             }
 
             return Binding.GetAclService().ApplyAcl(RepositoryId, objectId.Id, ObjectFactory.ConvertAces(addAces),
@@ -1453,9 +1455,9 @@ namespace PortCMIS.Client.Impl
         {
             if (objectId == null || objectId.Id == null)
             {
-                throw new ArgumentException("Invalid object ID!", "objectId");
+                throw new ArgumentException("Invalid object ID!", nameof(objectId));
             }
-            if (policyIds == null || (policyIds.Length == 0))
+            if (policyIds == null || policyIds.Length == 0)
             {
                 throw new ArgumentException("No Policies provided!");
             }
@@ -1465,7 +1467,7 @@ namespace PortCMIS.Client.Impl
             {
                 if (policyIds[i] == null || policyIds[i].Id == null)
                 {
-                    throw new ArgumentException("A Policy ID is not set!", "policyIds");
+                    throw new ArgumentException("A Policy ID is not set!", nameof(policyIds));
                 }
 
                 ids[i] = policyIds[i].Id;
@@ -1482,11 +1484,11 @@ namespace PortCMIS.Client.Impl
         {
             if (objectId == null || objectId.Id == null)
             {
-                throw new ArgumentException("Invalid object ID!", "objectId");
+                throw new ArgumentException("Invalid object ID!", nameof(objectId));
             }
             if (policyIds == null || policyIds.Length == 0)
             {
-                throw new ArgumentException("No Policies provided!", "policyIds");
+                throw new ArgumentException("No Policies provided!", nameof(policyIds));
             }
 
             string[] ids = new string[policyIds.Length];
@@ -1511,7 +1513,7 @@ namespace PortCMIS.Client.Impl
         /// </summary>
         protected void CheckPath(string path)
         {
-            if (path == null || path.Length < 1)
+            if (string.IsNullOrEmpty(path))
             {
                 throw new ArgumentException("Invalid path!");
             }
@@ -1554,12 +1556,12 @@ namespace PortCMIS.Client.Impl
         {
             if (session == null)
             {
-                throw new ArgumentNullException("session");
+                throw new ArgumentNullException(nameof(session));
             }
 
             if (statement == null)
             {
-                throw new ArgumentNullException("statement");
+                throw new ArgumentNullException(nameof(statement));
             }
 
             this.session = session;
@@ -1577,7 +1579,7 @@ namespace PortCMIS.Client.Impl
         {
             if (type == null)
             {
-                throw new ArgumentException("Type must be set!");
+                throw new ArgumentNullException(nameof(type));
             }
 
             if (type.QueryName == null)
@@ -1703,7 +1705,7 @@ namespace PortCMIS.Client.Impl
         }
 
         /// <inheritdoc/>
-        public void SetId(int parameterIndex, params  IObjectId[] id)
+        public void SetId(int parameterIndex, params IObjectId[] id)
         {
             if (id == null || id.Length == 0)
             {

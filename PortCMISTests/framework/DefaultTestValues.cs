@@ -31,7 +31,7 @@ namespace PortCMISTests.Framework
 
         public static IDictionary<string, string> SessionParameters = new Dictionary<string, string>()
         {
-            {SessionParameter.BindingType , BindingType.Browser},
+            {SessionParameter.BindingType , BindingType.AtomPub},
             {SessionParameter.BrowserUrl , "http://localhost:8080/inmemory/browser"},
             {SessionParameter.AtomPubUrl , "http://localhost:8080/inmemory/atom11"},
             {SessionParameter.RepositoryId , "A1"},

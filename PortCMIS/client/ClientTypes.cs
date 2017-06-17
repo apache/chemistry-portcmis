@@ -29,8 +29,8 @@ namespace PortCMIS.Client.Impl
     /// </summary>
     internal class ObjectTypeHelper
     {
-        private ISession session;
-        private IObjectType objectType;
+        private readonly ISession session;
+        private readonly IObjectType objectType;
         private IObjectType baseType;
         private IObjectType parentType;
 
@@ -86,7 +86,7 @@ namespace PortCMIS.Client.Impl
     /// </summary>
     public class DocumentType : DocumentTypeDefinition, IDocumentType
     {
-        private ObjectTypeHelper helper;
+        private readonly ObjectTypeHelper helper;
 
         /// <summary>
         /// Constructor.
@@ -122,7 +122,7 @@ namespace PortCMIS.Client.Impl
     /// </summary>
     public class FolderType : FolderTypeDefinition, IFolderType
     {
-        private ObjectTypeHelper helper;
+        private readonly ObjectTypeHelper helper;
 
         /// <summary>
         /// Constructor.
@@ -156,7 +156,7 @@ namespace PortCMIS.Client.Impl
     /// </summary>
     public class RelationshipType : RelationshipTypeDefinition, IRelationshipType
     {
-        private ObjectTypeHelper helper;
+        private readonly ObjectTypeHelper helper;
         private IList<IObjectType> allowedSourceTypes;
         private IList<IObjectType> allowedTargetTypes;
 
@@ -219,7 +219,7 @@ namespace PortCMIS.Client.Impl
                     IList<IObjectType> types = new List<IObjectType>(ids == null ? 0 : ids.Count);
                     if (ids != null)
                     {
-                        foreach (String id in ids)
+                        foreach (string id in ids)
                         {
                             types.Add(helper.Session.GetTypeDefinition(id));
                         }
@@ -236,7 +236,7 @@ namespace PortCMIS.Client.Impl
     /// </summary>
     public class PolicyType : PolicyTypeDefinition, IPolicyType
     {
-        private ObjectTypeHelper helper;
+        private readonly ObjectTypeHelper helper;
 
         /// <summary>
         /// Constructor.
@@ -270,7 +270,7 @@ namespace PortCMIS.Client.Impl
     /// </summary>
     public class ItemType : ItemTypeDefinition, IItemType
     {
-        private ObjectTypeHelper helper;
+        private readonly ObjectTypeHelper helper;
 
         /// <summary>
         /// Constructor.
@@ -304,7 +304,7 @@ namespace PortCMIS.Client.Impl
     /// </summary>
     public class SecondaryType : SecondaryTypeDefinition, ISecondaryType
     {
-        private ObjectTypeHelper helper;
+        private readonly ObjectTypeHelper helper;
 
         /// <summary>
         /// Constructor.

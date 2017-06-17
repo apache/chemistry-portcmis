@@ -17,8 +17,6 @@
 * under the License.
 */
 
-using PortCMIS.Binding.AtomPub;
-using PortCMIS.Client.Impl;
 using PortCMIS.Data;
 using PortCMIS.Data.Extensions;
 using PortCMIS.Enums;
@@ -28,8 +26,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml;
 
 namespace PortCMIS.Binding.AtomPub
@@ -358,19 +354,19 @@ namespace PortCMIS.Binding.AtomPub
                 }
             }
 
-            if (source is DocumentTypeDefinition)
+            if (source is IDocumentTypeDefinition)
             {
-                DocumentTypeDefinition docDef = (DocumentTypeDefinition)source;
+                IDocumentTypeDefinition docDef = (IDocumentTypeDefinition)source;
                 XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_TYPE_VERSIONABLE, docDef.IsVersionable);
                 XmlUtils.Write(writer, XmlConstants.PrefixCmis, XmlConstants.NamespaceCmis, XmlConstants.TAG_TYPE_CONTENTSTREAM_ALLOWED, docDef.ContentStreamAllowed);
             }
 
-            if (source is RelationshipTypeDefinition)
+            if (source is IRelationshipTypeDefinition)
             {
-                RelationshipTypeDefinition relDef = (RelationshipTypeDefinition)source;
+                IRelationshipTypeDefinition relDef = (IRelationshipTypeDefinition)source;
                 if (relDef.AllowedSourceTypeIds != null)
                 {
-                    foreach (String id in relDef.AllowedSourceTypeIds)
+                    foreach (string id in relDef.AllowedSourceTypeIds)
                     {
                         if (id != null)
                         {
@@ -380,7 +376,7 @@ namespace PortCMIS.Binding.AtomPub
                 }
                 if (relDef.AllowedTargetTypeIds != null)
                 {
-                    foreach (String id in relDef.AllowedTargetTypeIds)
+                    foreach (string id in relDef.AllowedTargetTypeIds)
                     {
                         if (id != null)
                         {
@@ -544,7 +540,7 @@ namespace PortCMIS.Binding.AtomPub
                     }
                 }
             }
-            else if (source is PropertyDateTimeDefinition)
+            else if (source is IPropertyDateTimeDefinition)
             {
                 IPropertyDateTimeDefinition def = (IPropertyDateTimeDefinition)source;
 
@@ -1080,7 +1076,7 @@ namespace PortCMIS.Binding.AtomPub
         // --- bulk update ---
         // -------------------
 
-        public static void WriteBulkUpdate(XmlWriter writer, String ns, BulkUpdate bulkUpdate)
+        public static void WriteBulkUpdate(XmlWriter writer, string ns, BulkUpdate bulkUpdate)
         {
             if (bulkUpdate == null || bulkUpdate.ObjectIdAndChangeToken == null)
             {
@@ -1852,29 +1848,29 @@ namespace PortCMIS.Binding.AtomPub
                 string typeAttr = parser.GetAttribute("type", XmlConstants.NamespaceXsi);
                 if (typeAttr != null)
                 {
-                    if (typeAttr.EndsWith(XmlConstants.ATTR_DOCUMENT_TYPE))
+                    if (typeAttr.EndsWith(XmlConstants.ATTR_DOCUMENT_TYPE, StringComparison.Ordinal))
                     {
                         result = new DocumentTypeDefinition();
                     }
-                    else if (typeAttr.EndsWith(XmlConstants.ATTR_FOLDER_TYPE))
+                    else if (typeAttr.EndsWith(XmlConstants.ATTR_FOLDER_TYPE, StringComparison.Ordinal))
                     {
                         result = new FolderTypeDefinition();
                     }
-                    else if (typeAttr.EndsWith(XmlConstants.ATTR_RELATIONSHIP_TYPE))
+                    else if (typeAttr.EndsWith(XmlConstants.ATTR_RELATIONSHIP_TYPE, StringComparison.Ordinal))
                     {
                         result = new RelationshipTypeDefinition();
                         ((RelationshipTypeDefinition)result).AllowedSourceTypeIds = new List<string>();
                         ((RelationshipTypeDefinition)result).AllowedTargetTypeIds = new List<string>();
                     }
-                    else if (typeAttr.EndsWith(XmlConstants.ATTR_POLICY_TYPE))
+                    else if (typeAttr.EndsWith(XmlConstants.ATTR_POLICY_TYPE, StringComparison.Ordinal))
                     {
                         result = new PolicyTypeDefinition();
                     }
-                    else if (typeAttr.EndsWith(XmlConstants.ATTR_ITEM_TYPE))
+                    else if (typeAttr.EndsWith(XmlConstants.ATTR_ITEM_TYPE, StringComparison.Ordinal))
                     {
                         result = new ItemTypeDefinition();
                     }
-                    else if (typeAttr.EndsWith(XmlConstants.ATTR_SECONDARY_TYPE))
+                    else if (typeAttr.EndsWith(XmlConstants.ATTR_SECONDARY_TYPE, StringComparison.Ordinal))
                     {
                         result = new SecondaryTypeDefinition();
                     }
@@ -2425,7 +2421,7 @@ namespace PortCMIS.Binding.AtomPub
         private static readonly ChoiceStringParser CHOICE_STRING_PARSER = new ChoiceStringParser();
         private class ChoiceStringParser : ChoiceXmlWalker<string>
         {
-            protected override Choice<string> createTarget(XmlReader parser, string localname, string ns)
+            protected override Choice<string> CreateTarget(XmlReader parser, string localname, string ns)
             {
                 return new Choice<string>();
             }
@@ -2468,7 +2464,7 @@ namespace PortCMIS.Binding.AtomPub
         private static readonly ChoiceBooleanParser CHOICE_BOOLEAN_PARSER = new ChoiceBooleanParser();
         private class ChoiceBooleanParser : ChoiceXmlWalker<bool?>
         {
-            protected override Choice<bool?> createTarget(XmlReader parser, string localname, string ns)
+            protected override Choice<bool?> CreateTarget(XmlReader parser, string localname, string ns)
             {
                 return new Choice<bool?>();
             }
@@ -2492,7 +2488,7 @@ namespace PortCMIS.Binding.AtomPub
         private static readonly ChoiceIntegerParser CHOICE_INTEGER_PARSER = new ChoiceIntegerParser();
         private class ChoiceIntegerParser : ChoiceXmlWalker<BigInteger?>
         {
-            protected override Choice<BigInteger?> createTarget(XmlReader parser, string localname, string ns)
+            protected override Choice<BigInteger?> CreateTarget(XmlReader parser, string localname, string ns)
             {
                 return new Choice<BigInteger?>();
             }
@@ -2516,7 +2512,7 @@ namespace PortCMIS.Binding.AtomPub
         private static readonly ChoiceDateTimeParser CHOICE_DATETIME_PARSER = new ChoiceDateTimeParser();
         private class ChoiceDateTimeParser : ChoiceXmlWalker<DateTime?>
         {
-            protected override Choice<DateTime?> createTarget(XmlReader parser, string localname, string ns)
+            protected override Choice<DateTime?> CreateTarget(XmlReader parser, string localname, string ns)
             {
                 return new Choice<DateTime?>();
             }
@@ -2540,7 +2536,7 @@ namespace PortCMIS.Binding.AtomPub
         private static readonly ChoiceDecimalParser CHOICE_DECIMAL_PARSER = new ChoiceDecimalParser();
         private class ChoiceDecimalParser : ChoiceXmlWalker<decimal?>
         {
-            protected override Choice<decimal?> createTarget(XmlReader parser, string localname, string ns)
+            protected override Choice<decimal?> CreateTarget(XmlReader parser, string localname, string ns)
             {
                 return new Choice<decimal?>();
             }
@@ -2563,11 +2559,11 @@ namespace PortCMIS.Binding.AtomPub
 
         private abstract class ChoiceXmlWalker<T> : XmlWalker<Choice<T>>
         {
-            protected abstract Choice<T> createTarget(XmlReader parser, string localname, string ns);
+            protected abstract Choice<T> CreateTarget(XmlReader parser, string localname, string ns);
 
             protected override Choice<T> PrepareTarget(XmlReader parser, string localname, string ns)
             {
-                Choice<T> result = createTarget(parser, localname, ns);
+                Choice<T> result = CreateTarget(parser, localname, ns);
 
                 if (parser.HasAttributes)
                 {

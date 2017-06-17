@@ -125,8 +125,10 @@ namespace PortCMIS.Client
                         if (toid.Length == 0) { continue; }
                         if (toid == PropertiesStar)
                         {
-                            tempSet = new HashSet<string>();
-                            tempSet.Add(PropertiesStar);
+                            tempSet = new HashSet<string>()
+                            {
+                                PropertiesStar
+                            };
                             break;
                         }
                         if (toid.IndexOf(',') > -1)
@@ -342,28 +344,40 @@ namespace PortCMIS.Client
         /// <summary>
         /// Generates a cache key from the current state of the operation context.
         /// </summary>
+        /// 
         protected virtual void GenerateCacheKey()
         {
             if (!cacheEnabled)
             {
                 cacheKey = null;
             }
-            else
+
+            StringBuilder sb = new StringBuilder(128);
+
+            int bits = 0;
+            if (includeAcls)
             {
-                StringBuilder sb = new StringBuilder();
-
-                sb.Append(includeAcls ? "1" : "0");
-                sb.Append(includeAllowableActions ? "1" : "0");
-                sb.Append(includePolicies ? "1" : "0");
-                sb.Append("|");
-                sb.Append(filter == null ? "" : FilterString);
-                sb.Append("|");
-                sb.Append(includeRelationships == null ? "" : includeRelationships.GetCmisValue());
-                sb.Append("|");
-                sb.Append(renditionFilter == null ? "" : RenditionFilterString);
-
-                cacheKey = sb.ToString();
+                bits += 1;
             }
+            if (includeAllowableActions)
+            {
+                bits += 2;
+            }
+            if (includePolicies)
+            {
+                bits += 4;
+            }
+
+            sb.Append((char)('0' + bits));
+            sb.Append(includeRelationships == null ? '-' : (char)('a' + (int)includeRelationships));
+            sb.Append(filter == null ? "" : FilterString);
+            if (renditionFilter != null && renditionFilter.Count > 0)
+            {
+                sb.Append('\\');
+                sb.Append(RenditionFilterString);
+            }
+
+            cacheKey = sb.ToString();
         }
     }
 
@@ -426,10 +440,12 @@ namespace PortCMIS.Client
         /// </remarks>
         public static IOperationContext CreateMinimumOperationContext(params string[] property)
         {
-            ISet<string> filter = new HashSet<string>();
-            filter.Add(PropertyIds.ObjectId);
-            filter.Add(PropertyIds.ObjectTypeId);
-            filter.Add(PropertyIds.BaseTypeId);
+            ISet<string> filter = new HashSet<string>()
+            {
+                PropertyIds.ObjectId,
+                PropertyIds.ObjectTypeId,
+                PropertyIds.BaseTypeId
+            };
 
             if (property != null)
             {
@@ -555,7 +571,7 @@ namespace PortCMIS.Client
             get { return id; }
             set
             {
-                if (value == null || value.Length == 0)
+                if (string.IsNullOrEmpty(value))
                 {
                     throw new ArgumentException("ID must be set!");
                 }
@@ -683,7 +699,8 @@ namespace PortCMIS.Client
         /// </summary>
         /// <param name="pageFetcher">>the delegate that fetches a page</param>
         public AbstractEnumerable(PageFetcher<T> pageFetcher) :
-            this(0, pageFetcher) { }
+            this(0, pageFetcher)
+        { }
 
         /// <summary>
         /// Constructor.
@@ -753,7 +770,7 @@ namespace PortCMIS.Client
     /// </summary>
     internal abstract class AbstractEnumerator<T> : IEnumerator<T>
     {
-        private PageFetcher<T> pageFetcher;
+        private readonly PageFetcher<T> pageFetcher;
         private PageFetcher<T>.Page<T> page = null;
         private BigInteger? totalNumItems = null;
         private bool? hasMoreItems = null;
@@ -768,7 +785,7 @@ namespace PortCMIS.Client
         /// </summary>
         /// <param name="skipCount">the skip count</param>
         /// <param name="pageFetcher">the delegate that fetches a page</param>
-        public AbstractEnumerator(BigInteger skipCount, PageFetcher<T> pageFetcher)
+        protected AbstractEnumerator(BigInteger skipCount, PageFetcher<T> pageFetcher)
         {
             this.SkipCount = skipCount;
             this.pageFetcher = pageFetcher;
@@ -1007,7 +1024,8 @@ namespace PortCMIS.Client
         /// </summary>
         /// <param name="pageFetcher">the delegate that fetches a page</param>
         public CollectionEnumerable(PageFetcher<T> pageFetcher) :
-            this(0, pageFetcher) { }
+            this(0, pageFetcher)
+        { }
 
         /// <summary>
         /// Constructor.
@@ -1015,7 +1033,8 @@ namespace PortCMIS.Client
         /// <param name="position">the position</param>
         /// <param name="pageFetcher">the delegate that fetches a page</param>
         public CollectionEnumerable(BigInteger position, PageFetcher<T> pageFetcher) :
-            base(position, pageFetcher) { }
+            base(position, pageFetcher)
+        { }
 
         /// <inheritdoc/>
         protected override AbstractEnumerator<T> CreateEnumerator()
@@ -1035,7 +1054,8 @@ namespace PortCMIS.Client
         /// <param name="skipCount">the skip count</param>
         /// <param name="pageFetcher">the delegate that fetches a page</param>
         public CollectionEnumerator(BigInteger skipCount, PageFetcher<T> pageFetcher) :
-            base(skipCount, pageFetcher) { }
+            base(skipCount, pageFetcher)
+        { }
 
         /// <summary>
         /// Move to the next items.
@@ -1063,7 +1083,7 @@ namespace PortCMIS.Client
                 }
 
                 page = IncrementPage();
-                items = page == null ? null : page.Items;
+                items = page?.Items;
             }
 
             if (items == null || items.Count == 0 || SkipOffset == items.Count)
@@ -1087,7 +1107,8 @@ namespace PortCMIS.Client
         /// </summary>
         /// <param name="pageFetcher">the delegate that fetches a page</param>
         public CollectionPageEnumerable(PageFetcher<T> pageFetcher) :
-            this(0, pageFetcher) { }
+            this(0, pageFetcher)
+        { }
 
         /// <summary>
         /// Constructor.
@@ -1095,7 +1116,8 @@ namespace PortCMIS.Client
         /// <param name="position">the position</param>
         /// <param name="pageFetcher">the delegate that fetches a page</param>
         public CollectionPageEnumerable(BigInteger position, PageFetcher<T> pageFetcher) :
-            base(position, pageFetcher) { }
+            base(position, pageFetcher)
+        { }
 
         /// <inheritdoc/>
         protected override AbstractEnumerator<T> CreateEnumerator()
@@ -1115,7 +1137,8 @@ namespace PortCMIS.Client
         /// <param name="skipCount">the skip count</param>
         /// <param name="pageFetcher">the delegate that fetches a page</param>
         public CollectionPageEnumerator(BigInteger skipCount, PageFetcher<T> pageFetcher) :
-            base(skipCount, pageFetcher) { }
+            base(skipCount, pageFetcher)
+        { }
 
         /// <summary>
         /// Move to the next items.
@@ -1249,7 +1272,7 @@ namespace PortCMIS.Client
 
         private static string CheckFilename(string filename)
         {
-            if (filename == null || filename.Length == 0)
+            if (string.IsNullOrEmpty(filename))
             {
                 return "content";
             }

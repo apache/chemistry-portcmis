@@ -94,7 +94,20 @@ namespace PortCMISTests.Framework
             props[PropertyIds.Name] = name;
             props[PropertyIds.ObjectTypeId] = "cmis:folder";
 
-            return parent.CreateFolder(props);
+            IFolder newFolder = parent.CreateFolder(props);
+
+            Assert.IsNotNull(newFolder);
+            Assert.AreEqual(BaseTypeId.CmisFolder, newFolder.BaseTypeId);
+            Assert.AreEqual("cmis:folder", newFolder.FolderType.Id);
+            Assert.AreEqual(name, newFolder.Name);
+            Assert.AreEqual(parent.Id, newFolder.ParentId);
+            Assert.IsFalse(newFolder.IsRootFolder);
+            Assert.IsNotNull(newFolder.CreationDate);
+            Assert.IsNotNull(newFolder.CreatedBy);
+            Assert.IsNotNull(newFolder.LastModificationDate);
+            Assert.IsNotNull(newFolder.LastModifiedBy);
+
+            return newFolder;
         }
 
         public IDocument CreateTextDocument(IFolder parent, string name, string content)
@@ -105,7 +118,40 @@ namespace PortCMISTests.Framework
 
             IContentStream contentStream = ContentStreamUtils.CreateTextContentStream(name, content);
 
-            return parent.CreateDocument(props, contentStream, VersioningState.None);
+            IDocument newDoc = parent.CreateDocument(props, contentStream, VersioningState.None);
+
+
+            Assert.IsNotNull(newDoc);
+            Assert.AreEqual(BaseTypeId.CmisDocument, newDoc.BaseTypeId);
+            Assert.AreEqual("cmis:document", newDoc.DocumentType.Id);
+            Assert.AreEqual(name, newDoc.Name);
+            Assert.AreEqual(parent.Id, newDoc.Parents[0].Id);
+            Assert.IsNotNull(newDoc.CreationDate);
+            Assert.IsNotNull(newDoc.CreatedBy);
+            Assert.IsNotNull(newDoc.LastModificationDate);
+            Assert.IsNotNull(newDoc.LastModifiedBy);
+
+            return newDoc;
+        }
+
+        public IItem CreateItem(IFolder parent, string name)
+        {
+            IDictionary<string, object> props = new Dictionary<string, object>();
+            props[PropertyIds.Name] = name;
+            props[PropertyIds.ObjectTypeId] = "cmis:item";
+
+            IItem newItem = parent.CreateItem(props);
+
+            Assert.IsNotNull(newItem);
+            Assert.AreEqual(BaseTypeId.CmisItem, newItem.BaseTypeId);
+            Assert.AreEqual("cmis:item", newItem.ItemType.Id);
+            Assert.AreEqual(name, newItem.Name);
+            Assert.IsNotNull(newItem.CreationDate);
+            Assert.IsNotNull(newItem.CreatedBy);
+            Assert.IsNotNull(newItem.LastModificationDate);
+            Assert.IsNotNull(newItem.LastModifiedBy);
+
+            return newItem;
         }
 
         public byte[] ConvertStreamToByteArray(Stream stream)

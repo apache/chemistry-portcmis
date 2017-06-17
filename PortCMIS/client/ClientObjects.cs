@@ -123,12 +123,12 @@ namespace PortCMIS.Client.Impl
         {
             if (session == null)
             {
-                throw new ArgumentNullException("session");
+                throw new ArgumentNullException(nameof(session));
             }
 
             if (objectType == null)
             {
-                throw new ArgumentNullException("objectType");
+                throw new ArgumentNullException(nameof(objectType));
             }
 
             if (objectType.PropertyDefinitions == null || objectType.PropertyDefinitions.Count < 9)
@@ -139,7 +139,7 @@ namespace PortCMIS.Client.Impl
 
             if (objectData == null)
             {
-                throw new ArgumentNullException("objectData");
+                throw new ArgumentNullException(nameof(objectData));
             }
 
             if (objectData.Properties == null)
@@ -340,8 +340,10 @@ namespace PortCMIS.Client.Impl
                 string objectId = ObjectId;
                 string changeToken = ChangeToken;
 
-                HashSet<Updatability> updatebility = new HashSet<Updatability>();
-                updatebility.Add(Updatability.ReadWrite);
+                HashSet<Updatability> updatebility = new HashSet<Updatability>()
+                {
+                    Updatability.ReadWrite
+                };
 
                 // check if checked out
                 bool? isCheckedOut = GetPropertyValue(PropertyIds.IsVersionSeriesCheckedOut) as bool?;
@@ -373,9 +375,9 @@ namespace PortCMIS.Client.Impl
         /// <inheritdoc/>
         public virtual ICmisObject Rename(string newName)
         {
-            if (newName == null || newName.Length == 0)
+            if (string.IsNullOrEmpty(newName))
             {
-                throw new ArgumentException("New name must not be empty!", "newName");
+                throw new ArgumentException("New name must not be empty!", nameof(newName));
             }
 
             IDictionary<string, object> prop = new Dictionary<string, object>();
@@ -450,7 +452,7 @@ namespace PortCMIS.Client.Impl
             {
                 if (propertyId == null)
                 {
-                    throw new ArgumentNullException("propertyId");
+                    throw new ArgumentNullException(nameof(propertyId));
                 }
 
                 lock (objectLock)
@@ -774,12 +776,12 @@ namespace PortCMIS.Client.Impl
 
             if (sourceFolderId == null || sourceFolderId.Id == null)
             {
-                throw new ArgumentException("Source folder ID must be set!", "sourceFolderId");
+                throw new ArgumentException("Source folder ID must be set!", nameof(sourceFolderId));
             }
 
             if (targetFolderId == null || targetFolderId.Id == null)
             {
-                throw new ArgumentException("Target folder ID must be set!", "targetFolderId");
+                throw new ArgumentException("Target folder ID must be set!", nameof(targetFolderId));
             }
 
             Binding.GetObjectService().MoveObject(RepositoryId, ref objectId, targetFolderId.Id, sourceFolderId.Id, null);
@@ -881,7 +883,7 @@ namespace PortCMIS.Client.Impl
                         // the repository sent a folder without a valid path...
                         throw new CmisInvalidServerData("Repository sent invalid data! No path property value!");
                     }
-                    paths.Add(folderPath + (folderPath.EndsWith("/") ? "" : "/") + p.RelativePathSegment);
+                    paths.Add(folderPath + (folderPath.EndsWith("/", StringComparison.Ordinal) ? "" : "/") + p.RelativePathSegment);
                 }
 
                 return paths;
@@ -934,7 +936,7 @@ namespace PortCMIS.Client.Impl
                 }
                 else
                 {
-                    throw new InvalidCastException("Object type is not a document type.");
+                    throw new CmisInvalidServerData("Object type is not a document type.");
                 }
             }
         }
@@ -1192,9 +1194,11 @@ namespace PortCMIS.Client.Impl
 
                 IObjectFactory of = Session.ObjectFactory;
 
-                HashSet<Updatability> updatebility = new HashSet<Updatability>();
-                updatebility.Add(Updatability.ReadWrite);
-                updatebility.Add(Updatability.WhenCheckedOut);
+                HashSet<Updatability> updatebility = new HashSet<Updatability>()
+                {
+                    Updatability.ReadWrite,
+                    Updatability.WhenCheckedOut
+                };
 
                 Binding.GetVersioningService().CheckIn(RepositoryId, ref objectId, major, of.ConvertProperties(properties, ObjectType, SecondaryTypes, updatebility),
                     contentStream, checkinComment, of.ConvertPolicies(policies), of.ConvertAces(addAces), of.ConvertAces(removeAces), null);
@@ -1292,12 +1296,14 @@ namespace PortCMIS.Client.Impl
             // -> get the file name from properties, if present
             if (contentStream.FileName == null && ContentStreamFileName != null)
             {
-                ContentStream newContentStream = new ContentStream();
-                newContentStream.FileName = ContentStreamFileName;
-                newContentStream.Length = contentStream.Length;
-                newContentStream.MimeType = contentStream.MimeType;
-                newContentStream.Stream = contentStream.Stream;
-                newContentStream.Extensions = contentStream.Extensions;
+                ContentStream newContentStream = new ContentStream()
+                {
+                    FileName = ContentStreamFileName,
+                    Length = contentStream.Length,
+                    MimeType = contentStream.MimeType,
+                    Stream = contentStream.Stream,
+                    Extensions = contentStream.Extensions
+                };
 
                 contentStream = newContentStream;
             }
@@ -1475,7 +1481,7 @@ namespace PortCMIS.Client.Impl
                 }
                 else
                 {
-                    throw new InvalidCastException("Object type is not a folder type.");
+                    throw new CmisInvalidServerData("Object type is not a folder type.");
                 }
             }
         }
@@ -1907,7 +1913,7 @@ namespace PortCMIS.Client.Impl
                 }
                 else
                 {
-                    throw new InvalidCastException("Object type is not a policy type.");
+                    throw new CmisInvalidServerData("Object type is not a policy type.");
                 }
             }
         }
@@ -1944,7 +1950,7 @@ namespace PortCMIS.Client.Impl
                 }
                 else
                 {
-                    throw new InvalidCastException("Object type is not a relationship type.");
+                    throw new CmisInvalidServerData("Object type is not a relationship type.");
                 }
             }
         }
@@ -1976,7 +1982,7 @@ namespace PortCMIS.Client.Impl
             get
             {
                 string sourceId = GetPropertyAsStringValue(PropertyIds.SourceId);
-                if (sourceId == null || sourceId.Length == 0)
+                if (string.IsNullOrEmpty(sourceId))
                 {
                     return null;
                 }
@@ -2012,7 +2018,7 @@ namespace PortCMIS.Client.Impl
             get
             {
                 string targetId = GetPropertyAsStringValue(PropertyIds.TargetId);
-                if (targetId == null || targetId.Length == 0)
+                if (string.IsNullOrEmpty(targetId))
                 {
                     return null;
                 }
@@ -2050,7 +2056,7 @@ namespace PortCMIS.Client.Impl
                 }
                 else
                 {
-                    throw new InvalidCastException("Object type is not an item type.");
+                    throw new CmisInvalidServerData("Object type is not an item type.");
                 }
             }
         }
@@ -2169,8 +2175,8 @@ namespace PortCMIS.Client.Impl
     /// </summary>
     public class Rendition : RenditionData, IRendition
     {
-        private ISession session;
-        private string objectId;
+        private readonly ISession session;
+        private readonly string objectId;
 
         /// <summary>
         /// Constructor.
@@ -2298,12 +2304,12 @@ namespace PortCMIS.Client.Impl
         {
             if (algorithm == null || algorithm.Trim().Length == 0)
             {
-                throw new ArgumentException("Algorithm must be set!", "algorithm");
+                throw new ArgumentException("Algorithm must be set!", nameof(algorithm));
             }
 
             if (hashStr == null || hashStr.Trim().Length == 0)
             {
-                throw new ArgumentException("Hash must be set!", "hashStr");
+                throw new ArgumentException("Hash must be set!", nameof(hashStr));
             }
 
             Algorithm = algorithm.ToLowerInvariant();

@@ -342,7 +342,7 @@ namespace PortCMIS.Data
         public string ParentTypeId
         {
             get { return parentTypeId; }
-            set { parentTypeId = (value == null || value.Length == 0 ? null : value); }
+            set { parentTypeId = string.IsNullOrEmpty(value) ? null : value; }
         }
 
         /// <inheritdoc/>
@@ -877,7 +877,7 @@ namespace PortCMIS.Data
         {
             if (properties == null)
             {
-                throw new ArgumentNullException("properties");
+                throw new ArgumentNullException(nameof(properties));
             }
 
             AddProperties(properties.PropertyList);
@@ -1137,7 +1137,7 @@ namespace PortCMIS.Data
         public IPrincipal Principal { get; set; }
 
         /// <inheritdoc/>
-        public string PrincipalId { get { return Principal == null ? null : Principal.Id; } }
+        public string PrincipalId { get { return Principal?.Id; } }
 
         /// <inheritdoc/>
         public IList<string> Permissions { get; set; }

@@ -17,18 +17,15 @@
 * under the License.
 */
 
-using PortCMIS.Binding.AtomPub;
 using PortCMIS.Data.Extensions;
+using PortCMIS.Enums;
 using PortCMIS.Exceptions;
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Globalization;
 using System.Numerics;
 using System.Text;
-using System.Threading.Tasks;
 using System.Xml;
-using PortCMIS.Enums;
-using System.Globalization;
 
 namespace PortCMIS.Binding.AtomPub
 {
@@ -272,13 +269,14 @@ namespace PortCMIS.Binding.AtomPub
         {
             string value = ReadText(parser);
 
-            DateTime result = DateTimeHelper.ParseISO8601(value);
-            if (result == null)
+            try
             {
-                throw new CmisInvalidArgumentException("Invalid datetime value!");
+                return DateTimeHelper.ParseISO8601(value);
             }
-
-            return result;
+            catch (Exception e)
+            {
+                throw new CmisInvalidArgumentException("Invalid datetime value!", e);
+            }
         }
 
         protected E ReadEnum<E>(XmlReader parser)
@@ -292,7 +290,7 @@ namespace PortCMIS.Binding.AtomPub
 
     }
 
-    internal class XmlConstraints
+    internal static class XmlConstraints
     {
         public const int MaxStringLength = 100 * 1024;
 

@@ -25,10 +25,7 @@ using PortCMIS.Data.Extensions;
 using PortCMIS.Exceptions;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PortCMIS.Binding.Impl
 {
@@ -51,7 +48,7 @@ namespace PortCMIS.Binding.Impl
         {
             if (sessionParameters == null)
             {
-                throw new ArgumentNullException("sessionParameters");
+                throw new ArgumentNullException(nameof(sessionParameters));
             }
 
             if (!sessionParameters.ContainsKey(SessionParameter.BindingSpiClass))
@@ -258,7 +255,7 @@ namespace PortCMIS.Binding.Impl
         public const string SpiObject = "org.apache.chemistry.portcmis.bindings.spi.object";
         public const string HttpInvokerObject = "org.apache.chemistry.portcmis.binding.httpinvoker.object";
 
-        private Dictionary<string, object> data;
+        private readonly Dictionary<string, object> data;
         private object sessionLock = new object();
 
         public BindingSession()
@@ -303,7 +300,7 @@ namespace PortCMIS.Binding.Impl
                     return (int)value;
                 }
             }
-            catch (Exception)
+            catch
             {
             }
 
@@ -325,7 +322,7 @@ namespace PortCMIS.Binding.Impl
                     return (bool)value;
                 }
             }
-            catch (Exception)
+            catch
             {
             }
 
@@ -471,7 +468,7 @@ namespace PortCMIS.Binding.Impl
     /// </summary>
     internal class BindingRepositoryService : IRepositoryService
     {
-        private BindingSession session;
+        private readonly BindingSession session;
 
         public BindingRepositoryService(BindingSession session)
         {

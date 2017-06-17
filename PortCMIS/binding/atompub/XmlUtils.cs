@@ -31,7 +31,7 @@ using PortCMIS.Exceptions;
 
 namespace PortCMIS.Binding.AtomPub
 {
-    internal class XmlUtils
+    internal static class XmlUtils
     {
 
         // --------------
@@ -43,8 +43,11 @@ namespace PortCMIS.Binding.AtomPub
         /// </summary>
         public static XmlWriter CreateWriter(Stream stream)
         {
-            XmlWriterSettings settings = new XmlWriterSettings();
-            settings.Encoding = Encoding.UTF8;
+            XmlWriterSettings settings = new XmlWriterSettings()
+            {
+                Encoding = Encoding.UTF8
+            };
+
             return XmlWriter.Create(stream, settings);
         }
 
@@ -184,9 +187,12 @@ namespace PortCMIS.Binding.AtomPub
         /// </summary>
         public static XmlReader CreateParser(Stream stream)
         {
-            XmlReaderSettings settings = new XmlReaderSettings();
-            settings.MaxCharactersInDocument = 0;
-            settings.CloseInput = true;
+            XmlReaderSettings settings = new XmlReaderSettings()
+            {
+                MaxCharactersInDocument = 0,
+                CloseInput = true
+            };
+
             return XmlReader.Create(stream, settings);
         }
 

@@ -20,7 +20,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PortCMIS;
 using PortCMIS.Client;
-using PortCMIS.Client.Impl;
 using PortCMIS.Data;
 using PortCMIS.Enums;
 using PortCMIS.Exceptions;
@@ -155,6 +154,14 @@ namespace PortCMISTests
             Assert.AreEqual(newDoc.Name, newDoc2.Name);
             Assert.AreEqual(Encoding.UTF8.GetBytes(contentString).Length, newDoc2.ContentStreamLength);
 
+            // fetch it again
+            newObj = Session.GetLatestDocumentVersion(newDoc, ctxt);
+            Assert.IsTrue(newObj is IDocument);
+            IDocument newDoc3 = (IDocument)newObj;
+
+            Assert.AreEqual(newDoc.Id, newDoc3.Id);
+            Assert.AreEqual(newDoc.Name, newDoc3.Name);
+
             // delete document
             newDoc.Delete();
 
@@ -168,7 +175,26 @@ namespace PortCMISTests
                 // expected
             }
 
+            Assert.IsFalse(Session.Exists(newDoc.Id));
+
+
+            // try an item
+            IList<IObjectType> types = Session.GetTypeChildren(null, false).ToList();
+            Assert.IsNotNull(types);
+            Assert.IsTrue(types.Count >= 2);
+            if (types.Any(type => type.Id == "cmis:item"))
+            {
+                IItem newItem = CreateItem(newFolder, "testItem");
+
+                newItem.Delete();
+
+                Assert.IsFalse(Session.Exists(newItem.Id));
+            }
+
+
             // delete folder
+
+            Assert.IsTrue(Session.ExistsPath(newFolder.Path));
 
             newFolder.Delete();
 

@@ -47,8 +47,10 @@ namespace PortCMIS.Client.Impl
         {
             if (aces == null) { return null; }
 
-            Acl result = new Acl();
-            result.Aces = new List<IAce>();
+            Acl result = new Acl()
+            {
+                Aces = new List<IAce>()
+            };
 
             foreach (IAce ace in aces)
             {
@@ -61,8 +63,10 @@ namespace PortCMIS.Client.Impl
         /// <inheritdoc/>
         public virtual IAcl CreateAcl(IList<IAce> aces)
         {
-            Acl acl = new Acl();
-            acl.Aces = aces;
+            Acl acl = new Acl()
+            {
+                Aces = aces
+            };
 
             return acl;
         }
@@ -106,7 +110,7 @@ namespace PortCMIS.Client.Impl
         {
             if (rendition == null)
             {
-                throw new ArgumentException("rendition");
+                throw new ArgumentNullException(nameof(rendition));
             }
 
             return new Rendition(this.session, objectId, rendition.StreamId, rendition.MimeType, rendition.Length, rendition.Kind,
@@ -118,11 +122,13 @@ namespace PortCMIS.Client.Impl
         /// <inheritdoc/>
         public virtual IContentStream CreateContentStream(string filename, long length, string mimetype, Stream stream)
         {
-            ContentStream result = new ContentStream();
-            result.FileName = filename;
-            result.Length = length;
-            result.MimeType = mimetype;
-            result.Stream = stream;
+            ContentStream result = new ContentStream()
+            {
+                FileName = filename,
+                Length = length,
+                MimeType = mimetype,
+                Stream = stream
+            };
 
             return result;
         }
@@ -219,7 +225,7 @@ namespace PortCMIS.Client.Impl
         {
             if (objectType == null)
             {
-                throw new ArgumentNullException("objectType");
+                throw new ArgumentNullException(nameof(objectType));
             }
 
             if (objectType.PropertyDefinitions == null)
@@ -418,7 +424,7 @@ namespace PortCMIS.Client.Impl
         {
             if (objectData == null)
             {
-                throw new ArgumentNullException("objectData");
+                throw new ArgumentNullException(nameof(objectData));
             }
 
             if (objectData.Id == null)
@@ -455,7 +461,7 @@ namespace PortCMIS.Client.Impl
         {
             if (objectData == null)
             {
-                throw new ArgumentException("Object data is null!");
+                throw new ArgumentNullException(nameof(objectData));
             }
 
             return new QueryResult(session, objectData);

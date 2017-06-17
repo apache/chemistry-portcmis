@@ -17,19 +17,15 @@
 * under the License.
 */
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using PortCMIS.Binding.Browser.Json;
+using PortCMIS.Const;
 using PortCMIS.Data;
+using PortCMIS.Data.Extensions;
 using PortCMIS.Enums;
 using PortCMIS.Exceptions;
-using PortCMIS.Data.Extensions;
-using System.Collections;
+using System;
+using System.Collections.Generic;
 using System.Numerics;
-using PortCMIS.Const;
 
 namespace PortCMIS.Binding.Browser
 {
@@ -3443,7 +3439,14 @@ namespace PortCMIS.Binding.Browser
                 }
                 else if (value is string)
                 {
-                    return DateTimeHelper.ParseISO8601((string)value);
+                    try
+                    {
+                        return DateTimeHelper.ParseISO8601((string)value);
+                    }
+                    catch
+                    {
+                        return null;
+                    }
                 }
             }
 

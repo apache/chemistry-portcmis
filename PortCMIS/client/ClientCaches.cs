@@ -193,7 +193,7 @@ namespace PortCMIS.Client
                         }
                     }
                 }
-                catch (Exception) { }
+                catch { }
 
                 // cache time-to-live
                 cacheTtl = 2 * 60 * 60 * 1000;
@@ -209,7 +209,7 @@ namespace PortCMIS.Client
                         }
                     }
                 }
-                catch (Exception) { }
+                catch { }
 
                 // path-to-id size
                 pathToIdSize = 1000;

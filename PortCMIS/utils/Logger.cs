@@ -26,7 +26,7 @@ namespace PortCMIS.Utils
     /// <summary>
     /// Simplistic logging.
     /// </summary>
-    public class Logger
+    public static class Logger
     {
 
         /// <summary>

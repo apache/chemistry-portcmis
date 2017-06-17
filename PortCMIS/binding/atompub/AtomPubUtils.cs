@@ -17,7 +17,6 @@
 * under the License.
 */
 
-using PortCMIS.Binding;
 using PortCMIS.Binding.Impl;
 using PortCMIS.Client;
 using PortCMIS.Data;
@@ -31,7 +30,6 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Numerics;
-using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
@@ -50,7 +48,7 @@ namespace PortCMIS.Binding.AtomPub
         {
             if (stream == null)
             {
-                throw new ArgumentNullException("stream");
+                throw new ArgumentNullException(nameof(stream));
             }
 
             this.stream = stream;
@@ -512,9 +510,10 @@ namespace PortCMIS.Binding.AtomPub
         {
             string uri = parser.NamespaceURI;
             string local = parser.LocalName;
-            Dictionary<string, string> result = new Dictionary<string, string>();
-
-            result["href"] = parser.GetAttribute("href");
+            Dictionary<string, string> result = new Dictionary<string, string>()
+            {
+                ["href"] = parser.GetAttribute("href")
+            };
 
             XmlUtils.Next(parser);
 
@@ -657,8 +656,10 @@ namespace PortCMIS.Binding.AtomPub
             string uri = parser.NamespaceURI;
             string local = parser.LocalName;
 
-            AtomLink result = new AtomLink();
-            result.Rel = LinkRelContent;
+            AtomLink result = new AtomLink()
+            {
+                Rel = LinkRelContent
+            };
 
             // save attributes
             if (parser.HasAttributes)
@@ -719,7 +720,7 @@ namespace PortCMIS.Binding.AtomPub
 
     internal abstract class AtomBase
     {
-        private IList<AtomElement> elements = new List<AtomElement>();
+        private readonly IList<AtomElement> elements = new List<AtomElement>();
 
         public abstract string Type { get; }
 
@@ -747,7 +748,7 @@ namespace PortCMIS.Binding.AtomPub
 
     internal class ServiceDoc : AtomBase
     {
-        private IList<RepositoryWorkspace> workspaces = new List<RepositoryWorkspace>();
+        private readonly IList<RepositoryWorkspace> workspaces = new List<RepositoryWorkspace>();
 
         public override string Type { get { return "Service Document"; } }
         public IList<RepositoryWorkspace> Workspaces { get { return workspaces; } }
@@ -824,29 +825,31 @@ namespace PortCMIS.Binding.AtomPub
 
     internal class LinkCache
     {
-        private static readonly HashSet<string> KnownLinks = new HashSet<string>();
+        private static readonly HashSet<string> KnownLinks = new HashSet<string>()
+        {
+            BindingConstants.RelAcl,
+            BindingConstants.RelDown,
+            BindingConstants.RelUp,
+            BindingConstants.RelFolderTree,
+            BindingConstants.RelRelationships,
+            BindingConstants.RelSelf,
+            BindingConstants.RelAllowableActions,
+            BindingConstants.RelEditMedia,
+            BindingConstants.RelPolicies,
+            BindingConstants.RelVersionHistory,
+            BindingConstants.RelWorkingCopy,
+            AtomPubParser.LinkRelContent
+        };
 
         static LinkCache()
         {
-            KnownLinks.Add(BindingConstants.RelAcl);
-            KnownLinks.Add(BindingConstants.RelDown);
-            KnownLinks.Add(BindingConstants.RelUp);
-            KnownLinks.Add(BindingConstants.RelFolderTree);
-            KnownLinks.Add(BindingConstants.RelRelationships);
-            KnownLinks.Add(BindingConstants.RelSelf);
-            KnownLinks.Add(BindingConstants.RelAllowableActions);
-            KnownLinks.Add(BindingConstants.RelEditMedia);
-            KnownLinks.Add(BindingConstants.RelPolicies);
-            KnownLinks.Add(BindingConstants.RelVersionHistory);
-            KnownLinks.Add(BindingConstants.RelWorkingCopy);
-            KnownLinks.Add(AtomPubParser.LinkRelContent);
         }
 
-        private IBindingCache linkCache;
-        private IBindingCache typeLinkCache;
-        private IBindingCache collectionLinkCache;
-        private IBindingCache templateCache;
-        private IBindingCache repositoryLinkCache;
+        private readonly IBindingCache linkCache;
+        private readonly IBindingCache typeLinkCache;
+        private readonly IBindingCache collectionLinkCache;
+        private readonly IBindingCache templateCache;
+        private readonly IBindingCache repositoryLinkCache;
 
         /// <summary>
         /// Constructor.
@@ -1175,7 +1178,7 @@ namespace PortCMIS.Binding.AtomPub
         private CmisVersion cmisVersion;
         private IObjectData objectData;
         private IContentStream contentStream;
-        private Stream stream;
+        private readonly Stream stream;
         private ITypeDefinition typeDef;
         private BulkUpdate bulkUpdate;
 

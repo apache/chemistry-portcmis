@@ -351,10 +351,10 @@ namespace PortCMIS.Binding.Http
                 if (httpResponse.StatusCode != HttpStatusCode.NoContent)
                 {
                     if (ContentType != null &&
-                        (ContentType.ToLowerInvariant().StartsWith("text/") ||
-                        ContentType.ToLowerInvariant().EndsWith("+xml") ||
-                        ContentType.ToLowerInvariant().StartsWith("application/xml") ||
-                        ContentType.ToLowerInvariant().StartsWith("application/json")))
+                        (ContentType.ToLowerInvariant().StartsWith("text/", StringComparison.Ordinal) ||
+                        ContentType.ToLowerInvariant().EndsWith("+xml", StringComparison.Ordinal) ||
+                        ContentType.ToLowerInvariant().StartsWith("application/xml", StringComparison.Ordinal) ||
+                        ContentType.ToLowerInvariant().StartsWith("application/json", StringComparison.Ordinal)))
                     {
 
                         ErrorContent = GetContentString().Result;
@@ -366,7 +366,7 @@ namespace PortCMIS.Binding.Http
                     response.Dispose();
                     response = null;
                 }
-                catch (Exception) { }
+                catch { }
             }
         }
 
@@ -385,7 +385,7 @@ namespace PortCMIS.Binding.Http
                     response.Dispose();
                     response = null;
                 }
-                catch (Exception) { }
+                catch { }
             }
         }
 

@@ -27,10 +27,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
-using System.Linq;
 using System.Numerics;
 using System.Text;
-using System.Threading.Tasks;
 
 
 namespace PortCMIS.Binding.Browser.Json
@@ -202,7 +200,7 @@ namespace PortCMIS.Binding.Browser.Json
             {
                 if (key == null)
                 {
-                    throw new ArgumentNullException("key");
+                    throw new ArgumentNullException(nameof(key));
                 }
 
                 return dict[key].Value;
@@ -212,7 +210,7 @@ namespace PortCMIS.Binding.Browser.Json
             {
                 if (key == null)
                 {
-                    throw new ArgumentNullException("key");
+                    throw new ArgumentNullException(nameof(key));
                 }
 
                 KeyValuePair<string, object> kv = new KeyValuePair<string, object>(key, value);
@@ -270,12 +268,12 @@ namespace PortCMIS.Binding.Browser.Json
         {
             if (key == null)
             {
-                throw new ArgumentNullException("key");
+                throw new ArgumentNullException(nameof(key));
             }
 
             if (dict.ContainsKey(key))
             {
-                throw new ArgumentException("Key already exists!", key);
+                throw new ArgumentException("Key already exists!", nameof(key));
             }
 
             this[key] = value;
@@ -285,7 +283,7 @@ namespace PortCMIS.Binding.Browser.Json
         {
             if (key == null)
             {
-                throw new ArgumentNullException("key");
+                throw new ArgumentNullException(nameof(key));
             }
 
             if (dict.Remove(key))

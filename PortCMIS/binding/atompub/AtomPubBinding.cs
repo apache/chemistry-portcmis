@@ -17,12 +17,10 @@
 * under the License.
 */
 
-using PortCMIS.Binding;
 using PortCMIS.Binding.Http;
 using PortCMIS.Binding.Impl;
 using PortCMIS.Binding.Services;
 using PortCMIS.Client;
-using PortCMIS.Client.Impl;
 using PortCMIS.Data;
 using PortCMIS.Data.Extensions;
 using PortCMIS.Enums;
@@ -2462,7 +2460,7 @@ namespace PortCMIS.Binding.AtomPub
             IExtensionsData extension)
         {
             // we need an object id
-            if (objectId == null || objectId.Length == 0)
+            if (string.IsNullOrEmpty(objectId))
             {
                 throw new CmisInvalidArgumentException("Object ID must be set!");
             }
@@ -2615,12 +2613,12 @@ namespace PortCMIS.Binding.AtomPub
         public void MoveObject(string repositoryId, ref string objectId, string targetFolderId, string sourceFolderId,
             IExtensionsData extension)
         {
-            if (objectId == null || objectId.Length == 0)
+            if (string.IsNullOrEmpty(objectId))
             {
                 throw new CmisInvalidArgumentException("Object ID must be set!");
             }
 
-            if (targetFolderId == null || targetFolderId.Length == 0 || sourceFolderId == null || sourceFolderId.Length == 0)
+            if (string.IsNullOrEmpty(targetFolderId) || string.IsNullOrEmpty(sourceFolderId))
             {
                 throw new CmisInvalidArgumentException("Source and target folder must be set!");
             }
@@ -2907,7 +2905,7 @@ namespace PortCMIS.Binding.AtomPub
 
         public void CheckOut(string repositoryId, ref string objectId, IExtensionsData extension, out bool? contentCopied)
         {
-            if (objectId == null || objectId.Length == 0)
+            if (string.IsNullOrEmpty(objectId))
             {
                 throw new CmisInvalidArgumentException("Object ID must be set!");
             }
@@ -2991,7 +2989,7 @@ namespace PortCMIS.Binding.AtomPub
             IExtensionsData extension)
         {
             // we need an object id
-            if (objectId == null || objectId.Length == 0)
+            if (string.IsNullOrEmpty(objectId))
             {
                 throw new CmisInvalidArgumentException("Object ID must be set!");
             }

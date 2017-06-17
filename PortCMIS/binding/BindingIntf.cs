@@ -633,7 +633,7 @@ namespace PortCMIS.Binding
             // don't accept null
             if (sessionParameters == null)
             {
-                throw new ArgumentNullException("sessionParameters");
+                throw new ArgumentNullException(nameof(sessionParameters));
             }
 
             // check binding entry
@@ -653,7 +653,7 @@ namespace PortCMIS.Binding
             }
         }
 
-        private void Check(IDictionary<string, string> sessionParameters, String parameter)
+        private void Check(IDictionary<string, string> sessionParameters, string parameter)
         {
             if (!sessionParameters.ContainsKey(parameter))
             {

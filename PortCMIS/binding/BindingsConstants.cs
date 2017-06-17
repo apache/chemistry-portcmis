@@ -17,15 +17,10 @@
 * under the License.
 */
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PortCMIS.Binding
 {
-    internal class BindingConstants
+    internal static class BindingConstants
     {
         // media types
         public const string MediaTypeService = "application/atomsvc+xml";

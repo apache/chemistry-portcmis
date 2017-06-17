@@ -48,7 +48,7 @@ namespace PortCMIS.Binding
         {
             if (url == null)
             {
-                throw new ArgumentNullException("url");
+                throw new ArgumentNullException(nameof(url));
             }
 
             uri = new UriBuilder(url);
@@ -186,7 +186,7 @@ namespace PortCMIS.Binding
 
         private const string MIMESpecials = "()<>@,;:\\\"/[]?=" + "\t ";
         private const string RFC2231Specials = "*'%" + MIMESpecials;
-        private static char[] HexDigits = new char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
+        private static readonly char[] HexDigits = new char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
 
         public static string EncodeContentDisposition(string disposition, string filename)
         {
@@ -218,7 +218,7 @@ namespace PortCMIS.Binding
             byte[] bytes;
             try
             {
-                bytes = UTF8Encoding.UTF8.GetBytes(value);
+                bytes = Encoding.UTF8.GetBytes(value);
             }
             catch (Exception)
             {

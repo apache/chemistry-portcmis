@@ -17,7 +17,6 @@
 * under the License.
 */
 
-using PortCMIS.Binding;
 using PortCMIS.Binding.Browser.Json;
 using PortCMIS.Binding.Http;
 using PortCMIS.Binding.Impl;
@@ -31,13 +30,10 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
-using System.Linq;
-using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Numerics;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace PortCMIS.Binding.Browser
 {
@@ -459,7 +455,7 @@ namespace PortCMIS.Binding.Browser
             int idx = 0;
             foreach (string typeId in secondaryTypeIds)
             {
-                if (typeId == null || typeId.Length == 0)
+                if (string.IsNullOrEmpty(typeId))
                 {
                     continue;
                 }
@@ -1654,7 +1650,7 @@ namespace PortCMIS.Binding.Browser
             IExtensionsData extension)
         {
             // we need an object ID
-            if (objectId == null || objectId.Length == 0)
+            if (string.IsNullOrEmpty(objectId))
             {
                 throw new CmisInvalidArgumentException("Object ID must be set!");
             }
@@ -1718,7 +1714,7 @@ namespace PortCMIS.Binding.Browser
             IExtensionsData extension)
         {
             // we need an object id
-            if (objectId == null || objectId.Length == 0)
+            if (string.IsNullOrEmpty(objectId))
             {
                 throw new CmisInvalidArgumentException("Object ID must be set!");
             }
@@ -1793,7 +1789,7 @@ namespace PortCMIS.Binding.Browser
             IContentStream contentStream, IExtensionsData extension)
         {
             // we need an object id
-            if (objectId == null || objectId.Length == 0)
+            if (string.IsNullOrEmpty(objectId))
             {
                 throw new CmisInvalidArgumentException("Object ID must be set!");
             }
@@ -1828,7 +1824,7 @@ namespace PortCMIS.Binding.Browser
             IContentStream contentStream, IExtensionsData extension)
         {
             // we need an object id
-            if (objectId == null || objectId.Length == 0)
+            if (string.IsNullOrEmpty(objectId))
             {
                 throw new CmisInvalidArgumentException("Object ID must be set!");
             }
@@ -1861,7 +1857,7 @@ namespace PortCMIS.Binding.Browser
         public void DeleteContentStream(string repositoryId, ref string objectId, ref string changeToken, IExtensionsData extension)
         {
             // we need an object id
-            if (objectId == null || objectId.Length == 0)
+            if (string.IsNullOrEmpty(objectId))
             {
                 throw new CmisInvalidArgumentException("Object ID must be set!");
             }
@@ -1900,7 +1896,7 @@ namespace PortCMIS.Binding.Browser
         public void CheckOut(string repositoryId, ref string objectId, IExtensionsData extension, out bool? contentCopied)
         {
             // we need an object id
-            if (objectId == null || objectId.Length == 0)
+            if (string.IsNullOrEmpty(objectId))
             {
                 throw new CmisInvalidArgumentException("Object ID must be set!");
             }
@@ -1943,7 +1939,7 @@ namespace PortCMIS.Binding.Browser
             IExtensionsData extension)
         {
             // we need an object id
-            if (objectId == null || objectId.Length == 0)
+            if (string.IsNullOrEmpty(objectId))
             {
                 throw new CmisInvalidArgumentException("Object ID must be set!");
             }

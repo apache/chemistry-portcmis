@@ -2290,14 +2290,14 @@ namespace PortCMIS.Client
     /// <summary>
     /// Item properties.
     /// </summary>
-    public interface ItemProperties
+    public interface IItemProperties
     {
     }
 
     /// <summary>
     /// Item interface.
     /// </summary>
-    public interface IItem : IFileableCmisObject, ItemProperties
+    public interface IItem : IFileableCmisObject, IItemProperties
     {
         /// <summary>
         /// Returns the object type as an item type.

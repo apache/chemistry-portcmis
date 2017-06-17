@@ -22,11 +22,9 @@ using PortCMIS.Data;
 using PortCMIS.Utils;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace PortCMIS.Binding
 {
@@ -79,7 +77,7 @@ namespace PortCMIS.Binding
 
                 if (cacheLevelConfig == null || cacheLevelConfig.Length == 0)
                 {
-                    throw new ArgumentException("Cache config must not be empty!", "cacheLevelConfig");
+                    throw new ArgumentException("Cache config must not be empty!", nameof(cacheLevelConfig));
                 }
                 cacheLevels = new List<Type>();
                 cacheLevelParameters = new List<IDictionary<string, string>>();
@@ -108,7 +106,7 @@ namespace PortCMIS.Binding
 
             if (keys.Length != cacheLevels.Count)
             {
-                throw new ArgumentException("Wrong number of keys!", "keys");
+                throw new ArgumentException("Wrong number of keys!", nameof(keys));
             }
 
             lock (cacheLock)
@@ -146,7 +144,7 @@ namespace PortCMIS.Binding
 
             if (keys.Length != cacheLevels.Count)
             {
-                throw new ArgumentException("Wrong number of keys!", "keys");
+                throw new ArgumentException("Wrong number of keys!", nameof(keys));
             }
 
             object result = null;
@@ -249,7 +247,7 @@ namespace PortCMIS.Binding
             }
             catch (Exception e)
             {
-                throw new ArgumentException("Class '" + typeName + "' not found!", "typeName", e);
+                throw new ArgumentException("Class '" + typeName + "' not found!", nameof(typeName), e);
             }
 
             cacheLevels.Add(levelType);
@@ -283,7 +281,7 @@ namespace PortCMIS.Binding
         {
             if ((level < 0) || (level >= cacheLevels.Count))
             {
-                throw new ArgumentException("Cache level doesn't fit the configuration!", "level");
+                throw new ArgumentException("Cache level doesn't fit the configuration!", nameof(level));
             }
 
             // get the class and create an instance
@@ -334,7 +332,7 @@ namespace PortCMIS.Binding
         {
             get
             {
-                object value = GetValue(key == null ? NullKey : key);
+                object value = GetValue(key ?? NullKey);
                 if (value != null)
                 {
                     return value;
@@ -364,7 +362,7 @@ namespace PortCMIS.Binding
             {
                 if (value != null)
                 {
-                    AddValue(key == null ? NullKey : key, value);
+                    AddValue(key ?? NullKey, value);
                 }
             }
         }
@@ -588,7 +586,7 @@ namespace PortCMIS.Binding
         private const int CacheSizeRepositories = 10;
         private const int CacheSizeTypes = 100;
 
-        private IBindingCache cache;
+        private readonly IBindingCache cache;
 
         public TypeDefinitionCache(IBindingSession session)
         {
