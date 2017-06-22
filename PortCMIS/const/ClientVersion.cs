@@ -22,13 +22,13 @@ namespace PortCMIS
     /// <summary>
     /// PortCMIS client version.
     /// </summary>
-    public class ClientVersion
+    public static class ClientVersion
     {
         /// <summary>PortCMIS user agent name</summary>
         public const string UserAgentName = "Apache-Chemistry-PortCMIS";
 
         /// <summary>PortCMIS version</summary>
-        public const string Version = "0.2";
+        public const string Version = "0.3";
 
         /// <summary>PortCMIS user agent name</summary>
         public const string UserAgent = UserAgentName + "/" + Version;

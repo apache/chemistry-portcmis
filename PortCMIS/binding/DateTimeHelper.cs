@@ -43,7 +43,7 @@ namespace PortCMIS.Binding
 
         public static string FormatISO8601(DateTime dt)
         {
-            return dt.ToString("o");
+            return dt.ToString("o", CultureInfo.InvariantCulture);
         }
     }
 }

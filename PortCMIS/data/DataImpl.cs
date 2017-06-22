@@ -21,6 +21,7 @@ using PortCMIS.Data.Extensions;
 using PortCMIS.Enums;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Numerics;
 using System.Text;
@@ -44,6 +45,11 @@ namespace PortCMIS.Data
         /// </summary>
         public RepositoryInfo(IRepositoryInfo source)
         {
+            if (source == null)
+            {
+                throw new ArgumentNullException(nameof(source));
+            }
+
             Id = source.Id;
             Name = source.Name;
             Description = source.Description;
@@ -1075,7 +1081,7 @@ namespace PortCMIS.Data
                     }
                     else
                     {
-                        return new BigInteger(Convert.ToInt64(value));
+                        return new BigInteger(Convert.ToInt64(value, CultureInfo.InvariantCulture));
                     }
                 case PropertyType.Boolean:
                     if (!(value is bool))
@@ -1094,7 +1100,7 @@ namespace PortCMIS.Data
                     {
                         throw new ArgumentException("Property '" + Id + "' is a Decimal property!");
                     }
-                    return Convert.ToDecimal(value);
+                    return Convert.ToDecimal(value, CultureInfo.InvariantCulture);
                 case PropertyType.Uri:
                     if (!(value is string))
                     {

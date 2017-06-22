@@ -282,21 +282,28 @@ namespace PortCMIS.Binding.Browser
         {
             MultipartFormDataContent content = new MultipartFormDataContent();
 
-            IList<KeyValuePair<string, string>> parameters = CreateContent();
-            foreach (KeyValuePair<string, string> p in parameters)
+            try
             {
-                content.Add(new StringContent(p.Value, Encoding.UTF8), p.Key);
-            }
+                IList<KeyValuePair<string, string>> mpfParameters = CreateContent();
+                foreach (KeyValuePair<string, string> p in mpfParameters)
+                {
+                    content.Add(new StringContent(p.Value, Encoding.UTF8), p.Key);
+                }
 
-            if (Stream.Stream != null)
+                if (Stream.Stream != null)
+                {
+                    StreamContent streamContent = new StreamContent(Stream.Stream);
+                    streamContent.Headers.ContentType = MediaTypeHeaderValue.Parse(Stream.MimeType ?? "application/octet-stream");
+
+                    content.Add(streamContent, "content", Stream.FileName ?? "content");
+                }
+
+                return content;
+            } catch
             {
-                StreamContent streamContent = new StreamContent(Stream.Stream);
-                streamContent.Headers.ContentType = MediaTypeHeaderValue.Parse(Stream.MimeType ?? "application/octet-stream");
-
-                content.Add(streamContent, "content", Stream.FileName ?? "content");
+                content.Dispose();
+                throw;
             }
-
-            return content;
         }
 
         protected IList<KeyValuePair<string, string>> CreateContent()
@@ -508,7 +515,7 @@ namespace PortCMIS.Binding.Browser
                 }
                 else
                 {
-                    return DateTimeHelper.ConvertDateTimeToMillis((DateTime)value).ToString();
+                    return DateTimeHelper.ConvertDateTimeToMillis((DateTime)value).ToString(CultureInfo.InvariantCulture);
                 }
             }
             else if (value is decimal)
@@ -549,9 +556,9 @@ namespace PortCMIS.Binding.Browser
             {
                 try
                 {
-                    return Convert.ToInt64(value).ToString("0", CultureInfo.InvariantCulture);
+                    return Convert.ToInt64(value, CultureInfo.InvariantCulture).ToString("0", CultureInfo.InvariantCulture);
                 }
-                catch (Exception)
+                catch
                 {
                     return value.ToString();
                 }
@@ -581,7 +588,7 @@ namespace PortCMIS.Binding.Browser
                 object succintObj = session.GetValue(SessionParameter.BrowserSuccinct);
                 if (succintObj is string)
                 {
-                    Succinct = Convert.ToBoolean((string)succintObj);
+                    Succinct = Convert.ToBoolean((string)succintObj, CultureInfo.InvariantCulture);
                 }
 
                 DateTimeFormat = DateTimeFormat.Simple;
@@ -741,7 +748,15 @@ namespace PortCMIS.Binding.Browser
                 if (errorContent != null)
                 {
                     JsonParser parser = new JsonParser();
-                    obj = parser.Parse(new StringReader(errorContent));
+                    StringReader sr = new StringReader(errorContent);
+                    try
+                    {
+                        obj = parser.Parse(sr);
+                    }
+                    finally
+                    {
+                        sr.Dispose();
+                    }
                 }
             }
             catch (JsonParseException)
@@ -1141,10 +1156,16 @@ namespace PortCMIS.Binding.Browser
             FormDataComposer composer = new FormDataComposer(BindingConstants.CmisActionCreateType);
             if (type != null)
             {
-                StringWriter sw = new StringWriter();
-                JsonConverter.Convert(type, DateTimeFormat).WriteJsonString(sw);
-
-                composer.Parameters[BindingConstants.ControlType] = sw.ToString();
+                StringWriter sw = new StringWriter(CultureInfo.InvariantCulture);
+                try
+                {
+                    JsonConverter.Convert(type, DateTimeFormat).WriteJsonString(sw);
+                    composer.Parameters[BindingConstants.ControlType] = sw.ToString();
+                }
+                finally
+                {
+                    sw.Dispose();
+                }
             }
 
             // send and parse
@@ -1164,10 +1185,16 @@ namespace PortCMIS.Binding.Browser
             FormDataComposer composer = new FormDataComposer(BindingConstants.CmisActionUpdateType);
             if (type != null)
             {
-                StringWriter sw = new StringWriter();
-                JsonConverter.Convert(type, DateTimeFormat).WriteJsonString(sw);
-
-                composer.Parameters[BindingConstants.ControlType] = sw.ToString();
+                StringWriter sw = new StringWriter(CultureInfo.InvariantCulture);
+                try
+                {
+                    JsonConverter.Convert(type, DateTimeFormat).WriteJsonString(sw);
+                    composer.Parameters[BindingConstants.ControlType] = sw.ToString();
+                }
+                finally
+                {
+                    sw.Dispose();
+                }
             }
 
             // send and parse
@@ -1372,7 +1399,7 @@ namespace PortCMIS.Binding.Browser
 
             IObjectData newObj = JsonConverter.ConvertObject(json, typeCache);
 
-            return (newObj == null ? null : newObj.Id);
+            return newObj?.Id;
         }
 
         public string CreateDocumentFromSource(string repositoryId, string sourceId, IProperties properties, string folderId,
@@ -1401,7 +1428,7 @@ namespace PortCMIS.Binding.Browser
 
             IObjectData newObj = JsonConverter.ConvertObject(json, typeCache);
 
-            return (newObj == null ? null : newObj.Id);
+            return newObj?.Id;
         }
 
         public string CreateFolder(string repositoryId, IProperties properties, string folderId, IList<string> policies,
@@ -1428,7 +1455,7 @@ namespace PortCMIS.Binding.Browser
 
             IObjectData newObj = JsonConverter.ConvertObject(json, typeCache);
 
-            return (newObj == null ? null : newObj.Id);
+            return newObj?.Id;
         }
 
         public string CreateRelationship(string repositoryId, IProperties properties, IList<string> policies, IAcl addAces,
@@ -1455,7 +1482,7 @@ namespace PortCMIS.Binding.Browser
 
             IObjectData newObj = JsonConverter.ConvertObject(json, typeCache);
 
-            return (newObj == null ? null : newObj.Id);
+            return newObj?.Id;
         }
 
         public string CreatePolicy(string repositoryId, IProperties properties, string folderId, IList<string> policies,
@@ -1482,7 +1509,7 @@ namespace PortCMIS.Binding.Browser
 
             IObjectData newObj = JsonConverter.ConvertObject(json, typeCache);
 
-            return (newObj == null ? null : newObj.Id);
+            return newObj?.Id;
         }
 
         public string CreateItem(string repositoryId, IProperties properties, string folderId, IList<string> policies,
@@ -1509,7 +1536,7 @@ namespace PortCMIS.Binding.Browser
 
             IObjectData newObj = JsonConverter.ConvertObject(json, typeCache);
 
-            return (newObj == null ? null : newObj.Id);
+            return newObj?.Id;
         }
 
         public IAllowableActions GetAllowableActions(string repositoryId, string objectId, IExtensionsData extension)
@@ -1675,7 +1702,7 @@ namespace PortCMIS.Binding.Browser
 
             IObjectData newObj = JsonConverter.ConvertObject(json, typeCache);
 
-            objectId = (newObj == null ? null : newObj.Id);
+            objectId = newObj?.Id;
 
             SetChangeToken(ref changeToken, newObj);
         }
@@ -1738,7 +1765,7 @@ namespace PortCMIS.Binding.Browser
 
             IObjectData newObj = JsonConverter.ConvertObject(json, typeCache);
 
-            objectId = (newObj == null ? null : newObj.Id);
+            objectId = newObj?.Id;
         }
 
         public void DeleteObject(string repositoryId, string objectId, bool? allVersions, IExtensionsData extension)
@@ -1815,7 +1842,7 @@ namespace PortCMIS.Binding.Browser
 
             IObjectData newObj = JsonConverter.ConvertObject(json, typeCache);
 
-            objectId = (newObj == null ? null : newObj.Id);
+            objectId = newObj?.Id;
 
             SetChangeToken(ref changeToken, newObj);
         }
@@ -1849,7 +1876,7 @@ namespace PortCMIS.Binding.Browser
 
             IObjectData newObj = JsonConverter.ConvertObject(json, typeCache);
 
-            objectId = (newObj == null ? null : newObj.Id);
+            objectId = newObj?.Id;
 
             SetChangeToken(ref changeToken, newObj);
         }
@@ -1880,7 +1907,7 @@ namespace PortCMIS.Binding.Browser
 
             IObjectData newObj = JsonConverter.ConvertObject(json, typeCache);
 
-            objectId = (newObj == null ? null : newObj.Id);
+            objectId = newObj?.Id;
 
             SetChangeToken(ref changeToken, newObj);
         }
@@ -1917,7 +1944,7 @@ namespace PortCMIS.Binding.Browser
 
             IObjectData newObj = JsonConverter.ConvertObject(json, typeCache);
 
-            objectId = (newObj == null ? null : newObj.Id);
+            objectId = newObj?.Id;
 
             contentCopied = null;
         }
@@ -1968,7 +1995,7 @@ namespace PortCMIS.Binding.Browser
 
             IObjectData newObj = JsonConverter.ConvertObject(json, typeCache);
 
-            objectId = (newObj == null ? null : newObj.Id);
+            objectId = newObj?.Id;
         }
 
         public IObjectData GetObjectOfLatestVersion(string repositoryId, string objectId, string versionSeriesId, bool? major,

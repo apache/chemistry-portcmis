@@ -18,6 +18,7 @@
 */
 
 using System;
+using System.Globalization;
 using System.IO;
 using System.Text;
 
@@ -89,12 +90,22 @@ namespace PortCMIS.Utils
 
         private static object loggerLock = new object();
 
+
+        /// <summary>
+        /// Logs an error message.
+        /// </summary>
+        /// <param name="message">the message</param>
+        public static void Error(string message)
+        {
+            Error(message, null);
+        }
+
         /// <summary>
         /// Logs an error message.
         /// </summary>
         /// <param name="message">the message</param>
         /// <param name="e">the exception</param>
-        public static void Error(string message, Exception e = null)
+        public static void Error(string message, Exception e)
         {
             lock (loggerLock)
             {
@@ -106,8 +117,17 @@ namespace PortCMIS.Utils
         /// Logs a warn message.
         /// </summary>
         /// <param name="message">the message</param>
+        public static void Warn(string message)
+        {
+            Warn(message, null);
+        }
+
+        /// <summary>
+        /// Logs a warn message.
+        /// </summary>
+        /// <param name="message">the message</param>
         /// <param name="e">the exception</param>
-        public static void Warn(string message, Exception e = null)
+        public static void Warn(string message, Exception e)
         {
             lock (loggerLock)
             {
@@ -122,8 +142,17 @@ namespace PortCMIS.Utils
         /// Logs an info message.
         /// </summary>
         /// <param name="message">the message</param>
+        public static void Info(string message)
+        {
+            Info(message, null);
+        }
+
+        /// <summary>
+        /// Logs an info message.
+        /// </summary>
+        /// <param name="message">the message</param>
         /// <param name="e">the exception</param>
-        public static void Info(string message, Exception e = null)
+        public static void Info(string message, Exception e)
         {
             lock (loggerLock)
             {
@@ -138,8 +167,17 @@ namespace PortCMIS.Utils
         /// Logs a debug message.
         /// </summary>
         /// <param name="message">the message</param>
+        public static void Debug(string message)
+        {
+            Debug(message, null);
+        }
+
+        /// <summary>
+        /// Logs a debug message.
+        /// </summary>
+        /// <param name="message">the message</param>
         /// <param name="e">the exception</param>
-        public static void Debug(string message, Exception e = null)
+        public static void Debug(string message, Exception e)
         {
             lock (loggerLock)
             {
@@ -154,8 +192,17 @@ namespace PortCMIS.Utils
         /// Logs a trace message.
         /// </summary>
         /// <param name="message">the message</param>
+        public static void Trace(string message)
+        {
+            Trace(message, null);
+        }
+
+        /// <summary>
+        /// Logs a trace message.
+        /// </summary>
+        /// <param name="message">the message</param>
         /// <param name="e">the exception</param>
-        public static void Trace(string message, Exception e = null)
+        public static void Trace(string message, Exception e)
         {
             lock (loggerLock)
             {
@@ -176,7 +223,7 @@ namespace PortCMIS.Utils
             DateTime now = DateTime.Now;
 
             StringBuilder sb = new StringBuilder();
-            sb.Append(now.ToString("o"));
+            sb.Append(now.ToString("o", CultureInfo.InvariantCulture));
             sb.Append(' ');
             sb.Append(levelname);
             sb.Append(": ");

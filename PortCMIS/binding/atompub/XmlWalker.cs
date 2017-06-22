@@ -257,7 +257,7 @@ namespace PortCMIS.Binding.AtomPub
 
             try
             {
-                return Decimal.Parse(value);
+                return Decimal.Parse(value, CultureInfo.InvariantCulture);
             }
             catch (Exception e)
             {

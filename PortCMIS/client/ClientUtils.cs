@@ -29,7 +29,7 @@ using System.Text;
 namespace PortCMIS.Client
 {
     /// <summary>
-    /// Operation context implementation.
+    /// Operation defaultContext implementation.
     /// </summary>
     public class OperationContext : IOperationContext
     {
@@ -342,7 +342,7 @@ namespace PortCMIS.Client
         }
 
         /// <summary>
-        /// Generates a cache key from the current state of the operation context.
+        /// Generates a cache key from the current state of the operation defaultContext.
         /// </summary>
         /// 
         protected virtual void GenerateCacheKey()
@@ -384,14 +384,10 @@ namespace PortCMIS.Client
     /// <summary>
     /// Operation Context helpers.
     /// </summary>
-    public class OperationContextUtils
+    public static class OperationContextUtils
     {
-        private OperationContextUtils()
-        {
-        }
-
         /// <summary>
-        /// Creates a new operation context object.
+        /// Creates a new operation defaultContext object.
         /// </summary>
         public static IOperationContext CreateOperationContext()
         {
@@ -399,15 +395,20 @@ namespace PortCMIS.Client
         }
 
         /// <summary>
-        /// Copies an operation context object.
+        /// Copies an operation defaultContext object.
         /// </summary>
-        public static IOperationContext CopyOperationContext(OperationContext context)
+        public static IOperationContext CopyOperationContext(IOperationContext context)
         {
+            if (context == null)
+            {
+                throw new ArgumentNullException(nameof(context));
+            }
+
             return new OperationContext(context);
         }
 
         /// <summary>
-        /// Creates a new operation context object with the given parameters.
+        /// Creates a new operation defaultContext object with the given parameters.
         /// </summary>
         /// <remarks>
         /// Caching is enabled.
@@ -422,7 +423,7 @@ namespace PortCMIS.Client
         }
 
         /// <summary>
-        /// Creates a new operation context object that only selects the bare minimum.
+        /// Creates a new operation defaultContext object that only selects the bare minimum.
         /// </summary>
         /// <remarks>
         /// Caching is enabled.
@@ -433,7 +434,7 @@ namespace PortCMIS.Client
         }
 
         /// <summary>
-        /// Creates a new operation context object that only selects the bare minimum plus the provided properties.
+        /// Creates a new operation defaultContext object that only selects the bare minimum plus the provided properties.
         /// </summary>
         /// <remarks>
         /// Caching is enabled.
@@ -460,7 +461,7 @@ namespace PortCMIS.Client
         }
 
         /// <summary>
-        /// Creates a new operation context object that selects everything.
+        /// Creates a new operation defaultContext object that selects everything.
         /// </summary>
         /// <remarks>
         /// Caching is enabled.
@@ -472,7 +473,7 @@ namespace PortCMIS.Client
         }
 
         /// <summary>
-        /// Returns an unmodifiable view of the specified operation context.
+        /// Returns an unmodifiable view of the specified operation defaultContext.
         /// </summary>
         public static IOperationContext CreateReadOnlyOperationContext(IOperationContext context)
         {
@@ -486,73 +487,73 @@ namespace PortCMIS.Client
             public override ISet<string> Filter
             {
                 get { return base.Filter == null ? null : new HashSet<string>(base.Filter); }
-                set { throw new Exception("Not supported!"); }
+                set { throw new NotSupportedException("Not supported!"); }
             }
 
             public override string FilterString
             {
                 get { return base.FilterString; }
-                set { throw new Exception("Not supported!"); }
+                set { throw new NotSupportedException("Not supported!"); }
             }
 
             public override bool IncludeAllowableActions
             {
                 get { return base.IncludeAllowableActions; }
-                set { throw new Exception("Not supported!"); }
+                set { throw new NotSupportedException("Not supported!"); }
             }
 
             public override bool IncludeAcls
             {
                 get { return base.IncludeAcls; }
-                set { throw new Exception("Not supported!"); }
+                set { throw new NotSupportedException("Not supported!"); }
             }
 
             public override IncludeRelationships? IncludeRelationships
             {
                 get { return base.IncludeRelationships; }
-                set { throw new Exception("Not supported!"); }
+                set { throw new NotSupportedException("Not supported!"); }
             }
 
             public override bool IncludePolicies
             {
                 get { return base.IncludePolicies; }
-                set { throw new Exception("Not supported!"); }
+                set { throw new NotSupportedException("Not supported!"); }
             }
 
             public override ISet<string> RenditionFilter
             {
                 get { return base.RenditionFilter == null ? null : new HashSet<string>(base.RenditionFilter); }
-                set { throw new Exception("Not supported!"); }
+                set { throw new NotSupportedException("Not supported!"); }
             }
 
             public override string RenditionFilterString
             {
                 get { return base.RenditionFilterString; }
-                set { throw new Exception("Not supported!"); }
+                set { throw new NotSupportedException("Not supported!"); }
             }
 
             public override bool IncludePathSegments
             {
                 get { return base.IncludePathSegments; }
-                set { throw new Exception("Not supported!"); }
+                set { throw new NotSupportedException("Not supported!"); }
             }
 
             public override string OrderBy
             {
                 get { return base.OrderBy; }
-                set { throw new Exception("Not supported!"); }
+                set { throw new NotSupportedException("Not supported!"); }
             }
 
             public override bool CacheEnabled
             {
                 get { return base.CacheEnabled; }
-                set { throw new Exception("Not supported!"); }
+                set { throw new NotSupportedException("Not supported!"); }
             }
 
             public override int MaxItemsPerPage
             {
                 get { return base.MaxItemsPerPage; }
-                set { throw new Exception("Not supported!"); }
+                set { throw new NotSupportedException("Not supported!"); }
             }
         }
     }
@@ -1167,14 +1168,10 @@ namespace PortCMIS.Client
     /// <summary>
     /// Content Stream helpers.
     /// </summary>
-    public class ContentStreamUtils
+    public static class ContentStreamUtils
     {
         /// <summary>Octet Stream MIME type.</summary>
         private const string OctetStream = "application/octet-stream";
-
-        private ContentStreamUtils()
-        {
-        }
 
         /// <summary>
         /// Creates a content stream object.

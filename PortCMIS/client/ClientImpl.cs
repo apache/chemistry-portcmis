@@ -85,15 +85,21 @@ namespace PortCMIS.Client.Impl
         {
             ICmisBinding binding = CmisBindingHelper.CreateBinding(parameters);
 
-            IList<IRepositoryInfo> repositoryInfos = binding.GetRepositoryService().GetRepositoryInfos(null);
-
-            IList<IRepository> result = new List<IRepository>();
-            foreach (IRepositoryInfo data in repositoryInfos)
+            try
             {
-                result.Add(new Repository(data, parameters, this, objectFactory, binding.GetAuthenticationProvider(), cache));
-            }
+                IList<IRepositoryInfo> repositoryInfos = binding.GetRepositoryService().GetRepositoryInfos(null);
 
-            return result;
+                IList<IRepository> result = new List<IRepository>();
+                foreach (IRepositoryInfo data in repositoryInfos)
+                {
+                    result.Add(new Repository(data, parameters, this, objectFactory, binding.GetAuthenticationProvider(), cache));
+                }
+
+                return result;
+            } finally
+            {
+                binding.Dispose();
+            }
         }
     }
 
@@ -212,19 +218,21 @@ namespace PortCMIS.Client.Impl
     /// </summary>
     public class Session : ISession
     {
-        private static HashSet<Updatability> CreateUpdatability = new HashSet<Updatability>();
-        private static HashSet<Updatability> CreateAndCheckoutUpdatability = new HashSet<Updatability>();
-        static Session()
+        private static HashSet<Updatability> CreateUpdatability = new HashSet<Updatability>()
         {
-            CreateUpdatability.Add(Updatability.OnCreate);
-            CreateUpdatability.Add(Updatability.ReadWrite);
-            CreateAndCheckoutUpdatability.Add(Updatability.OnCreate);
-            CreateAndCheckoutUpdatability.Add(Updatability.ReadWrite);
-            CreateAndCheckoutUpdatability.Add(Updatability.WhenCheckedOut);
-        }
+            Updatability.OnCreate,
+            Updatability.ReadWrite
+        };
+
+        private static HashSet<Updatability> CreateAndCheckoutUpdatability = new HashSet<Updatability>()
+        {
+            Updatability.OnCreate,
+            Updatability.ReadWrite,
+            Updatability.WhenCheckedOut
+        };
 
         /// <summary>
-        /// Initial default operation context.
+        /// Initial default operation defaultContext.
         /// </summary>
         protected static IOperationContext FallbackContext = new OperationContext(null, false, true, false, IncludeRelationships.None, null, true, null, true, 100);
 
@@ -267,7 +275,7 @@ namespace PortCMIS.Client.Impl
         /// </summary>
         protected bool cachePathOmit;
 
-        private IOperationContext context = FallbackContext;
+        private IOperationContext defaultContext = FallbackContext;
 
         /// <inheritdoc/>
         public IOperationContext DefaultContext
@@ -276,14 +284,14 @@ namespace PortCMIS.Client.Impl
             {
                 lock (sessionLock)
                 {
-                    return context;
+                    return defaultContext;
                 }
             }
             set
             {
                 lock (sessionLock)
                 {
-                    context = value ?? FallbackContext;
+                    defaultContext = value ?? FallbackContext;
                 }
             }
         }
@@ -420,7 +428,7 @@ namespace PortCMIS.Client.Impl
             }
         }
 
-        // session context
+        // session defaultContext
 
         /// <inheritdoc/>
         public IOperationContext CreateOperationContext()
@@ -1116,7 +1124,7 @@ namespace PortCMIS.Client.Impl
 
             string newId = Binding.GetObjectService().CreateDocument(RepositoryId, ObjectFactory.ConvertProperties(properties, null, null,
                 (versioningState == VersioningState.CheckedOut ? CreateAndCheckoutUpdatability : CreateUpdatability)),
-                (folderId == null ? null : folderId.Id), contentStream, versioningState, ObjectFactory.ConvertPolicies(policies),
+                folderId?.Id, contentStream, versioningState, ObjectFactory.ConvertPolicies(policies),
                 ObjectFactory.ConvertAces(addAces), ObjectFactory.ConvertAces(removeAces), null);
 
             return newId == null ? null : CreateObjectId(newId);
@@ -1161,7 +1169,7 @@ namespace PortCMIS.Client.Impl
             string newId = Binding.GetObjectService().CreateDocumentFromSource(RepositoryId, source.Id,
                 ObjectFactory.ConvertProperties(properties, type, secondaryTypes,
                 (versioningState == VersioningState.CheckedOut ? CreateAndCheckoutUpdatability : CreateUpdatability)),
-                (folderId == null ? null : folderId.Id),
+                folderId?.Id,
                 versioningState, ObjectFactory.ConvertPolicies(policies), ObjectFactory.ConvertAces(addAces),
                 ObjectFactory.ConvertAces(removeAces), null);
 
@@ -1186,7 +1194,7 @@ namespace PortCMIS.Client.Impl
             CheckProperties(properties);
 
             string newId = Binding.GetObjectService().CreateFolder(RepositoryId, ObjectFactory.ConvertProperties(properties, null, null, CreateUpdatability),
-                (folderId == null ? null : folderId.Id), ObjectFactory.ConvertPolicies(policies), ObjectFactory.ConvertAces(addAces),
+                folderId?.Id, ObjectFactory.ConvertPolicies(policies), ObjectFactory.ConvertAces(addAces),
                 ObjectFactory.ConvertAces(removeAces), null);
 
             return newId == null ? null : CreateObjectId(newId);
@@ -1205,7 +1213,7 @@ namespace PortCMIS.Client.Impl
             CheckProperties(properties);
 
             string newId = Binding.GetObjectService().CreatePolicy(RepositoryId, ObjectFactory.ConvertProperties(properties, null, null, CreateUpdatability),
-                (folderId == null ? null : folderId.Id), ObjectFactory.ConvertPolicies(policies), ObjectFactory.ConvertAces(addAces),
+                folderId?.Id, ObjectFactory.ConvertPolicies(policies), ObjectFactory.ConvertAces(addAces),
                 ObjectFactory.ConvertAces(removeAces), null);
 
             return newId == null ? null : CreateObjectId(newId);
@@ -1224,7 +1232,7 @@ namespace PortCMIS.Client.Impl
             CheckProperties(properties);
 
             string newId = Binding.GetObjectService().CreateItem(RepositoryId, ObjectFactory.ConvertProperties(properties, null, null, CreateUpdatability),
-                (folderId == null ? null : folderId.Id), ObjectFactory.ConvertPolicies(policies), ObjectFactory.ConvertAces(addAces),
+                folderId?.Id, ObjectFactory.ConvertPolicies(policies), ObjectFactory.ConvertAces(addAces),
                 ObjectFactory.ConvertAces(removeAces), null);
 
             return newId == null ? null : CreateObjectId(newId);
@@ -1264,7 +1272,7 @@ namespace PortCMIS.Client.Impl
             }
 
             string id = objectId.Id;
-            string typeId = (type == null ? null : type.Id);
+            string typeId = type?.Id;
             IRelationshipService service = Binding.GetRelationshipService();
             IOperationContext ctxt = new OperationContext(context);
 

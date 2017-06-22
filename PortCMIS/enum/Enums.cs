@@ -760,7 +760,7 @@ namespace PortCMIS.Enums
     // --- attribute class ---
 
     [AttributeUsage(AttributeTargets.Field)]
-    internal class CmisValueAttribute : System.Attribute
+    internal sealed class CmisValueAttribute : System.Attribute
     {
         public CmisValueAttribute(string value)
         {

@@ -30,7 +30,7 @@ using System.Xml;
 
 namespace PortCMIS.Binding.AtomPub
 {
-    class XmlConverter
+    internal class XmlConverter
     {
         // ---------------
         // --- writers ---

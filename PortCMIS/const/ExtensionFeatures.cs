@@ -19,7 +19,7 @@
 
 using PortCMIS.Data;
 
-namespace PortCMIS.Const
+namespace PortCMIS.Constants
 {
     /// <summary>
     /// CMIS extensions defined by the CMIS TC.
@@ -27,7 +27,7 @@ namespace PortCMIS.Const
     public class ExtensionFeatures
     {
         /// <summary>
-        /// DateTime format extension for the Browers Bindings.
+        /// DateTime format extension for the Browser Bindings.
         /// </summary>
         public readonly static IExtensionFeature ExtendedDatetimeFormat = new ExtensionFeature()
         {

@@ -611,8 +611,8 @@ namespace PortCMIS.Binding.AtomPub
                 return null;
             }
 
-            int begin = errorContent.IndexOf("<!--exception-->");
-            int end = errorContent.IndexOf("<!--/exception-->");
+            int begin = errorContent.IndexOf("<!--exception-->", StringComparison.Ordinal);
+            int end = errorContent.IndexOf("<!--/exception-->", StringComparison.Ordinal);
 
             if (begin == -1 || end == -1 || begin > end)
             {
@@ -630,8 +630,8 @@ namespace PortCMIS.Binding.AtomPub
                 return message;
             }
 
-            int begin = errorContent.IndexOf("<!--message-->");
-            int end = errorContent.IndexOf("<!--/message-->");
+            int begin = errorContent.IndexOf("<!--message-->", StringComparison.Ordinal);
+            int end = errorContent.IndexOf("<!--/message-->", StringComparison.Ordinal);
 
             if (begin == -1 || end == -1 || begin > end)
             {
@@ -794,16 +794,23 @@ namespace PortCMIS.Binding.AtomPub
         /// </summary>
         protected IResponse Post(UrlBuilder url, HttpContent content)
         {
-            // make the call
-            IResponse resp = Session.GetHttpInvoker().InvokePOST(url, content, session);
-
-            // check response code
-            if (resp.StatusCode != 201)
+            try
             {
-                throw ConvertStatusCode(resp.StatusCode, resp.Message, resp.ErrorContent, null);
-            }
+                // make the call
+                IResponse resp = Session.GetHttpInvoker().InvokePOST(url, content, session);
 
-            return resp;
+                // check response code
+                if (resp.StatusCode != 201)
+                {
+                    throw ConvertStatusCode(resp.StatusCode, resp.Message, resp.ErrorContent, null);
+                }
+
+                return resp;
+            }
+            finally
+            {
+                content.Dispose();
+            }
         }
 
         /// <summary>
@@ -831,16 +838,23 @@ namespace PortCMIS.Binding.AtomPub
         /// </summary>
         protected IResponse Put(UrlBuilder url, IDictionary<string, string> headers, HttpContent content)
         {
-            // make the call
-            IResponse resp = Session.GetHttpInvoker().InvokePUT(url, headers, content, session);
-
-            // check response code
-            if (resp.StatusCode < 200 || resp.StatusCode > 299)
+            try
             {
-                throw ConvertStatusCode(resp.StatusCode, resp.Message, resp.ErrorContent, null);
-            }
+                // make the call
+                IResponse resp = Session.GetHttpInvoker().InvokePUT(url, headers, content, session);
 
-            return resp;
+                // check response code
+                if (resp.StatusCode < 200 || resp.StatusCode > 299)
+                {
+                    throw ConvertStatusCode(resp.StatusCode, resp.Message, resp.ErrorContent, null);
+                }
+
+                return resp;
+            }
+            finally
+            {
+                content.Dispose();
+            }
         }
 
         /// <summary>

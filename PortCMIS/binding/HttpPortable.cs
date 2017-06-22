@@ -143,76 +143,81 @@ namespace PortCMIS.Binding.Http
 
             HttpRequestMessage request = new HttpRequestMessage(method, url.ToString());
 
-            // set additional headers
-
-            string userAgent = session.GetValue(SessionParameter.UserAgent) as string;
-            request.Headers.UserAgent.Add(ProductInfoHeaderValue.Parse(userAgent ?? ClientVersion.UserAgent));
-
-            if (headers != null)
-            {
-                foreach (KeyValuePair<string, string> header in headers)
-                {
-                    request.Headers.TryAddWithoutValidation(header.Key, header.Value);
-                }
-            }
-
-            // range
-            if (offset != null && length != null)
-            {
-                long longOffset = offset.Value < 0 ? 0 : offset.Value;
-                if (length.Value > 0)
-                {
-                    request.Headers.Range = new RangeHeaderValue(longOffset, longOffset + length.Value - 1);
-                }
-                else
-                {
-                    request.Headers.Range = new RangeHeaderValue(longOffset, null);
-                }
-            }
-            else if (offset != null && offset.Value > 0)
-            {
-                request.Headers.Range = new RangeHeaderValue(offset, null);
-            }
-
-            // content
-            if (content != null)
-            {
-                request.Headers.TransferEncodingChunked = true;
-                request.Content = content;
-            }
-
-            // authentication provider
-            if (authProvider != null)
-            {
-                authProvider.PrepareHttpRequestMessage(request);
-            }
-
-            Response response;
             try
             {
-                Task<HttpResponseMessage> task = Send(httpClient, request);
-                if (task.IsFaulted)
-                {
-                    throw task.Exception;
-                }
-                else
-                {
-                    HttpResponseMessage httpResponseMessage = task.Result;
+                // set additional headers
+                string userAgent = session.GetValue(SessionParameter.UserAgent) as string;
+                request.Headers.UserAgent.Add(ProductInfoHeaderValue.Parse(userAgent ?? ClientVersion.UserAgent));
 
-                    if (authProvider != null)
+                if (headers != null)
+                {
+                    foreach (KeyValuePair<string, string> header in headers)
                     {
-                        authProvider.HandleResponse(httpResponseMessage);
+                        request.Headers.TryAddWithoutValidation(header.Key, header.Value);
                     }
-                    response = new Response(httpResponseMessage);
                 }
-            }
-            catch (Exception e)
+
+                // range
+                if (offset != null && length != null)
+                {
+                    long longOffset = offset.Value < 0 ? 0 : offset.Value;
+                    if (length.Value > 0)
+                    {
+                        request.Headers.Range = new RangeHeaderValue(longOffset, longOffset + length.Value - 1);
+                    }
+                    else
+                    {
+                        request.Headers.Range = new RangeHeaderValue(longOffset, null);
+                    }
+                }
+                else if (offset != null && offset.Value > 0)
+                {
+                    request.Headers.Range = new RangeHeaderValue(offset, null);
+                }
+
+                // content
+                if (content != null)
+                {
+                    request.Headers.TransferEncodingChunked = true;
+                    request.Content = content;
+                }
+
+                // authentication provider
+                if (authProvider != null)
+                {
+                    authProvider.PrepareHttpRequestMessage(request);
+                }
+
+                Response response;
+                try
+                {
+                    Task<HttpResponseMessage> task = Send(httpClient, request);
+                    if (task.IsFaulted)
+                    {
+                        throw task.Exception;
+                    }
+                    else
+                    {
+                        HttpResponseMessage httpResponseMessage = task.Result;
+
+                        if (authProvider != null)
+                        {
+                            authProvider.HandleResponse(httpResponseMessage);
+                        }
+                        response = new Response(httpResponseMessage);
+                    }
+                }
+                catch (Exception e)
+                {
+                    throw new CmisConnectionException("Cannot access " + url + ": " + e.Message, e);
+                }
+
+
+                return response;
+            } finally
             {
-                throw new CmisConnectionException("Cannot access " + url + ": " + e.Message, e);
+                request.Dispose();
             }
-
-
-            return response;
         }
 
         private async Task<HttpResponseMessage> Send(HttpClient httpClient, HttpRequestMessage request)

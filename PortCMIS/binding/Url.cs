@@ -55,6 +55,20 @@ namespace PortCMIS.Binding
         }
 
         /// <summary>
+        /// Creates a new instance with a given URL.
+        /// </summary>
+        /// <param name="url">the URL</param>
+        public UrlBuilder(Uri url)
+        {
+            if (url == null)
+            {
+                throw new ArgumentNullException(nameof(url));
+            }
+
+            uri = new UriBuilder(url);
+        }
+
+        /// <summary>
         /// Adds a parameter.
         /// </summary>
         /// <param name="name">the parameter name</param>
@@ -130,7 +144,7 @@ namespace PortCMIS.Binding
 
             foreach (char c in RFC7232Reserved)
             {
-                result.Replace(c.ToString(), "%" + Convert.ToByte(c).ToString("X"));
+                result.Replace(c.ToString(), "%" + Convert.ToByte(c, CultureInfo.InvariantCulture).ToString("X", CultureInfo.InvariantCulture));
             }
 
             if (quoteSlash)
@@ -186,7 +200,7 @@ namespace PortCMIS.Binding
 
         private const string MIMESpecials = "()<>@,;:\\\"/[]?=" + "\t ";
         private const string RFC2231Specials = "*'%" + MIMESpecials;
-        private static readonly char[] HexDigits = new char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
+        private static readonly char[] HexDigits = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
 
         public static string EncodeContentDisposition(string disposition, string filename)
         {
@@ -220,7 +234,7 @@ namespace PortCMIS.Binding
             {
                 bytes = Encoding.UTF8.GetBytes(value);
             }
-            catch (Exception)
+            catch
             {
                 return true;
             }

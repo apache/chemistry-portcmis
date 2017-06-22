@@ -44,7 +44,7 @@ namespace PortCMIS.Binding.Browser.Json
     /// <summary>
     /// JSON Value helpers.
     /// </summary>
-    internal class JsonValue
+    internal static class JsonValue
     {
         public static void WriteJsonString(object value, TextWriter writer)
         {
@@ -114,10 +114,10 @@ namespace PortCMIS.Binding.Browser.Json
 
             try
             {
-                long longValue = Convert.ToInt64(value);
+                long longValue = Convert.ToInt64(value, CultureInfo.InvariantCulture);
                 writer.Write(longValue.ToString("0", CultureInfo.InvariantCulture));
             }
-            catch (Exception)
+            catch
             {
                 writer.Write(value.ToString());
             }
@@ -363,9 +363,16 @@ namespace PortCMIS.Binding.Browser.Json
 
         public override string ToString()
         {
-            StringWriter sw = new StringWriter();
-            WriteJsonString(sw);
-            return sw.ToString();
+            StringWriter sw = new StringWriter(CultureInfo.InvariantCulture);
+            try
+            {
+                WriteJsonString(sw);
+                return sw.ToString();
+            }
+            finally
+            {
+                sw.Dispose();
+            }
         }
     }
 
@@ -403,9 +410,16 @@ namespace PortCMIS.Binding.Browser.Json
 
         public override string ToString()
         {
-            StringWriter sw = new StringWriter();
-            WriteJsonString(sw);
-            return sw.ToString();
+            StringWriter sw = new StringWriter(CultureInfo.InvariantCulture);
+            try
+            {
+                WriteJsonString(sw);
+                return sw.ToString();
+            }
+            finally
+            {
+                sw.Dispose();
+            }
         }
     }
 
@@ -423,7 +437,7 @@ namespace PortCMIS.Binding.Browser.Json
         public const int StatusEnd = 6;
         public const int StatusInError = -1;
 
-        private Yylex lexer = new Yylex(null);
+        private readonly Yylex lexer = new Yylex(null);
         private Yytoken token = null;
         private int status = StatusInit;
 
@@ -927,7 +941,7 @@ namespace PortCMIS.Binding.Browser.Json
         private bool zzAtEOF;
 
         // user code:
-        private StringBuilder sb = new StringBuilder();
+        private readonly StringBuilder sb = new StringBuilder();
 
         public Yylex(TextReader input)
         {

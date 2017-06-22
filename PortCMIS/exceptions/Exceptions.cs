@@ -29,27 +29,27 @@ namespace PortCMIS.Exceptions
         /// <summary>
         /// Constructor.
         /// </summary>
-        public CmisBaseException() : base() { Code = null; }
+        protected CmisBaseException() : base() { Code = null; }
 
         /// <summary>
         /// Constructor.
         /// <param name="message">The exception message.</param>
         /// </summary>
-        public CmisBaseException(string message) : base(message) { Code = null; }
+        protected CmisBaseException(string message) : base(message) { Code = null; }
 
         /// <summary>
         /// Constructor.
         /// <param name="message">The exception message.</param>
         /// <param name="inner">The inner exception.</param>
         /// </summary>
-        public CmisBaseException(string message, Exception inner) : base(message, inner) { Code = null; }
+        protected CmisBaseException(string message, Exception inner) : base(message, inner) { Code = null; }
 
         /// <summary>
         /// Constructor.
         /// <param name="message">The exception message.</param>
         /// <param name="code">The exception code. (Web Services only.)</param>
         /// </summary>
-        public CmisBaseException(string message, long? code)
+        protected CmisBaseException(string message, long? code)
             : this(message)
         {
             Code = code;
@@ -60,7 +60,7 @@ namespace PortCMIS.Exceptions
         /// <param name="message">The exception message.</param>
         /// <param name="errorContent">The error content</param>
         /// </summary>
-        public CmisBaseException(string message, string errorContent)
+        protected CmisBaseException(string message, string errorContent)
             : this(message)
         {
             ErrorContent = errorContent;
@@ -72,7 +72,7 @@ namespace PortCMIS.Exceptions
         /// <param name="errorContent">The error content</param>
         /// <param name="inner">The inner exception.</param>
         /// </summary>
-        public CmisBaseException(string message, string errorContent, Exception inner)
+        protected CmisBaseException(string message, string errorContent, Exception inner)
             : this(message, inner)
         {
             ErrorContent = errorContent;
@@ -797,21 +797,21 @@ namespace PortCMIS.Exceptions
     /// <summary>
     /// Invalid Server Data exception.
     /// </summary>
-    public class CmisInvalidServerData : InvalidOperationException
+    public class CmisInvalidServerDataException : InvalidOperationException
     {
         /// <summary>
         /// Constructor.
         /// </summary>
-        public CmisInvalidServerData() : base() { }
+        public CmisInvalidServerDataException() : base() { }
 
         /// <summary>
         /// Constructor.
         /// </summary>
-        public CmisInvalidServerData(string message) : base(message) { }
+        public CmisInvalidServerDataException(string message) : base(message) { }
 
         /// <summary>
         /// Constructor.
         /// </summary>
-        public CmisInvalidServerData(string message, Exception inner) : base(message, inner) { }
+        public CmisInvalidServerDataException(string message, Exception inner) : base(message, inner) { }
     }
 }

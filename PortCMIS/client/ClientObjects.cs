@@ -25,6 +25,7 @@ using PortCMIS.Enums;
 using PortCMIS.Exceptions;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Numerics;
 using System.Text;
@@ -93,7 +94,7 @@ namespace PortCMIS.Client.Impl
         }
 
         /// <summary>
-        /// Gets the operation context that was used to fetch this object.
+        /// Gets the operation defaultContext that was used to fetch this object.
         /// </summary>
         protected virtual IOperationContext CreationContext { get; private set; }
 
@@ -118,7 +119,7 @@ namespace PortCMIS.Client.Impl
         /// <param name="session">the current session</param>
         /// <param name="objectType">the object type</param>
         /// <param name="objectData">the low-level object data</param>
-        /// <param name="context">the operation context that was used to fetch this object</param>
+        /// <param name="context">the operation defaultContext that was used to fetch this object</param>
         protected void Initialize(ISession session, IObjectType objectType, IObjectData objectData, IOperationContext context)
         {
             if (session == null)
@@ -485,7 +486,7 @@ namespace PortCMIS.Client.Impl
                 return null;
             }
 
-            return Convert.ToString(value);
+            return Convert.ToString(value, CultureInfo.InvariantCulture);
         }
 
         /// <inheritdoc/>
@@ -502,7 +503,7 @@ namespace PortCMIS.Client.Impl
                 return (long)((BigInteger)value);
             }
 
-            return Convert.ToInt64(value);
+            return Convert.ToInt64(value, CultureInfo.InvariantCulture);
         }
 
         /// <inheritdoc/>
@@ -519,7 +520,7 @@ namespace PortCMIS.Client.Impl
                 return Convert.ToBoolean((long)((BigInteger)value));
             }
 
-            return Convert.ToBoolean(value);
+            return Convert.ToBoolean(value, CultureInfo.InvariantCulture);
         }
 
         /// <inheritdoc/>
@@ -531,7 +532,7 @@ namespace PortCMIS.Client.Impl
                 return null;
             }
 
-            return Convert.ToDateTime(value);
+            return Convert.ToDateTime(value, CultureInfo.InvariantCulture);
         }
 
         // --- allowable actions ---
@@ -816,7 +817,7 @@ namespace PortCMIS.Client.Impl
                     if (p == null || p.Object == null || p.Object.Properties == null)
                     {
                         // should not happen...
-                        throw new CmisInvalidServerData("Repository sent invalid data!");
+                        throw new CmisInvalidServerDataException("Repository sent invalid data!");
                     }
 
                     // get id property
@@ -824,7 +825,7 @@ namespace PortCMIS.Client.Impl
                     if (idProperty == null || idProperty.PropertyType != PropertyType.Id)
                     {
                         // the repository sent an object without a valid object id...
-                        throw new CmisInvalidServerData("Repository sent invalid data! No object ID!");
+                        throw new CmisInvalidServerDataException("Repository sent invalid data! No object ID!");
                     }
 
                     // fetch the object and make sure it is a folder
@@ -833,7 +834,7 @@ namespace PortCMIS.Client.Impl
                     if (parentFolder == null)
                     {
                         // the repository sent an object that is not a folder...
-                        throw new CmisInvalidServerData("Repository sent invalid data! Object is not a folder!");
+                        throw new CmisInvalidServerDataException("Repository sent invalid data! Object is not a folder!");
                     }
 
                     parents.Add(parentFolder);
@@ -860,7 +861,7 @@ namespace PortCMIS.Client.Impl
                     if (p == null || p.Object == null || p.Object.Properties == null)
                     {
                         // should not happen...
-                        throw new CmisInvalidServerData("Repository sent invalid data!");
+                        throw new CmisInvalidServerDataException("Repository sent invalid data!");
                     }
 
                     // get path property
@@ -868,20 +869,20 @@ namespace PortCMIS.Client.Impl
                     if (pathProperty == null || pathProperty.PropertyType != PropertyType.String)
                     {
                         // the repository sent a folder without a valid path...
-                        throw new CmisInvalidServerData("Repository sent invalid data! No path property!");
+                        throw new CmisInvalidServerDataException("Repository sent invalid data! No path property!");
                     }
 
                     if (p.RelativePathSegment == null)
                     {
                         // the repository didn't send a relative path segment
-                        throw new CmisInvalidServerData("Repository sent invalid data! No relative path segment!");
+                        throw new CmisInvalidServerDataException("Repository sent invalid data! No relative path segment!");
                     }
 
                     string folderPath = pathProperty.FirstValue as string;
                     if (folderPath == null)
                     {
                         // the repository sent a folder without a valid path...
-                        throw new CmisInvalidServerData("Repository sent invalid data! No path property value!");
+                        throw new CmisInvalidServerDataException("Repository sent invalid data! No path property value!");
                     }
                     paths.Add(folderPath + (folderPath.EndsWith("/", StringComparison.Ordinal) ? "" : "/") + p.RelativePathSegment);
                 }
@@ -919,7 +920,7 @@ namespace PortCMIS.Client.Impl
         /// <param name="session">the session object</param>
         /// <param name="objectType">the object type</param>
         /// <param name="objectData">the low-level data object</param>
-        /// <param name="context">the operation context used to fetch this object</param>
+        /// <param name="context">the operation defaultContext used to fetch this object</param>
         public Document(ISession session, IObjectType objectType, IObjectData objectData, IOperationContext context)
         {
             Initialize(session, objectType, objectData, context);
@@ -936,7 +937,7 @@ namespace PortCMIS.Client.Impl
                 }
                 else
                 {
-                    throw new CmisInvalidServerData("Object type is not a document type.");
+                    throw new CmisInvalidServerDataException("Object type is not a document type.");
                 }
             }
         }
@@ -1047,7 +1048,7 @@ namespace PortCMIS.Client.Impl
                 IList<IContentStreamHash> result = new List<IContentStreamHash>();
                 foreach (object hash in hashes.Values)
                 {
-                    result.Add(new ContentStreamHash(Convert.ToString(hash)));
+                    result.Add(new ContentStreamHash(Convert.ToString(hash, CultureInfo.InvariantCulture)));
                 }
 
                 return result;
@@ -1070,7 +1071,7 @@ namespace PortCMIS.Client.Impl
                 newId = CopyViaClient(targetFolderId, properties, versioningState, policies, addAces, removeAces);
             }
 
-            // if no context is provided the object will not be fetched
+            // if no defaultContext is provided the object will not be fetched
             if (context == null || newId == null)
             {
                 return null;
@@ -1223,6 +1224,11 @@ namespace PortCMIS.Client.Impl
         /// <inheritdoc/>
         public virtual IList<IDocument> GetAllVersions(IOperationContext context)
         {
+            if (context == null)
+            {
+                throw new ArgumentNullException(nameof(context));
+            }
+
             string objectId;
             string versionSeriesId;
 
@@ -1464,7 +1470,7 @@ namespace PortCMIS.Client.Impl
         /// <param name="session">the session object</param>
         /// <param name="objectType">the object type</param>
         /// <param name="objectData">the low-level data object</param>
-        /// <param name="context">the operation context used to fetch this object</param>
+        /// <param name="context">the operation defaultContext used to fetch this object</param>
         public Folder(ISession session, IObjectType objectType, IObjectData objectData, IOperationContext context)
         {
             Initialize(session, objectType, objectData, context);
@@ -1481,7 +1487,7 @@ namespace PortCMIS.Client.Impl
                 }
                 else
                 {
-                    throw new CmisInvalidServerData("Object type is not a folder type.");
+                    throw new CmisInvalidServerDataException("Object type is not a folder type.");
                 }
             }
         }
@@ -1492,7 +1498,7 @@ namespace PortCMIS.Client.Impl
         {
             IObjectId newId = Session.CreateDocument(properties, this, contentStream, versioningState, policies, addAces, removeAces);
 
-            // if no context is provided the object will not be fetched
+            // if no defaultContext is provided the object will not be fetched
             if (context == null || newId == null)
             {
                 return null;
@@ -1514,7 +1520,7 @@ namespace PortCMIS.Client.Impl
         {
             IObjectId newId = Session.CreateDocumentFromSource(source, properties, this, versioningState, policies, addAces, removeAces);
 
-            // if no context is provided the object will not be fetched
+            // if no defaultContext is provided the object will not be fetched
             if (context == null || newId == null)
             {
                 return null;
@@ -1535,7 +1541,7 @@ namespace PortCMIS.Client.Impl
         {
             IObjectId newId = Session.CreateFolder(properties, this, policies, addAces, removeAces);
 
-            // if no context is provided the object will not be fetched
+            // if no defaultContext is provided the object will not be fetched
             if (context == null || newId == null)
             {
                 return null;
@@ -1556,7 +1562,7 @@ namespace PortCMIS.Client.Impl
         {
             IObjectId newId = Session.CreatePolicy(properties, this, policies, addAces, removeAces);
 
-            // if no context is provided the object will not be fetched
+            // if no defaultContext is provided the object will not be fetched
             if (context == null || newId == null)
             {
                 return null;
@@ -1577,7 +1583,7 @@ namespace PortCMIS.Client.Impl
         {
             IObjectId newId = Session.CreateItem(properties, this, policies, addAces, removeAces);
 
-            // if no context is provided the object will not be fetched
+            // if no defaultContext is provided the object will not be fetched
             if (context == null || newId == null)
             {
                 return null;
@@ -1636,6 +1642,11 @@ namespace PortCMIS.Client.Impl
         /// <inheritdoc/>
         public virtual IItemEnumerable<IDocument> GetCheckedOutDocs(IOperationContext context)
         {
+            if (context == null)
+            {
+                throw new ArgumentNullException(nameof(context));
+            }
+
             string objectId = ObjectId;
             INavigationService service = Binding.GetNavigationService();
             IObjectFactory of = Session.ObjectFactory;
@@ -1679,6 +1690,11 @@ namespace PortCMIS.Client.Impl
         /// <inheritdoc/>
         public virtual IItemEnumerable<ICmisObject> GetChildren(IOperationContext context)
         {
+            if (context == null)
+            {
+                throw new ArgumentNullException(nameof(context));
+            }
+
             string objectId = ObjectId;
             INavigationService service = Binding.GetNavigationService();
             IObjectFactory of = Session.ObjectFactory;
@@ -1718,6 +1734,11 @@ namespace PortCMIS.Client.Impl
         /// <inheritdoc/>
         public virtual IList<ITree<IFileableCmisObject>> GetDescendants(int depth, IOperationContext context)
         {
+            if (context == null)
+            {
+                throw new ArgumentNullException(nameof(context));
+            }
+
             IList<IObjectInFolderContainer> bindingContainerList = Binding.GetNavigationService().GetDescendants(RepositoryId, ObjectId, depth,
                 context.FilterString, context.IncludeAllowableActions, context.IncludeRelationships, context.RenditionFilterString,
                 context.IncludePathSegments, null);
@@ -1734,6 +1755,11 @@ namespace PortCMIS.Client.Impl
         /// <inheritdoc/>
         public virtual IList<ITree<IFileableCmisObject>> GetFolderTree(int depth, IOperationContext context)
         {
+            if (context == null)
+            {
+                throw new ArgumentNullException(nameof(context));
+            }
+
             IList<IObjectInFolderContainer> bindingContainerList = Binding.GetNavigationService().GetFolderTree(RepositoryId, ObjectId, depth,
                 context.FilterString, context.IncludeAllowableActions, context.IncludeRelationships, context.RenditionFilterString,
                 context.IncludePathSegments, null);
@@ -1835,7 +1861,7 @@ namespace PortCMIS.Client.Impl
                 // we still don't know the path ... it's not a CMIS compliant repository
                 if (path == null)
                 {
-                    throw new CmisInvalidServerData("Repository didn't return " + PropertyIds.Path + "!");
+                    throw new CmisInvalidServerDataException("Repository didn't return " + PropertyIds.Path + "!");
                 }
 
                 return path;
@@ -1896,7 +1922,7 @@ namespace PortCMIS.Client.Impl
         /// <param name="session">the session object</param>
         /// <param name="objectType">the object type</param>
         /// <param name="objectData">the low-level data object</param>
-        /// <param name="context">the operation context used to fetch this object</param>
+        /// <param name="context">the operation defaultContext used to fetch this object</param>
         public Policy(ISession session, IObjectType objectType, IObjectData objectData, IOperationContext context)
         {
             Initialize(session, objectType, objectData, context);
@@ -1913,7 +1939,7 @@ namespace PortCMIS.Client.Impl
                 }
                 else
                 {
-                    throw new CmisInvalidServerData("Object type is not a policy type.");
+                    throw new CmisInvalidServerDataException("Object type is not a policy type.");
                 }
             }
         }
@@ -1933,7 +1959,7 @@ namespace PortCMIS.Client.Impl
         /// <param name="session">the session object</param>
         /// <param name="objectType">the object type</param>
         /// <param name="objectData">the low-level data object</param>
-        /// <param name="context">the operation context used to fetch this object</param>
+        /// <param name="context">the operation defaultContext used to fetch this object</param>
         public Relationship(ISession session, IObjectType objectType, IObjectData objectData, IOperationContext context)
         {
             Initialize(session, objectType, objectData, context);
@@ -1950,7 +1976,7 @@ namespace PortCMIS.Client.Impl
                 }
                 else
                 {
-                    throw new CmisInvalidServerData("Object type is not a relationship type.");
+                    throw new CmisInvalidServerDataException("Object type is not a relationship type.");
                 }
             }
         }
@@ -2039,7 +2065,7 @@ namespace PortCMIS.Client.Impl
         /// <param name="session">the session object</param>
         /// <param name="objectType">the object type</param>
         /// <param name="objectData">the low-level data object</param>
-        /// <param name="context">the operation context used to fetch this object</param>
+        /// <param name="context">the operation defaultContext used to fetch this object</param>
         public Item(ISession session, IObjectType objectType, IObjectData objectData, IOperationContext context)
         {
             Initialize(session, objectType, objectData, context);
@@ -2056,7 +2082,7 @@ namespace PortCMIS.Client.Impl
                 }
                 else
                 {
-                    throw new CmisInvalidServerData("Object type is not an item type.");
+                    throw new CmisInvalidServerDataException("Object type is not an item type.");
                 }
             }
         }

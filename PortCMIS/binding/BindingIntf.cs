@@ -23,6 +23,7 @@ using PortCMIS.Binding.Services;
 using PortCMIS.Client;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -676,9 +677,9 @@ namespace PortCMIS.Binding
         {
             IDictionary<string, string> result = new Dictionary<string, string>();
 
-            result[SessionParameter.CacheSizeRepositories] = SessionParameterDefaults.CacheSizeRepositories.ToString();
-            result[SessionParameter.CacheSizeTypes] = SessionParameterDefaults.CacheSizeTypes.ToString();
-            result[SessionParameter.CacheSizeLinks] = SessionParameterDefaults.CacheSizeLinks.ToString();
+            result[SessionParameter.CacheSizeRepositories] = SessionParameterDefaults.CacheSizeRepositories.ToString(CultureInfo.InvariantCulture);
+            result[SessionParameter.CacheSizeTypes] = SessionParameterDefaults.CacheSizeTypes.ToString(CultureInfo.InvariantCulture);
+            result[SessionParameter.CacheSizeLinks] = SessionParameterDefaults.CacheSizeLinks.ToString(CultureInfo.InvariantCulture);
 
             return result;
         }

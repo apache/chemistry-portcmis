@@ -841,10 +841,6 @@ namespace PortCMIS.Binding.AtomPub
             AtomPubParser.LinkRelContent
         };
 
-        static LinkCache()
-        {
-        }
-
         private readonly IBindingCache linkCache;
         private readonly IBindingCache typeLinkCache;
         private readonly IBindingCache collectionLinkCache;
@@ -881,8 +877,8 @@ namespace PortCMIS.Binding.AtomPub
 
             linkCache = new Cache("Link Cache");
             linkCache.Initialize(new string[] {
-                dictionaryLevelName + " " + DictionaryCacheLevel.Capacity + "=" + repCount.ToString(), // repository
-                lruLevelName + " " + LruCacheLevel.MaxEntries + "=" + objCount.ToString(), // id
+                dictionaryLevelName + " " + DictionaryCacheLevel.Capacity + "=" + repCount.ToString(CultureInfo.InvariantCulture), // repository
+                lruLevelName + " " + LruCacheLevel.MaxEntries + "=" + objCount.ToString(CultureInfo.InvariantCulture), // id
                 dictionaryLevelName + " " + DictionaryCacheLevel.Capacity + "=16", // rel
                 contentTypeLevelName + " " + DictionaryCacheLevel.Capacity + "=3,"
                         + DictionaryCacheLevel.SingleValue + "=true" // type
@@ -890,8 +886,8 @@ namespace PortCMIS.Binding.AtomPub
 
             typeLinkCache = new Cache("Type Link Cache");
             typeLinkCache.Initialize(new string[] {
-                dictionaryLevelName + " " + DictionaryCacheLevel.Capacity + "=" + repCount.ToString(), // repository
-                lruLevelName + " " + LruCacheLevel.MaxEntries + "=" + typeCount.ToString(), // id
+                dictionaryLevelName + " " + DictionaryCacheLevel.Capacity + "=" + repCount.ToString(CultureInfo.InvariantCulture), // repository
+                lruLevelName + " " + LruCacheLevel.MaxEntries + "=" + typeCount.ToString(CultureInfo.InvariantCulture), // id
                 dictionaryLevelName + " " + DictionaryCacheLevel.Capacity + "=16", // rel
                 contentTypeLevelName + " " + DictionaryCacheLevel.Capacity + "=3,"
                         + DictionaryCacheLevel.SingleValue + "=true"// type
@@ -899,19 +895,19 @@ namespace PortCMIS.Binding.AtomPub
 
             collectionLinkCache = new Cache("Collection Link Cache");
             collectionLinkCache.Initialize(new string[] {
-                dictionaryLevelName + " " + DictionaryCacheLevel.Capacity + "=" + repCount.ToString(), // repository
+                dictionaryLevelName + " " + DictionaryCacheLevel.Capacity + "=" + repCount.ToString(CultureInfo.InvariantCulture), // repository
                 dictionaryLevelName + " " + DictionaryCacheLevel.Capacity + "=8" // collection
         });
 
             templateCache = new Cache("URI Template Cache");
             templateCache.Initialize(new string[] {
-                dictionaryLevelName + " " + DictionaryCacheLevel.Capacity + "=" + repCount.ToString(), // repository
+                dictionaryLevelName + " " + DictionaryCacheLevel.Capacity + "=" + repCount.ToString(CultureInfo.InvariantCulture), // repository
                 dictionaryLevelName + " " + DictionaryCacheLevel.Capacity + "=6" // type
         });
 
             repositoryLinkCache = new Cache("Repository Link Cache");
             repositoryLinkCache.Initialize(new string[] {
-                dictionaryLevelName + " " + DictionaryCacheLevel.Capacity + "=" + repCount.ToString(), // repository
+                dictionaryLevelName + " " + DictionaryCacheLevel.Capacity + "=" + repCount.ToString(CultureInfo.InvariantCulture), // repository
                 dictionaryLevelName + " " + DictionaryCacheLevel.Capacity + "=6" // rel
         });
         }

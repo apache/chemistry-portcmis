@@ -20,6 +20,7 @@
 using PortCMIS.Utils;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 
 namespace PortCMIS.Client
 {
@@ -186,7 +187,7 @@ namespace PortCMIS.Client
                     string cacheSizeStr;
                     if (parameters.TryGetValue(SessionParameter.CacheSizeObjects, out cacheSizeStr))
                     {
-                        cacheSize = Int32.Parse(cacheSizeStr);
+                        cacheSize = Int32.Parse(cacheSizeStr, CultureInfo.InvariantCulture);
                         if (cacheSize < 0)
                         {
                             cacheSize = 0;
@@ -202,7 +203,7 @@ namespace PortCMIS.Client
                     string cacheTtlStr;
                     if (parameters.TryGetValue(SessionParameter.CacheTTLObjects, out cacheTtlStr))
                     {
-                        cacheTtl = Int32.Parse(cacheTtlStr);
+                        cacheTtl = Int32.Parse(cacheTtlStr, CultureInfo.InvariantCulture);
                         if (cacheTtl < 0)
                         {
                             cacheTtl = 2 * 60 * 60 * 1000;
@@ -218,14 +219,14 @@ namespace PortCMIS.Client
                     string pathToIdSizeStr;
                     if (parameters.TryGetValue(SessionParameter.CacheSizePathToId, out pathToIdSizeStr))
                     {
-                        pathToIdSize = Int32.Parse(pathToIdSizeStr);
+                        pathToIdSize = Int32.Parse(pathToIdSizeStr, CultureInfo.InvariantCulture);
                         if (pathToIdSize < 0)
                         {
                             pathToIdSize = 0;
                         }
                     }
                 }
-                catch (Exception) { }
+                catch { }
 
                 // path-to-id time-to-live
                 pathToIdTtl = 30 * 60 * 1000;
@@ -234,14 +235,14 @@ namespace PortCMIS.Client
                     string pathToIdTtlStr;
                     if (parameters.TryGetValue(SessionParameter.CacheTTLPathToId, out pathToIdTtlStr))
                     {
-                        pathToIdTtl = Int32.Parse(pathToIdTtlStr);
+                        pathToIdTtl = Int32.Parse(pathToIdTtlStr, CultureInfo.InvariantCulture);
                         if (pathToIdTtl < 0)
                         {
                             pathToIdTtl = 30 * 60 * 1000;
                         }
                     }
                 }
-                catch (Exception) { }
+                catch { }
 
                 InitializeInternals();
             }

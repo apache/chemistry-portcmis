@@ -25,6 +25,7 @@ using PortCMIS.Data.Extensions;
 using PortCMIS.Exceptions;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Numerics;
 
 namespace PortCMIS.Binding.Impl
@@ -293,7 +294,7 @@ namespace PortCMIS.Binding.Impl
             {
                 if (value is string)
                 {
-                    return Int32.Parse((string)value);
+                    return Int32.Parse((string)value, CultureInfo.InvariantCulture);
                 }
                 else if (value is int)
                 {
@@ -315,7 +316,7 @@ namespace PortCMIS.Binding.Impl
             {
                 if (value is string)
                 {
-                    return Convert.ToBoolean((string)value);
+                    return Convert.ToBoolean((string)value, CultureInfo.InvariantCulture);
                 }
                 else if (value is bool)
                 {

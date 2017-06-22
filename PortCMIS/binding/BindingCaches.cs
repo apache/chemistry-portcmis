@@ -22,6 +22,7 @@ using PortCMIS.Data;
 using PortCMIS.Utils;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -411,9 +412,9 @@ namespace PortCMIS.Binding
 
             try
             {
-                return Int32.Parse(value);
+                return Int32.Parse(value, CultureInfo.InvariantCulture);
             }
-            catch (Exception)
+            catch
             {
                 return defValue;
             }
@@ -436,7 +437,7 @@ namespace PortCMIS.Binding
             {
                 return Boolean.Parse(value);
             }
-            catch (Exception)
+            catch
             {
                 return defValue;
             }
@@ -542,7 +543,7 @@ namespace PortCMIS.Binding
     {
         private const int CacheSizeRepositories = 10;
 
-        private IBindingCache cache;
+        private readonly IBindingCache cache;
 
         public RepositoryInfoCache(IBindingSession session)
         {
@@ -554,7 +555,7 @@ namespace PortCMIS.Binding
 
             cache = new Cache("Repository Info Cache");
             cache.Initialize(new string[] { 
-                typeof(DictionaryCacheLevel).FullName + " " + DictionaryCacheLevel.Capacity + "=" + repCount.ToString() });
+                typeof(DictionaryCacheLevel).FullName + " " + DictionaryCacheLevel.Capacity + "=" + repCount.ToString(CultureInfo.InvariantCulture) });
         }
 
         public void Put(IRepositoryInfo repositoryInfo)
@@ -604,8 +605,8 @@ namespace PortCMIS.Binding
 
             cache = new Cache("Type Definition Cache");
             cache.Initialize(new string[] {
-                typeof(DictionaryCacheLevel).FullName + " " + DictionaryCacheLevel.Capacity + "=" + repCount.ToString(), // repository
-                typeof(LruCacheLevel).FullName + " " + LruCacheLevel.MaxEntries + "=" + typeCount.ToString() // type
+                typeof(DictionaryCacheLevel).FullName + " " + DictionaryCacheLevel.Capacity + "=" + repCount.ToString(CultureInfo.InvariantCulture), // repository
+                typeof(LruCacheLevel).FullName + " " + LruCacheLevel.MaxEntries + "=" + typeCount.ToString(CultureInfo.InvariantCulture) // type
         });
         }
 

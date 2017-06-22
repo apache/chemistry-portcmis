@@ -143,17 +143,17 @@ namespace PortCMIS.Client
         ICmisBinding Binding { get; }
 
         /// <value>
-        /// Gets and sets the default operation context.
+        /// Gets and sets the default operation defaultContext.
         /// </value>
         IOperationContext DefaultContext { get; set; }
 
         /// <summary>
-        /// Creates a new operation context object.
+        /// Creates a new operation defaultContext object.
         /// </summary>
         IOperationContext CreateOperationContext();
 
         /// <summary>
-        /// Creates a new operation context object with the given parameters.
+        /// Creates a new operation defaultContext object with the given parameters.
         /// </summary>
         IOperationContext CreateOperationContext(HashSet<string> filter, bool includeAcls, bool includeAllowableActions, bool includePolicies,
             IncludeRelationships includeRelationships, HashSet<string> renditionFilter, bool includePathSegments, string orderBy,
@@ -235,7 +235,7 @@ namespace PortCMIS.Client
         /// <summary>
         /// Gets the root folder of the repository with the given <see cref="PortCMIS.Client.IOperationContext"/>.
         /// </summary>
-        /// <param name="context">the operation context</param>
+        /// <param name="context">the operation defaultContext</param>
         /// <returns>the root folder object, not <c>null</c></returns>
         /// <cmis>1.0</cmis>
         IFolder GetRootFolder(IOperationContext context);
@@ -248,7 +248,7 @@ namespace PortCMIS.Client
         IItemEnumerable<IDocument> GetCheckedOutDocs();
 
         /// <summary>
-        /// Returns all checked out documents with the given operation context.
+        /// Returns all checked out documents with the given operation defaultContext.
         /// </summary>
         /// <returns></returns>
         /// <cmis>1.0</cmis>
@@ -256,7 +256,7 @@ namespace PortCMIS.Client
 
         /// <summary>
         /// Gets a CMIS object from the session cache. If the object is not in the cache or the cache is 
-        /// turned off per default operation context, it will load the object from the repository and puts
+        /// turned off per default operation defaultContext, it will load the object from the repository and puts
         /// it into the cache.
         /// <para>
         /// This method might return a stale object if the object has been found in the cache and has
@@ -271,7 +271,7 @@ namespace PortCMIS.Client
 
         /// <summary>
         /// Gets a CMIS object from the session cache. If the object is not in the cache or the cache is 
-        /// turned off or the given operation context has caching turned off, it will load the object 
+        /// turned off or the given operation defaultContext has caching turned off, it will load the object 
         /// from the repository and puts it into the cache.
         /// <para>
         /// This method might return a stale object if the object has been found in the cache and has
@@ -281,13 +281,13 @@ namespace PortCMIS.Client
         /// </para>
         /// </summary>
         /// <param name="objectId">the object ID</param>
-        /// <param name="context">the operation context</param>
+        /// <param name="context">the operation defaultContext</param>
         /// <cmis>1.0</cmis>
         ICmisObject GetObject(IObjectId objectId, IOperationContext context);
 
         /// <summary>
         /// Gets a CMIS object from the session cache. If the object is not in the cache or the cache is 
-        /// turned off per default operation context, it will load the object from the repository and puts
+        /// turned off per default operation defaultContext, it will load the object from the repository and puts
         /// it into the cache.
         /// <para>
         /// This method might return a stale object if the object has been found in the cache and has
@@ -302,7 +302,7 @@ namespace PortCMIS.Client
 
         /// <summary>
         /// Gets a CMIS object from the session cache. If the object is not in the cache or the cache is 
-        /// turned off or the given operation context has caching turned off, it will load the object 
+        /// turned off or the given operation defaultContext has caching turned off, it will load the object 
         /// from the repository and puts it into the cache.
         /// <para>
         /// This method might return a stale object if the object has been found in the cache and has
@@ -312,13 +312,13 @@ namespace PortCMIS.Client
         /// </para>
         /// </summary>
         /// <param name="objectId">the object ID</param>
-        /// <param name="context">the operation context</param>
+        /// <param name="context">the operation defaultContext</param>
         /// <cmis>1.0</cmis>
         ICmisObject GetObject(string objectId, IOperationContext context);
 
         /// <summary>
         /// Gets a CMIS object from the session cache. If the object is not in the cache or the cache is 
-        /// turned off per default operation context, it will load the object
+        /// turned off per default operation defaultContext, it will load the object
         /// from the repository and puts it into the cache.
         /// <para>
         /// This method might return a stale object if the object has been found in the cache and has
@@ -333,7 +333,7 @@ namespace PortCMIS.Client
 
         /// <summary>
         /// Gets a CMIS object from the session cache. If the object is not in the cache or the cache is 
-        /// turned off or the given operation context has caching turned off, it will load the object
+        /// turned off or the given operation defaultContext has caching turned off, it will load the object
         /// from the repository and puts it into the cache.
         /// <para>
         /// This method might return a stale object if the object has been found in the cache and has
@@ -343,13 +343,13 @@ namespace PortCMIS.Client
         /// </para>
         /// </summary>
         /// <param name="path">the path to the object</param>
-        /// <param name="context">the operation context</param>
+        /// <param name="context">the operation defaultContext</param>
         /// <cmis>1.0</cmis>
         ICmisObject GetObjectByPath(string path, IOperationContext context);
 
         /// <summary>
         /// Gets a CMIS object from the session cache. If the object is not in the cache or the cache is 
-        /// turned off per default operation context, it will load the object
+        /// turned off per default operation defaultContext, it will load the object
         /// from the repository and puts it into the cache.
         /// <para>
         /// This method might return a stale object if the object has been found in the cache and has
@@ -365,7 +365,7 @@ namespace PortCMIS.Client
 
         /// <summary>
         /// Gets a CMIS object from the session cache. If the object is not in the cache or the cache is 
-        /// turned off or the given operation context has caching turned off, it will load the object
+        /// turned off or the given operation defaultContext has caching turned off, it will load the object
         /// from the repository and puts it into the cache.
         /// <para>
         /// This method might return a stale object if the object has been found in the cache and has
@@ -376,7 +376,7 @@ namespace PortCMIS.Client
         /// </summary>
         /// <param name="parentPath">the path of the parent folder</param>
         /// <param name="name">name of the object</param>
-        /// <param name="context">the operation context</param>
+        /// <param name="context">the operation defaultContext</param>
         /// <cmis>1.0</cmis>
         ICmisObject GetObjectByPath(string parentPath, string name, IOperationContext context);
 
@@ -388,10 +388,10 @@ namespace PortCMIS.Client
         IDocument GetLatestDocumentVersion(string objectId);
 
         /// <summary>
-        /// Gets the latest version in a version series with the given operation context.
+        /// Gets the latest version in a version series with the given operation defaultContext.
         /// </summary>
         /// <param name="objectId">the document ID of an arbitrary version in the version series</param>
-        /// <param name="context">the operation context</param>
+        /// <param name="context">the operation defaultContext</param>
         /// <cmis>1.0</cmis>
         IDocument GetLatestDocumentVersion(string objectId, IOperationContext context);
 
@@ -403,19 +403,19 @@ namespace PortCMIS.Client
         IDocument GetLatestDocumentVersion(IObjectId objectId);
 
         /// <summary>
-        /// Gets the latest version in a version series with the given operation context.
+        /// Gets the latest version in a version series with the given operation defaultContext.
         /// </summary>
         /// <param name="objectId">the document ID of an arbitrary version in the version series</param>
-        /// <param name="context">the operation context</param>
+        /// <param name="context">the operation defaultContext</param>
         /// <cmis>1.0</cmis>
         IDocument GetLatestDocumentVersion(IObjectId objectId, IOperationContext context);
 
         /// <summary>
-        /// Gets the latest version in a version series with the given operation context.
+        /// Gets the latest version in a version series with the given operation defaultContext.
         /// </summary>
         /// <param name="objectId">the document ID of an arbitrary version in the version series</param>
         /// <param name="major">defines if the latest major or the latest minor version should be returned</param>
-        /// <param name="context">the operation context</param>
+        /// <param name="context">the operation defaultContext</param>
         /// <cmis>1.0</cmis>
         IDocument GetLatestDocumentVersion(IObjectId objectId, bool major, IOperationContext context);
 
@@ -485,7 +485,7 @@ namespace PortCMIS.Client
         /// <param name="typeId">a type ID</param>
         /// <param name="where">WHERE part of the query, may be <c>null</c></param>
         /// <param name="searchAllVersions">indicates whether all versions should searched or not</param>
-        /// <param name="context">the operation context</param>
+        /// <param name="context">the operation defaultContext</param>
         /// <returns>query results</returns>
         /// <cmis>1.0</cmis>
         IItemEnumerable<ICmisObject> QueryObjects(string typeId, string where, bool searchAllVersions, IOperationContext context);
@@ -532,7 +532,7 @@ namespace PortCMIS.Client
         /// <param name="changeLogToken">the change log token, may be <c>null</c></param>
         /// <param name="includeProperties">indicates whether properties should be included or</param>
         /// <param name="maxNumItems">max number of changes</param>
-        /// <param name="context">the operation context</param>
+        /// <param name="context">the operation defaultContext</param>
         /// <returns>the change events</returns>
         /// <cmis>1.0</cmis>
         IChangeEvents GetContentChanges(string changeLogToken, bool includeProperties, long maxNumItems, IOperationContext context);
@@ -842,7 +842,7 @@ namespace PortCMIS.Client
     }
 
     /// <summary>
-    /// Operation context interface.
+    /// Operation defaultContext interface.
     /// </summary>
     public interface IOperationContext
     {
@@ -1181,7 +1181,7 @@ namespace PortCMIS.Client
         ///            true if all document versions should be included in
         ///            the search results, false if only the latest document
         ///            versions should be included in the search results</param>
-        /// <param name='context'>the operation context to use</param>
+        /// <param name='context'>the operation defaultContext to use</param>
         IItemEnumerable<IQueryResult> Query(bool searchAllVersions, IOperationContext context);
     }
 
@@ -1349,9 +1349,9 @@ namespace PortCMIS.Client
         IDocument GetRenditionDocument();
 
         /// <summary>
-        /// Returns the rendition document using the provided operation context if the rendition is a stand-alone document.
+        /// Returns the rendition document using the provided operation defaultContext if the rendition is a stand-alone document.
         /// </summary>
-        /// <param name="context">the operation context</param>
+        /// <param name="context">the operation defaultContext</param>
         /// <returns>the rendition document or <c>null</c> if there is no rendition document</returns>
         IDocument GetRenditionDocument(IOperationContext context);
 
@@ -1986,10 +1986,10 @@ namespace PortCMIS.Client
         IDocument GetObjectOfLatestVersion(bool major);
 
         /// <summary>
-        /// Fetches the latest major or minor version of this document with the given operation context.
+        /// Fetches the latest major or minor version of this document with the given operation defaultContext.
         /// </summary>
         /// <param name="major">indicates if the latest major or the very last version should be returned</param>
-        /// <param name="context">the operation context</param>
+        /// <param name="context">the operation defaultContext</param>
         /// <returns>the latest document object</returns>
         IDocument GetObjectOfLatestVersion(bool major, IOperationContext context);
 
@@ -1999,7 +1999,7 @@ namespace PortCMIS.Client
         IList<IDocument> GetAllVersions();
 
         /// <summary>
-        /// Gets a list of all versions in this version series using the given operation context.
+        /// Gets a list of all versions in this version series using the given operation defaultContext.
         /// </summary>
         IList<IDocument> GetAllVersions(IOperationContext context);
 
@@ -2199,9 +2199,9 @@ namespace PortCMIS.Client
         IItemEnumerable<IDocument> GetCheckedOutDocs();
 
         /// <summary>
-        /// Returns all checked out documents in this folder using the given operation context.
+        /// Returns all checked out documents in this folder using the given operation defaultContext.
         /// </summary>
-        /// <param name="context">the operation context</param>
+        /// <param name="context">the operation defaultContext</param>
         /// <returns>the checked out documents</returns>
         IItemEnumerable<IDocument> GetCheckedOutDocs(IOperationContext context);
     }

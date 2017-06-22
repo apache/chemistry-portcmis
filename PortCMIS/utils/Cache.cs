@@ -31,7 +31,7 @@ namespace PortCMIS.Utils
         private int capacity;
         private TimeSpan ttl;
         private Dictionary<K, LinkedListNode<LRUCacheItem<K, V>>> cacheDict = new Dictionary<K, LinkedListNode<LRUCacheItem<K, V>>>();
-        private LinkedList<LRUCacheItem<K, V>> lruList = new LinkedList<LRUCacheItem<K, V>>();
+        private readonly LinkedList<LRUCacheItem<K, V>> lruList = new LinkedList<LRUCacheItem<K, V>>();
 
         public LRUCache(int capacity, TimeSpan ttl)
         {
@@ -124,9 +124,6 @@ namespace PortCMIS.Utils
 
         public DateTime Expiration { get; private set; }
 
-        public bool IsExpired
-        {
-            get { return Value == null || DateTime.UtcNow > Expiration; }
-        }
+        public bool IsExpired => Value == null || DateTime.UtcNow > Expiration;
     }
 }

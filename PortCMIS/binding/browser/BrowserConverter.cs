@@ -18,7 +18,7 @@
 */
 
 using PortCMIS.Binding.Browser.Json;
-using PortCMIS.Const;
+using PortCMIS.Constants;
 using PortCMIS.Data;
 using PortCMIS.Data.Extensions;
 using PortCMIS.Enums;
@@ -29,7 +29,7 @@ using System.Numerics;
 
 namespace PortCMIS.Binding.Browser
 {
-    internal class JsonConverter
+    internal static class JsonConverter
     {
         public enum PropertyMode
         {
@@ -434,7 +434,7 @@ namespace PortCMIS.Binding.Browser
                                 canCreate.Add(o.ToString().GetCmisEnum<PropertyType>());
                             }
                         }
-                        catch (Exception)
+                        catch
                         {
                             // ignore
                         }
