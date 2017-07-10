@@ -124,6 +124,12 @@ namespace PortCMIS.Utils
 
         public DateTime Expiration { get; private set; }
 
-        public bool IsExpired => Value == null || DateTime.UtcNow > Expiration;
+        public bool IsExpired
+        {
+            get
+            {
+                return Value == null || DateTime.UtcNow > Expiration;
+            }
+        }
     }
 }

@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -66,13 +66,13 @@
     <Compile Include="ContentStreamTest.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="portcmis.snk" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\PortCMIS\PortCMIS.csproj">
       <Project>{a3ab61be-057d-4dd4-824c-ac174322c5d2}</Project>
       <Name>PortCMIS</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="portcmis.snk" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

@@ -2,7 +2,7 @@ Apache Chemistry PortCMIS 0.3
 =============================
 
 Apache Chemistry PortCMIS is a Content Management Interoperability Services (CMIS)
-client library for the .NET framework 4.5 or higher.
+client library for the .NET Standard 1.1 or higher.
 
 See https://chemistry.apache.org/dotnet/portcmis.html for more information.
 See https://chemistry.apache.org/docs/cmis-samples/ for code samples.
@@ -15,7 +15,7 @@ Libraries
 
 PortCMIS consists of two libraries: PortCMIS and PortCMISWin.
 
-The PortCMIS library is a Portable Class Library and contains the main code.
+The PortCMIS library is a .NET Standard 1.1 library and contains the main code.
 The PortCMISWin library adds support for Windows Runtime APIs, especially the
 Windows.Web.Http.HttpClient. Use it only if you need a specific feature that is
 not available with the System.Net.Http.HttpClient.
@@ -59,7 +59,8 @@ Change log
 
 PortCMIS 0.3:
 
-- ???
+- Switched from a Portable Class Library to a .NET Standard Library
+- Bug fixes and small improvments 
 - See https://issues.apache.org/jira/secure/ReleaseNote.jspa?version=12340229&projectId=12310936
 
 

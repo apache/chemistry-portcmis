@@ -1,11 +1,12 @@
 <?xml version="1.0"?>
 <package >
   <metadata>
-    <id>$id$</id>
-    <version>0.3.0.0</version>
+    <id>PortCMISWin</id>
+    <version>0.3.0</version>
     <title>PortCMIS for Store Apps</title>
     <authors>Apache Software Foundation</authors>
     <owners>Apache Software Foundation</owners>
+    <projectUrl>https://chemistry.apache.org/dotnet/portcmis.html</projectUrl>
     <licenseUrl>https://www.apache.org/licenses/LICENSE-2.0.html</licenseUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>CMIS Client Library for .Net</description>
@@ -13,4 +14,7 @@
     <copyright>Copyright 2015-2017</copyright>
     <tags>CMIS</tags>
   </metadata>
+  <files>
+    <file src="bin\Release\PortCMISWin.dll" target="lib\win81" />
+  </files>
 </package>

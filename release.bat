@@ -22,7 +22,7 @@ rem
 rem This batch file creates a release.
 rem It requires Cygwin.
 
-set PORTCMISVERSION=0.2
+set PORTCMISVERSION=0.3
 set PORTCMISZIPSRC=chemistry-portcmis-%PORTCMISVERSION%-src.zip
 set PORTCMISZIPBIN=chemistry-portcmis-%PORTCMISVERSION%-bin.zip
 set PORTCMISZIPNUPKG=chemistry-portcmis-%PORTCMISVERSION%-nupkg.zip

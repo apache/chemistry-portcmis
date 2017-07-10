@@ -24,13 +24,13 @@ rmdir /Q /S obj
 rmdir /Q /S nupkg
 
 echo Building Debug DLL...
-msbuild PortCMIS.csproj /ToolsVersion:4.0 /p:Configuration=Debug
+msbuild PortCMIS.csproj /p:Configuration=Debug
 
 echo Building Release DLL...
-msbuild PortCMIS.csproj /ToolsVersion:4.0 /p:Configuration=Release
+msbuild PortCMIS.csproj /p:Configuration=Release
 
 mkdir nupkg
-nuget pack -o nupkg
+nuget pack PortCMIS.nuspec -o nupkg
 
 echo Building documentation...
-msbuild PortCMIS.shfbproj /ToolsVersion:4.0 /p:Configuration=Release
+msbuild PortCMIS.shfbproj /p:Configuration=Release

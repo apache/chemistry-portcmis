@@ -1,16 +1,20 @@
 <?xml version="1.0"?>
 <package >
   <metadata>
-    <id>$id$</id>
-    <version>$version$</version>
-    <title>$title$</title>
-    <authors>$author$</authors>
-    <owners>$author$</owners>
+    <id>PortCMIS</id>
+    <version>0.3.0</version>
+    <title>PortCMIS</title>
+    <authors>Apache Software Foundation</authors>
+    <owners>Apache Software Foundation</owners>
+    <projectUrl>https://chemistry.apache.org/dotnet/portcmis.html</projectUrl>
     <licenseUrl>https://www.apache.org/licenses/LICENSE-2.0.html</licenseUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>$description$</description>
+    <description>CMIS Client Library for .Net</description>
     <releaseNotes>See https://issues.apache.org/jira/secure/ReleaseNote.jspa?version=12340229&amp;projectId=12310936</releaseNotes>
     <copyright>Copyright 2015-2017</copyright>
     <tags>CMIS</tags>
   </metadata>
-</package>
+  <files>
+    <file src="bin\Release\PortCMIS.dll" target="lib\netstandard1.1" />
+  </files>
+ </package>

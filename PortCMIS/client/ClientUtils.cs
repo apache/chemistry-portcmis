@@ -590,19 +590,21 @@ namespace PortCMIS.Client
             Id = id;
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Returns the ID as string.
+        /// </summary>
         public override string ToString()
         {
             return Id;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc cref="Object.GetHashCode"/>
         public override int GetHashCode()
         {
             return Id.GetHashCode();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc cref="Object.Equals(object)"/>
         public override bool Equals(object obj)
         {
             return this.Equals(obj as ObjectId);
