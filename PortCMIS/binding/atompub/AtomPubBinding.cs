@@ -2887,7 +2887,7 @@ namespace PortCMIS.Binding.AtomPub
             }
 
             // send content
-            IResponse resp = Put(url, headers, new AtomPubHttpContent(BindingConstants.MediaTypeEntry, (stream) =>
+            IResponse resp = Put(url, headers, new AtomPubHttpContent(contentStream.MimeType, (stream) =>
             {
                 content.CopyTo(stream);
             }));

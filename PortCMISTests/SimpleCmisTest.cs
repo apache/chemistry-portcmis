@@ -313,6 +313,8 @@ namespace PortCMISTests
                 // get content again
                 IContentStream content2 = doc.GetContentStream();
                 Assert.IsNotNull(content2);
+                Assert.IsNotNull(content2.MimeType);
+                Assert.IsTrue(content2.MimeType.StartsWith("text/plain", System.StringComparison.InvariantCultureIgnoreCase));
                 Assert.IsNotNull(content2.Stream);
 
                 Assert.AreEqual(contentString2, ConvertStreamToString(content2.Stream));
