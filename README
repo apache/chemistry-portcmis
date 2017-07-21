@@ -36,8 +36,8 @@ Use this code to create a session with PortCMIS:
 
 
 Use this code to create a session with PortCMISWin:
-	
-	IDictionary<string, string> parameters = new Dictionary<string, string>() {
+
+    IDictionary<string, string> parameters = new Dictionary<string, string>() {
         {SessionParameter.BindingType , BindingType.Browser},
         {SessionParameter.BrowserUrl , "http://localhost:8080/inmemory/browser"},
         {SessionParameter.RepositoryId , "A1"},
@@ -52,8 +52,8 @@ Use this code to create a session with PortCMISWin:
 Please note that the authentication provider interfaces are different for
 PortCMIS and PortCMISWin. Custom authentication provider implementations have
 to developed for either PortCMIS or PortCMISWin.
-	
-	
+
+
 Change log 
 ----------
 

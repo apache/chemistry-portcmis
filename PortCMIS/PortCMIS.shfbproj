@@ -25,10 +25,10 @@
     <CppCommentsFixup>False</CppCommentsFixup>
     <CleanIntermediates>True</CleanIntermediates>
     <MaximumGroupParts>2</MaximumGroupParts>
-    <NamespaceGrouping>False</NamespaceGrouping>
+    <NamespaceGrouping>True</NamespaceGrouping>
     <SyntaxFilters>C#</SyntaxFilters>
     <SdkLinkTarget>Blank</SdkLinkTarget>
-    <RootNamespaceContainer>False</RootNamespaceContainer>
+    <RootNamespaceContainer>True</RootNamespaceContainer>
     <PresentationStyle>VS2013</PresentationStyle>
     <Preliminary>False</Preliminary>
     <NamingMethod>Guid</NamingMethod>
@@ -90,7 +90,8 @@
     </ComponentConfigurations>
     <DocumentationSources>
       <DocumentationSource sourceFile="bin\Release\PortCMIS.dll" />
-<DocumentationSource sourceFile="bin\Release\PortCMIS.xml" /></DocumentationSources>
+      <DocumentationSource sourceFile="bin\Release\PortCMIS.xml" />
+    </DocumentationSources>
     <MissingTags>AutoDocumentCtors, AutoDocumentDispose</MissingTags>
     <ApiFilter>
       <Filter entryType="Namespace" fullName="PortCMIS.Binding" isExposed="False" xmlns="">
@@ -169,6 +170,9 @@
     <VisibleItems>InheritedMembers, InheritedFrameworkMembers, Protected, ProtectedInternalAsProtected</VisibleItems>
     <SaveComponentCacheCapacity>100</SaveComponentCacheCapacity>
     <HelpFileVersion>1.0.0.0</HelpFileVersion>
+    <ProjectSummary>&amp;lt%3ba href=&amp;quot%3bhttps://chemistry.apache.org/dotnet/portcmis.html&amp;quot%3b&amp;gt%3bApache Chemistry PortCMIS&amp;lt%3b/a&amp;gt%3b is a Content Management Interoperability Services %28CMIS%29 client library for the .NET Standard 1.1 or higher.
+</ProjectSummary>
+    <RootNamespaceTitle>Apache Chemistry PortCMIS</RootNamespaceTitle>
   </PropertyGroup>
   <!-- There are no properties for these groups.  AnyCPU needs to appear in order for Visual Studio to perform
 			 the build.  The others are optional common platform types that may appear. -->

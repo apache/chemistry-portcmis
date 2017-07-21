@@ -81,6 +81,7 @@ mkdir release-src\src
 
 mkdir release-src\src\PortCMIS
 xcopy PortCMIS release-src\src\PortCMIS /E
+del release-src\src\PortCMIS\project.lock.json
 rmdir /S /Q release-src\src\PortCMIS\bin
 rmdir /S /Q release-src\src\PortCMIS\obj
 rmdir /S /Q release-src\src\PortCMIS\doc

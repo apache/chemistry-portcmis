@@ -1,1 +1,1 @@
-Apache Chemistry PortCMIS requires the .NET Framework 4.5 or higher.
+Apache Chemistry PortCMIS requires a .NET Standard 1.1 runtime or higher.
