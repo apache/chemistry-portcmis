@@ -22,7 +22,7 @@ rem
 rem This batch file creates a release.
 rem It requires Cygwin.
 
-set PORTCMISVERSION=0.3
+set PORTCMISVERSION=0.4
 set PORTCMISZIPSRC=chemistry-portcmis-%PORTCMISVERSION%-src.zip
 set PORTCMISZIPBIN=chemistry-portcmis-%PORTCMISVERSION%-bin.zip
 set PORTCMISZIPNUPKG=chemistry-portcmis-%PORTCMISVERSION%-nupkg.zip
@@ -137,7 +137,7 @@ echo.
 echo - Check artifacts!!!
 echo.
 echo - Create RC tag:
-echo   svn copy https://svn.apache.org/repos/asf/chemistry/portcmis/trunk https://svn.apache.org/repos/asf/chemistry/portcmis/tags/chemistry-portcmis-%PORTCMISVERSION%-%PORTCMISRC%
+echo   svn copy https://svn.apache.org/repos/asf/chemistry/portcmis/trunk https://svn.apache.org/repos/asf/chemistry/portcmis/tags/chemistry-portcmis-%PORTCMISVERSION%-%PORTCMISRC% -m "PortCMIS %PORTCMISVERSION% RC%PORTCMISRC%"
 echo.
 echo - Upload to dist/dev:
 echo   cd dist-dev
@@ -166,7 +166,7 @@ echo.
 echo - Close JIRA version and create a new one
 echo.
 echo - Rename tag:
-echo   svn mv https://svn.apache.org/repos/asf/chemistry/portcmis/tags/chemistry-portcmis-%PORTCMISVERSION%-%PORTCMISRC% https://svn.apache.org/repos/asf/chemistry/portcmis/tags/chemistry-portcmis-%PORTCMISVERSION% -m 'renamed tag after successful release'
+echo   svn mv https://svn.apache.org/repos/asf/chemistry/portcmis/tags/chemistry-portcmis-%PORTCMISVERSION%-%PORTCMISRC% https://svn.apache.org/repos/asf/chemistry/portcmis/tags/chemistry-portcmis-%PORTCMISVERSION% -m "renamed tag after successful release"
 echo.
 echo - Update DOAP file
 echo.
