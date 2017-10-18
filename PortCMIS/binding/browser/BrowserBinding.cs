@@ -335,7 +335,7 @@ namespace PortCMIS.Binding.Browser
             AddPropertiesParameters(Properties, result);
 
             // set Aces
-            AddAcesParameters(AddAces, BindingConstants.ControlAddAcePrincipal, BindingConstants.ControlRemoveAcePermission, result);
+            AddAcesParameters(AddAces, BindingConstants.ControlAddAcePrincipal, BindingConstants.ControlAddAcePermission, result);
             AddAcesParameters(RemoveAces, BindingConstants.ControlRemoveAcePrincipal, BindingConstants.ControlRemoveAcePermission, result);
 
             // set policies
